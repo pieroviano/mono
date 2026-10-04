@@ -85,7 +85,7 @@ namespace System.Web.UI.HtmlControls {
 
 		protected override void RenderAttributes (HtmlTextWriter writer)
 		{
-			Page page = Page;
+			var page = Page;
 			if (page != null)
 				page.ClientScript.RegisterForEventValidation (Name);
 			base.RenderAttributes (writer);
@@ -95,7 +95,7 @@ namespace System.Web.UI.HtmlControls {
 		{
 			base.OnPreRender (e);
 
-			Page page = Page;
+			var page = Page;
 			if (page != null && !Disabled) {
 				page.RegisterRequiresPostBack (this);
 				page.RegisterEnabledControl (this);

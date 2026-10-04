@@ -9,7 +9,7 @@
             // Scan for errant single { and } and convert double {{ to { and double }} to }
 
             // First we eliminate all escaped braces and then check if any other braces are remaining
-            string newLiteral = segmentLiteral.Replace("{{", "").Replace("}}", "");
+            var newLiteral = segmentLiteral.Replace("{{", "").Replace("}}", "");
             if (newLiteral.Contains("{") || newLiteral.Contains("}")) {
                 return null;
             }
@@ -50,8 +50,8 @@
                 return false;
             }
 
-            for (int i = 0; i < parameterName.Length; i++) {
-                char c = parameterName[i];
+            for (var i = 0; i < parameterName.Length; i++) {
+                var c = parameterName[i];
                 if (c == '/' || c == '{' || c == '}') {
                     return false;
                 }
@@ -66,7 +66,7 @@
                 (routeUrl.IndexOf('?') != -1));
         }
 
-        public static ParsedRoute Parse(string routeUrl) {
+        public static ParsedRoute Parse(string? routeUrl) {
             if (routeUrl == null) {
                 routeUrl = String.Empty;
             }
@@ -75,13 +75,13 @@
                 throw new ArgumentException(SR.GetString(SR.Route_InvalidRouteUrl), "routeUrl");
             }
 
-            IList<string> urlParts = SplitUrlToPathSegmentStrings(routeUrl);
-            Exception ex = ValidateUrlParts(urlParts);
+            var urlParts = SplitUrlToPathSegmentStrings(routeUrl);
+            var ex = ValidateUrlParts(urlParts);
             if (ex != null) {
                 throw ex;
             }
 
-            IList<PathSegment> pathSegments = SplitUrlToPathSegments(urlParts);
+            var pathSegments = SplitUrlToPathSegments(urlParts);
 
             Debug.Assert(urlParts.Count == pathSegments.Count, "The number of string segments should be the same as the number of path segments");
 
@@ -91,15 +91,15 @@
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly",
             Justification = "The exceptions are just constructed here, but they are thrown from a method that does have those parameter names.")]
         private static IList<PathSubsegment> ParseUrlSegment(string segment, out Exception exception) {
-            int startIndex = 0;
+            var startIndex = 0;
 
-            List<PathSubsegment> pathSubsegments = new List<PathSubsegment>();
+            var pathSubsegments = new List<PathSubsegment>();
 
             while (startIndex < segment.Length) {
-                int nextParameterStart = IndexOfFirstOpenParameter(segment, startIndex);
+                var nextParameterStart = IndexOfFirstOpenParameter(segment, startIndex);
                 if (nextParameterStart == -1) {
                     // If there are no more parameters in the segment, capture the remainder as a literal and stop
-                    string lastLiteralPart = GetLiteral(segment.Substring(startIndex));
+                    var lastLiteralPart = GetLiteral(segment.Substring(startIndex));
                     if (lastLiteralPart == null) {
                         exception = new ArgumentException(
                             String.Format(
@@ -116,7 +116,7 @@
                     break;
                 }
 
-                int nextParameterEnd = segment.IndexOf('}', nextParameterStart + 1);
+                var nextParameterEnd = segment.IndexOf('}', nextParameterStart + 1);
                 if (nextParameterEnd == -1) {
                     exception = new ArgumentException(
                         String.Format(
@@ -128,7 +128,7 @@
                     return null;
                 }
 
-                string literalPart = GetLiteral(segment.Substring(startIndex, nextParameterStart - startIndex));
+                var literalPart = GetLiteral(segment.Substring(startIndex, nextParameterStart - startIndex));
                 if (literalPart == null) {
                     exception = new ArgumentException(
                         String.Format(
@@ -143,7 +143,7 @@
                     pathSubsegments.Add(new LiteralSubsegment(literalPart));
                 }
 
-                string parameterName = segment.Substring(nextParameterStart + 1, nextParameterEnd - nextParameterStart - 1);
+                var parameterName = segment.Substring(nextParameterStart + 1, nextParameterEnd - nextParameterStart - 1);
                 pathSubsegments.Add(new ParameterSubsegment(parameterName));
 
                 startIndex = nextParameterEnd + 1;
@@ -154,16 +154,16 @@
         }
 
         private static IList<PathSegment> SplitUrlToPathSegments(IList<string> urlParts) {
-            List<PathSegment> pathSegments = new List<PathSegment>();
+            var pathSegments = new List<PathSegment>();
 
-            foreach (string pathSegment in urlParts) {
-                bool isCurrentPartSeparator = IsSeparator(pathSegment);
+            foreach (var pathSegment in urlParts) {
+                var isCurrentPartSeparator = IsSeparator(pathSegment);
                 if (isCurrentPartSeparator) {
                     pathSegments.Add(new SeparatorPathSegment());
                 }
                 else {
                     Exception exception;
-                    IList<PathSubsegment> subsegments = ParseUrlSegment(pathSegment, out exception);
+                    var subsegments = ParseUrlSegment(pathSegment, out exception);
                     Debug.Assert(exception == null, "This only gets called after the path has been validated, so there should never be an exception here");
                     pathSegments.Add(new ContentPathSegment(subsegments));
                 }
@@ -172,27 +172,27 @@
         }
 
         internal static IList<string> SplitUrlToPathSegmentStrings(string url) {
-            List<string> parts = new List<string>();
+            var parts = new List<string>();
 
             if (String.IsNullOrEmpty(url)) {
                 return parts;
             }
 
-            int currentIndex = 0;
+            var currentIndex = 0;
 
             // Split the incoming URL into individual parts
             while (currentIndex < url.Length) {
-                int indexOfNextSeparator = url.IndexOf('/', currentIndex);
+                var indexOfNextSeparator = url.IndexOf('/', currentIndex);
                 if (indexOfNextSeparator == -1) {
                     // If there are no more separators, the rest of the string is the last part
-                    string finalPart = url.Substring(currentIndex);
+                    var finalPart = url.Substring(currentIndex);
                     if (finalPart.Length > 0) {
                         parts.Add(finalPart);
                     }
                     break;
                 }
 
-                string nextPart = url.Substring(currentIndex, indexOfNextSeparator - currentIndex);
+                var nextPart = url.Substring(currentIndex, indexOfNextSeparator - currentIndex);
                 if (nextPart.Length > 0) {
                     parts.Add(nextPart);
                 }
@@ -209,12 +209,12 @@
         private static Exception ValidateUrlParts(IList<string> pathSegments) {
             Debug.Assert(pathSegments != null, "The value should always come from SplitUrl(), and that function should never return null.");
 
-            HashSet<string> usedParameterNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var usedParameterNames = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             bool? isPreviousPartSeparator = null;
 
-            bool foundCatchAllParameter = false;
+            var foundCatchAllParameter = false;
 
-            foreach (string pathSegment in pathSegments) {
+            foreach (var pathSegment in pathSegments) {
                 if (foundCatchAllParameter) {
                     // If we ever start an iteration of the loop and we've already found a
                     // catchall parameter then we have an invalid URL format.
@@ -246,7 +246,7 @@
                 // If it's not a separator, parse the segment for parameters and validate it
                 if (!isCurrentPartSeparator) {
                     Exception exception;
-                    IList<PathSubsegment> subsegments = ParseUrlSegment(pathSegment, out exception);
+                    var subsegments = ParseUrlSegment(pathSegment, out exception);
                     if (exception != null) {
                         return exception;
                     }
@@ -264,11 +264,11 @@
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2208:InstantiateArgumentExceptionsCorrectly",
             Justification = "The exceptions are just constructed here, but they are thrown from a method that does have those parameter names.")]
         private static Exception ValidateUrlSegment(IList<PathSubsegment> pathSubsegments, HashSet<string> usedParameterNames, string pathSegment) {
-            bool segmentContainsCatchAll = false;
+            var segmentContainsCatchAll = false;
 
             Type previousSegmentType = null;
 
-            foreach (PathSubsegment subsegment in pathSubsegments) {
+            foreach (var subsegment in pathSubsegments) {
                 if (previousSegmentType != null) {
                     if (previousSegmentType == subsegment.GetType()) {
                         return new ArgumentException(
@@ -288,7 +288,7 @@
                 else {
                     ParameterSubsegment parameterSubsegment = subsegment as ParameterSubsegment;
                     if (parameterSubsegment != null) {
-                        string parameterName = parameterSubsegment.ParameterName;
+                        var parameterName = parameterSubsegment.ParameterName;
 
                         if (parameterSubsegment.IsCatchAll) {
                             segmentContainsCatchAll = true;

@@ -104,7 +104,7 @@ namespace System.Web.UI
 			if (control == null)
 				throw new ArgumentNullException ("control");
 
-			Page page = OwnerPage;
+			var page = OwnerPage;
 			page.RequiresPostBackScript ();
 			if(page.IsMultiForm)
 				return page.theForm + ".__doPostBack('" + control.UniqueID + "','" + argument + "')";
@@ -136,7 +136,7 @@ namespace System.Web.UI
 			if (options == null)
 				throw new ArgumentNullException ("options");
 
-			string actionUrl = options.ActionUrl;
+			var actionUrl = options.ActionUrl;
 			if (actionUrl == null && options.ValidationGroup == null && !options.TrackFocus && 
 				!options.AutoPostBack && !options.PerformValidation)
 			{
@@ -151,8 +151,8 @@ namespace System.Web.UI
 
 			RegisterWebFormClientScript ();
 
-			Page page = OwnerPage;
-			HttpRequest req = page.RequestInternal;
+			var page = OwnerPage;
+			var req = page.RequestInternal;
 			Uri pageUrl = req != null ? req.Url : null;
 			if (pageUrl != null)
 				RegisterHiddenField (Page.PreviousPageID, pageUrl.AbsolutePath);
@@ -160,7 +160,7 @@ namespace System.Web.UI
 			if(options.TrackFocus)
 				RegisterHiddenField (Page.LastFocusID, String.Empty);
 
-			string prefix = options.RequiresJavaScriptProtocol ? "javascript:" : String.Empty;
+			var prefix = options.RequiresJavaScriptProtocol ? "javascript:" : String.Empty;
 			if (page.IsMultiForm)
 				prefix += page.theForm + ".";
 
@@ -186,7 +186,7 @@ namespace System.Web.UI
 
 		internal void WriteWebFormClientScript (HtmlTextWriter writer) {
 			if (!_webFormClientScriptRendered && _webFormClientScriptRequired) {
-				Page page = OwnerPage;
+				var page = OwnerPage;
 				writer.WriteLine ();
 				WriteClientScriptInclude (writer, GetWebResourceUrl (typeof (Page), "webform.js"), typeof (Page), "webform.js");
 				WriteBeginScriptBlock (writer);
@@ -196,17 +196,17 @@ namespace System.Web.UI
 			}
 		}
 		
-		public string GetCallbackEventReference (Control control, string argument, string clientCallback, string context)
+		public string GetCallbackEventReference (Control control, string? argument, string clientCallback, string? context)
 		{
 			return GetCallbackEventReference (control, argument, clientCallback, context, null, false);
 		}
 
-		public string GetCallbackEventReference (Control control, string argument, string clientCallback, string context, bool useAsync)
+		public string GetCallbackEventReference (Control control, string? argument, string clientCallback, string? context, bool useAsync)
 		{
 			return GetCallbackEventReference (control, argument, clientCallback, context, null, useAsync);
 		}
 
-		public string GetCallbackEventReference (Control control, string argument, string clientCallback, string context, string clientErrorCallback, bool useAsync)
+		public string GetCallbackEventReference (Control control, string? argument, string clientCallback, string? context, string? clientErrorCallback, bool useAsync)
 		{
 			if (control == null)
 				throw new ArgumentNullException ("control");
@@ -216,11 +216,11 @@ namespace System.Web.UI
 			return GetCallbackEventReference ("'" + control.UniqueID + "'", argument, clientCallback, context, clientErrorCallback, useAsync);
 		}
 
-		public string GetCallbackEventReference (string target, string argument, string clientCallback, string context, string clientErrorCallback, bool useAsync)
+		public string GetCallbackEventReference (string target, string? argument, string clientCallback, string? context, string? clientErrorCallback, bool useAsync)
 		{
 			RegisterWebFormClientScript ();
 
-			Page page = OwnerPage;
+			var page = OwnerPage;
 			if (!_initCallBackRegistered) {
 				_initCallBackRegistered = true;
 				RegisterStartupScript (typeof (Page), "WebForm_InitCallback", page.WebFormScriptReference + ".WebForm_InitCallback();", true);
@@ -234,7 +234,7 @@ namespace System.Web.UI
 				(useAsync ? "true" : "false") + ")";
 		}
 		
-		public string GetWebResourceUrl(Type type, string resourceName)
+		public string GetWebResourceUrl(Type type, string? resourceName)
 		{
 			if (type == null)
 				throw new ArgumentNullException ("type");
@@ -286,7 +286,7 @@ namespace System.Web.UI
 			return IsScriptRegistered (clientScriptBlocks, type, "include-" + key);
 		}
 		
-		bool IsScriptRegistered (ScriptEntry scriptList, Type type, string key)
+		bool IsScriptRegistered (ScriptEntry? scriptList, Type type, string key)
 		{
 			while (scriptList != null) {
 				if (scriptList.Type == type && scriptList.Key == key)
@@ -316,7 +316,7 @@ namespace System.Web.UI
 		void RegisterScript (ref ScriptEntry scriptList, Type type, string key, string script, ScriptEntryFormat format)
 		{
 			ScriptEntry last = null;
-			ScriptEntry entry = scriptList;
+			var entry = scriptList;
 
 			while (entry != null) {
 				if (entry.Type == type && entry.Key == key)
@@ -389,12 +389,12 @@ namespace System.Web.UI
 			RegisterScript (ref startupScriptBlocks, type, key, script, addScriptTags);
 		}
 
-		public void RegisterClientScriptInclude (string key, string url)
+		public void RegisterClientScriptInclude (string key, string? url)
 		{
 			RegisterClientScriptInclude (GetType (), key, url);
 		}
 		
-		public void RegisterClientScriptInclude (Type type, string key, string url)
+		public void RegisterClientScriptInclude (Type type, string key, string? url)
 		{
 			if (type == null)
 				throw new ArgumentNullException ("type");
@@ -439,10 +439,10 @@ namespace System.Web.UI
 			if (eventValidationValues == null || eventValidationValues.Length == 0)
 				eventValidationValues = new int [64];
 
-			int len = eventValidationValues.Length;
+			var len = eventValidationValues.Length;
 
 			if (eventValidationPos >= len) {
-				int [] tmp = new int [len * 2];
+				var tmp = new int [len * 2];
 				Array.Copy (eventValidationValues, tmp, len);
 				eventValidationValues = tmp;
 			}
@@ -457,8 +457,8 @@ namespace System.Web.UI
 		// Implemented following the description in http://odetocode.com/Blogs/scott/archive/2006/03/20/3145.aspx
 		int CalculateEventHash (string uniqueId, string argument)
 		{
-			int uniqueIdHash = uniqueId.GetHashCode ();
-			int argumentHash = String.IsNullOrEmpty (argument) ? 0 : argument.GetHashCode ();
+			var uniqueIdHash = uniqueId.GetHashCode ();
+			var argumentHash = String.IsNullOrEmpty (argument) ? 0 : argument.GetHashCode ();
 			return (uniqueIdHash ^ argumentHash);
 		}
 		
@@ -468,14 +468,14 @@ namespace System.Web.UI
 			RegisterForEventValidation (options.TargetControl.UniqueID, options.Argument);
 		}
 		
-		public void RegisterForEventValidation (string uniqueId)
+		public void RegisterForEventValidation (string? uniqueId)
 		{
 			RegisterForEventValidation (uniqueId, null);
 		}
 		
-		public void RegisterForEventValidation (string uniqueId, string argument)
+		public void RegisterForEventValidation (string? uniqueId, string argument)
 		{
-			Page page = OwnerPage;
+			var page = OwnerPage;
 			if (!page.EnableEventValidation)
 				return;
 			if (uniqueId == null || uniqueId.Length == 0)
@@ -487,14 +487,14 @@ namespace System.Web.UI
 
 			EnsureEventValidationArray ();
 			
-			int hash = CalculateEventHash (uniqueId, argument);
-			for (int i = 0; i < eventValidationPos; i++)
+			var hash = CalculateEventHash (uniqueId, argument);
+			for (var i = 0; i < eventValidationPos; i++)
 				if (eventValidationValues [i] == hash)
 					return;
 			eventValidationValues [eventValidationPos++] = hash;
 		}
 
-		public void ValidateEvent (string uniqueId)
+		public void ValidateEvent (string? uniqueId)
 		{
 			ValidateEvent (uniqueId, null);
 		}
@@ -504,7 +504,7 @@ namespace System.Web.UI
 			return new ArgumentException ("Invalid postback or callback argument. Event validation is enabled using <pages enableEventValidation=\"true\"/> in configuration or <%@ Page EnableEventValidation=\"true\" %> in a page. For security purposes, this feature verifies that arguments to postback or callback events originate from the server control that originally rendered them. If the data is valid and expected, use the ClientScriptManager.RegisterForEventValidation method in order to register the postback or callback data for validation.");
 		}
 		
-		public void ValidateEvent (string uniqueId, string argument)
+		public void ValidateEvent (string? uniqueId, string argument)
 		{
 			if (uniqueId == null || uniqueId.Length == 0)
 				throw new ArgumentException ("must not be null or empty", "uniqueId");
@@ -513,15 +513,15 @@ namespace System.Web.UI
 			if (eventValidationValues == null)
 				throw InvalidPostBackException ();
 			
-			int hash = CalculateEventHash (uniqueId, argument);
-			for (int i = 0; i < eventValidationValues.Length; i++)
+			var hash = CalculateEventHash (uniqueId, argument);
+			for (var i = 0; i < eventValidationValues.Length; i++)
 				if (eventValidationValues [i] == hash)
 					return;
 			
 			throw InvalidPostBackException ();
 		}
 
-		void WriteScripts (HtmlTextWriter writer, ScriptEntry scriptList)
+		void WriteScripts (HtmlTextWriter writer, ScriptEntry? scriptList)
 		{
 			if (scriptList == null)
 				return;
@@ -564,12 +564,12 @@ namespace System.Web.UI
 			}
 		}
 
-		internal void RestoreEventValidationState (string fieldValue)
+		internal void RestoreEventValidationState (string? fieldValue)
 		{
-			Page page = OwnerPage;
+			var page = OwnerPage;
 			if (!page.EnableEventValidation || fieldValue == null || fieldValue.Length == 0)
 				return;
-			IStateFormatter fmt = page.GetFormatter ();
+			var fmt = page.GetFormatter ();
 			eventValidationValues = (int []) fmt.Deserialize (fieldValue);
 			eventValidationPos = eventValidationValues.Length;
 		}
@@ -579,7 +579,7 @@ namespace System.Web.UI
 			if (!OwnerPage.EnableEventValidation)
 				return;
 
-			string eventValidation = GetEventValidationStateFormatted ();
+			var eventValidation = GetEventValidationStateFormatted ();
 			if (eventValidation == null)
 				return;
 
@@ -591,12 +591,12 @@ namespace System.Web.UI
 			if (eventValidationValues == null || eventValidationValues.Length == 0)
 				return null;
 
-			Page page = OwnerPage;
+			var page = OwnerPage;
 			if(page.IsCallback && !_hasRegisteredForEventValidationOnCallback)
 				return null;
 
-			IStateFormatter fmt = page.GetFormatter ();
-			int [] array = new int [eventValidationPos];
+			var fmt = page.GetFormatter ();
+			var array = new int [eventValidationPos];
 			Array.Copy (eventValidationValues, array, eventValidationPos);
 			return fmt.Serialize (array);
 		}
@@ -643,9 +643,9 @@ namespace System.Web.UI
 			writer.WriteLine ();
 			writer.AddAttribute (HtmlTextWriterAttribute.Class, "aspNetHidden");
 			writer.RenderBeginTag (HtmlTextWriterTag.Div);
-			int oldIndent = writer.Indent;
+			var oldIndent = writer.Indent;
 			writer.Indent = 0;
-			bool first = true;
+			var first = true;
 			var sb = new StringBuilder ();
 			
 			foreach (string key in hiddenFields.Keys) {
@@ -673,7 +673,7 @@ namespace System.Web.UI
 					if (!OwnerPage.IsMultiForm)
 						writer.WriteLine ("<script src=\"{0}\" type=\"text/javascript\"></script>", path);
 					else {
-						string scriptKey = "inc_" + (type.FullName + key).GetHashCode ().ToString ("X");
+						var scriptKey = "inc_" + (type.FullName + key).GetHashCode ().ToString ("X");
 						writer.WriteLine ("<script type=\"text/javascript\">");
 						writer.WriteLine (SCRIPT_BLOCK_START);
 						writer.WriteLine ("if (!window.{0}) {{", scriptKey);
@@ -699,8 +699,8 @@ namespace System.Web.UI
 			if (registeredArrayDeclares != null) {
 				writer.WriteLine();
 				WriteBeginScriptBlock (writer);
-				IDictionaryEnumerator arrayEnum = registeredArrayDeclares.GetEnumerator();
-				Page page = OwnerPage;
+				var arrayEnum = registeredArrayDeclares.GetEnumerator();
+				var page = OwnerPage;
 				while (arrayEnum.MoveNext()) {
 					if (page.IsMultiForm)
 						writer.Write ("\t" + page.theForm + ".");
@@ -708,8 +708,8 @@ namespace System.Web.UI
 						writer.Write ("\tvar ");
 					writer.Write(arrayEnum.Key);
 					writer.Write(" =  new Array(");
-					IEnumerator arrayListEnum = ((ArrayList) arrayEnum.Value).GetEnumerator();
-					bool isFirst = true;
+					var arrayListEnum = ((ArrayList) arrayEnum.Value).GetEnumerator();
+					var isFirst = true;
 					while (arrayListEnum.MoveNext()) {
 						if (isFirst)
 							isFirst = false;
@@ -725,7 +725,7 @@ namespace System.Web.UI
 		}
 
 		internal string GetClientValidationEvent (string validationGroup) {
-			Page page = OwnerPage;
+			var page = OwnerPage;
 			if (page.IsMultiForm)
 				return "if (typeof(" + page.theForm + ".Page_ClientValidate) == 'function') " + page.theForm + ".Page_ClientValidate('" + validationGroup + "');";
 			return "if (typeof(Page_ClientValidate) == 'function') Page_ClientValidate('" + validationGroup + "');";
@@ -733,7 +733,7 @@ namespace System.Web.UI
 
 		internal string GetClientValidationEvent ()
 		{
-			Page page = OwnerPage;
+			var page = OwnerPage;
 			if (page.IsMultiForm)
 				return "if (typeof(" + page.theForm + ".Page_ClientValidate) == 'function') " + page.theForm + ".Page_ClientValidate();";
 			return "if (typeof(Page_ClientValidate) == 'function') Page_ClientValidate();";
@@ -744,13 +744,13 @@ namespace System.Web.UI
 		{
 			if (submitStatements == null) return null;
 			
-			StringBuilder sb = new StringBuilder ();
-			ScriptEntry entry = submitStatements;
+			var sb = new StringBuilder ();
+			var entry = submitStatements;
 			while (entry != null) {
 				sb.Append (EnsureEndsWithSemicolon (entry.Script));
 				entry = entry.Next;
 			}
-			Page page = OwnerPage;
+			var page = OwnerPage;
 			RegisterClientScriptBlock (GetType(), "HtmlForm-OnSubmitStatemen",
 @"
 " + page.WebFormScriptReference + @".WebForm_OnSubmit = function () {
@@ -761,16 +761,16 @@ return true;
 			return "javascript:return " + page.WebFormScriptReference + ".WebForm_OnSubmit();";
 		}
 		
-		internal static string GetScriptLiteral (object ob)
+		internal static string GetScriptLiteral (object? ob)
 		{
 			if (ob == null)
 				return "null";
 			else if (ob is string) {
-				string s = (string)ob;
-				bool escape = false;
-				int len = s.Length;
+				var s = (string)ob;
+				var escape = false;
+				var len = s.Length;
 
-				for (int i = 0; i < len; i++)
+				for (var i = 0; i < len; i++)
 					if (s [i] == '\\' || s [i] == '\"') {
 						escape = true;
 						break;
@@ -779,10 +779,10 @@ return true;
 				if (!escape)
 					return string.Concat ("\"", s, "\"");
 
-				StringBuilder sb = new StringBuilder (len + 10);
+				var sb = new StringBuilder (len + 10);
 
 				sb.Append ('\"');
-				for (int si = 0; si < len; si++) {
+				for (var si = 0; si < len; si++) {
 					if (s [si] == '\"')
 						sb.Append ("\\\"");
 					else if (s [si] == '\\')
@@ -824,7 +824,7 @@ return true;
 		}
 
 		// helper method
-		internal static string EnsureEndsWithSemicolon (string value) {
+		internal static string EnsureEndsWithSemicolon (string? value) {
 			if (value != null && value.Length > 0 && value [value.Length - 1] != ';')
 				return value += ";";
 			return value;

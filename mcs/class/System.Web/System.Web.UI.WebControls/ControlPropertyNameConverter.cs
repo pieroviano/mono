@@ -39,7 +39,7 @@ namespace System.Web.UI.WebControls
 			return null;
 		}
 
-		public override bool GetStandardValuesSupported (ITypeDescriptorContext context) 
+		public override bool GetStandardValuesSupported (ITypeDescriptorContext? context) 
 		{
 			if (context != null) {
 				return true;

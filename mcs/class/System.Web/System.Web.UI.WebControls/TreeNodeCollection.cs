@@ -76,7 +76,7 @@ namespace System.Web.UI.WebControls
 		
 		internal void Add (TreeNode child, bool updateParent)
 		{
-			int index = items.Add (child);
+			var index = items.Add (child);
 
 			if (parent != null)
 				parent.HadChildrenBeforePopulating = true;
@@ -99,7 +99,7 @@ namespace System.Web.UI.WebControls
 			child.Index = index;
 			child.SetParent (parent);
 			child.Tree = tree;
-			for (int n=index+1; n<items.Count; n++)
+			for (var n=index+1; n<items.Count; n++)
 				((TreeNode)items[n]).Index = n;
 			if (marked) {
 				((IStateManager)child).TrackViewState ();
@@ -108,7 +108,7 @@ namespace System.Web.UI.WebControls
 		}
 
 		internal void SetDirty () {
-			for (int n = 0; n < Count; n++)
+			for (var n = 0; n < Count; n++)
 				this [n].SetDirty ();
 			dirty = true;
 		}
@@ -149,7 +149,7 @@ namespace System.Web.UI.WebControls
 		
 		public void Remove (TreeNode value)
 		{
-			int i = IndexOf (value);
+			var i = IndexOf (value);
 			if (i == -1) return;
 			items.RemoveAt (i);
 			if (tree != null)
@@ -187,17 +187,17 @@ namespace System.Web.UI.WebControls
 			items.CopyTo (array, index);
 		}
 
-		void IStateManager.LoadViewState (object state)
+		void IStateManager.LoadViewState (object? state)
 		{
 			if (state == null) return;
-			object[] its = (object[]) state;
+			var its = (object[]) state;
 			
 			dirty = (bool)its [0];
 			
 			if (dirty) {
 				items.Clear ();
 
-				for (int n = 1; n < its.Length; n++) {
+				for (var n = 1; n < its.Length; n++) {
 					var pair = its [n] as Pair;
 					if (pair == null)
 						throw new InvalidOperationException ("Broken view state (item " + n + ")");
@@ -210,18 +210,18 @@ namespace System.Web.UI.WebControls
 					else
 						item = Activator.CreateInstance (pair.First as Type) as TreeNode;
 					Add (item);
-					object ns = pair.Second;
+					var ns = pair.Second;
 					if (ns != null)
 						((IStateManager) item).LoadViewState (ns);
 				}
 			}
 			else {
-				for (int n = 1; n < its.Length; n++) {
+				for (var n = 1; n < its.Length; n++) {
 					var pair = its [n] as Pair;
 					if (pair  == null)
 						throw new InvalidOperationException ("Broken view state " + n + ")");
 					
-					int oi = (int) pair.First;
+					var oi = (int) pair.First;
 					TreeNode node = (TreeNode) items [oi];
 					((IStateManager) node).LoadViewState (pair.Second);
 				}
@@ -232,25 +232,25 @@ namespace System.Web.UI.WebControls
 		object IStateManager.SaveViewState ()
 		{
 			object[] state = null;
-			bool hasData = false;
+			var hasData = false;
 			
 			if (dirty) {
 				if (items.Count > 0) {
 					hasData = true;
 					state = new object [items.Count + 1];
 					state [0] = true;
-					for (int n = 0; n < items.Count; n++) {
+					for (var n = 0; n < items.Count; n++) {
 						TreeNode node = items [n] as TreeNode;
-						object ns = ((IStateManager) node).SaveViewState ();
-						Type type = node.GetType ();
+						var ns = ((IStateManager) node).SaveViewState ();
+						var type = node.GetType ();
 						state [n + 1] = new Pair (type == typeof (TreeNode) ? null : type, ns);
 					}
 				}
 			} else {
-				ArrayList list = new ArrayList ();
-				for (int n=0; n<items.Count; n++) {
+				var list = new ArrayList ();
+				for (var n=0; n<items.Count; n++) {
 					TreeNode node = items[n] as TreeNode;
-					object ns = ((IStateManager)node).SaveViewState ();
+					var ns = ((IStateManager)node).SaveViewState ();
 					if (ns != null) {
 						hasData = true;
 						list.Add (new Pair (n, ns));
@@ -271,7 +271,7 @@ namespace System.Web.UI.WebControls
 		void IStateManager.TrackViewState ()
 		{
 			marked = true;
-			for (int n=0; n<items.Count; n++) {
+			for (var n=0; n<items.Count; n++) {
 				((IStateManager) items [n]).TrackViewState ();
 			}
 		}

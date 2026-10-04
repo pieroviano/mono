@@ -64,7 +64,7 @@ namespace System.Web.DynamicData
 			public ICollection GenerateFields (Control ctl)
 			{
 				var ret = new List <DynamicField> ();
-				foreach (MetaColumn column in table.Columns) {
+				foreach (var column in table.Columns) {
 					if (!column.Scaffold)
 						continue;
 					
@@ -105,7 +105,7 @@ namespace System.Web.DynamicData
 			// http://forums.asp.net/p/1396453/3005197.aspx#3005197
 			if (knownDataSources != null) {
 				foreach (var de in knownDataSources) {
-					IDynamicDataSource dds = de.Key;
+					var dds = de.Key;
 					if (dds == null)
 						continue;
 
@@ -138,7 +138,7 @@ namespace System.Web.DynamicData
 					return;
 
 				RegisterDataSource (dds);
-				MetaTable table = dds.GetTable ();
+				var table = dds.GetTable ();
 				if (table == null)
 					return;
 
@@ -147,11 +147,11 @@ namespace System.Web.DynamicData
 				else
 					dds.AutoGenerateWhereClause = false;
 
-				Type contextType = dds.ContextType;
+				var contextType = dds.ContextType;
 				if (contextType == null)
 					dds.ContextType = table.DataContextType;
 
-				string entityName = dds.EntitySetName;
+				var entityName = dds.EntitySetName;
 				if (String.IsNullOrEmpty (entityName))
 					dds.EntitySetName = table.DataContextPropertyName;
 

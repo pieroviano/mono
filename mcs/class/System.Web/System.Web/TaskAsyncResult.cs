@@ -63,7 +63,7 @@ namespace System.Web
 			this.CompletedSynchronously = task.IsCompleted;
 		}
 
-		public static IAsyncResult GetAsyncResult (Task task, AsyncCallback callback, object state)
+		public static IAsyncResult GetAsyncResult (Task? task, AsyncCallback? callback, object state)
 		{
 			if (task == null)
 				return null;

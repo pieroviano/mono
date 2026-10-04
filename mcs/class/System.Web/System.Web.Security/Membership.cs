@@ -48,7 +48,7 @@ namespace System.Web.Security
 		
 		static Membership ()
 		{
-			MembershipSection section = (MembershipSection) WebConfigurationManager.GetSection ("system.web/membership");
+			var section = (MembershipSection) WebConfigurationManager.GetSection ("system.web/membership");
 
 			providers = new MembershipProviderCollection ();
 
@@ -60,7 +60,7 @@ namespace System.Web.Security
 			hashAlgorithmType = section.HashAlgorithmType;
 			if (String.IsNullOrEmpty (hashAlgorithmType)) {
 				MachineKeySection mks = WebConfigurationManager.GetSection ("system.web/machineKey") as MachineKeySection;
-				MachineKeyValidationConverter cvt = new MachineKeyValidationConverter ();
+				var cvt = new MachineKeyValidationConverter ();
 				hashAlgorithmType = cvt.ConvertTo (null, null, mks.Validation, typeof (string)) as string;
 			}
 			
@@ -76,7 +76,7 @@ namespace System.Web.Security
 		public static MembershipUser CreateUser (string username, string password, string email)
 		{
 			MembershipCreateStatus status;
-			MembershipUser usr = CreateUser (username, password, email, null, null, true, out status);
+			var usr = CreateUser (username, password, email, null, null, true, out status);
 			if (usr == null)
 				throw new MembershipCreateUserException (status);
 			
@@ -115,10 +115,10 @@ namespace System.Web.Security
 		
 		public static string GeneratePassword (int length, int numberOfNonAlphanumericCharacters)
 		{
-			RandomNumberGenerator rng = RandomNumberGenerator.Create ();
-			byte[] pass_bytes = new byte[length];
+			var rng = RandomNumberGenerator.Create ();
+			var pass_bytes = new byte[length];
 			int i;
-			int num_nonalpha = 0;
+			var num_nonalpha = 0;
 
 			rng.GetBytes (pass_bytes);
 			

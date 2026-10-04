@@ -52,7 +52,7 @@ namespace System.Configuration
 		/// <param name="context"></param>
 		/// <param name="section">The name of the configuration section.</param>
 		/// <returns></returns>
-		public virtual object Create(object parent, object context, XmlNode section)
+		public virtual object Create(object? parent, object context, XmlNode section)
 		{
 			Hashtable settingsCollection;
 			
@@ -72,7 +72,7 @@ namespace System.Configuration
 			//Get the attributes for the childNode
 			XmlAttributeCollection xmlAttributes = section.Attributes;
 
-			for(int i=0; i < xmlAttributes.Count; i++)
+			for(var i=0; i < xmlAttributes.Count; i++)
 			{
 				settingsCollection.Add(xmlAttributes[i].Name, xmlAttributes[i].Value);
 			}

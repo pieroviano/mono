@@ -59,25 +59,25 @@ namespace System.Web.UI.WebControls
 			base.AddAttributesToRender (writer);
 		}
 		
-		public override void PreRender (Page page, HtmlHead head, ClientScriptManager csm, string cmenu, StringBuilder script)
+		public override void PreRender (Page page, HtmlHead? head, ClientScriptManager csm, string cmenu, StringBuilder script)
 		{
-			Menu owner = Owner;
-			MenuItemStyle staticMenuItemStyle = owner.StaticMenuItemStyleInternal;
-			SubMenuStyle staticMenuStyle = owner.StaticMenuStyleInternal;
-			MenuItemStyle dynamicMenuItemStyle = owner.DynamicMenuItemStyleInternal;
-			SubMenuStyle dynamicMenuStyle = owner.DynamicMenuStyleInternal;
-			MenuItemStyleCollection levelMenuItemStyles = owner.LevelMenuItemStyles;
-			List<Style> levelMenuItemLinkStyles = owner.LevelMenuItemLinkStyles;
-			SubMenuStyleCollection levelSubMenuStyles = owner.LevelSubMenuStylesInternal;
-			MenuItemStyle staticSelectedStyle = owner.StaticSelectedStyleInternal;
-			MenuItemStyle dynamicSelectedStyle = owner.DynamicSelectedStyleInternal;
-			MenuItemStyleCollection levelSelectedStyles = owner.LevelSelectedStylesInternal;
-			List<Style> levelSelectedLinkStyles = owner.LevelSelectedLinkStyles;
-			Style staticHoverStyle = owner.StaticHoverStyleInternal;
-			Style dynamicHoverStyle = owner.DynamicHoverStyleInternal;
+			var owner = Owner;
+			var staticMenuItemStyle = owner.StaticMenuItemStyleInternal;
+			var staticMenuStyle = owner.StaticMenuStyleInternal;
+			var dynamicMenuItemStyle = owner.DynamicMenuItemStyleInternal;
+			var dynamicMenuStyle = owner.DynamicMenuStyleInternal;
+			var levelMenuItemStyles = owner.LevelMenuItemStyles;
+			var levelMenuItemLinkStyles = owner.LevelMenuItemLinkStyles;
+			var levelSubMenuStyles = owner.LevelSubMenuStylesInternal;
+			var staticSelectedStyle = owner.StaticSelectedStyleInternal;
+			var dynamicSelectedStyle = owner.DynamicSelectedStyleInternal;
+			var levelSelectedStyles = owner.LevelSelectedStylesInternal;
+			var levelSelectedLinkStyles = owner.LevelSelectedLinkStyles;
+			var staticHoverStyle = owner.StaticHoverStyleInternal;
+			var dynamicHoverStyle = owner.DynamicHoverStyleInternal;
 			
 			if (!csm.IsClientScriptIncludeRegistered (typeof (Menu), "Menu.js")) {
-				string url = csm.GetWebResourceUrl (typeof (Menu), "Menu.js");
+				var url = csm.GetWebResourceUrl (typeof (Menu), "Menu.js");
 				csm.RegisterClientScriptInclude (typeof (Menu), "Menu.js", url);
 			}
 			
@@ -112,7 +112,7 @@ namespace System.Web.UI.WebControls
 			if (levelMenuItemStyles != null && levelMenuItemStyles.Count > 0) {
 				levelMenuItemLinkStyles = new List<Style> (levelMenuItemStyles.Count);
 				foreach (Style style in levelMenuItemStyles) {
-					Style linkStyle = new Style ();
+					var linkStyle = new Style ();
 					levelMenuItemLinkStyles.Add (linkStyle);
 					RegisterStyle (style, linkStyle, head);
 				}
@@ -131,7 +131,7 @@ namespace System.Web.UI.WebControls
 			if (levelSelectedStyles != null && levelSelectedStyles.Count > 0) {
 				levelSelectedLinkStyles = new List<Style> (levelSelectedStyles.Count);
 				foreach (Style style in levelSelectedStyles) {
-					Style linkStyle = new Style ();
+					var linkStyle = new Style ();
 					levelSelectedLinkStyles.Add (linkStyle);
 					RegisterStyle (style, linkStyle, head);
 				}
@@ -156,7 +156,7 @@ namespace System.Web.UI.WebControls
 
 		public override void RenderBeginTag (HtmlTextWriter writer, string skipLinkText)
 		{
-			Menu owner = Owner;
+			var owner = Owner;
 			
 			// <a href="#ID_SkipLink">
 			writer.AddAttribute (HtmlTextWriterAttribute.Href, "#" + owner.ClientID + "_SkipLink");
@@ -167,8 +167,8 @@ namespace System.Web.UI.WebControls
 			writer.AddAttribute (HtmlTextWriterAttribute.Height, "0");
 			writer.AddAttribute (HtmlTextWriterAttribute.Width, "0");
 				
-			Page page = owner.Page;
-			ClientScriptManager csm = page != null ? page.ClientScript : new ClientScriptManager (null);
+			var page = owner.Page;
+			var csm = page != null ? page.ClientScript : new ClientScriptManager (null);
 				
 			writer.AddAttribute (HtmlTextWriterAttribute.Src, csm.GetWebResourceUrl (typeof (SiteMapPath), "transparent.gif"));
 			writer.AddStyleAttribute (HtmlTextWriterStyle.BorderWidth, "0px");
@@ -180,14 +180,14 @@ namespace System.Web.UI.WebControls
 		
 		public override void RenderEndTag (HtmlTextWriter writer)
 		{
-			Menu owner = Owner;
+			var owner = Owner;
 			if (owner.StaticDisplayLevels == 1 && owner.MaximumDynamicDisplayLevels > 0)
 				owner.RenderDynamicMenu (writer, owner.Items);
 		}
 
 		public override void RenderContents (HtmlTextWriter writer)
 		{
-			Menu owner = Owner;
+			var owner = Owner;
 			RenderMenuBody (writer, owner.Items, owner.Orientation == Orientation.Vertical, false, false);
 		}
 		
@@ -198,7 +198,7 @@ namespace System.Web.UI.WebControls
 			writer.AddAttribute ("border", "0", false);
 
 			if (!dynamic) {
-				SubMenuStyle style = new SubMenuStyle ();
+				var style = new SubMenuStyle ();
 				FillMenuStyle (null, dynamic, menuLevel, style);
 				style.AddAttributesToRender (writer);
 			}
@@ -227,15 +227,15 @@ namespace System.Web.UI.WebControls
 		
 		public override void RenderMenuBody (HtmlTextWriter writer, MenuItemCollection items, bool vertical, bool dynamic, bool notLast)
 		{
-			Menu owner = Owner;
+			var owner = Owner;
 			if (!vertical)
 				writer.RenderBeginTag (HtmlTextWriterTag.Tr);
 
-			int count = items.Count;
+			var count = items.Count;
 			var oc = new OwnerContext (this);
 			
-			for (int n = 0; n < count; n++) {
-				MenuItem item = items [n];
+			for (var n = 0; n < count; n++) {
+				var item = items [n];
 				Adapters.MenuAdapter adapter = owner.Adapter as Adapters.MenuAdapter;
 				if (adapter != null)
 					adapter.RenderItem (writer, item, n);
@@ -249,13 +249,13 @@ namespace System.Web.UI.WebControls
 
 		protected override void RenderMenuItem (HtmlTextWriter writer, MenuItem item, bool vertical, bool notLast, bool isFirst, OwnerContext oc)
 		{
-			Menu owner = Owner;
-			string clientID = oc.ClientID;
-			bool displayChildren = owner.DisplayChildren (item);
-			bool dynamicChildren = displayChildren && (item.Depth + 1 >= oc.StaticDisplayLevels);
-			bool isDynamicItem = IsDynamicItem (owner, item);
-			bool isVertical = oc.IsVertical || isDynamicItem;
-			Unit itemSpacing = owner.GetItemSpacing (item, isDynamicItem);
+			var owner = Owner;
+			var clientID = oc.ClientID;
+			var displayChildren = owner.DisplayChildren (item);
+			var dynamicChildren = displayChildren && (item.Depth + 1 >= oc.StaticDisplayLevels);
+			var isDynamicItem = IsDynamicItem (owner, item);
+			var isVertical = oc.IsVertical || isDynamicItem;
+			var itemSpacing = owner.GetItemSpacing (item, isDynamicItem);
 
 			if (itemSpacing != Unit.Empty && (item.Depth > 0 || !isFirst))
 				RenderMenuItemSpacing (writer, itemSpacing, isVertical);
@@ -265,7 +265,7 @@ namespace System.Web.UI.WebControls
 			if (isVertical)
 				writer.RenderBeginTag (HtmlTextWriterTag.Tr);
 
-			string parentId = isDynamicItem ? "'" + item.Parent.Path + "'" : "null";
+			var parentId = isDynamicItem ? "'" + item.Parent.Path + "'" : "null";
 			if (dynamicChildren) {
 				writer.AddAttribute ("onmouseover",
 						     "javascript:Menu_OverItem ('" + clientID + "','" + item.Path + "'," + parentId + ")");
@@ -294,7 +294,7 @@ namespace System.Web.UI.WebControls
 
 			// Menu item box
 			
-			MenuItemStyle style = new MenuItemStyle ();
+			var style = new MenuItemStyle ();
 				
 			if (oc.Header != null) {
 				// styles are registered
@@ -361,7 +361,7 @@ namespace System.Web.UI.WebControls
 
 			RenderItemHref (owner, writer, item);
 			
-			Style linkStyle = new Style ();
+			var linkStyle = new Style ();
 			if (oc.Header != null) {
 				// styles are registered
 				AddCssClass (linkStyle, oc.ControlLinkStyle.RegisteredCssClass);
@@ -419,12 +419,12 @@ namespace System.Web.UI.WebControls
 			
 			if (item.Depth > 0 && !isDynamicItem) {
 				double value;
-				Unit unit = oc.StaticSubMenuIndent;
+				var unit = oc.StaticSubMenuIndent;
 				if (unit == Unit.Empty)
 					value = 16;
 				else
 					value = unit.Value;
-				Unit indent = new Unit (value * item.Depth, oc.StaticSubMenuIndent.Type);
+				var indent = new Unit (value * item.Depth, oc.StaticSubMenuIndent.Type);
 				writer.AddStyleAttribute (HtmlTextWriterStyle.MarginLeft, indent.ToString ());
 			}
 			writer.RenderBeginTag (HtmlTextWriterTag.A);
@@ -436,12 +436,12 @@ namespace System.Web.UI.WebControls
 			// Popup image
 
 			if (dynamicChildren) {
-				string popOutImage = GetPopOutImage (owner, item, isDynamicItem);
+				var popOutImage = GetPopOutImage (owner, item, isDynamicItem);
 				if (popOutImage != null) {
 					writer.RenderBeginTag (HtmlTextWriterTag.Td);
 					writer.AddAttribute ("src", owner.ResolveClientUrl (popOutImage));
 					writer.AddAttribute ("border", "0");
-					string toolTip = String.Format (isDynamicItem ? oc.DynamicPopOutImageTextFormatString : oc.StaticPopOutImageTextFormatString, item.Text);
+					var toolTip = String.Format (isDynamicItem ? oc.DynamicPopOutImageTextFormatString : oc.StaticPopOutImageTextFormatString, item.Text);
 					writer.AddAttribute (HtmlTextWriterAttribute.Alt, toolTip);
 					writer.RenderBeginTag (HtmlTextWriterTag.Img);
 					writer.RenderEndTag ();	// IMG
@@ -461,7 +461,7 @@ namespace System.Web.UI.WebControls
 			}
 			
 			// Bottom separator image
-			string separatorImg = item.SeparatorImageUrl;
+			var separatorImg = item.SeparatorImageUrl;
 			if (separatorImg.Length == 0) {
 				if (isDynamicItem)
 					separatorImg = oc.DynamicBottomSeparatorImageUrl;

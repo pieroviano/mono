@@ -530,12 +530,12 @@ namespace System.Web.UI.WebControls
 			return ExecuteSelect (arguments);
 		}
 		
-		public int Update (IDictionary keys, IDictionary values, IDictionary oldValues)
+		public int Update (IDictionary? keys, IDictionary? values, IDictionary? oldValues)
 		{
 			return ExecuteUpdate (keys, values, oldValues);
 		}
 		
-		public int Delete (IDictionary keys, IDictionary oldValues)
+		public int Delete (IDictionary? keys, IDictionary? oldValues)
 		{
 			return ExecuteDelete (keys, oldValues);
 		}
@@ -560,12 +560,12 @@ namespace System.Web.UI.WebControls
 				method = ResolveDataObjectMethod (InsertMethod, values, null, out paramValues);
 			}
 			
-			ObjectDataSourceMethodEventArgs args = new ObjectDataSourceMethodEventArgs (paramValues);
+			var args = new ObjectDataSourceMethodEventArgs (paramValues);
 			OnInserting (args);
 			if (args.Cancel)
 				return -1;
 			
-			ObjectDataSourceStatusEventArgs rargs = InvokeMethod (method, paramValues);
+			var rargs = InvokeMethod (method, paramValues);
 			OnInserted (rargs);
 			
 			if (rargs.Exception != null && !rargs.ExceptionHandled)
@@ -579,7 +579,7 @@ namespace System.Web.UI.WebControls
 			return -1;
 		}
 
-		protected override int ExecuteDelete (IDictionary keys, IDictionary oldValues)
+		protected override int ExecuteDelete (IDictionary? keys, IDictionary? oldValues)
 		{
 			if (!CanDelete)
 				throw new NotSupportedException ("Delete operation not supported.");
@@ -600,12 +600,12 @@ namespace System.Web.UI.WebControls
 				method = ResolveDataObjectMethod (DeleteMethod, oldDataValues, null, out paramValues);
 			}
 			
-			ObjectDataSourceMethodEventArgs args = new ObjectDataSourceMethodEventArgs (paramValues);
+			var args = new ObjectDataSourceMethodEventArgs (paramValues);
 			OnDeleting (args);
 			if (args.Cancel)
 				return -1;
 			
-			ObjectDataSourceStatusEventArgs rargs = InvokeMethod (method, paramValues);
+			var rargs = InvokeMethod (method, paramValues);
 			
 			OnDeleted (rargs);
 			
@@ -620,7 +620,7 @@ namespace System.Web.UI.WebControls
 			return -1;
 		}
 
-		protected override int ExecuteUpdate (IDictionary keys, IDictionary values, IDictionary oldValues)
+		protected override int ExecuteUpdate (IDictionary? keys, IDictionary? values, IDictionary? oldValues)
 		{
 			IOrderedDictionary paramValues;
 			MethodInfo method;
@@ -653,12 +653,12 @@ namespace System.Web.UI.WebControls
 				method = ResolveDataObjectMethod (UpdateMethod, dataValues, oldDataValues, out paramValues);
 			}			
 
-			ObjectDataSourceMethodEventArgs args = new ObjectDataSourceMethodEventArgs (paramValues);
+			var args = new ObjectDataSourceMethodEventArgs (paramValues);
 			OnUpdating (args);
 			if (args.Cancel)
 				return -1;
 			
-			ObjectDataSourceStatusEventArgs rargs = InvokeMethod (method, paramValues);
+			var rargs = InvokeMethod (method, paramValues);
 			OnUpdated (rargs);
 			
 			if (rargs.Exception != null && !rargs.ExceptionHandled)
@@ -672,7 +672,7 @@ namespace System.Web.UI.WebControls
 			return -1;
 		}
 
-		IDictionary BuildOldValuesList (IDictionary keys, IDictionary oldValues, bool keysWin) 
+		IDictionary BuildOldValuesList (IDictionary? keys, IDictionary? oldValues, bool keysWin) 
 		{
 			IDictionary oldDataValues;
 			if (ConflictDetection == ConflictOptions.CompareAllValues) {
@@ -701,8 +701,8 @@ namespace System.Web.UI.WebControls
 		{
 			arguments.RaiseUnsupportedCapabilitiesError (this);
 
-			IOrderedDictionary paramValues = MergeParameterValues (SelectParameters, null, null);
-			ObjectDataSourceSelectingEventArgs args = new ObjectDataSourceSelectingEventArgs (paramValues, arguments, false);
+			var paramValues = MergeParameterValues (SelectParameters, null, null);
+			var args = new ObjectDataSourceSelectingEventArgs (paramValues, arguments, false);
 
 			object result = null;
 
@@ -742,24 +742,24 @@ namespace System.Web.UI.WebControls
 				throw new NotSupportedException ("Data source does not support caching objects that implement IDataReader");
 			
 			if (result is DataSet) {
-				DataSet dset = (DataSet) result;
+				var dset = (DataSet) result;
 				if (dset.Tables.Count == 0)
 					throw new InvalidOperationException ("The select method returnet a DataSet which doesn't contain any table.");
 				result = dset.Tables [0];
 			}
 			
 			if (result is DataTable) {
-				DataView dview = new DataView ((DataTable)result);
+				var dview = new DataView ((DataTable)result);
 				if (arguments.SortExpression != null && arguments.SortExpression.Length > 0) {
 					dview.Sort = arguments.SortExpression;
 				}
 				if (FilterExpression.Length > 0) {
-					IOrderedDictionary fparams = FilterParameters.GetValues (context, owner);
-					ObjectDataSourceFilteringEventArgs fargs = new ObjectDataSourceFilteringEventArgs (fparams);
+					var fparams = FilterParameters.GetValues (context, owner);
+					var fargs = new ObjectDataSourceFilteringEventArgs (fparams);
 					OnFiltering (fargs);
 					if (!fargs.Cancel) {
-						object[] formatValues = new object [fparams.Count];
-						for (int n=0; n<formatValues.Length; n++) {
+						var formatValues = new object [fparams.Count];
+						for (var n=0; n<formatValues.Length; n++) {
 							formatValues [n] = fparams [n];
 							if (formatValues [n] == null) return dview;
 						}
@@ -777,19 +777,19 @@ namespace System.Web.UI.WebControls
 		
 		int QueryTotalRowCount (IOrderedDictionary mergedParameters, DataSourceSelectArguments arguments)
 		{
-			ObjectDataSourceSelectingEventArgs countArgs = new ObjectDataSourceSelectingEventArgs (mergedParameters, arguments, true);
+			var countArgs = new ObjectDataSourceSelectingEventArgs (mergedParameters, arguments, true);
 			OnSelecting (countArgs);
 			if (countArgs.Cancel)
 				return 0;
 			
-			object count = InvokeSelect (SelectCountMethod, mergedParameters);
+			var count = InvokeSelect (SelectCountMethod, mergedParameters);
 			return (int) Convert.ChangeType (count, typeof(int));
 		}
 		
 		object InvokeSelect (string methodName, IOrderedDictionary paramValues)
 		{
-			MethodInfo method = GetObjectMethod (methodName, paramValues, DataObjectMethodType.Select);
-			ObjectDataSourceStatusEventArgs rargs = InvokeMethod (method, paramValues);
+			var method = GetObjectMethod (methodName, paramValues, DataObjectMethodType.Select);
+			var rargs = InvokeMethod (method, paramValues);
 			OnSelected (rargs);
 			
 			if (rargs.Exception != null && !rargs.ExceptionHandled)
@@ -805,10 +805,10 @@ namespace System.Web.UI.WebControls
 			if (!method.IsStatic)
 				instance = CreateObjectInstance ();
 
-			ParameterInfo[] pars = method.GetParameters ();
+			var pars = method.GetParameters ();
 			
 			ArrayList outParamInfos;
-			object[] methodArgs = GetParameterArray (pars, paramValues, out outParamInfos); 
+			var methodArgs = GetParameterArray (pars, paramValues, out outParamInfos); 
 			
 			if (methodArgs == null)
 				throw CreateMethodException (method.Name, paramValues);
@@ -836,7 +836,7 @@ namespace System.Web.UI.WebControls
 		
 		MethodInfo GetObjectMethod (string methodName, IOrderedDictionary parameters, DataObjectMethodType methodType)
 		{
-			MemberInfo[] methods = ObjectType.GetMember (methodName, MemberTypes.Method, BindingFlags.Instance | 
+			var methods = ObjectType.GetMember (methodName, MemberTypes.Method, BindingFlags.Instance | 
 										 BindingFlags.Static | 
 										 BindingFlags.Public | 
 										 BindingFlags.IgnoreCase |
@@ -847,17 +847,17 @@ namespace System.Web.UI.WebControls
 				// LAMESPEC: the tests show otherwise
 				DataObjectMethodAttribute methodAttribute = null;
 				MethodInfo methodInfo = null;
-				bool hasConflict = false;
+				var hasConflict = false;
 				foreach (MethodInfo me in methods) { // we look for methods only
-					ParameterInfo [] pinfos = me.GetParameters ();
+					var pinfos = me.GetParameters ();
 					if (pinfos.Length == parameters.Count) {
-						object [] attrs = me.GetCustomAttributes (typeof (DataObjectMethodAttribute), true);
+						var attrs = me.GetCustomAttributes (typeof (DataObjectMethodAttribute), true);
 						DataObjectMethodAttribute domAttr = (attrs != null && attrs.Length > 0) ? (DataObjectMethodAttribute) attrs [0] : null;
 						if (domAttr != null && domAttr.MethodType != methodType)
 							continue;
 
-						bool paramsMatch = true;
-						foreach (ParameterInfo pinfo in pinfos) {
+						var paramsMatch = true;
+						foreach (var pinfo in pinfos) {
 							if (!parameters.Contains (pinfo.Name)) {
 								paramsMatch = false;
 								break;
@@ -908,7 +908,7 @@ namespace System.Web.UI.WebControls
 			throw CreateMethodException (methodName, parameters);
 		}
 		
-		MethodInfo ResolveDataObjectMethod (string methodName, IDictionary values, IDictionary oldValues, out IOrderedDictionary paramValues)
+		MethodInfo ResolveDataObjectMethod (string methodName, IDictionary values, IDictionary? oldValues, out IOrderedDictionary paramValues)
 		{
 			MethodInfo method;
 			if (oldValues != null)
@@ -920,7 +920,7 @@ namespace System.Web.UI.WebControls
 				throw new InvalidOperationException ("ObjectDataSource " + owner.ID + " could not find a method named '" + methodName + "' with parameters of type '" + DataObjectType + "' in '" + ObjectType + "'.");
 
 			paramValues = new OrderedDictionary (StringComparer.InvariantCultureIgnoreCase);
-			ParameterInfo[] ps = method.GetParameters ();
+			var ps = method.GetParameters ();
 			
 			if (oldValues != null) {
 				if (FormatOldParameter (ps[0].Name) == ps[1].Name) {
@@ -939,7 +939,7 @@ namespace System.Web.UI.WebControls
 		
 		Exception CreateMethodException (string methodName, IOrderedDictionary parameters)
 		{
-			string s = "";
+			var s = "";
 			foreach (string p in parameters.Keys) {
 				s += p + ", ";
 			}
@@ -952,11 +952,11 @@ namespace System.Web.UI.WebControls
 			foreach (DictionaryEntry de in values) {
 				PropertyInfo p = DataObjectType.GetProperty ((string)de.Key);
 				if (p == null) throw new InvalidOperationException ("Property " + de.Key + " not found in type '" +DataObjectType + "'.");
-				object[] attributes = p.GetCustomAttributes (typeof (System.ComponentModel.TypeConverterAttribute),
+				var attributes = p.GetCustomAttributes (typeof (System.ComponentModel.TypeConverterAttribute),
 									     true);
-				Type propertyType = p.PropertyType;
+				var propertyType = p.PropertyType;
 				object value = de.Value;
-				object converted = ConvertParameterWithTypeConverter (attributes, propertyType, value);
+				var converted = ConvertParameterWithTypeConverter (attributes, propertyType, value);
 				if (converted == null)
 					converted = ConvertParameter (propertyType, value);
 						   
@@ -967,7 +967,7 @@ namespace System.Web.UI.WebControls
 		
 		object CreateObjectInstance ()
 		{
-			ObjectDataSourceEventArgs args = new ObjectDataSourceEventArgs (null);
+			var args = new ObjectDataSourceEventArgs (null);
 			OnObjectCreating (args);
 			
 			if (args.ObjectInstance != null)
@@ -983,7 +983,7 @@ namespace System.Web.UI.WebControls
 		
 		void DisposeObjectInstance (object obj)
 		{
-			ObjectDataSourceDisposingEventArgs args = new ObjectDataSourceDisposingEventArgs (obj);
+			var args = new ObjectDataSourceDisposingEventArgs (obj);
 			OnObjectDisposing (args);
 			
 			if (!args.Cancel) {
@@ -992,7 +992,7 @@ namespace System.Web.UI.WebControls
 			}
 		}
 
-		object FindValueByName (string name, IDictionary values, bool format)
+		object FindValueByName (string name, IDictionary? values, bool format)
 		{
 			if (values == null)
 				return null;
@@ -1014,24 +1014,24 @@ namespace System.Web.UI.WebControls
 		/// <param name="allwaysAddNewValues">true for insert, as current item is
 		/// irrelevant for insert</param>
 		/// <returns>merged values</returns>
-		IOrderedDictionary MergeParameterValues (ParameterCollection viewParams, IDictionary values, IDictionary oldValues)
+		IOrderedDictionary MergeParameterValues (ParameterCollection viewParams, IDictionary? values, IDictionary? oldValues)
 		{
-			IOrderedDictionary parametersValues = viewParams.GetValues (context, owner);
-			OrderedDictionary mergedValues = new OrderedDictionary (StringComparer.InvariantCultureIgnoreCase);
+			var parametersValues = viewParams.GetValues (context, owner);
+			var mergedValues = new OrderedDictionary (StringComparer.InvariantCultureIgnoreCase);
 			foreach (string parameterName in parametersValues.Keys) {
 				mergedValues [parameterName] = parametersValues [parameterName];
 				if (oldValues != null) {
-					object value = FindValueByName (parameterName, oldValues, true);
+					var value = FindValueByName (parameterName, oldValues, true);
 					if (value != null) {
-						object dataValue = viewParams [parameterName].ConvertValue (value);
+						var dataValue = viewParams [parameterName].ConvertValue (value);
 						mergedValues [parameterName] = dataValue;
 					}
 				}
 
 				if (values != null) {
-					object value = FindValueByName (parameterName, values, false);
+					var value = FindValueByName (parameterName, values, false);
 					if (value != null) {
-						object dataValue = viewParams [parameterName].ConvertValue (value);
+						var dataValue = viewParams [parameterName].ConvertValue (value);
 						mergedValues [parameterName] = dataValue;
 					}
 				}
@@ -1045,7 +1045,7 @@ namespace System.Web.UI.WebControls
 
 			if (oldValues != null) {
 				foreach (DictionaryEntry de in oldValues) {
-					string oldValueKey = FormatOldParameter ((string) de.Key);
+					var oldValueKey = FormatOldParameter ((string) de.Key);
 					if (FindValueByName (oldValueKey, mergedValues, false) == null)
 						mergedValues [oldValueKey] = de.Value;
 				}
@@ -1059,9 +1059,9 @@ namespace System.Web.UI.WebControls
 			// FIXME: make this case insensitive
 
 			outParamInfos = null;
-			object[] values = new object [methodParams.Length];
+			var values = new object [methodParams.Length];
 			
-			foreach (ParameterInfo mp in methodParams) {
+			foreach (var mp in methodParams) {
 			
 				// Parameter names must match
 				if (!viewParams.Contains (mp.Name)) return null;
@@ -1075,7 +1075,7 @@ namespace System.Web.UI.WebControls
 			return values;
 		}
 
-		object ConvertParameterWithTypeConverter (object[] attributes, Type targetType, object value)
+		object ConvertParameterWithTypeConverter (object[]? attributes, Type targetType, object? value)
 		{
 			if (attributes == null || attributes.Length == 0 || value == null)
 				return null;
@@ -1083,7 +1083,7 @@ namespace System.Web.UI.WebControls
 			Type converterType;
 			TypeConverter converter;
 			
-			foreach (object a in attributes) {
+			foreach (var a in attributes) {
 				tca = a as TypeConverterAttribute;
 				if (tca == null)
 					continue;
@@ -1102,12 +1102,12 @@ namespace System.Web.UI.WebControls
 			return null;
 		}
 		
-		object ConvertParameter (Type targetType, object value)
+		object ConvertParameter (Type targetType, object? value)
 		{
 			return ConvertParameter (Type.GetTypeCode (targetType), value);
 		}
 		
-		object ConvertParameter (TypeCode targetType, object value)
+		object ConvertParameter (TypeCode targetType, object? value)
 		{
 			if (value == null) {
 				if (targetType != TypeCode.Object && targetType != TypeCode.String)
@@ -1123,7 +1123,7 @@ namespace System.Web.UI.WebControls
 		
 		string FormatOldParameter (string name)
 		{
-			string f = OldValuesParameterFormatString;
+			var f = OldValuesParameterFormatString;
 			if (f.Length > 0)
 				return String.Format (f, name);
 			else
@@ -1135,9 +1135,9 @@ namespace System.Web.UI.WebControls
 			OnDataSourceViewChanged (EventArgs.Empty);
 		}
 		
-		protected virtual void LoadViewState (object savedState)
+		protected virtual void LoadViewState (object? savedState)
 		{
-			object[] state = (savedState == null) ? new object [5] : (object[]) savedState;
+			var state = (savedState == null) ? new object [5] : (object[]) savedState;
 			((IStateManager)SelectParameters).LoadViewState (state[0]); 
 			((IStateManager)UpdateParameters).LoadViewState (state[1]); 
 			((IStateManager)DeleteParameters).LoadViewState (state[2]); 
@@ -1147,7 +1147,7 @@ namespace System.Web.UI.WebControls
 
 		protected virtual object SaveViewState()
 		{
-			object[] state = new object [5];
+			var state = new object [5];
 			
 			if (selectParameters != null)
 				state [0] = ((IStateManager)selectParameters).SaveViewState ();
@@ -1160,7 +1160,7 @@ namespace System.Web.UI.WebControls
 			if (filterParameters != null)
 				state [4] = ((IStateManager)filterParameters).SaveViewState ();
 			
-			foreach (object ob in state)
+			foreach (var ob in state)
 				if (ob != null) return state;
 			
 			return null;
@@ -1190,7 +1190,7 @@ namespace System.Web.UI.WebControls
 			TrackViewState ();
 		}
 		
-		void IStateManager.LoadViewState (object savedState)
+		void IStateManager.LoadViewState (object? savedState)
 		{
 			LoadViewState (savedState);
 		}

@@ -71,14 +71,14 @@ namespace System.Web.Configuration
 
 			string value = att.Value;
 			if (!allowEmpty && value == String.Empty) {
-				string opt = optional ? "Optional" : "Required";
+				var opt = optional ? "Optional" : "Required";
 				ThrowException (opt + " attribute is empty: " + attKey, node);
 			}
 
 			return value;
 		}
 
-		static public void ThrowException (string msg, XmlNode node)
+		static public void ThrowException (string msg, XmlNode? node)
 		{
 			if (node != null && node.Name != String.Empty)
 				msg = msg + " (node name: " + node.Name + ") ";

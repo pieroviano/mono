@@ -90,7 +90,7 @@ namespace System.Configuration
 
 		public override void Load (string filename)
 		{
-			XmlTextReader rd = new XmlTextReader (filename);
+			var rd = new XmlTextReader (filename);
 			try {
 				rd.MoveToContent ();
 				LoadSingleElement (filename, rd);
@@ -103,7 +103,7 @@ namespace System.Configuration
 		{
 			fileName = filename;
 			lineNumber = sourceReader.LineNumber;
-			string xml = sourceReader.ReadOuterXml();
+			var xml = sourceReader.ReadOuterXml();
 			reader = new XmlTextReader (new StringReader (xml), sourceReader.NameTable);
 			Load (reader);
 			reader.Close ();

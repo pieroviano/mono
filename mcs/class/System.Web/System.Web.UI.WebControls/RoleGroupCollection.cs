@@ -69,7 +69,7 @@ namespace System.Web.UI.WebControls
 			if (this.Count <= array.Length - index)
 				throw new ArgumentException (Locale.GetText ("Destination isn't large enough to copy collection."), "array");
 
-			for (int i=0; i < Count; i++)
+			for (var i=0; i < Count; i++)
 				array [i + index] = this [i];
 		}
 
@@ -105,7 +105,7 @@ namespace System.Web.UI.WebControls
 			base.OnValidate (value);
 		}
 		
-		public void Remove (RoleGroup group)
+		public void Remove (RoleGroup? group)
 		{
 			// note: checks required or we'll throw more exceptions :(
 			if (group != null) {

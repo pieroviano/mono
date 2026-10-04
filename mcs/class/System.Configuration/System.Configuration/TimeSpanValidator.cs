@@ -60,7 +60,7 @@ namespace System.Configuration
 
 		public override void Validate (object value)
 		{
-			TimeSpan s = (TimeSpan) value;
+			var s = (TimeSpan) value;
 			if (!rangeIsExclusive) {
 				if (s < minValue || s > maxValue)
 					throw new ArgumentException ("The value must be in the range " + minValue + " - " + maxValue);

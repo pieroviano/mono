@@ -31,18 +31,18 @@ namespace System.Web.SessionState
 {
 	public static class SessionStateUtility
 	{
-		public static void AddHttpSessionStateToContext (HttpContext context, IHttpSessionState container)
+		public static void AddHttpSessionStateToContext (HttpContext? context, IHttpSessionState? container)
 		{
 			if (context == null || container == null)
 				return;
 			if (context.Session != null)
 				throw new HttpException ("An HttpSessionState object for the current session has already been added to the specified context.");
 			
-			HttpSessionState state = new HttpSessionState (container);
+			var state = new HttpSessionState (container);
 			context.SetSession (state);
 		}
 
-		public static IHttpSessionState GetHttpSessionStateFromContext (HttpContext context)
+		public static IHttpSessionState GetHttpSessionStateFromContext (HttpContext? context)
 		{
 			HttpSessionState session;
 			if (context == null || (session = context.Session) == null)
@@ -51,7 +51,7 @@ namespace System.Web.SessionState
 			return session.Container;
 		}
 
-		public static HttpStaticObjectsCollection GetSessionStaticObjects (HttpContext context)
+		public static HttpStaticObjectsCollection GetSessionStaticObjects (HttpContext? context)
 		{
 			HttpSessionState session;
 			if (context == null || (session = context.Session) == null)
@@ -59,13 +59,13 @@ namespace System.Web.SessionState
 			return session.Container.StaticObjects;
 		}
 		
-		public static void RaiseSessionEnd (IHttpSessionState session, Object eventSource, EventArgs eventArgs)
+		public static void RaiseSessionEnd (IHttpSessionState session, Object? eventSource, EventArgs eventArgs)
 		{
-			HttpSessionState state = new HttpSessionState (session);
+			var state = new HttpSessionState (session);
 			HttpApplicationFactory.InvokeSessionEnd (state, eventSource, eventArgs);
 		}
 
-		public static void RemoveHttpSessionStateFromContext (HttpContext context)
+		public static void RemoveHttpSessionStateFromContext (HttpContext? context)
 		{
 			if (context == null)
 				return;

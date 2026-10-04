@@ -66,8 +66,8 @@ namespace System.Web.Security
 
 		void OnDefaultAuthentication (object sender, EventArgs args)
 		{
-			HttpApplication app = (HttpApplication) sender;
-			HttpContext context = app.Context;
+			var app = (HttpApplication) sender;
+			var context = app.Context;
 
 			DefaultAuthenticationEventHandler eh = events [authenticateEvent] as DefaultAuthenticationEventHandler;
 			if (context.User == null && eh != null)

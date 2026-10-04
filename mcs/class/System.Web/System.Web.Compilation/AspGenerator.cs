@@ -51,7 +51,7 @@ namespace System.Web.Compilation
 		public ControlBuilder Builder;
 		public ILocation Location;
 
-		public BuilderLocation (ControlBuilder builder, ILocation location)
+		public BuilderLocation (ControlBuilder builder, ILocation? location)
 		{
 			this.Builder = builder;
 			this.Location = new Location (location);
@@ -68,9 +68,9 @@ namespace System.Web.Compilation
 			base.Push (o);
 		}
 		
-		public virtual void Push (ControlBuilder builder, ILocation location)
+		public virtual void Push (ControlBuilder builder, ILocation? location)
 		{
-			BuilderLocation bl = new BuilderLocation (builder, location);
+			var bl = new BuilderLocation (builder, location);
 			Push (bl);
 		}
 
@@ -299,7 +299,7 @@ namespace System.Web.Compilation
 		{
 			var ret = new Dictionary <string, object> (StringComparer.OrdinalIgnoreCase);
 
-			int index = 0;
+			var index = 0;
 			string keyName;
 			foreach (Capture c in names) {
 				keyName = c.Value;
@@ -328,11 +328,11 @@ namespace System.Web.Compilation
 
 		int GetLineNumberForIndex (string fileContents, int index)
 		{
-			int line = 1;
+			var line = 1;
 			char c;
-			bool foundCR = false;
+			var foundCR = false;
 			
-			for (int pos = 0; pos < index; pos++) {
+			for (var pos = 0; pos < index; pos++) {
 				c = fileContents [pos];
 				if (c == '\n' || foundCR) {
 					line++;
@@ -347,12 +347,12 @@ namespace System.Web.Compilation
 
 		int GetNumberOfLinesForRange (string fileContents, int index, int length)
 		{
-			int lines = 0;
-			int stop = index + length;
+			var lines = 0;
+			var stop = index + length;
 			char c;
-			bool foundCR = false;
+			var foundCR = false;
 			
-			for (int pos = index; pos < stop; pos++) {
+			for (var pos = index; pos < stop; pos++) {
 				c = fileContents [pos];
 				if (c == '\n' || foundCR) {
 					lines++;
@@ -367,11 +367,11 @@ namespace System.Web.Compilation
 		
 		Type GetInheritedType (string fileContents, string filename)
 		{
-			MatchCollection matches = DirectiveRegex.Matches (fileContents);
+			var matches = DirectiveRegex.Matches (fileContents);
 			if (matches == null || matches.Count == 0)
 				return null;
 
-			string wantedDirectiveName = tparser.DefaultDirectiveName.ToLower (Helpers.InvariantCulture);
+			var wantedDirectiveName = tparser.DefaultDirectiveName.ToLower (Helpers.InvariantCulture);
 			string directiveName;
 			GroupCollection groups;
 			CaptureCollection ccNames;
@@ -390,7 +390,7 @@ namespace System.Web.Compilation
 					continue;
 
 				var loc = new Location (null);
-				int index = match.Index;
+				var index = match.Index;
 				
 				loc.Filename = filename;
 				loc.BeginLine = GetLineNumberForIndex (fileContents, index);
@@ -406,18 +406,18 @@ namespace System.Web.Compilation
 			return null;
 		}
 
-		string ReadFileContents (Stream inputStream, string filename)
+		string ReadFileContents (Stream? inputStream, string filename)
 		{
 			string ret = null;
 			
 			if (inputStream != null) {
 				if (inputStream.CanSeek) {
-					long curPos = inputStream.Position;
+					var curPos = inputStream.Position;
 					inputStream.Seek (0, SeekOrigin.Begin);
 
-					Encoding enc = WebEncoding.FileEncoding;
-					StringBuilder sb = new StringBuilder ();
-					byte[] buffer = new byte [READ_BUFFER_SIZE];
+					var enc = WebEncoding.FileEncoding;
+					var sb = new StringBuilder ();
+					var buffer = new byte [READ_BUFFER_SIZE];
 					int nbytes;
 					
 					while ((nbytes = inputStream.Read (buffer, 0, READ_BUFFER_SIZE)) > 0)
@@ -430,7 +430,7 @@ namespace System.Web.Compilation
 				} else {
 					FileStream fs = inputStream as FileStream;
 					if (fs != null) {
-						string fname = fs.Name;
+						var fname = fs.Name;
 						try {
 							if (File.Exists (fname))
 								ret = File.ReadAllText (fname);
@@ -453,7 +453,7 @@ namespace System.Web.Compilation
 			return ret;
 		}
 		
-		Type GetRootBuilderType (Stream inputStream, string filename)
+		Type GetRootBuilderType (Stream? inputStream, string filename)
 		{
 			Type ret = null;
 			string fileContents;
@@ -464,13 +464,13 @@ namespace System.Web.Compilation
 				fileContents = null;
 			
 			if (!String.IsNullOrEmpty (fileContents)) {
-				Type inheritedType = GetInheritedType (fileContents, filename);
+				var inheritedType = GetInheritedType (fileContents, filename);
 				fileContents = null;
 				if (inheritedType != null) {
 					FileLevelControlBuilderAttribute attr;
 					
 					try {
-						object[] attrs = inheritedType.GetCustomAttributes (typeof (FileLevelControlBuilderAttribute), true);
+						var attrs = inheritedType.GetCustomAttributes (typeof (FileLevelControlBuilderAttribute), true);
 						if (attrs != null && attrs.Length > 0)
 							attr = attrs [0] as FileLevelControlBuilderAttribute;
 						else
@@ -494,12 +494,12 @@ namespace System.Web.Compilation
 				return ret;
 		}
 		
-		void CreateRootBuilder (Stream inputStream, string filename)
+		void CreateRootBuilder (Stream? inputStream, string filename)
 		{
 			if (rootBuilder != null)
 				return;
 			
-			Type rootBuilderType = GetRootBuilderType (inputStream, filename);
+			var rootBuilderType = GetRootBuilderType (inputStream, filename);
 			rootBuilder = Activator.CreateInstance (rootBuilderType) as RootBuilder;
 			if (rootBuilder == null)
 				throw new HttpException ("Cannot create an instance of file-level control builder.");
@@ -513,7 +513,7 @@ namespace System.Web.Compilation
 		
 		BaseCompiler GetCompilerFromType ()
 		{
-			Type type = tparser.GetType ();
+			var type = tparser.GetType ();
 			if (type == typeof (PageParser))
 				return new PageCompiler ((PageParser) tparser);
 
@@ -531,7 +531,7 @@ namespace System.Web.Compilation
 
 		void InitParser (TextReader reader, string filename)
 		{
-			AspParser parser = new AspParser (filename, reader);
+			var parser = new AspParser (filename, reader);
 			parser.Error += new ParseErrorHandler (ParseError);
 			parser.TagParsed += new TagParsedHandler (TagParsed);
 			parser.TextParsed += new TextParsedHandler (TextParsed);
@@ -543,7 +543,7 @@ namespace System.Web.Compilation
 				throw new ParseException (Location, "Infinite recursion detected including file: " + filename);
 
 			if (filename != "@@inner_string@@") {
-				string arvp = Path.Combine (tparser.BaseVirtualDir, Path.GetFileName (filename));
+				var arvp = Path.Combine (tparser.BaseVirtualDir, Path.GetFileName (filename));
 				if (VirtualPathUtility.IsAbsolute (arvp))
 					arvp = VirtualPathUtility.ToAppRelative (arvp);
 				
@@ -553,11 +553,11 @@ namespace System.Web.Compilation
 		
 		void InitParser (string filename)
 		{
-			StreamReader reader = new StreamReader (filename, WebEncoding.FileEncoding);
+			var reader = new StreamReader (filename, WebEncoding.FileEncoding);
 			InitParser (reader, filename);
 		}
 
-		void CheckForDuplicateIds (ControlBuilder root, Stack scopes)
+		void CheckForDuplicateIds (ControlBuilder? root, Stack? scopes)
 		{
 			if (root == null)
 				return;
@@ -579,9 +579,9 @@ namespace System.Web.Compilation
 
 			ControlBuilder cb;
 			string id;
-			ArrayList children = root.Children;
+			var children = root.Children;
 			if (children != null) {
-				foreach (object o in children) {
+				foreach (var o in children) {
 					cb = o as ControlBuilder;
 					if (cb == null)
 						continue;
@@ -604,7 +604,7 @@ namespace System.Web.Compilation
 			Parse (file, false);
 		}
 		
-		public void Parse (TextReader reader, string filename, bool doInitParser)
+		public void Parse (TextReader? reader, string filename, bool doInitParser)
 		{
 			try {
 				isApplication = tparser.DefaultDirectiveName == "application";
@@ -642,14 +642,14 @@ namespace System.Web.Compilation
 		
 		public void Parse (string filename, bool doInitParser)
 		{
-			StreamReader reader = new StreamReader (filename, WebEncoding.FileEncoding);
+			var reader = new StreamReader (filename, WebEncoding.FileEncoding);
 			Parse (reader, filename, doInitParser);
 		}
 
 		public void Parse ()
 		{
-			string inputFile = tparser.InputFile;
-			TextReader inputReader = tparser.Reader;
+			var inputFile = tparser.InputFile;
+			var inputReader = tparser.Reader;
 
 			try {			
 				if (String.IsNullOrEmpty (inputFile)) {
@@ -679,20 +679,20 @@ namespace System.Web.Compilation
 			}
 		}
 
-		internal static void AddTypeToCache (List <string> dependencies, string inputFile, Type type)
+		internal static void AddTypeToCache (List <string>? dependencies, string? inputFile, Type? type)
 		{
 			if (type == null || inputFile == null || inputFile.Length == 0)
 				return;
 
 			if (dependencies != null && dependencies.Count > 0) {
-				string [] deps = dependencies.ToArray ();
-				HttpContext ctx = HttpContext.Current;
+				var deps = dependencies.ToArray ();
+				var ctx = HttpContext.Current;
 				HttpRequest req = ctx != null ? ctx.Request : null;
 				
 				if (req == null)
 					throw new HttpException ("No current context, cannot compile.");
 
-				for (int i = 0; i < deps.Length; i++)
+				for (var i = 0; i < deps.Length; i++)
 					deps [i] = req.MapPath (deps [i]);
 
 				HttpRuntime.InternalCache.Insert ("@@Type" + inputFile, type, new CacheDependency (deps));
@@ -702,13 +702,13 @@ namespace System.Web.Compilation
 		
 		public Type GetCompiledType ()
 		{
-			Type type = (Type) HttpRuntime.InternalCache.Get ("@@Type" + tparser.InputFile);
+			var type = (Type) HttpRuntime.InternalCache.Get ("@@Type" + tparser.InputFile);
 			if (type != null) {
 				return type;
 			}
 
 			Parse ();
-			BaseCompiler compiler = GetCompilerFromType ();
+			var compiler = GetCompilerFromType ();
 			
 			type = compiler.GetCompiledType ();
 			AddTypeToCache (tparser.Dependencies, tparser.InputFile, type);
@@ -716,18 +716,18 @@ namespace System.Web.Compilation
 		}
 
 #if DEBUG
-		static void PrintTree (ControlBuilder builder, int indent)
+		static void PrintTree (ControlBuilder? builder, int indent)
 		{
 			if (builder == null)
 				return;
 
-			string i = new string ('\t', indent);
+			var i = new string ('\t', indent);
 			Console.Write (i);
 			Console.WriteLine ("b: {0}; naming container: {1}; id: {2}; type: {3}; parent: {4}",
 					   builder, builder.IsNamingContainer, builder.ID, builder.ControlType, builder.ParentBuilder);
 
 			if (builder.Children != null)
-			foreach (object o in builder.Children) {
+			foreach (var o in builder.Children) {
 				if (o is ControlBuilder)
 					PrintTree ((ControlBuilder) o, indent++);
 			}
@@ -761,7 +761,7 @@ namespace System.Web.Compilation
 		// The kludge supports only self-closing tags inside attributes.
 		//
 		// KLUDGE WARNING!!
-		bool ProcessTagsInAttributes (ILocation location, string tagid, TagAttributes attributes, TagType type)
+		bool ProcessTagsInAttributes (ILocation location, string tagid, TagAttributes? attributes, TagType type)
 		{
 			if (attributes == null || attributes.Count == 0)
 				return false;
@@ -769,9 +769,9 @@ namespace System.Web.Compilation
 			Match match;
 			Group group;
 			string value;
-			bool retval = false;
+			var retval = false;
 			int index, length;
-			StringBuilder sb = new StringBuilder ();
+			var sb = new StringBuilder ();
 
 			sb.AppendFormat ("\t<{0}", tagid);
 			foreach (string key in attributes.Keys) {
@@ -818,8 +818,8 @@ namespace System.Web.Compilation
 		void ParseAttributeTag (string code, ILocation location)
 		{
 			AspParser outerParser = location as AspParser;
-			int positionOffset = outerParser != null ? outerParser.BeginPosition : 0;
-			AspParser parser = new AspParser ("@@attribute_tag@@", new StringReader (code), location.BeginLine - 1, positionOffset, outerParser);
+			var positionOffset = outerParser != null ? outerParser.BeginPosition : 0;
+			var parser = new AspParser ("@@attribute_tag@@", new StringReader (code), location.BeginLine - 1, positionOffset, outerParser);
 			parser.Error += new ParseErrorHandler (ParseError);
 			parser.TagParsed += new TagParsedHandler (TagParsed);
 			parser.TextParsed += new TextParsedHandler (TextParsed);
@@ -830,14 +830,14 @@ namespace System.Web.Compilation
 
 		void ParsingCompleted ()
 		{
-			PageParserFilter pfilter = PageParserFilter;
+			var pfilter = PageParserFilter;
 			if (pfilter == null)
 				return;
 
 			pfilter.ParseComplete (RootBuilder);
 		}
 
-		void CheckIfIncludeFileIsSecure (string filePath)
+		void CheckIfIncludeFileIsSecure (string? filePath)
 		{
 			if (filePath == null || filePath.Length == 0)
 				return;
@@ -846,7 +846,7 @@ namespace System.Web.Compilation
 			string newdir = null;
 			Exception exception = null;
 			try {
-				string origdir = Directory.GetCurrentDirectory ();
+				var origdir = Directory.GetCurrentDirectory ();
 				Directory.SetCurrentDirectory (Path.GetDirectoryName (filePath));
 				newdir = Directory.GetCurrentDirectory ();
 				Directory.SetCurrentDirectory (origdir);
@@ -867,7 +867,7 @@ namespace System.Web.Compilation
 
 		string ChopOffTagStart (ILocation location, string content, string tagid)
 		{
-			string tagstart = '<' + tagid;
+			var tagstart = '<' + tagid;
 			if (content.StartsWith (tagstart)) {
 				TextParsed (location, tagstart);
 				content = content.Substring (tagstart.Length);
@@ -885,12 +885,12 @@ namespace System.Web.Compilation
 				tparser.Location = location;
 
 			if (text.Length != 0) {
-				bool ignoreEmptyString = lastTag == TagType.CodeRender;
+				var ignoreEmptyString = lastTag == TagType.CodeRender;
 				FlushText (ignoreEmptyString);
 			}
 			
 			if (0 == String.Compare (tagid, "script", true, Helpers.InvariantCulture)) {
-				bool in_script = (inScript || ignore_text);
+				var in_script = (inScript || ignore_text);
 				if (in_script) {
 					if (ProcessScript (tagtype, attributes))
 						return;
@@ -920,22 +920,22 @@ namespace System.Web.Compilation
 				}
 
 				{
-					string plainText = location.PlainText;
+					var plainText = location.PlainText;
 					if (!ProcessTagsInAttributes (location, tagid, attributes, TagType.Tag))
 						TextParsed (location, ChopOffTagStart (location, plainText, tagid));
 				}
 				break;
 			case TagType.Close:
-				bool notServer = (useOtherTags && TryRemoveTag (tagid, stack.Builder.OtherTags));
+				var notServer = (useOtherTags && TryRemoveTag (tagid, stack.Builder.OtherTags));
 				if (!notServer && CloseControl (tagid))
 					break;
 				
 				TextParsed (location, location.PlainText);
 				break;
 			case TagType.SelfClosing:
-				int count = stack.Count;
+				var count = stack.Count;
 				if (!ProcessTag (location, tagid, attributes, tagtype, out tagIgnored) && !tagIgnored) {
-					string plainText = location.PlainText;
+					var plainText = location.PlainText;
 					if (!ProcessTagsInAttributes (location, tagid, attributes, TagType.SelfClosing))
 						TextParsed (location, ChopOffTagStart (location, plainText, tagid));
 				} else if (stack.Count != count) {
@@ -956,16 +956,16 @@ namespace System.Web.Compilation
 					throw new ParseException (location, "Invalid content for application file.");
 			
 				string file = attributes ["virtual"] as string;
-				bool isvirtual = (file != null);
+				var isvirtual = (file != null);
 				if (!isvirtual)
 					file = attributes ["file"] as string;
 
 				if (isvirtual) {
-					bool parsed = false;
-					VirtualPathProvider vpp = HostingEnvironment.VirtualPathProvider;
+					var parsed = false;
+					var vpp = HostingEnvironment.VirtualPathProvider;
 
 					if (vpp.FileExists (file)) {
-						VirtualFile vf = vpp.GetFile (file);
+						var vf = vpp.GetFile (file);
 						if (vf != null) {
 							Parse (vf.Open (), file, true);
 							parsed = true;
@@ -975,7 +975,7 @@ namespace System.Web.Compilation
 					if (!parsed)
 						Parse (tparser.MapPath (file), true);
 				} else {
-					string includeFilePath = GetIncludeFilePath (tparser.ParserDir, file);
+					var includeFilePath = GetIncludeFilePath (tparser.ParserDir, file);
 					CheckIfIncludeFileIsSecure (includeFilePath);
 					tparser.PushIncludeDir (Path.GetDirectoryName (includeFilePath));
 					try {
@@ -992,12 +992,12 @@ namespace System.Web.Compilation
 			//PrintLocation (location);
 		}
 
-		static bool TryRemoveTag (string tagid, ArrayList otags)
+		static bool TryRemoveTag (string tagid, ArrayList? otags)
 		{
 			if (otags == null || otags.Count == 0)
 				return false;
 
-			for (int idx = otags.Count - 1; idx >= 0; idx--) {
+			for (var idx = otags.Count - 1; idx >= 0; idx--) {
 				string otagid = (string) otags [idx];
 				if (0 == String.Compare (tagid, otagid, true, Helpers.InvariantCulture)) {
 					do {
@@ -1024,7 +1024,7 @@ namespace System.Web.Compilation
 			return !text.EndsWith ("/>");
 		}
 		
-		List <TextBlock> FindRegexBlocks (Regex rxStart, Regex rxEnd, CheckBlockEnd checkEnd, IList blocks, TextBlockType typeForMatches, bool discardBlocks)
+		List <TextBlock> FindRegexBlocks (Regex rxStart, Regex? rxEnd, CheckBlockEnd checkEnd, IList blocks, TextBlockType typeForMatches, bool discardBlocks)
 		{
 			var ret = new List <TextBlock> ();
 			foreach (TextBlock block in blocks) {
@@ -1034,18 +1034,18 @@ namespace System.Web.Compilation
 				}
 
 				int lastIndex = 0, index;
-				MatchCollection matches = rxStart.Matches (block.Content);
-				bool foundMatches = matches.Count > 0;
+				var matches = rxStart.Matches (block.Content);
+				var foundMatches = matches.Count > 0;
 				foreach (Match match in matches) {
 					foundMatches = true;
 					index = match.Index;
 					if (lastIndex < index)
 						ret.Add (new TextBlock (TextBlockType.Verbatim, block.Content.Substring (lastIndex, index - lastIndex)));
 
-					string value = match.Value;
+					var value = match.Value;
 					if (rxEnd != null && checkEnd (value)) {
-						int startFrom = index + value.Length;
-						Match m = rxEnd.Match (block.Content, startFrom);
+						var startFrom = index + value.Length;
+						var m = rxEnd.Match (block.Content, startFrom);
 						if (m.Success)
 							value += block.Content.Substring (startFrom, m.Index - startFrom) + m.Value;
 					}
@@ -1088,7 +1088,7 @@ namespace System.Web.Compilation
 				return;
 			}
 
-			IList blocks = SplitTextIntoBlocks (text);
+			var blocks = SplitTextIntoBlocks (text);
 			foreach (TextBlock block in blocks) {
 				switch (block.Type) {
 					case TextBlockType.Verbatim:
@@ -1098,7 +1098,7 @@ namespace System.Web.Compilation
 					case TextBlockType.Expression:
 						if (this.text.Length > 0)
 							FlushText (true);
-						CodeRenderParser r = new CodeRenderParser (block.Content, stack.Builder, location);
+						var r = new CodeRenderParser (block.Content, stack.Builder, location);
 						r.AddChildren (this);
 						break;
 
@@ -1114,7 +1114,7 @@ namespace System.Web.Compilation
 						
 						this.text.Append ("<!--");
 						FlushText (true);
-						string blockToParse = block.Content.Substring (4, block.Length - 7);
+						var blockToParse = block.Content.Substring (4, block.Length - 7);
 						bool condEndif;
 						if (blockToParse.EndsWith ("<![endif]")) {
 							blockToParse = blockToParse.Substring (0, blockToParse.Length - 9);
@@ -1123,8 +1123,8 @@ namespace System.Web.Compilation
 							condEndif = false;
 
 						AspParser outerParser = location as AspParser;
-						int positionOffset = outerParser != null ? outerParser.BeginPosition : 0;
-						AspParser parser = new AspParser ("@@comment_code@@", new StringReader (blockToParse), location.BeginLine - 1, positionOffset, outerParser);
+						var positionOffset = outerParser != null ? outerParser.BeginPosition : 0;
+						var parser = new AspParser ("@@comment_code@@", new StringReader (blockToParse), location.BeginLine - 1, positionOffset, outerParser);
 						parser.Error += new ParseErrorHandler (ParseError);
 						parser.TagParsed += new TagParsedHandler (TagParsed);
 						parser.TextParsed += new TextParsedHandler (TextParsed);
@@ -1146,14 +1146,14 @@ namespace System.Web.Compilation
 		
 		void FlushText (bool ignoreEmptyString)
 		{
-			string t = text.ToString ();
+			var t = text.ToString ();
 			text.Length = 0;
 
 			if (ignoreEmptyString && t.Trim ().Length == 0)
 				return;
 			
 			if (inScript) {
-				PageParserFilter pfilter = PageParserFilter;
+				var pfilter = PageParserFilter;
 				if (pfilter != null && !pfilter.ProcessCodeConstruct (CodeConstructType.ScriptTag, t))
 					return;
 
@@ -1164,7 +1164,7 @@ namespace System.Web.Compilation
 			if (tparser.DefaultDirectiveName == "application" && t.Trim () != "")
 				throw new ParseException (location, "Content not valid for application file.");
 
-			ControlBuilder current = stack.Builder;
+			var current = stack.Builder;
 			current.AppendLiteralString (t);
 			if (current.NeedsTagInnerText ()) {
 				tagInnerText.Append (t);
@@ -1173,7 +1173,7 @@ namespace System.Web.Compilation
 
 		bool BuilderHasOtherThan (Type type, ControlBuilder cb)
 		{
-			ArrayList al = cb.OtherTags;
+			var al = cb.OtherTags;
 			if (al != null && al.Count > 0)
 				return true;
 			
@@ -1181,7 +1181,7 @@ namespace System.Web.Compilation
 			if (al != null) {
 				ControlBuilder tmp;
 				
-				foreach (object o in al) {
+				foreach (var o in al) {
 					if (o == null)
 						continue;
 					
@@ -1205,7 +1205,7 @@ namespace System.Web.Compilation
 			return false;
 		}
 		
-		bool OtherControlsAllowed (ControlBuilder cb)
+		bool OtherControlsAllowed (ControlBuilder? cb)
 		{
 			if (cb == null)
 				return true;
@@ -1219,17 +1219,17 @@ namespace System.Web.Compilation
 			return true;
 		}
 
-		public void AddControl (Type type, IDictionary attributes)
+		public void AddControl (Type? type, IDictionary attributes)
 		{
-			ControlBuilder parent = stack.Builder;
-			ControlBuilder builder = ControlBuilder.CreateBuilderFromType (tparser, parent, type, null, null,
+			var parent = stack.Builder;
+			var builder = ControlBuilder.CreateBuilderFromType (tparser, parent, type, null, null,
 										       attributes, location.BeginLine,
 										       location.Filename);
 			if (builder != null)
 				parent.AppendSubBuilder (builder);
 		}
 		
-		bool ProcessTag (ILocation location, string tagid, TagAttributes atts, TagType tagtype, out bool ignored)
+		bool ProcessTag (ILocation location, string tagid, TagAttributes? atts, TagType tagtype, out bool ignored)
 		{
 			ignored = false;
 			if (isApplication) {
@@ -1237,7 +1237,7 @@ namespace System.Web.Compilation
 					throw new ParseException (location, "Invalid tag for application file.");
 			}
 
-			ControlBuilder parent = stack.Builder;
+			var parent = stack.Builder;
 			ControlBuilder builder = null;
 			if (parent != null && parent.ControlType == typeof (HtmlTable) &&
 			    (String.Compare (tagid, "thead", true, Helpers.InvariantCulture) == 0 ||
@@ -1246,7 +1246,7 @@ namespace System.Web.Compilation
 				return true;
 			}
 				
-			IDictionary htable = (atts != null) ? atts.GetDictionary (null) : emptyHash;
+			var htable = (atts != null) ? atts.GetDictionary (null) : emptyHash;
 			if (stack.Count > 1) {
 				try {
 					builder = parent.CreateSubBuilder (tagid, htable, null, tparser, location);
@@ -1257,7 +1257,7 @@ namespace System.Web.Compilation
 				}
 			}
 
-			bool runatServer = atts != null && atts.IsRunAtServer ();
+			var runatServer = atts != null && atts.IsRunAtServer ();
 			if (builder == null && runatServer) {
 				string id = htable ["id"] as string;
 				if (id != null && !CodeGenerator.IsValidLanguageIndependentIdentifier (id))
@@ -1283,11 +1283,11 @@ namespace System.Web.Compilation
 
 			// This is as good as we can do for now - if the parsed location contains
 			// both expressions and code render blocks then we're out of luck...
-			string plainText = location.PlainText;
+			var plainText = location.PlainText;
 			if (!runatServer && plainText.IndexOf ("<%$") == -1&& plainText.IndexOf ("<%") > -1)
 				return false;
 
-			PageParserFilter pfilter = PageParserFilter;
+			var pfilter = PageParserFilter;
 			if (pfilter != null && !pfilter.AllowControl (builder.ControlType, builder))
 				throw new ParseException (Location, "Control type '" + builder.ControlType + "' not allowed.");
 			
@@ -1310,7 +1310,7 @@ namespace System.Web.Compilation
 				stack.Push (builder, location);
 			} else {
 				if (!isApplication && builder is ObjectTagBuilder) {
-					ObjectTagBuilder ot = (ObjectTagBuilder) builder;
+					var ot = (ObjectTagBuilder) builder;
 					if (ot.Scope != null && ot.Scope.Length > 0)
 						throw new ParseException (location, "Scope not allowed here");
 
@@ -1327,30 +1327,30 @@ namespace System.Web.Compilation
 			return true;
 		}
 
-		string ReadFile (string filename)
+		string ReadFile (string? filename)
 		{
-			string realpath = tparser.MapPath (filename);
-			using (StreamReader sr = new StreamReader (realpath, WebEncoding.FileEncoding)) {
-				string content = sr.ReadToEnd ();
+			var realpath = tparser.MapPath (filename);
+			using (var sr = new StreamReader (realpath, WebEncoding.FileEncoding)) {
+				var content = sr.ReadToEnd ();
 				return content;
 			}
 		}
 
-		bool ProcessScript (TagType tagtype, TagAttributes attributes)
+		bool ProcessScript (TagType tagtype, TagAttributes? attributes)
 		{
 			if (tagtype != TagType.Close) {
 				if (attributes != null && attributes.IsRunAtServer ()) {
-					string language = (string) attributes ["language"];
+					var language = (string) attributes ["language"];
 					if (language != null && language.Length > 0 && tparser.ImplicitLanguage)
 						tparser.SetLanguage (language);
 					CheckLanguage (language);
-					string src = (string) attributes ["src"];
+					var src = (string) attributes ["src"];
 					if (src != null) {
 						if (src.Length == 0)
 							throw new ParseException (Parser,
 								"src cannot be an empty string");
 
-						string content = ReadFile (src);
+						var content = ReadFile (src);
 						inScript = true;
 						TextParsed (Parser, content);
 						FlushText ();
@@ -1370,7 +1370,7 @@ namespace System.Web.Compilation
 						Parser.VerbatimID = "script";
 						javascript = true;
 					}
-					string content = location.PlainText;
+					var content = location.PlainText;
 					/* HACK, HACK, HACK */
 					if (content.StartsWith ("<script")) {
 						TextParsed (location, "<script");
@@ -1400,8 +1400,8 @@ namespace System.Web.Compilation
 
 		bool CloseControl (string tagid)
 		{
-			ControlBuilder current = stack.Builder;
-			string btag = current.OriginalTagName;
+			var current = stack.Builder;
+			var btag = current.OriginalTagName;
 			if (String.Compare (btag, "tbody", true, Helpers.InvariantCulture) != 0 &&
 			    String.Compare (tagid, "tbody", true, Helpers.InvariantCulture) == 0) {
 				if (!current.ChildrenAsProperties) {
@@ -1461,7 +1461,7 @@ namespace System.Web.Compilation
 		
 		bool ProcessCode (TagType tagtype, string code, ILocation location)
 		{
-			PageParserFilter pfilter = PageParserFilter;
+			var pfilter = PageParserFilter;
 			// LAMESPEC:
 			//
 			// http://msdn.microsoft.com/en-us/library/system.web.ui.pageparserfilter.processcodeconstruct.aspx
@@ -1494,7 +1494,7 @@ namespace System.Web.Compilation
 			get { return location; }
 		}
 
-		void CheckLanguage (string lang)
+		void CheckLanguage (string? lang)
 		{
 			if (lang == null || lang == "")
 				return;
@@ -1502,7 +1502,7 @@ namespace System.Web.Compilation
 			if (String.Compare (lang, tparser.Language, true, Helpers.InvariantCulture) == 0)
 				return;
 
-			CompilationSection section = (CompilationSection) WebConfigurationManager.GetWebApplicationSection ("system.web/compilation");
+			var section = (CompilationSection) WebConfigurationManager.GetWebApplicationSection ("system.web/compilation");
 			if (section.Compilers[tparser.Language] != section.Compilers[lang])
 				throw new ParseException (Location,
 						String.Format ("Trying to mix language '{0}' and '{1}'.", 
@@ -1527,7 +1527,7 @@ namespace System.Web.Compilation
 			public void AddChildren (AspGenerator generator)
 			{
 				this.generator = generator;
-				int index = str.IndexOf ("<%");
+				var index = str.IndexOf ("<%");
 				if (index > 0)
 					DoParseExpressions (str);
 				else
@@ -1537,16 +1537,16 @@ namespace System.Web.Compilation
 			void DoParseExpressions (string str)
 			{
 				int startIndex = 0, index = 0;
-				Regex codeDirective = new Regex ("(<%(?!@)(?<code>(.|\\s)*?)%>)|(<[\\w:\\.]+.*?runat=[\"']?server[\"']?.*?/>)",
+				var codeDirective = new Regex ("(<%(?!@)(?<code>(.|\\s)*?)%>)|(<[\\w:\\.]+.*?runat=[\"']?server[\"']?.*?/>)",
 								 RegexOptions.Multiline | RegexOptions.Compiled | RegexOptions.CultureInvariant);
 				Match match;
-				int strLen = str.Length;
+				var strLen = str.Length;
 				
 				while (index > -1 && startIndex < strLen) {
 					match = codeDirective.Match (str, index);
 					
 					if (match.Success) {
-						string value = match.Value;
+						var value = match.Value;
 						index = match.Index;
 						if (index > startIndex)
 							TextParsed (null, str.Substring (startIndex, index - startIndex));
@@ -1569,8 +1569,8 @@ namespace System.Web.Compilation
 			void DoParse (string str)
 			{
 				AspParser outerParser = location as AspParser;
-				int positionOffset = outerParser != null ? outerParser.BeginPosition : 0;
-				AspParser parser = new AspParser ("@@code_render@@", new StringReader (str), location.BeginLine - 1, positionOffset, outerParser);
+				var positionOffset = outerParser != null ? outerParser.BeginPosition : 0;
+				var parser = new AspParser ("@@code_render@@", new StringReader (str), location.BeginLine - 1, positionOffset, outerParser);
 				parser.Error += new ParseErrorHandler (ParseError);
 				parser.TagParsed += new TagParsedHandler (TagParsed);
 				parser.TextParsed += new TextParsedHandler (TextParsed);
@@ -1604,14 +1604,14 @@ namespace System.Web.Compilation
 						break;
 						
 					default:
-						string text = location.PlainText;
+						var text = location.PlainText;
 						if (text != null && text.Trim ().Length > 0)
 							builder.AppendLiteralString (text);
 						break;
 				}
 			}
 
-			void TextParsed (ILocation location, string text)
+			void TextParsed (ILocation location, string? text)
 			{
 				builder.AppendLiteralString (text);
 			}

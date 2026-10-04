@@ -69,7 +69,7 @@ namespace System.Web
 		
 		void InitFragments (ExceptionPageTemplateValues values)
 		{
-			foreach (ExceptionPageTemplateFragment fragment in fragments) {
+			foreach (var fragment in fragments) {
 				if (fragment == null)
 					continue;
 
@@ -90,7 +90,7 @@ namespace System.Web
 			return sb.ToString ();
 		}
 
-		public void Render (HttpResponse response, ExceptionPageTemplateValues values, ExceptionPageTemplateType pageType)
+		public void Render (HttpResponse? response, ExceptionPageTemplateValues values, ExceptionPageTemplateType pageType)
 		{
 			if (response == null)
 				return;
@@ -110,7 +110,7 @@ namespace System.Web
 
 			InitFragments (values);
 			string value;
-			foreach (ExceptionPageTemplateFragment fragment in fragments) {
+			foreach (var fragment in fragments) {
 				if (fragment == null || (fragment.ValidForPageType & pageType) == 0)
 					continue;
 

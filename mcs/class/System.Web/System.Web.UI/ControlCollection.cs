@@ -85,8 +85,8 @@ namespace System.Web.UI {
 			if (controls == null) {
 				controls = new Control [5];
 			} else if (controls.Length < count + 1) {
-				int n = controls.Length == 5 ? 3 : 2;
-				Control [] newControls = new Control [controls.Length * n];
+				var n = controls.Length == 5 ? 3 : 2;
+				var newControls = new Control [controls.Length * n];
 				Array.Copy (controls, 0, newControls, 0, controls.Length);
 				controls = newControls;
 			}
@@ -142,7 +142,7 @@ namespace System.Web.UI {
 				return;
 
 			version++;
-			for (int i = 0; i < count; i++)
+			for (var i = 0; i < count; i++)
 				owner.RemovedControl (controls [i]);
 
 			count = 0;
@@ -174,7 +174,7 @@ namespace System.Web.UI {
 			if (index < 0)
 				throw new ArgumentOutOfRangeException ("index", Locale.GetText ("Value has to be >= 0."));
 
-			for (int i=0; i < count; i++)
+			for (var i=0; i < count; i++)
 				array.SetValue (controls [i], i + index);
 		}
 
@@ -183,7 +183,7 @@ namespace System.Web.UI {
 			return new SimpleEnumerator (this);
 		}
 
-		public virtual int IndexOf (Control value)
+		public virtual int IndexOf (Control? value)
 		{
 			if (controls == null || value == null)
 				return -1;
@@ -191,9 +191,9 @@ namespace System.Web.UI {
 			return Array.IndexOf (controls, value);
 		}
 
-		public virtual void Remove (Control value)
+		public virtual void Remove (Control? value)
 		{
-			int idx = IndexOf (value);
+			var idx = IndexOf (value);
 			if (idx == -1)
 				return;
 			RemoveAt (idx);
@@ -205,7 +205,7 @@ namespace System.Web.UI {
 				throw new HttpException ();
 
 			version++;
-			Control ctrl = controls [index];
+			var ctrl = controls [index];
 			count--;
 			if (count - index > 0)
 				Array.Copy (controls, index + 1, controls, index, count - index);

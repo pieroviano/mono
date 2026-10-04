@@ -57,29 +57,29 @@ namespace System.Web.DynamicData
 		public MetaColumn ColumnInOtherTable { get; private set; }
 
 		[MonoTODO]
-		public string GetChildrenListPath (object row)
+		public string GetChildrenListPath (object? row)
 		{
 			return ChildTable.GetActionPath (PageAction.List, row);
 		}
 
 		[MonoTODO]
-		public string GetChildrenPath (string action, object row)
+		public string GetChildrenPath (string action, object? row)
 		{
 			return ChildTable.GetActionPath (action, row);
 		}
 
 		[MonoTODO]
-		public string GetChildrenPath (string action, object row, string path)
+		public string GetChildrenPath (string action, object? row, string path)
 		{
 			return ChildTable.GetActionPath (action, row, path);
 		}
 
 		internal override void Init ()
 		{
-			AssociationProvider association = Provider.Association;
-			ColumnProvider otherColumn = association.ToColumn;
+			var association = Provider.Association;
+			var otherColumn = association.ToColumn;
 			string otherColumnName = otherColumn == null ? null : otherColumn.Name;
-			MetaTable childTable = Model.GetTable (association.ToTable.Name, Table.DataContextType);
+			var childTable = Model.GetTable (association.ToTable.Name, Table.DataContextType);
 			ChildTable = childTable;
 			if (childTable != null && !String.IsNullOrEmpty (otherColumnName))
 				ColumnInOtherTable = childTable.GetColumn (otherColumnName);

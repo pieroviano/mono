@@ -118,8 +118,8 @@ namespace System.Web.Services.Description {
             get { 
                 if (parts == null) 
                     return null;
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < parts.Length; i++) {
+                var builder = new StringBuilder();
+                for (var i = 0; i < parts.Length; i++) {
                     if (i > 0) builder.Append(' ');
                     builder.Append(parts[i]);
                 }

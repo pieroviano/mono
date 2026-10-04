@@ -21,15 +21,15 @@ using System.Diagnostics.CodeAnalysis;
  * Various string handling utilities
  */
 internal static class StringUtil {
-    internal static string CheckAndTrimString(string paramValue, string paramName) {
+    internal static string CheckAndTrimString(string? paramValue, string paramName) {
         return CheckAndTrimString(paramValue, paramName, true);
     }
 
-    internal static string CheckAndTrimString(string paramValue, string paramName, bool throwIfNull) {
+    internal static string CheckAndTrimString(string? paramValue, string paramName, bool throwIfNull) {
         return CheckAndTrimString(paramValue, paramName, throwIfNull, -1);
     }
 
-    internal static string CheckAndTrimString(string paramValue, string paramName,
+    internal static string CheckAndTrimString(string? paramValue, string paramName,
                                               bool throwIfNull, int lengthToCheck) {
         if (paramValue == null) {
             if (throwIfNull) {
@@ -37,7 +37,7 @@ internal static class StringUtil {
             }
             return null;
         }
-        string trimmedValue = paramValue.Trim();
+        var trimmedValue = paramValue.Trim();
         if (trimmedValue.Length == 0) {
             throw new ArgumentException(
                 SR.GetString(SR.PersonalizationProviderHelper_TrimmedEmptyString,
@@ -63,7 +63,7 @@ internal static class StringUtil {
         return false;
     }
 
-    unsafe internal static bool Equals(string s1, int offset1, string s2, int offset2, int length) {
+    unsafe internal static bool Equals(string? s1, int offset1, string? s2, int offset2, int length) {
         if (offset1 < 0)
             throw new ArgumentOutOfRangeException("offset1");
         if (offset2 < 0)
@@ -79,7 +79,7 @@ internal static class StringUtil {
 
         fixed (char * pch1 = s1, pch2 = s2) {
             char * p1 = pch1 + offset1, p2 = pch2 + offset2;
-            int c = length;
+            var c = length;
             while (c-- > 0) {
                 if (*p1++ != *p2++)
                     return false;
@@ -121,7 +121,7 @@ internal static class StringUtil {
      * Fast, non-culture aware.  
      */
     internal static bool StringEndsWith(string s, char c) {
-        int len = s.Length;
+        var len = s.Length;
         return len != 0 && s[len - 1] == c;
     }
 
@@ -130,14 +130,14 @@ internal static class StringUtil {
      * Fast, non-culture aware.  
      */
     unsafe internal static bool StringEndsWith(string s1, string s2) {
-        int offset = s1.Length - s2.Length;
+        var offset = s1.Length - s2.Length;
         if (offset < 0) {
             return false;
         }
         
         fixed (char * pch1=s1, pch2=s2) {
             char * p1 = pch1 + offset, p2=pch2;
-            int c = s2.Length;
+            var c = s2.Length;
             while (c-- > 0) {
                 if (*p1++ != *p2++)
                     return false;
@@ -152,7 +152,7 @@ internal static class StringUtil {
      * Fast, non-culture aware.  
      */
     internal static bool StringEndsWithIgnoreCase(string s1, string s2) {
-        int offset = s1.Length - s2.Length;
+        var offset = s1.Length - s2.Length;
         if (offset < 0) {
             return false;
         }
@@ -179,7 +179,7 @@ internal static class StringUtil {
         
         fixed (char * pch1=s1, pch2=s2) {
             char * p1 = pch1, p2=pch2;
-            int c = s2.Length;
+            var c = s2.Length;
             while (c-- > 0) {
                 if (*p1++ != *p2++)
                     return false;
@@ -228,7 +228,7 @@ internal static class StringUtil {
         }
     }
 #endif
-    internal static bool StringArrayEquals(string[] a, string [] b) {
+    internal static bool StringArrayEquals(string[]? a, string []? b) {
         if ((a == null) != (b == null)) {
             return false;
         }
@@ -237,12 +237,12 @@ internal static class StringUtil {
             return true;
         }
 
-        int n = a.Length;
+        var n = a.Length;
         if (n != b.Length) {
             return false;
         }
 
-        for (int i = 0; i < n; i++) {
+        for (var i = 0; i < n; i++) {
             if (a[i] != b[i]) {
                 return false;
             }
@@ -257,12 +257,12 @@ internal static class StringUtil {
     internal static int GetStringHashCode(string s) {
         unsafe {
             fixed (char* src = s) {
-                int hash1 = (5381 << 16) + 5381;
-                int hash2 = hash1;
+                var hash1 = (5381 << 16) + 5381;
+                var hash2 = hash1;
 
                 // 32bit machines.
                 int* pint = (int*)src;
-                int len = s.Length;
+                var len = s.Length;
                 while (len > 0) {
                     hash1 = ((hash1 << 5) + hash1 + (hash1 >> 27)) ^ pint[0];
                     if (len <= 2) {
@@ -317,7 +317,7 @@ internal static class StringUtil {
         return GetStringHashCode(s.ToLower(CultureInfo.InvariantCulture));
     }
 #endif
-    internal static int GetNullTerminatedByteArray(Encoding enc, string s, out byte[] bytes)
+    internal static int GetNullTerminatedByteArray(Encoding enc, string? s, out byte[] bytes)
     {
         bytes = null;
         if (s == null)
@@ -476,7 +476,7 @@ internal static class StringUtil {
 #endif // FEATURE_PAL
     }
     internal static string[] ObjectArrayToStringArray(object[] objectArray) {
-        String[] stringKeys = new String[objectArray.Length];
+        var stringKeys = new String[objectArray.Length];
         objectArray.CopyTo(stringKeys, 0);
         return stringKeys;
     }

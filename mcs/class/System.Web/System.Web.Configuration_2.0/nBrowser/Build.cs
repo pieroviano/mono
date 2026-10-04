@@ -67,11 +67,11 @@ namespace System.Web.Configuration.nBrowser
 			//name
 			if (System.IO.Directory.Exists(path) == true)
 			{
-				System.IO.DirectoryInfo dir = new System.IO.DirectoryInfo(path);
-				System.IO.FileInfo[] file = dir.GetFiles("*.browser");
+				var dir = new System.IO.DirectoryInfo(path);
+				var file = dir.GetFiles("*.browser");
 				//we are done with it so let the GC have it early as possible
 				dir = null;
-				for (int a = 0;a <= file.Length - 1;a++)
+				for (var a = 0;a <= file.Length - 1;a++)
 				{
 					AddBrowserFile(file[a].FullName);
 				}
@@ -89,7 +89,7 @@ namespace System.Web.Configuration.nBrowser
 		{
 			if (Browserfiles.ContainsKey(fileName) == false)
 			{
-				nBrowser.File b = new nBrowser.File(fileName);
+				var b = new nBrowser.File(fileName);
 				this.AddBrowserFile(b);
 			}
 
@@ -101,8 +101,8 @@ namespace System.Web.Configuration.nBrowser
 				Browserfiles.Add(file.FileName, file);
 				nbrowserfiles.Add(file);
 
-				string[] keys = file.Keys;
-				for (int i = 0;i <= keys.Length - 1;i++)
+				var keys = file.Keys;
+				for (var i = 0;i <= keys.Length - 1;i++)
 				{
 					if (BrowserKeys.ContainsKey(keys[i]) == false)
 					{
@@ -114,7 +114,7 @@ namespace System.Web.Configuration.nBrowser
 					}
 				}
 				keys = file.DefaultKeys;
-				for (int i = 0;i <= keys.Length - 1;i++)
+				for (var i = 0;i <= keys.Length - 1;i++)
 				{
 					if (DefaultKeys.ContainsKey(keys[i]) == false)
 					{
@@ -136,7 +136,7 @@ namespace System.Web.Configuration.nBrowser
 		{
 			if (Browserfiles.ContainsKey(fileName) == false)
 			{
-				nBrowser.File file = new nBrowser.File(browser, fileName);
+				var file = new nBrowser.File(browser, fileName);
 				this.AddBrowserFile(file);
 			}
 		}
@@ -161,14 +161,14 @@ namespace System.Web.Configuration.nBrowser
 
 		private Node InitializeTree()
 		{
-			Node root = new Node();
+			var root = new Node();
 			//Custom Sorted List, to allow where Multple files in Diff directorys might have the same
 			//filename. So still to some degree first come first serve but might be close enough
 			//to how microsoft System to match much more closely.
 			System.Collections.Generic.SortedList<string, System.Collections.Generic.List<nBrowser.File>> list;
 			list = new System.Collections.Generic.SortedList<string, System.Collections.Generic.List<nBrowser.File>>();
 
-			for (int i = 0;i <= Browserfiles.Count - 1;i++)
+			for (var i = 0;i <= Browserfiles.Count - 1;i++)
 			{
 				if (list.ContainsKey(nbrowserfiles[i].FileName) == false)
 				{
@@ -178,13 +178,13 @@ namespace System.Web.Configuration.nBrowser
 				}
 				list[nbrowserfiles[i].FileName].Add(nbrowserfiles[i]);
 			}
-			nBrowser.File[] files = new nBrowser.File[Browserfiles.Count];
+			var files = new nBrowser.File[Browserfiles.Count];
 
-			int count = 0;
-			for (int i = 0;i <= list.Count - 1;i++)
+			var count = 0;
+			for (var i = 0;i <= list.Count - 1;i++)
 			{
-				System.Collections.Generic.List<nBrowser.File> l = list[list.Keys[i]];
-				for (int b = 0;b <= l.Count - 1;b++)
+				var l = list[list.Keys[i]];
+				for (var b = 0;b <= l.Count - 1;b++)
 				{
 					files[count] = l[b];
 					count++;
@@ -192,11 +192,11 @@ namespace System.Web.Configuration.nBrowser
 			}
 
 			#region Connect Nodes
-			for (int i = 0;i <= Browserfiles.Count - 1;i++)
+			for (var i = 0;i <= Browserfiles.Count - 1;i++)
 			{
-				for (int a = 0;a <= files[i].Keys.Length - 1;a++)
+				for (var a = 0;a <= files[i].Keys.Length - 1;a++)
 				{
-					Node child = files[i].GetNode(files[i].Keys[a]);
+					var child = files[i].GetNode(files[i].Keys[a]);
 					Node parent = null;
 					if (child.ParentId.Length > 0)
 					{
@@ -212,19 +212,19 @@ namespace System.Web.Configuration.nBrowser
 			#endregion
 			
 			#region Inject DefaultBrowser Nodes
-			for (int i = 0;i <= Browserfiles.Count - 1;i++)
+			for (var i = 0;i <= Browserfiles.Count - 1;i++)
 			{
-				for (int a = 0;a <= files[i].DefaultKeys.Length - 1;a++)
+				for (var a = 0;a <= files[i].DefaultKeys.Length - 1;a++)
 				{
-					Node defaultNode = files[i].GetDefaultNode(files[i].DefaultKeys[a]);
-					Node node = this.GetNode(defaultNode.Id);
+					var defaultNode = files[i].GetDefaultNode(files[i].DefaultKeys[a]);
+					var node = this.GetNode(defaultNode.Id);
 					if (node == defaultNode) 
 					{
 						// there is no regular node so the defaultNode is already at
 						// the correct spot in the tree.
 						continue;
 					}
-					Node parentNode = this.GetNode(node.ParentId);
+					var parentNode = this.GetNode(node.ParentId);
 					if (parentNode == null)
 						parentNode = root;
 					// insert the default node between the regular node and it's parent.
@@ -236,9 +236,9 @@ namespace System.Web.Configuration.nBrowser
 			#endregion
 
 			#region Merge Ref Nodes
-			for (int i = 0;i <= Browserfiles.Count - 1;i++)
+			for (var i = 0;i <= Browserfiles.Count - 1;i++)
 			{
-				foreach (Node refNode in files[i].RefNodes) {
+				foreach (var refNode in files[i].RefNodes) {
 					GetNode(refNode.RefId).MergeFrom(refNode);
 				}
 			}
@@ -253,7 +253,7 @@ namespace System.Web.Configuration.nBrowser
 		/// </summary>
 		/// <param name="Key"></param>
 		/// <returns></returns>
-		private Node GetNode(string Key)
+		private Node GetNode(string? Key)
 		{
 			if (Key == null || Key.Length == 0)
 				return null;
@@ -271,8 +271,8 @@ namespace System.Web.Configuration.nBrowser
 			{
 				//now that we have a name we look it up in the hasttable containing
 				//the actual node.
-				nBrowser.File b = Browserfiles[filename];
-				Node n = b.GetNode(Key);
+				var b = Browserfiles[filename];
+				var n = b.GetNode(Key);
 				return n;
 			}
 
@@ -287,18 +287,18 @@ namespace System.Web.Configuration.nBrowser
 		public Node[] Nodes()
 		{
 			Node[] browsers;
-			nBrowser.File[] files = new nBrowser.File[Browserfiles.Count];
+			var files = new nBrowser.File[Browserfiles.Count];
 			Browserfiles.Values.CopyTo(files, 0);
-			int count = 0;
-			for (int i = 0;i <= files.Length - 1;i++)
+			var count = 0;
+			for (var i = 0;i <= files.Length - 1;i++)
 			{
 				count += files[i].Nodes.Length;
 			}
 			browsers = new Node[count];
 			count = 0;
-			for (int i = 0;i <= files.Length - 1;i++)
+			for (var i = 0;i <= files.Length - 1;i++)
 			{
-				for (int a = 0;a <= files[i].Nodes.Length - 1;a++)
+				for (var a = 0;a <= files[i].Nodes.Length - 1;a++)
 				{
 					browsers[count] = files[i].Nodes[a];
 					count++;
@@ -312,11 +312,11 @@ namespace System.Web.Configuration.nBrowser
 		/// <param name="header"></param>
 		/// <param name="initialCapabilities"></param>
 		/// <returns></returns>
-		public override System.Web.Configuration.CapabilitiesResult Process(System.Collections.Specialized.NameValueCollection header, System.Collections.IDictionary initialCapabilities)
+		public override System.Web.Configuration.CapabilitiesResult Process(System.Collections.Specialized.NameValueCollection header, System.Collections.IDictionary? initialCapabilities)
 		{
 			if (initialCapabilities == null)
 				initialCapabilities = new System.Collections.Generic.Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
-			System.Web.Configuration.nBrowser.Result r = new System.Web.Configuration.nBrowser.Result(initialCapabilities);
+			var r = new System.Web.Configuration.nBrowser.Result(initialCapabilities);
 
 #if trace
 			System.Diagnostics.Trace.WriteLine(string.Join("+", new string[50]));

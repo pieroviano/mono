@@ -125,8 +125,8 @@ namespace System.Web.Hosting {
 		public static Stream OpenFile (string virtualPath)
 		{
 			// This thing throws a nullref when we're not inside an ASP.NET appdomain, which is what MS does.
-			VirtualPathProvider provider = HostingEnvironment.VirtualPathProvider;
-			VirtualFile file = provider.GetFile (virtualPath);
+			var provider = HostingEnvironment.VirtualPathProvider;
+			var file = provider.GetFile (virtualPath);
 			if (file != null)
 				return file.Open ();
 

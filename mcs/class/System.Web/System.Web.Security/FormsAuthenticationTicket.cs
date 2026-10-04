@@ -63,8 +63,8 @@ namespace System.Web.Security
 
 		internal byte [] ToByteArray ()
 		{
-			MemoryStream ms = new MemoryStream ();
-			BinaryWriter writer = new BinaryWriter (ms);
+			var ms = new MemoryStream ();
+			var writer = new BinaryWriter (ms);
 			writer.Write (version);
 			writer.Write (persistent);
 			writer.Write (issue_date.Ticks);
@@ -90,9 +90,9 @@ namespace System.Web.Security
 			if (bytes == null)
 				throw new ArgumentNullException ("bytes");
 			
-			MemoryStream ms = new MemoryStream (bytes);
-			BinaryReader reader = new BinaryReader (ms);
-			FormsAuthenticationTicket ticket = new FormsAuthenticationTicket ();
+			var ms = new MemoryStream (bytes);
+			var reader = new BinaryReader (ms);
+			var ticket = new FormsAuthenticationTicket ();
 			ticket.version = reader.ReadInt32 ();
 			ticket.persistent = reader.ReadBoolean ();
 			ticket.issue_date = new DateTime (reader.ReadInt64 ());

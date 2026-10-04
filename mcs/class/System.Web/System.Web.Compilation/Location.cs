@@ -36,12 +36,12 @@ namespace System.Web.Compilation
 		string fileName, plainText;
 		ILocation location;
 		
-		public Location (ILocation location)
+		public Location (ILocation? location)
 		{
 			Init (location);
 		}
 
-		public void Init (ILocation location)
+		public void Init (ILocation? location)
 		{
 			if (location == null) {
 				beginLine = 0;

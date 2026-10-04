@@ -364,7 +364,7 @@ namespace System.Web.UI.WebControls {
 		internal bool IsEnabled	
 		{
 			get {
-				WebControl wc = this;
+				var wc = this;
 				while (wc != null) {
 					if (!wc.Enabled)
 						return false;
@@ -382,13 +382,13 @@ namespace System.Web.UI.WebControls {
 		public virtual bool SupportsDisabledAttribute {
 			get { return true; }
 		}
-		public void ApplyStyle (Style s) 
+		public void ApplyStyle (Style? s) 
 		{
 			if (s != null && !s.IsEmpty)
 				ControlStyle.CopyFrom(s);
 		}
 
-		public void CopyBaseAttributes (WebControl controlSrc) 
+		public void CopyBaseAttributes (WebControl? controlSrc) 
 		{
 			object o;
 
@@ -410,14 +410,14 @@ namespace System.Web.UI.WebControls {
 				ViewState ["ToolTip"] = o;
 
 			if (controlSrc.attributes != null) {
-				AttributeCollection attributes = Attributes;
+				var attributes = Attributes;
 				
 				foreach (string s in controlSrc.attributes.Keys)
 					attributes [s] = controlSrc.attributes [s];
 			}
 		}
 
-		public void MergeStyle (Style s) 
+		public void MergeStyle (Style? s) 
 		{
 			if (s != null && !s.IsEmpty)
 				ControlStyle.MergeWith(s);
@@ -442,8 +442,8 @@ namespace System.Web.UI.WebControls {
 		static char[] _script_trim_chars = {';'};
 		internal string BuildScriptAttribute (string name, string tail)
 		{
-			AttributeCollection attrs = Attributes;
-			string attr = attrs [name];
+			var attrs = Attributes;
+			var attr = attrs [name];
 			
 			if (attr == null || attr.Length == 0)
 				return tail;
@@ -509,14 +509,14 @@ namespace System.Web.UI.WebControls {
 			return new Style (ViewState);
 		}
 
-		protected override void LoadViewState (object savedState) 
+		protected override void LoadViewState (object? savedState) 
 		{
 			if (savedState == null || !(savedState is Pair)) {
 				base.LoadViewState (null);
 				return;
 			}
 
-			Pair pair = (Pair) savedState;
+			var pair = (Pair) savedState;
 			
 			base.LoadViewState (pair.First);
 			if (ViewState [System.Web.UI.WebControls.Style.BitStateKey] != null)
@@ -575,9 +575,9 @@ namespace System.Web.UI.WebControls {
 			if (renderOuterTableControl == null || renderOuterTableControl.RenderOuterTable)
 				return;
 
-			string properties = InlinePropertiesSet ();
+			var properties = InlinePropertiesSet ();
 			if (!String.IsNullOrEmpty (properties)) {
-				bool many = properties.IndexOf (',') > -1;
+				var many = properties.IndexOf (',') > -1;
 				throw new InvalidOperationException (
 					String.Format ("The style propert{0} '{1}' cannot be used while RenderOuterTable is disabled on the {2} control with ID '{3}'",
 						       many ? "ies" : "y",

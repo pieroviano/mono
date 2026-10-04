@@ -53,9 +53,9 @@ namespace System.Web
 			beginEventHandler = GetAsyncResult;
 		}
 
-		IAsyncResult GetAsyncResult (object sender, EventArgs e, AsyncCallback callback, object state)
+		IAsyncResult GetAsyncResult (object sender, EventArgs e, AsyncCallback? callback, object state)
 		{
-			Task task = taskEventHandler (sender, e);
+			var task = taskEventHandler (sender, e);
 			return TaskAsyncResult.GetAsyncResult (task, callback, state);
 		}
 	}

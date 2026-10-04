@@ -54,7 +54,7 @@ namespace System.Web.Configuration {
 
 		protected internal override object GetRuntimeObject ()
 		{
-			Hashtable ht = new Hashtable ();
+			var ht = new Hashtable ();
 
 			ht.Add ("clientScriptsLocation", ClientScriptsLocation);
 

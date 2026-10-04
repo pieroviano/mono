@@ -47,7 +47,7 @@ namespace System.Web.UI
 		[DefaultValue (true)]
 		public bool Enabled {
 			get {
-				object o = ViewState ["Enabled"];
+				var o = ViewState ["Enabled"];
 				if (o == null)
 					return true;
 				return (bool) o;
@@ -61,7 +61,7 @@ namespace System.Web.UI
 		[Category ("Behavior")]
 		public int Interval {
 			get {
-				object o = ViewState ["Interval"];
+				var o = ViewState ["Interval"];
 				if (o == null)
 					return 60000;
 				return (int) o;
@@ -98,7 +98,7 @@ namespace System.Web.UI
 		public event EventHandler<EventArgs> Tick;
 
 		protected virtual IEnumerable<ScriptDescriptor> GetScriptDescriptors () {
-			ScriptControlDescriptor descriptor = new ScriptControlDescriptor ("Sys.UI._Timer", this.ClientID);
+			var descriptor = new ScriptControlDescriptor ("Sys.UI._Timer", this.ClientID);
 			descriptor.AddProperty ("enabled", Enabled);
 			descriptor.AddProperty ("interval", Interval);
 			descriptor.AddProperty ("uniqueID", UniqueID);

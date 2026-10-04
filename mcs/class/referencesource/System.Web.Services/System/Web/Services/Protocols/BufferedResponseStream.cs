@@ -70,7 +70,7 @@ namespace System.Web.Services.Protocols {
 
         public override void Write(byte[] array, int offset, int count) {
             if (position > 0) {
-                int numBytes = buffer.Length - position;   // space left in buffer
+                var numBytes = buffer.Length - position;   // space left in buffer
                 if (numBytes > 0) {
                     if (numBytes > count)
                         numBytes = count;

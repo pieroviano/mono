@@ -53,8 +53,8 @@ namespace System.Web.UI
 
 		public static Type GetCompiledType (HttpContext context, string virtualPath, string physicalPath)
 		{
-			WebHandlerParser parser = new WebHandlerParser (context, virtualPath, physicalPath);
-			Type type = parser.GetCompiledTypeFromCache ();
+			var parser = new WebHandlerParser (context, virtualPath, physicalPath);
+			var type = parser.GetCompiledTypeFromCache ();
 			if (type != null)
 				return type;
 

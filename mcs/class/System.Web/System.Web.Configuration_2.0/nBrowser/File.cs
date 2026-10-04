@@ -72,7 +72,7 @@ namespace System.Web.Configuration.nBrowser
 			System.Xml.XmlNode node;
 			//I know this might allocate more nodes then needed but never less.
 			Nodes = new Node[BrowserFile.DocumentElement.ChildNodes.Count];
-			for (int a = 0;a <= BrowserFile.DocumentElement.ChildNodes.Count - 1;a++)
+			for (var a = 0;a <= BrowserFile.DocumentElement.ChildNodes.Count - 1;a++)
 			{
 				node = BrowserFile.DocumentElement.ChildNodes[a];
 
@@ -127,14 +127,14 @@ namespace System.Web.Configuration.nBrowser
 			get
 			{
 
-				string[] k = new string[Lookup.Keys.Count];
+				var k = new string[Lookup.Keys.Count];
 				//12-29-05
 				//This will copy the Keys In Alphabetical Order
 				//Lookup.Keys.CopyTo(k,0);
 				//This Method is ment to copy the Keys in the order
 				//that they were in the xml file.
-				int b = 0;
-				for (int i = 0;i <= Nodes.Length - 1;i++)
+				var b = 0;
+				for (var i = 0;i <= Nodes.Length - 1;i++)
 				{
 					if (Nodes[i] != null && Nodes[i].NameType != NodeType.DefaultBrowser 
 						&& Nodes[i].RefId.Length == 0)
@@ -154,14 +154,14 @@ namespace System.Web.Configuration.nBrowser
 		{
 			get
 			{
-				string[] k = new string[DefaultLookup.Keys.Count];
+				var k = new string[DefaultLookup.Keys.Count];
 				//12-29-05
 				//This will copy the Keys In Alphabetical Order
 				//DefaultLookup.Keys.CopyTo(k,0);
 				//This Method is ment to copy the Keys in the order
 				//that they were in the xml file.
-				int b = 0;
-				for (int i = 0;i <= Nodes.Length - 1;i++)
+				var b = 0;
+				for (var i = 0;i <= Nodes.Length - 1;i++)
 				{
 					if (Nodes[i] != null && Nodes[i].NameType == NodeType.DefaultBrowser)
 					{

@@ -57,7 +57,7 @@ namespace System.Web.UI.HtmlControls {
 		[WebCategory("Behavior")]
 		public virtual bool CausesValidation {
 			get {
-				string flag = Attributes["CausesValidation"];
+				var flag = Attributes["CausesValidation"];
 
 				if (flag == null)
 					return true;
@@ -73,7 +73,7 @@ namespace System.Web.UI.HtmlControls {
 		public virtual string ValidationGroup
 		{
 			get {
-				string group = Attributes["ValidationGroup"];
+				var group = Attributes["ValidationGroup"];
 
 				if (group == null)
 					return "";
@@ -102,14 +102,14 @@ namespace System.Web.UI.HtmlControls {
 
 		HtmlForm FindForm ()
 		{
-			Page p = Page;
+			var p = Page;
 			if (p != null)
 				return p.Form;
 
 			return null;
 		}
 		
-		void ResetForm (HtmlForm form)
+		void ResetForm (HtmlForm? form)
 		{
 			if (form == null || !form.HasControls ())
 				return;
@@ -131,15 +131,15 @@ namespace System.Web.UI.HtmlControls {
 
 		void ResetChildValue (Control child)
 		{
-			Type type = child.GetType ();
-			object[] attributes = type.GetCustomAttributes (false);
+			var type = child.GetType ();
+			var attributes = type.GetCustomAttributes (false);
 			if (attributes == null || attributes.Length == 0)
 				return;
 
 			string defaultProperty = null;
 			DefaultPropertyAttribute defprop;
 			
-			foreach (object attr in attributes) {
+			foreach (var attr in attributes) {
 				defprop = attr as DefaultPropertyAttribute;
 				if (defprop == null)
 					continue;
@@ -170,7 +170,7 @@ namespace System.Web.UI.HtmlControls {
 			DefaultValueAttribute defval = null;
 			object value = null;
 			
-			foreach (object attr in attributes) {
+			foreach (var attr in attributes) {
 				defval = attr as DefaultValueAttribute;
 				if (defval == null)
 					continue;
@@ -214,26 +214,26 @@ namespace System.Web.UI.HtmlControls {
 
 		protected override void RenderAttributes (HtmlTextWriter writer)
 		{
-			CultureInfo inv = Helpers.InvariantCulture;
-			string input_type = Type;
+			var inv = Helpers.InvariantCulture;
+			var input_type = Type;
 			if (0 != String.Compare (input_type, "reset", true, inv) &&
 				((0 == String.Compare (input_type, "submit", true, inv)) ||
 				(0 == String.Compare (input_type, "button", true, inv) && Events [ServerClickEvent] != null))) {
 
-				string onclick = String.Empty;
+				var onclick = String.Empty;
 				if (Attributes ["onclick"] != null) {
 					onclick = ClientScriptManager.EnsureEndsWithSemicolon (Attributes ["onclick"] + onclick);
 					Attributes.Remove ("onclick");
 				}
 
-				Page page = Page;
+				var page = Page;
 				if (page != null) {
-					PostBackOptions options = GetPostBackOptions ();
+					var options = GetPostBackOptions ();
 					onclick += page.ClientScript.GetPostBackEventReference (options, true);
 				}
 
 				if (onclick.Length > 0) {
-					bool encode = true;
+					var encode = true;
 					if (Events [ServerClickEvent] != null)
 						encode = false; // tests show that this is indeed
 								// the case...
@@ -253,8 +253,8 @@ namespace System.Web.UI.HtmlControls {
 
 		PostBackOptions GetPostBackOptions ()
 		{
-			Page page = Page;
-			PostBackOptions options = new PostBackOptions (this);
+			var page = Page;
+			var options = new PostBackOptions (this);
 			options.ValidationGroup = null;
 			options.ActionUrl = null;
 			options.Argument = String.Empty;

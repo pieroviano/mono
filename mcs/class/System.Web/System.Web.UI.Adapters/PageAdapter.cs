@@ -101,7 +101,7 @@ namespace System.Web.UI.Adapters
 							  string targetUrl,
 							  bool encodeUrl,
 							  string softkeyLabel,
-							  string accessKey)
+							  string? accessKey)
 		{
 			if (accessKey != null && accessKey.Length > 1)
 				throw new ArgumentOutOfRangeException("accessKey");
@@ -112,7 +112,7 @@ namespace System.Web.UI.Adapters
 						   string targetUrl,
 						   bool encodeUrl,
 						   string softKeyLabel,
-						   string accessKey)
+						   string? accessKey)
 		{
 			w.AddAttribute (HtmlTextWriterAttribute.Href, targetUrl, encodeUrl);
 			if (accessKey != null)
@@ -141,7 +141,7 @@ namespace System.Web.UI.Adapters
 							 string softkeyLabel,
 							 string text,
 							 string postUrl,
-							 string accessKey)
+							 string? accessKey)
 		{
 			RenderPostBackEvent (writer, target, argument, softkeyLabel, text, postUrl, accessKey, true);
 		}
@@ -152,10 +152,10 @@ namespace System.Web.UI.Adapters
 						    string softkeyLabel,
 						    string text,
 						    string postUrl,
-						    string accessKey,
+						    string? accessKey,
 						    bool encode)
 		{
-			string url = String.Format ("{0}?__VIEWSTATE={1}&__EVENTTARGET={2}&__EVENTARGUMENT={3}&__PREVIOUSPAGE={4}",
+			var url = String.Format ("{0}?__VIEWSTATE={1}&__EVENTTARGET={2}&__EVENTARGUMENT={3}&__PREVIOUSPAGE={4}",
 				postUrl, HttpUtility.UrlEncode (Page.GetSavedViewState ()), target, argument, Page.Request.FilePath);
 			RenderBeginHyperlink (writer, url, encode, softkeyLabel, accessKey);
 			writer.Write(text);

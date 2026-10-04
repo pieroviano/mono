@@ -599,7 +599,7 @@ namespace System.Web
 		public static string GetMimeType (string fileName)
 		{
 			string result = null;
-			int dot = fileName.LastIndexOf ('.');
+			var dot = fileName.LastIndexOf ('.');
 
 			if (dot != -1 && fileName.Length > dot + 1)
 				mimeTypes.TryGetValue (fileName.Substring (dot + 1), out result);

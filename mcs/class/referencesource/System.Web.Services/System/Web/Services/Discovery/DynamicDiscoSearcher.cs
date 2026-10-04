@@ -51,7 +51,7 @@ namespace System.Web.Services.Discovery {
         protected bool IsExcluded(string url) {
             if (excludedUrlsTable == null) {
                 excludedUrlsTable = new Hashtable();
-                foreach (string s in excludedUrls) {
+                foreach (var s in excludedUrls) {
                      Debug.Assert( s != null, "null element in excluded list" );
                      excludedUrlsTable.Add( MakeAbsExcludedPath(s).ToLower(CultureInfo.InvariantCulture), null);
                 }
@@ -106,7 +106,7 @@ namespace System.Web.Services.Discovery {
             if ( IsExcluded(directory) )                // what name is meant here?
                 return;
 
-            bool primaryFound = ScanDirByPattern(directory, true /*primary*/, PrimarySearchPattern);
+            var primaryFound = ScanDirByPattern(directory, true /*primary*/, PrimarySearchPattern);
 
             if (!primaryFound) {
                 if (!IsVirtualSearch ) {
@@ -115,7 +115,7 @@ namespace System.Web.Services.Discovery {
                     // We restrict second stage of a virtual discovery only to static .disco documents
                     // We assume that starting directory does not need a second stage
                     if (subDirLevel != 0) {
-                        DiscoverySearchPattern[] staticDiscoPattern = new DiscoverySearchPattern[] { new DiscoveryDocumentLinksPattern() };
+                        var staticDiscoPattern = new DiscoverySearchPattern[] { new DiscoveryDocumentLinksPattern() };
                         ScanDirByPattern(directory, false /*secondary*/, staticDiscoPattern);
                     }
                 }
@@ -135,17 +135,17 @@ namespace System.Web.Services.Discovery {
         // Returns: 'true' if primary file has been found (and added to Discovery References).
         protected bool ScanDirByPattern(string dir, bool IsPrimary, DiscoverySearchPattern[] patterns) {
 
-            DirectoryInfo directory = GetPhysicalDir(dir);              // comment here
+            var directory = GetPhysicalDir(dir);              // comment here
             if ( directory == null )
                 return false;
             if ( CompModSwitches.DynamicDiscoverySearcher.TraceVerbose )
                 Debug.WriteLine( "= DynamicDiscoSearcher.ScanDirByPattern(): dir=" + dir + "  Phys.dir=" + directory.Name);
 
-            bool isFileFound = false;
-            for (int i = 0; i < patterns.Length; i++) {
-                FileInfo[] files = directory.GetFiles(patterns[i].Pattern);             // search in dir
+            var isFileFound = false;
+            for (var i = 0; i < patterns.Length; i++) {
+                var files = directory.GetFiles(patterns[i].Pattern);             // search in dir
 
-                foreach (FileInfo file in files) {
+                foreach (var file in files) {
 
                     if ((file.Attributes & FileAttributes.Directory) == 0) {
 
@@ -156,7 +156,7 @@ namespace System.Web.Services.Discovery {
                             continue;
                             }
 
-                        string resultName = MakeResultPath(dir, file.Name);
+                        var resultName = MakeResultPath(dir, file.Name);
                         filesFound.Add( resultName );
                         discoDoc.References.Add(patterns[i].GetDiscoveryReference(resultName));
                         isFileFound = true;

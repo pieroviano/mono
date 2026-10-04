@@ -24,7 +24,7 @@ namespace System.Web.Services.Protocols {
         /// <include file='doc\TextReturnReader.uex' path='docs/doc[@for="TextReturnReader.Read"]/*' />
         public override object Read(WebResponse response, Stream responseStream) {
             try {
-                string decodedString = RequestResponseUtils.ReadResponse(response);
+                var decodedString = RequestResponseUtils.ReadResponse(response);
                 return matcher.Match(decodedString);
             }
             finally {

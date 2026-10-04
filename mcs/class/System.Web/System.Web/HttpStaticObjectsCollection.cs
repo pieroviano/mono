@@ -167,13 +167,13 @@ namespace System.Web
 
 		internal HttpStaticObjectsCollection Clone ()
 		{
-			HttpStaticObjectsCollection coll = new HttpStaticObjectsCollection ();
+			var coll = new HttpStaticObjectsCollection ();
 			if (objects == null)
 				return coll;
 			
 			var collObjects = coll.Objects;
 			foreach (var de in objects) {
-				StaticItem item = new StaticItem ((StaticItem) de.Value);
+				var item = new StaticItem ((StaticItem) de.Value);
 				collObjects [de.Key] = item;
 			}
 			
@@ -206,8 +206,8 @@ namespace System.Web
 
 		public static HttpStaticObjectsCollection Deserialize (BinaryReader reader)
 		{
-			HttpStaticObjectsCollection result = new HttpStaticObjectsCollection ();
-			for (int i = reader.ReadInt32 (); i > 0; i--)
+			var result = new HttpStaticObjectsCollection ();
+			for (var i = reader.ReadInt32 (); i > 0; i--)
 				result.Set (reader.ReadString (), System.Web.Util.AltSerialization.Deserialize (reader));
 
 			return result;

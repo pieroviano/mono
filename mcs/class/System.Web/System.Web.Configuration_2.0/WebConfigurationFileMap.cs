@@ -47,12 +47,12 @@ namespace System.Web.Configuration
 		
 		public override object Clone ()
 		{
-			WebConfigurationFileMap map = new WebConfigurationFileMap ();
+			var map = new WebConfigurationFileMap ();
 			map.MachineConfigFilename = MachineConfigFilename;
 			
 			map.virtualDirectories = new VirtualDirectoryMappingCollection ();
 			foreach (VirtualDirectoryMapping vmap in virtualDirectories) {
-				VirtualDirectoryMapping nvmap = new VirtualDirectoryMapping (vmap.PhysicalDirectory, vmap.IsAppRoot, vmap.ConfigFileBaseName);
+				var nvmap = new VirtualDirectoryMapping (vmap.PhysicalDirectory, vmap.IsAppRoot, vmap.ConfigFileBaseName);
 				map.virtualDirectories.Add (vmap.VirtualDirectory, nvmap);
 			}
 			

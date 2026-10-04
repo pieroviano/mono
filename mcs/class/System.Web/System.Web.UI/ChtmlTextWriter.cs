@@ -62,7 +62,7 @@ namespace System.Web.UI {
 
 		static void PopulateHash (Hashtable hash, string [] keys)
 		{
-			foreach (string key in keys)
+			foreach (var key in keys)
 				hash.Add (key, true);
 		}
 
@@ -77,7 +77,7 @@ namespace System.Web.UI {
 			//
 			// setup the recognized attrs
 			//
-			foreach (string key in recognized_attributes)
+			foreach (var key in recognized_attributes)
 				recognized_attrs.Add (key, new Hashtable ());
 
 			SetupSuppressedAttrs ();
@@ -105,7 +105,7 @@ namespace System.Web.UI {
 
 		static void Init (string key, string [] attrs, Hashtable container)
 		{
-			Hashtable attrs_hash = new Hashtable (attrs.Length);
+			var attrs_hash = new Hashtable (attrs.Length);
 			PopulateHash (attrs_hash, attrs);
 			container.Add (key, attrs_hash);
 		}
@@ -147,12 +147,12 @@ namespace System.Web.UI {
 		//
 		public override void WriteBreak ()
 		{
-			string br = GetTagName (HtmlTextWriterTag.Br);
+			var br = GetTagName (HtmlTextWriterTag.Br);
 			WriteBeginTag (br);
 			Write (TagRightChar);
 		}
 
-		public override void WriteEncodedText (string text)
+		public override void WriteEncodedText (string? text)
 		{
 			base.WriteEncodedText (text);
 		}

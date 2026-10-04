@@ -119,7 +119,7 @@ namespace System.Configuration
 		{
 			foreach (ConfigInfoCollection col in new object[] {Sections, Groups}) {
 				foreach (string key in col) {
-					ConfigInfo cinfo = col [key];
+					var cinfo = col [key];
 					if (cinfo.HasDataContent (config))
 						return true;
 				}
@@ -132,7 +132,7 @@ namespace System.Configuration
 			if (StreamName == cfg.FileName) return true;
 			foreach (ConfigInfoCollection col in new object[] {Sections, Groups}) {
 				foreach (string key in col) {
-					ConfigInfo cinfo = col [key];
+					var cinfo = col [key];
 					if (cinfo.HasConfigContent (cfg))
 						return true;
 				}
@@ -183,7 +183,7 @@ namespace System.Configuration
 					continue;
 				}
 				
-				string name = reader.LocalName;
+				var name = reader.LocalName;
 				ConfigInfo cinfo = null;
 				
 				if (name == "remove") {
@@ -208,7 +208,7 @@ namespace System.Configuration
 					ThrowException ("Unrecognized element: " + reader.Name, reader);
 					
 				cinfo.ReadConfig (cfg, streamName, reader);
-				ConfigInfo actInfo = Groups [cinfo.Name];
+				var actInfo = Groups [cinfo.Name];
 				if (actInfo == null) actInfo = Sections [cinfo.Name];
 				
 				if (actInfo != null) {
@@ -240,7 +240,7 @@ namespace System.Configuration
 			
 			foreach (ConfigInfoCollection col in new object[] {Sections, Groups}) {
 				foreach (string key in col) {
-					ConfigInfo cinfo = col [key];
+					var cinfo = col [key];
 					if (cinfo.HasConfigContent (cfg))
 						cinfo.WriteConfig (cfg, writer, mode);
 				}
@@ -254,7 +254,7 @@ namespace System.Configuration
 			if (!reader.MoveToNextAttribute () || reader.Name != "name")
 				ThrowException ("Unrecognized attribute.", reader);
 
-			string removeValue = reader.Value;
+			var removeValue = reader.Value;
 			if (String.IsNullOrEmpty (removeValue))
 				ThrowException ("Empty name to remove", reader);
 
@@ -303,18 +303,18 @@ namespace System.Configuration
 						ThrowException ("<location> elements are only allowed in <configuration> elements.", reader);
 
 					string allowOverrideAttr = reader.GetAttribute ("allowOverride");
-					bool allowOverride = allowOverrideAttr == null || allowOverrideAttr.Length == 0 || bool.Parse (allowOverrideAttr);
+					var allowOverride = allowOverrideAttr == null || allowOverrideAttr.Length == 0 || bool.Parse (allowOverrideAttr);
 					string path = reader.GetAttribute ("path");
 					if (path != null && path.Length > 0) {
-						string xml = reader.ReadOuterXml ();
-						string[] pathList = path.Split (',');
+						var xml = reader.ReadOuterXml ();
+						var pathList = path.Split (',');
 						string tpath;
-						foreach (string p in pathList) {
+						foreach (var p in pathList) {
 							tpath = p.Trim ();
 							if (config.Locations.Find (tpath) != null)
 								ThrowException ("Sections must only appear once per config file.", reader);
 							
-							ConfigurationLocation loc = new ConfigurationLocation (tpath, xml, config, allowOverride);
+							var loc = new ConfigurationLocation (tpath, xml, config, allowOverride);
 							config.Locations.Add (loc);
 						}
 					} else {
@@ -323,7 +323,7 @@ namespace System.Configuration
 					continue;
 				}
 			
-				ConfigInfo data = GetConfigInfo (reader, this);
+				var data = GetConfigInfo (reader, this);
 				if (data != null)
 					data.ReadData (config, reader, overrideAllowed);
 				else
@@ -394,7 +394,7 @@ namespace System.Configuration
 		{
 			foreach (ConfigInfoCollection col in new object[] {Sections, Groups}) {
 				foreach (string key in col) {
-					ConfigInfo cinfo = col [key];
+					var cinfo = col [key];
 					if (cinfo.HasDataContent (config))
 						cinfo.WriteData (config, writer, mode);
 				}
@@ -408,7 +408,7 @@ namespace System.Configuration
 
 			foreach (ConfigInfoCollection col in new object[] { Sections, Groups}) {
 				foreach (string key in col) {
-					ConfigInfo cinfo = col [key];
+					var cinfo = col [key];
 					if (cinfo.HasValues (config, mode))
 						return true;
 				}
@@ -422,7 +422,7 @@ namespace System.Configuration
 			modified = false;
 			foreach (ConfigInfoCollection col in new object[] { Sections, Groups}) {
 				foreach (string key in col) {
-					ConfigInfo cinfo = col [key];
+					var cinfo = col [key];
 					cinfo.ResetModified (config);
 				}
 			}

@@ -33,7 +33,7 @@ namespace System.Web.Services.Description {
         public static bool CheckConformance(WsiProfiles claims, ServiceDescription description, BasicProfileViolationCollection violations) {
             if (description == null)
                 throw new ArgumentNullException("description");
-            ServiceDescriptionCollection descriptions = new ServiceDescriptionCollection();
+            var descriptions = new ServiceDescriptionCollection();
             descriptions.Add(description);
             return CheckConformance(claims, descriptions, violations);
         }
@@ -49,7 +49,7 @@ namespace System.Web.Services.Description {
             if (violations == null)
                 throw new ArgumentNullException("violations");
 
-            int count = violations.Count;
+            var count = violations.Count;
             AnalyzeDescription(descriptions, violations);
             return count == violations.Count;
         }
@@ -58,7 +58,7 @@ namespace System.Web.Services.Description {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public static bool CheckConformance(WsiProfiles claims, WebReference webReference, BasicProfileViolationCollection violations) {
+        public static bool CheckConformance(WsiProfiles claims, WebReference? webReference, BasicProfileViolationCollection violations) {
             if ((claims & WsiProfiles.BasicProfile1_1) == 0)
                 return true;
             if (webReference == null)
@@ -67,9 +67,9 @@ namespace System.Web.Services.Description {
                 throw new ArgumentNullException("violations");
 
             // separate descriptions and schemas
-            XmlSchemas schemas = new XmlSchemas();
-            ServiceDescriptionCollection descriptions = new ServiceDescriptionCollection();
-            StringCollection warnings = new StringCollection();
+            var schemas = new XmlSchemas();
+            var descriptions = new ServiceDescriptionCollection();
+            var warnings = new StringCollection();
             foreach (DictionaryEntry entry in webReference.Documents) {
                 ServiceDescriptionImporter.AddDocument((string)entry.Key, entry.Value, schemas, descriptions, warnings);
             }
@@ -79,19 +79,19 @@ namespace System.Web.Services.Description {
 
 */
 
-            int count = violations.Count;
+            var count = violations.Count;
             AnalyzeDescription(descriptions,  violations);
             return count == violations.Count;
         }
 
         internal static bool AnalyzeBinding(Binding binding, ServiceDescription description, ServiceDescriptionCollection descriptions, BasicProfileViolationCollection violations) {
-            bool inconsistentStyle = false;
-            bool multipleParts = false;
-            SoapBinding soapBinding = (SoapBinding)binding.Extensions.Find(typeof(SoapBinding));
+            var inconsistentStyle = false;
+            var multipleParts = false;
+            var soapBinding = (SoapBinding)binding.Extensions.Find(typeof(SoapBinding));
             if (soapBinding == null || soapBinding.GetType() != typeof(SoapBinding))
                 return false;
 
-            SoapBindingStyle bindingStyle = soapBinding.Style == SoapBindingStyle.Default ? SoapBindingStyle.Document : soapBinding.Style;
+            var bindingStyle = soapBinding.Style == SoapBindingStyle.Default ? SoapBindingStyle.Document : soapBinding.Style;
 
             if (soapBinding.Transport.Length == 0) {
                 // There is an inconsistency between the WSDL 1.1 specification and the WSDL 1.1 schema regarding the transport attribute. The WSDL 1.1 specification requires it; however, the schema shows it to be optional.
@@ -104,8 +104,8 @@ namespace System.Web.Services.Description {
                 violations.Add("R2702", Res.GetString(Res.BindingInvalidAttribute, binding.Name, description.TargetNamespace, "transport", soapBinding.Transport));
             }
 
-            PortType portType = descriptions.GetPortType(binding.Type);
-            Hashtable operations = new Hashtable();
+            var portType = descriptions.GetPortType(binding.Type);
+            var operations = new Hashtable();
             if (portType != null) {
                 foreach (Operation op in portType.Operations) {
                     if (op.Messages.Flow == OperationFlow.Notification)
@@ -137,11 +137,11 @@ namespace System.Web.Services.Description {
                     }
                 }
             }
-            Hashtable wireSignatures = new Hashtable();
-            SoapBindingStyle style = SoapBindingStyle.Default;
+            var wireSignatures = new Hashtable();
+            var style = SoapBindingStyle.Default;
             foreach (OperationBinding bindingOperation in binding.Operations) {
-                SoapBindingStyle opStyle = bindingStyle;
-                string name = bindingOperation.Name;
+                var opStyle = bindingStyle;
+                var name = bindingOperation.Name;
                 if (name == null)
                     continue;
                 if (operations[name] == null) {
@@ -149,8 +149,8 @@ namespace System.Web.Services.Description {
                     // R2718 A wsdl:binding in a DESCRIPTION MUST have the same set of wsdl:operations as the wsdl:portType to which it refers.
                     violations.Add("R2718", Res.GetString(Res.PortTypeOperationMissing, bindingOperation.Name, binding.Name, description.TargetNamespace, binding.Type.Name, binding.Type.Namespace));
                 }
-                Operation operation = FindOperation(portType.Operations, bindingOperation);
-                SoapOperationBinding soapOpBinding = (SoapOperationBinding)bindingOperation.Extensions.Find(typeof(SoapOperationBinding));
+                var operation = FindOperation(portType.Operations, bindingOperation);
+                var soapOpBinding = (SoapOperationBinding)bindingOperation.Extensions.Find(typeof(SoapOperationBinding));
                 if (soapOpBinding != null) {
                     if (style == SoapBindingStyle.Default)
                         style = soapOpBinding.Style;
@@ -162,7 +162,7 @@ namespace System.Web.Services.Description {
                     // name attribute is optional, but has to be a valis NCName
                     // R2028 A DESCRIPTION using the WSDL namespace (prefixed "wsdl" in this Profile) MUST be valid according to the XML Schema found at "http://schemas.xmlsoap.org/wsdl/2003-02-11.xsd".
                     // R2029 A DESCRIPTION using the WSDL SOAP binding namespace (prefixed "soapbind" in this Profile) MUST be valid according to the XML Schema found at "http://schemas.xmlsoap.org/wsdl/soap/2003-02-11.xsd".
-                    SoapBodyBinding soapBodyBinding = FindSoapBodyBinding(true, bindingOperation.Input.Extensions, violations, opStyle == SoapBindingStyle.Document, bindingOperation.Name, binding.Name, description.TargetNamespace);
+                    var soapBodyBinding = FindSoapBodyBinding(true, bindingOperation.Input.Extensions, violations, opStyle == SoapBindingStyle.Document, bindingOperation.Name, binding.Name, description.TargetNamespace);
                     if (soapBodyBinding != null) {
                         if (soapBodyBinding.Use != SoapBindingUse.Encoded) {
                             Message message = operation == null ? null : operation.Messages.Input == null ? null : descriptions.GetMessage(operation.Messages.Input.Message);
@@ -171,7 +171,7 @@ namespace System.Web.Services.Description {
                             }
                             else {
                                 multipleParts = multipleParts || (soapBodyBinding.Parts != null && soapBodyBinding.Parts.Length > 1);
-                                int bodyParts = soapBodyBinding.Parts == null ? 0 : soapBodyBinding.Parts.Length;
+                                var bodyParts = soapBodyBinding.Parts == null ? 0 : soapBodyBinding.Parts.Length;
                                 CheckMessageParts(message, soapBodyBinding.Parts, true, bindingOperation.Name, binding.Name, description.TargetNamespace, wireSignatures, violations);
                                 if (bodyParts == 0 && message != null && message.Parts.Count > 1) {
                                     // R2210 If a document-literal binding in a DESCRIPTION does not specify the parts attribute on a soapbind:body element, the corresponding abstract wsdl:message MUST define zero or one wsdl:parts.
@@ -182,7 +182,7 @@ namespace System.Web.Services.Description {
                     }
                 }
                 if (bindingOperation.Output != null) {
-                    SoapBodyBinding soapBodyBinding = FindSoapBodyBinding(false, bindingOperation.Output.Extensions, violations, opStyle == SoapBindingStyle.Document, bindingOperation.Name, binding.Name, description.TargetNamespace);
+                    var soapBodyBinding = FindSoapBodyBinding(false, bindingOperation.Output.Extensions, violations, opStyle == SoapBindingStyle.Document, bindingOperation.Name, binding.Name, description.TargetNamespace);
                     if (soapBodyBinding != null) {
                         if (soapBodyBinding.Use != SoapBindingUse.Encoded) {
                             Message message = operation == null ? null : operation.Messages.Output == null ? null : descriptions.GetMessage(operation.Messages.Output.Message);
@@ -191,7 +191,7 @@ namespace System.Web.Services.Description {
                             }
                             else {
                                 multipleParts = multipleParts || (soapBodyBinding.Parts != null && soapBodyBinding.Parts.Length > 1);
-                                int bodyParts = soapBodyBinding.Parts == null ? 0 : soapBodyBinding.Parts.Length;
+                                var bodyParts = soapBodyBinding.Parts == null ? 0 : soapBodyBinding.Parts.Length;
                                 CheckMessageParts(message, soapBodyBinding.Parts, true, bindingOperation.Name, binding.Name, description.TargetNamespace, null, violations);
                                 if (bodyParts == 0 && message != null && message.Parts.Count > 1) {
                                     // R2210 If a document-literal binding in a DESCRIPTION does not specify the parts attribute on a soapbind:body element, the corresponding abstract wsdl:message MUST define zero or one wsdl:parts.
@@ -204,7 +204,7 @@ namespace System.Web.Services.Description {
                 foreach (FaultBinding faultBinding in bindingOperation.Faults) {
                     foreach (ServiceDescriptionFormatExtension extension in faultBinding.Extensions) {
                         if (extension is SoapFaultBinding) {
-                            SoapFaultBinding fault = (SoapFaultBinding)extension;
+                            var fault = (SoapFaultBinding)extension;
                             if (fault.Use == SoapBindingUse.Encoded) {
                                 // R2706 A wsdl:binding in a DESCRIPTION MUST use the value of "literal" for the use attribute in all soapbind:body, soapbind:fault, soapbind:header and soapbind:headerfault elements.
                                 violations.Add("R2706", MessageString(fault, bindingOperation.Name, binding.Name, description.TargetNamespace, false, null));
@@ -257,9 +257,9 @@ namespace System.Web.Services.Description {
             * Ignoring R2206 A wsdl:message in a DESCRIPTION containing a wsdl:part that uses the element attribute MUST refer, in that attribute, to a global element declaration.
             * Ignoring R2209 A wsdl:binding in a DESCRIPTION SHOULD bind every wsdl:part of a wsdl:message in the wsdl:portType to which it refers to one of soapbind:body, soapbind:header, soapbind:fault or soapbind:headerfault.
             */
-            bool foundBinding = false;
+            var foundBinding = false;
             foreach (ServiceDescription description in descriptions) {
-                StringCollection compileWarnings = SchemaCompiler.Compile(description.Types.Schemas);
+                var compileWarnings = SchemaCompiler.Compile(description.Types.Schemas);
                 CheckWsdlImports(description, violations);
                 CheckTypes(description, violations);
 
@@ -292,10 +292,10 @@ namespace System.Web.Services.Description {
                 if (import.Location == null || import.Location.Length == 0) {
                     violations.Add("R2007", Res.GetString(Res.Description, description.TargetNamespace));
                 }
-                string ns = import.Namespace;
+                var ns = import.Namespace;
                 if (ns.Length != 0) {
                     Uri uri;
-                    bool isAbsoluteUri = Uri.TryCreate(ns, UriKind.Absolute, out uri);
+                    var isAbsoluteUri = Uri.TryCreate(ns, UriKind.Absolute, out uri);
                     if (!isAbsoluteUri) {
                         violations.Add("R2803", Res.GetString(Res.Description, description.TargetNamespace));
                     }
@@ -307,7 +307,7 @@ namespace System.Web.Services.Description {
         static void CheckTypes(ServiceDescription description, BasicProfileViolationCollection violations) {
             foreach (XmlSchema schema in description.Types.Schemas) {
                 if (schema.TargetNamespace == null || schema.TargetNamespace.Length == 0) {
-                    foreach (XmlSchemaObject o in schema.Items) {
+                    foreach (var o in schema.Items) {
                         if (!(o is XmlSchemaAnnotation)) {
                             violations.Add("R2105", Res.GetString(Res.Element, "schema", description.TargetNamespace));
                             return;
@@ -317,7 +317,7 @@ namespace System.Web.Services.Description {
             }
         }
 
-        static void CheckMessagePart(MessagePart part, bool element, string message, string operation, string binding, string ns, Hashtable wireSignatures, BasicProfileViolationCollection violations) {
+        static void CheckMessagePart(MessagePart? part, bool element, string message, string? operation, string binding, string ns, Hashtable? wireSignatures, BasicProfileViolationCollection violations) {
             if (part == null) {
                 // R2710=The operations in a wsdl:binding in a DESCRIPTION MUST result in wire signatures that are different from one another. An endpoint that supports multiple operations must unambiguously identify the operation being invoked based on the input message that it receives. This is only possible if all the operations specified in the wsdl:binding associated with an endpoint have a unique wire signature.
                 if (!element) {
@@ -360,13 +360,13 @@ namespace System.Web.Services.Description {
             }
         }
 
-        static void AddSignature(Hashtable wireSignatures, string name, string ns, string message, string messageNs, BasicProfileViolationCollection violations) {
+        static void AddSignature(Hashtable? wireSignatures, string? name, string? ns, string message, string messageNs, BasicProfileViolationCollection violations) {
             if (wireSignatures == null)
                 return;
-            string key = ns + ":" + name;
+            var key = ns + ":" + name;
             string exisiting = (string)wireSignatures[key];
             // WireSignatureEmpty=Input message '{0}' from namespace '{1}' has no elements (empty wire signature)
-            string wire = ns == null && name == null ? Res.GetString(Res.WireSignatureEmpty, message, messageNs) : Res.GetString(Res.WireSignature, message, messageNs, ns, name);
+            var wire = ns == null && name == null ? Res.GetString(Res.WireSignatureEmpty, message, messageNs) : Res.GetString(Res.WireSignature, message, messageNs, ns, name);
             if (exisiting != null) {
                 if (exisiting.Length > 0) {
                     // R2710=The operations in a wsdl:binding in a DESCRIPTION MUST result in wire signatures that are different from one another. An endpoint that supports multiple operations must unambiguously identify the operation being invoked based on the input message that it receives. This is only possible if all the operations specified in the wsdl:binding associated with an endpoint have a unique wire signature.
@@ -380,7 +380,7 @@ namespace System.Web.Services.Description {
                 wireSignatures[key] = wire;
             }
         }
-        static void CheckMessageParts(Message message, string[] parts, bool element, string operation, string binding, string ns, Hashtable wireSignatures, BasicProfileViolationCollection violations) {
+        static void CheckMessageParts(Message? message, string[]? parts, bool element, string? operation, string binding, string ns, Hashtable wireSignatures, BasicProfileViolationCollection violations) {
             if (message == null)
                 return;
 
@@ -396,15 +396,15 @@ namespace System.Web.Services.Description {
                 return;
             }
             if (parts == null || parts.Length == 0) {
-                for (int i = 0; i < message.Parts.Count; i++) {
+                for (var i = 0; i < message.Parts.Count; i++) {
                     CheckMessagePart(message.Parts[i], element, message.Name, operation, binding, ns, i == 0 ? wireSignatures : null, violations);
                 }
             }
             else {
-                for (int i = 0; i < parts.Length; i++) {
+                for (var i = 0; i < parts.Length; i++) {
                     if (parts[i] == null)
                         continue;
-                    MessagePart part = message.Parts[parts[i]];
+                    var part = message.Parts[parts[i]];
                     CheckMessagePart(message.Parts[i], element, message.Name, operation, binding, ns, i == 0 ? wireSignatures : null, violations);
                 }
             }
@@ -416,11 +416,11 @@ namespace System.Web.Services.Description {
         // R2706 A wsdl:binding in a DESCRIPTION MUST use the value of "literal" for the use attribute in all soapbind:body, soapbind:fault, soapbind:header and soapbind:headerfault elements.
         static SoapBodyBinding FindSoapBodyBinding(bool input, ServiceDescriptionFormatExtensionCollection extensions, BasicProfileViolationCollection violations, bool documentBinding, string operationName, string bindingName, string bindingNs) {
             SoapBodyBinding body = null;
-            for (int i = 0; i < extensions.Count; i++) {
-                object item = extensions[i];
+            for (var i = 0; i < extensions.Count; i++) {
+                var item = extensions[i];
                 string ns = null;
-                bool knownExtension = false;
-                bool encodedBinding = false;
+                var knownExtension = false;
+                var encodedBinding = false;
                 if (item is SoapBodyBinding) {
                     knownExtension = true;
                     body = (SoapBodyBinding)item;
@@ -429,7 +429,7 @@ namespace System.Web.Services.Description {
                 }
                 else if (item is SoapHeaderBinding) {
                     knownExtension = true;
-                    SoapHeaderBinding header = (SoapHeaderBinding)item;
+                    var header = (SoapHeaderBinding)item;
                     ns = header.Namespace;
                     encodedBinding = (header.Use == SoapBindingUse.Encoded);
                     if (!encodedBinding && (header.Part == null || header.Part.Length == 0)) {
@@ -470,7 +470,7 @@ namespace System.Web.Services.Description {
                             // this is soap:Body rpc binding
                             //R2717 An rpc-literal binding in a DESCRIPTION MUST have the namespace attribute specified, the value of which MUST be an absolute URI, on contained soapbind:body elements.
                             Uri uri;
-                            bool isAbsoluteUri = Uri.TryCreate(ns, UriKind.Absolute, out uri);
+                            var isAbsoluteUri = Uri.TryCreate(ns, UriKind.Absolute, out uri);
                             if (!isAbsoluteUri) {
                                 violations.Add("R2717", MessageString(item, operationName, bindingName, bindingNs, input, Res.GetString(Res.UriValueRelative, ns)));
                             }
@@ -518,7 +518,7 @@ namespace System.Web.Services.Description {
 
         //R2026 A DESCRIPTION SHOULD NOT include extension elements with a wsdl:required attribute value of "true" on any WSDL construct (wsdl:binding, wsdl:portType, wsdl:message, wsdl:types or wsdl:import) that claims conformance to the Profile.
         static void CheckExtensions(Binding binding, ServiceDescription description, BasicProfileViolationCollection violations) {
-            SoapBinding soapBinding = (SoapBinding)binding.Extensions.Find(typeof(SoapBinding));
+            var soapBinding = (SoapBinding)binding.Extensions.Find(typeof(SoapBinding));
             if (soapBinding == null || soapBinding.GetType() != typeof(SoapBinding))
                 return;
             if (!CheckExtensions(binding.Extensions)) {
@@ -532,20 +532,20 @@ namespace System.Web.Services.Description {
         // A claim on a wsdl:portType is inherited by the referenced wsdl:operations
         // A claim on a wsdl:operation is inherited by the referenced wsdl:messages of its child wsdl:output and/or wsdl:input
         static void CheckExtensions(ServiceDescriptionCollection descriptions, BasicProfileViolationCollection violations) {
-            Hashtable bindings = new Hashtable();
+            var bindings = new Hashtable();
             foreach (ServiceDescription description in descriptions) {
-                WsiProfiles typesClaims = ServiceDescription.GetConformanceClaims(description.Types.DocumentationElement);
+                var typesClaims = ServiceDescription.GetConformanceClaims(description.Types.DocumentationElement);
                 if (typesClaims == WsiProfiles.BasicProfile1_1 && !CheckExtensions(description.Extensions)) {
                     violations.Add("R2026", Res.GetString(Res.Element, "wsdl:types", description.TargetNamespace));
                 }
                 foreach (Service service in description.Services) {
                     foreach (Port port in service.Ports) {
-                        WsiProfiles portClaims = ServiceDescription.GetConformanceClaims(port.DocumentationElement);
+                        var portClaims = ServiceDescription.GetConformanceClaims(port.DocumentationElement);
                         if (portClaims == WsiProfiles.BasicProfile1_1) {
                             if (!CheckExtensions(port.Extensions))
                                 violations.Add("R2026", Res.GetString(Res.Port, port.Name, service.Name, description.TargetNamespace));
 
-                            Binding binding = descriptions.GetBinding(port.Binding);
+                            var binding = descriptions.GetBinding(port.Binding);
                             if (bindings[binding] != null) {
                                 CheckExtensions(binding, description, violations);
                                 bindings.Add(binding, binding);
@@ -555,13 +555,13 @@ namespace System.Web.Services.Description {
                 }
 
                 foreach (Binding binding in description.Bindings) {
-                    SoapBinding soapBinding = (SoapBinding)binding.Extensions.Find(typeof(SoapBinding));
+                    var soapBinding = (SoapBinding)binding.Extensions.Find(typeof(SoapBinding));
                     if (soapBinding == null || soapBinding.GetType() != typeof(SoapBinding))
                         continue;
                     if (bindings[binding] != null)
                         continue;
 
-                    WsiProfiles bindingClaims = ServiceDescription.GetConformanceClaims(binding.DocumentationElement);
+                    var bindingClaims = ServiceDescription.GetConformanceClaims(binding.DocumentationElement);
                     if (bindingClaims == WsiProfiles.BasicProfile1_1) {
                         CheckExtensions(binding, description, violations);
                         bindings.Add(binding, binding);
@@ -594,9 +594,9 @@ namespace System.Web.Services.Description {
         internal BasicProfileViolation(string normativeStatement) : this(normativeStatement, null) {
         }
 
-        internal BasicProfileViolation(string normativeStatement, string element) {
+        internal BasicProfileViolation(string normativeStatement, string? element) {
             this.normativeStatement = normativeStatement;
-            int comma = normativeStatement.IndexOf(',');
+            var comma = normativeStatement.IndexOf(',');
             if (comma >= 0) {
                 normativeStatement = normativeStatement.Substring(0, comma);
             }
@@ -656,7 +656,7 @@ namespace System.Web.Services.Description {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public override string ToString() {
-            StringBuilder sb = new StringBuilder();
+            var sb = new StringBuilder();
             sb.Append(normativeStatement);
             sb.Append(": ");
             sb.Append(Details);
@@ -702,7 +702,7 @@ namespace System.Web.Services.Description {
             return Add(new BasicProfileViolation(normativeStatement));
         }
 
-        internal int Add(string normativeStatement, string element) {
+        internal int Add(string normativeStatement, string? element) {
             return Add(new BasicProfileViolation(normativeStatement, element));
         }
 
@@ -756,9 +756,9 @@ namespace System.Web.Services.Description {
         /// </devdoc>
         public override string ToString() {
             if (List.Count > 0) {
-                StringBuilder sb = new StringBuilder();
-                for (int i = 0; i < List.Count; i++) {
-                    BasicProfileViolation violation = this[i];
+                var sb = new StringBuilder();
+                for (var i = 0; i < List.Count; i++) {
+                    var violation = this[i];
                     if (i != 0) {
                         sb.Append(Environment.NewLine);
                     }

@@ -102,7 +102,7 @@ namespace System.Web.SessionState
 							  staticObjects, timeout);
 		}
 
-		void InsertSessionItem (InProcSessionItem item, int timeout, string id)
+		void InsertSessionItem (InProcSessionItem? item, int timeout, string id)
 		{
 			if (item == null || String.IsNullOrEmpty (id))
 				return;
@@ -127,7 +127,7 @@ namespace System.Web.SessionState
 		public override void CreateUninitializedItem (HttpContext context, string id, int timeout)
 		{
 			EnsureGoodId (id, true);
-			InProcSessionItem item = new InProcSessionItem ();
+			var item = new InProcSessionItem ();
 			item.expiresAt = DateTime.UtcNow.AddMinutes (timeout);
 			item.timeout = timeout;
 			InsertSessionItem (item, timeout, CachePrefix + id);
@@ -146,7 +146,7 @@ namespace System.Web.SessionState
 		}
 
 		SessionStateStoreData GetItemInternal (HttpContext context,
-						       string id,
+						       string? id,
 						       out bool locked,
 						       out TimeSpan lockAge,
 						       out object lockId,
@@ -161,8 +161,8 @@ namespace System.Web.SessionState
 			if (id == null)
 				return null;
 			
-			Cache cache = HttpRuntime.InternalCache;
-			string CacheId = CachePrefix + id;
+			var cache = HttpRuntime.InternalCache;
+			var CacheId = CachePrefix + id;
 			InProcSessionItem item = cache [CacheId] as InProcSessionItem;
 			
 			if (item == null)
@@ -214,7 +214,7 @@ namespace System.Web.SessionState
 		}
 		
 		public override SessionStateStoreData GetItem (HttpContext context,
-							       string id,
+							       string? id,
 							       out bool locked,
 							       out TimeSpan lockAge,
 							       out object lockId,
@@ -225,7 +225,7 @@ namespace System.Web.SessionState
 		}
 		
 		public override SessionStateStoreData GetItemExclusive (HttpContext context,
-									string id,
+									string? id,
 									out bool locked,
 									out TimeSpan lockAge,
 									out object lockId,
@@ -235,7 +235,7 @@ namespace System.Web.SessionState
 			return GetItemInternal (context, id, out locked, out lockAge, out lockId, out actions, true);
 		}
 
-		public override void Initialize (string name, NameValueCollection config)
+		public override void Initialize (string name, NameValueCollection? config)
 		{
 			if (String.IsNullOrEmpty (name))
 				name = "Session InProc handler";
@@ -251,16 +251,16 @@ namespace System.Web.SessionState
 		
 		public override void ReleaseItemExclusive (HttpContext context,
 							   string id,
-							   object lockId)
+							   object? lockId)
 		{
 			EnsureGoodId (id, true);
-			string CacheId = CachePrefix + id;
+			var CacheId = CachePrefix + id;
 			InProcSessionItem item = HttpRuntime.InternalCache [CacheId] as InProcSessionItem;
 			
 			if (item == null || lockId == null || lockId.GetType() != typeof(Int32) || item.lockId != (Int32)lockId)
 				return;
 
-			bool locked = false;
+			var locked = false;
 			ReaderWriterLockSlim itemLock = null;
 			
 			try {
@@ -280,18 +280,18 @@ namespace System.Web.SessionState
 		
 		public override void RemoveItem (HttpContext context,
 						 string id,
-						 object lockId,
+						 object? lockId,
 						 SessionStateStoreData item)
 		{
 			EnsureGoodId (id, true);
-			string CacheId = CachePrefix + id;
-			Cache cache = HttpRuntime.InternalCache;
+			var CacheId = CachePrefix + id;
+			var cache = HttpRuntime.InternalCache;
 			InProcSessionItem inProcItem = cache [CacheId] as InProcSessionItem;
 
 			if (inProcItem == null || lockId == null || lockId.GetType() != typeof(Int32) || inProcItem.lockId != (Int32)lockId)
 				return;
 
-			bool locked = false;
+			var locked = false;
 			ReaderWriterLockSlim itemLock = null;
 			
 			try {
@@ -312,14 +312,14 @@ namespace System.Web.SessionState
 		public override void ResetItemTimeout (HttpContext context, string id)
 		{
 			EnsureGoodId (id, true);
-			string CacheId = CachePrefix + id;
-			Cache cache = HttpRuntime.InternalCache;
+			var CacheId = CachePrefix + id;
+			var cache = HttpRuntime.InternalCache;
 			InProcSessionItem item = cache [CacheId] as InProcSessionItem;
 			
 			if (item == null)
 				return;
 
-			bool locked = false;
+			var locked = false;
 			ReaderWriterLockSlim itemLock = null;
 
 			try {
@@ -349,16 +349,16 @@ namespace System.Web.SessionState
 		*/
 		public override void SetAndReleaseItemExclusive (HttpContext context,
 								 string id,
-								 SessionStateStoreData item,
-								 object lockId,
+								 SessionStateStoreData? item,
+								 object? lockId,
 								 bool newItem)
 		{
 			EnsureGoodId (id, true);
-			string CacheId = CachePrefix + id;
-			Cache cache = HttpRuntime.InternalCache;
+			var CacheId = CachePrefix + id;
+			var cache = HttpRuntime.InternalCache;
 			InProcSessionItem inProcItem = cache [CacheId] as InProcSessionItem;
 			ISessionStateItemCollection itemItems = null;
-			int itemTimeout = 20;
+			var itemTimeout = 20;
 			HttpStaticObjectsCollection itemStaticItems = null;
 
 			if (item != null) {
@@ -380,7 +380,7 @@ namespace System.Web.SessionState
 				cache.Remove (CacheId);
 			}
 
-			bool locked = false;
+			var locked = false;
 			ReaderWriterLockSlim itemLock = null;
 			try {
 				itemLock = inProcItem.rwlock;
@@ -410,7 +410,7 @@ namespace System.Web.SessionState
 			return true;
 		}
 
-		void EnsureGoodId (string id, bool throwOnNull)
+		void EnsureGoodId (string? id, bool throwOnNull)
 		{
 			if (id == null)
 				if (throwOnNull)
@@ -431,7 +431,7 @@ namespace System.Web.SessionState
 				if (value is SessionStateStoreData)
 					expireCallback (key, (SessionStateStoreData)value);
 				else if (value is InProcSessionItem) {
-					InProcSessionItem item = (InProcSessionItem)value;
+					var item = (InProcSessionItem)value;
 					if (item.resettingTimeout) {
 						item.resettingTimeout = false;
 						return;
@@ -446,7 +446,7 @@ namespace System.Web.SessionState
 				} else
 					expireCallback (key, null);
 			} else if (value is InProcSessionItem) {
-				InProcSessionItem item = (InProcSessionItem)value;
+				var item = (InProcSessionItem)value;
 				if (item.resettingTimeout) {
 					item.resettingTimeout = false;
 					return;

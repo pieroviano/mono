@@ -34,7 +34,7 @@ namespace System.Web
 	{
 		public void ProcessRequest (HttpContext context)
 		{
-			HttpRequest request = context.Request;
+			var request = context.Request;
 
 			throw new HttpException (501, request.HttpMethod + " " + request.Path + " is not implemented.");
 		}

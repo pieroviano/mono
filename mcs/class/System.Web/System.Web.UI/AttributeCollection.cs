@@ -89,14 +89,14 @@ namespace System.Web.UI {
 
 		public override int GetHashCode () 
 		{
-			int hashValue = 0;
+			var hashValue = 0;
 			
 			foreach (string key in Keys) {
 				if (key == StyleAttribute) {
 					continue;
 				}
 				hashValue ^= key.GetHashCode ();
-				string value = this [key];
+				var value = this [key];
 				if (value != null) {
 					hashValue ^= value.GetHashCode ();
 				}
@@ -105,7 +105,7 @@ namespace System.Web.UI {
 			if (styleCollection != null) {
 				foreach (string styleKey in styleCollection.Keys) {
 					hashValue ^= styleCollection [styleKey].GetHashCode ();
-					string styleValue = styleCollection [styleKey];
+					var styleValue = styleCollection [styleKey];
 					if (styleValue != null) {
 						hashValue ^= styleValue.GetHashCode ();
 					}
@@ -180,7 +180,7 @@ namespace System.Web.UI {
 			}
 		}
 
-		internal void CopyFrom (AttributeCollection attributeCollection)
+		internal void CopyFrom (AttributeCollection? attributeCollection)
 		{
 			if (attributeCollection == null || attributeCollection.Count == 0)
 				return;

@@ -39,19 +39,19 @@ namespace System.Web.Util {
             if (sRight == null) {
                 throw new ArgumentNullException("keyRight");
             }
-            int lLeft = sLeft.Length;
-            int lRight = sRight.Length;
+            var lLeft = sLeft.Length;
+            var lRight = sRight.Length;
             if (lLeft != lRight) {
                 return 1;
             }
-            for (int i = 0; i < lLeft; i++) {
-                char charLeft = sLeft[i];
-                char charRight = sRight[i];
+            for (var i = 0; i < lLeft; i++) {
+                var charLeft = sLeft[i];
+                var charRight = sRight[i];
                 if (charLeft == charRight) {
                     continue;
                 }
-                UnicodeCategory catLeft = Char.GetUnicodeCategory(charLeft);
-                UnicodeCategory catRight = Char.GetUnicodeCategory(charRight);
+                var catLeft = Char.GetUnicodeCategory(charLeft);
+                var catRight = Char.GetUnicodeCategory(charRight);
                 if (catLeft == UnicodeCategory.UppercaseLetter 
                     && catRight == UnicodeCategory.LowercaseLetter) {
                     if (Char.ToLower(charLeft, CultureInfo.InvariantCulture) == charRight) {

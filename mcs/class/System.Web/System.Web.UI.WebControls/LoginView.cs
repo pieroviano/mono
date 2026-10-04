@@ -129,12 +129,12 @@ namespace System.Web.UI.WebControls
 			}
 		}
 
-		ITemplate GetTemplateFromRoleGroup (RoleGroup rg, IPrincipal user)
+		ITemplate GetTemplateFromRoleGroup (RoleGroup rg, IPrincipal? user)
 		{
 			if (user == null)
 				return null;
 			
-			foreach (string role in rg.Roles) {
+			foreach (var role in rg.Roles) {
 				if (user.IsInRole (role))
 					return rg.ContentTemplate;
 			}
@@ -145,14 +145,14 @@ namespace System.Web.UI.WebControls
 		protected internal override void CreateChildControls ()
 		{
 			Controls.Clear ();
-			Control c = new Control ();
+			var c = new Control ();
 			ITemplate template = null;
 			
 			if (Page != null && Page.Request.IsAuthenticated) {
 				isAuthenticated = true;
 
 				RoleGroupCollection rgc;
-				HttpContext ctx = HttpContext.Current;
+				var ctx = HttpContext.Current;
 				IPrincipal user = ctx != null ? ctx.User : null;
 
 				if (Roles.Enabled && (rgc = RoleGroups) != null && rgc.Count > 0) {
@@ -177,7 +177,7 @@ namespace System.Web.UI.WebControls
 
 		public override void DataBind ()
 		{
-			EventArgs args = EventArgs.Empty;
+			var args = EventArgs.Empty;
 			OnDataBinding (args);
 			EnsureChildControls ();
 			DataBindChildren ();
@@ -190,7 +190,7 @@ namespace System.Web.UI.WebControls
 			throw new NotSupportedException ();
 		}
 
-		protected internal override void LoadControlState (object savedState)
+		protected internal override void LoadControlState (object? savedState)
 		{
 			if (savedState == null)
 				return;

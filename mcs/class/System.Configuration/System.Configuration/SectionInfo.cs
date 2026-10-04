@@ -60,7 +60,7 @@ namespace System.Configuration
 		
 		public override object CreateInstance ()
 		{
-			object ob = base.CreateInstance ();
+			var ob = base.CreateInstance ();
 			ConfigurationSection sec = ob as ConfigurationSection;
 			if (sec != null) {
 				sec.SectionInformation.AllowLocation = allowLocation;
@@ -92,14 +92,14 @@ namespace System.Configuration
 				switch (reader.Name)
 				{
 					case "allowLocation":
-						string allowLoc = reader.Value;
+						var allowLoc = reader.Value;
 						allowLocation = (allowLoc == "true");
 						if (!allowLocation && allowLoc != "false")
 							ThrowException ("Invalid attribute value", reader);
 						break;
 	
 					case "allowDefinition":
-						string allowDef = reader.Value;
+						var allowDef = reader.Value;
 						try {
 							allowDefinition = (ConfigurationAllowDefinition) Enum.Parse (
 									   typeof (ConfigurationAllowDefinition), allowDef);
@@ -109,7 +109,7 @@ namespace System.Configuration
 						break;
 	
 					case "allowExeDefinition":
-						string allowExeDef = reader.Value;
+						var allowExeDef = reader.Value;
 						try {
 							allowExeDefinition = (ConfigurationAllowExeDefinition) Enum.Parse (
 									   typeof (ConfigurationAllowExeDefinition), allowExeDef);
@@ -129,16 +129,16 @@ namespace System.Configuration
 						break;
 						
 					case "requirePermission":
-						string reqPerm = reader.Value;
-						bool reqPermValue = (reqPerm == "true");
+						var reqPerm = reader.Value;
+						var reqPermValue = (reqPerm == "true");
 						if (!reqPermValue && reqPerm != "false")
 							ThrowException ("Invalid attribute value", reader);
 						requirePermission = reqPermValue;
 						break;
 
 					case "restartOnExternalChanges":
-						string restart = reader.Value;
-						bool restartValue = (restart == "true");
+						var restart = reader.Value;
+						var restartValue = (restart == "true");
 						if (!restartValue && restart != "false")
 							ThrowException ("Invalid attribute value", reader);
 						restartOnExternalChanges = restartValue;
@@ -178,7 +178,7 @@ namespace System.Configuration
 			if (!config.HasFile && !allowLocation)
 				throw new ConfigurationErrorsException ("The configuration section <" + Name + "> cannot be defined inside a <location> element.", reader); 
 			if (!config.ConfigHost.IsDefinitionAllowed (config.ConfigPath, allowDefinition, allowExeDefinition)) {
-				object ctx = allowExeDefinition != ConfigurationAllowExeDefinition.MachineToApplication ? (object) allowExeDefinition : (object) allowDefinition;
+				var ctx = allowExeDefinition != ConfigurationAllowExeDefinition.MachineToApplication ? (object) allowExeDefinition : (object) allowDefinition;
 				throw new ConfigurationErrorsException ("The section <" + Name + "> can't be defined in this configuration file (the allowed definition context is '" + ctx + "').", reader);
 			}
 			if (config.GetSectionXml (this) != null)
@@ -190,23 +190,23 @@ namespace System.Configuration
 		{
 			string xml;
 			
-			ConfigurationSection section = config.GetSectionInstance (this, false);
+			var section = config.GetSectionInstance (this, false);
 			if (section != null) {
 				ConfigurationSection parentSection = config.Parent != null ? config.Parent.GetSectionInstance (this, false) : null;
 				xml = section.SerializeSection (parentSection, Name, mode);
 
-				string externalDataXml = section.ExternalDataXml;
-				string filePath = config.FilePath;
+				var externalDataXml = section.ExternalDataXml;
+				var filePath = config.FilePath;
 				
 				if (!String.IsNullOrEmpty (filePath) && !String.IsNullOrEmpty (externalDataXml)) {
-					string path = Path.Combine (Path.GetDirectoryName (filePath), section.SectionInformation.ConfigSource);
-					using (StreamWriter sw = new StreamWriter (path)) {
+					var path = Path.Combine (Path.GetDirectoryName (filePath), section.SectionInformation.ConfigSource);
+					using (var sw = new StreamWriter (path)) {
 						sw.Write (externalDataXml);
 					}
 				}
 				
 				if (section.SectionInformation.IsProtected) {
-					StringBuilder sb = new StringBuilder ();
+					var sb = new StringBuilder ();
 					sb.AppendFormat ("<{0} configProtectionProvider=\"{1}\">\n",
 							 Name,
 							 section.SectionInformation.ProtectionProvider.Name);
@@ -244,7 +244,7 @@ namespace System.Configuration
 
 		internal override void ResetModified (Configuration config)
 		{
-			ConfigurationSection section = config.GetSectionInstance (this, false);
+			var section = config.GetSectionInstance (this, false);
 			if (section != null)
 				section.ResetModified ();
 		}

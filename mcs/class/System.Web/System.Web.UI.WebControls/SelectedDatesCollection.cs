@@ -81,7 +81,7 @@ namespace System.Web.UI.WebControls {
 			toDate = toDate.Date;
 			
 			l.Clear ();
-			for (DateTime dt = fromDate; dt <= toDate; dt = dt.AddDays (1))
+			for (var dt = fromDate; dt <= toDate; dt = dt.AddDays (1))
 				Add (dt);
 		}
 			

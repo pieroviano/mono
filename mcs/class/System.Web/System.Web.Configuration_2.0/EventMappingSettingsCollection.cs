@@ -71,7 +71,7 @@ namespace System.Web.Configuration {
 
 		public int IndexOf (string name)
 		{
-			EventMappingSettings settings = (EventMappingSettings)BaseGet (name);
+			var settings = (EventMappingSettings)BaseGet (name);
 			if (settings == null)
 				return -1; /* XXX */
 			else

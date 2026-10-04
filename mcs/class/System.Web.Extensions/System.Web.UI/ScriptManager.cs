@@ -249,7 +249,7 @@ namespace System.Web.UI
 
 		internal bool IsDeploymentRetail {
 			get {
-				DeploymentSection deployment = (DeploymentSection) WebConfigurationManager.GetSection ("system.web/deployment");
+				var deployment = (DeploymentSection) WebConfigurationManager.GetSection ("system.web/deployment");
 				return deployment.Retail;
 			}
 		}
@@ -400,13 +400,13 @@ namespace System.Web.UI
 		public event EventHandler<ScriptReferenceEventArgs> ResolveScriptReference;
 		[Category ("Action")]
 		public event EventHandler<CompositeScriptReferenceEventArgs> ResolveCompositeScriptReference;
-		public static ScriptManager GetCurrent (Page page) {
+		public static ScriptManager GetCurrent (Page? page) {
 			if (page == null)
 				throw new ArgumentNullException ("page");
 			return GetCurrentInternal (page);
 		}
 
-		internal static ScriptManager GetCurrentInternal (Page page)
+		internal static ScriptManager GetCurrentInternal (Page? page)
 		{
 			if (page == null)
 				return null;
@@ -423,7 +423,7 @@ namespace System.Web.UI
 		{
 			if (_updatePanels == null)
 				return null;
-			foreach (UpdatePanel panel in _updatePanels) {
+			foreach (var panel in _updatePanels) {
 				if (panel.ID == id)
 					return panel;
 			}
@@ -434,7 +434,7 @@ namespace System.Web.UI
 			_isInAsyncPostBack = true;
 			string arg = postCollection [postDataKey];
 			if (!String.IsNullOrEmpty (arg)) {
-				string [] args = arg.Split ('|');
+				var args = arg.Split ('|');
 				switch (args.Length) {
 					case 1:
 						_asyncPostBackSourceElementID = args [0];
@@ -485,17 +485,17 @@ namespace System.Web.UI
 			}
 			else {
 				if (EnableScriptGlobalization) {
-					CultureInfo culture = Thread.CurrentThread.CurrentCulture;
-					string script = String.Format ("var __cultureInfo = '{0}';", JavaScriptSerializer.DefaultSerializer.Serialize (new CultureInfoSerializer (culture)));
+					var culture = Thread.CurrentThread.CurrentCulture;
+					var script = String.Format ("var __cultureInfo = '{0}';", JavaScriptSerializer.DefaultSerializer.Serialize (new CultureInfoSerializer (culture)));
 					RegisterClientScriptBlock (this, typeof (ScriptManager), "ScriptGlobalization", script, true);
 				}
 
 				// Register dispose script
 				if (_disposeScripts != null && _disposeScripts.Count > 0) {
-					StringBuilder sb = new StringBuilder ();
+					var sb = new StringBuilder ();
 					sb.AppendLine ();
-					for (int i = 0; i < _disposeScripts.Count; i++) {
-						RegisteredDisposeScript entry = _disposeScripts [i];
+					for (var i = 0; i < _disposeScripts.Count; i++) {
+						var entry = _disposeScripts [i];
 						if (IsMultiForm)
 							sb.Append ("Sys.WebForms.PageRequestManager.getInstance($get(\"" + Page.Form.ClientID + "\"))._registerDisposeScript(\"");
 						else
@@ -535,8 +535,8 @@ namespace System.Web.UI
 		void OnPreRenderComplete (object sender, EventArgs e)
 		{
 			// Resolve Scripts
-			ScriptReference ajaxScript = CreateScriptReference ("MicrosoftAjax.js", String.Empty, false);
-			ScriptReference ajaxWebFormsScript = CreateScriptReference ("MicrosoftAjaxWebForms.js", String.Empty, false);
+			var ajaxScript = CreateScriptReference ("MicrosoftAjax.js", String.Empty, false);
+			var ajaxWebFormsScript = CreateScriptReference ("MicrosoftAjaxWebForms.js", String.Empty, false);
 			ScriptReference ajaxExtensionScript = null;
 			ScriptReference ajaxWebFormsExtensionScript = null;
 			if (IsMultiForm) {
@@ -544,7 +544,7 @@ namespace System.Web.UI
 				ajaxWebFormsExtensionScript = CreateScriptReference ("MicrosoftAjaxWebFormsExtension.js", String.Empty);
 			}
 
-			foreach (ScriptReferenceEntry script in GetScriptReferences ()) {
+			foreach (var script in GetScriptReferences ()) {
 				OnResolveScriptReference (new ScriptReferenceEventArgs (script.ScriptReference));
 					if (_scriptToRegister == null)
 						_scriptToRegister = new List<ScriptReferenceEntry> ();
@@ -559,23 +559,23 @@ namespace System.Web.UI
 					RegisterClientScriptBlock (this, typeof (ScriptManager), "Sys.Application", "\nSys.Application._initialize(document.getElementById('" + Page.Form.ClientID + "'));\n", true);
 				}
 
-				StringBuilder sb = new StringBuilder ();
+				var sb = new StringBuilder ();
    				sb.AppendLine ("if (typeof(Sys) === 'undefined') throw new Error('ASP.NET Ajax client-side framework failed to load.');");
 
-				ScriptingProfileServiceSection profileService = (ScriptingProfileServiceSection) WebConfigurationManager.GetSection ("system.web.extensions/scripting/webServices/profileService");
+				var profileService = (ScriptingProfileServiceSection) WebConfigurationManager.GetSection ("system.web.extensions/scripting/webServices/profileService");
 				if (profileService != null && profileService.Enabled)
 					sb.AppendLine ("Sys.Services._ProfileService.DefaultWebServicePath = '" + ResolveClientUrl ("~" + System.Web.Script.Services.ProfileService.DefaultWebServicePath) + "';");
-				string profileServicePath = GetProfileServicePath ();
+				var profileServicePath = GetProfileServicePath ();
 				if (!String.IsNullOrEmpty (profileServicePath))
 					sb.AppendLine ("Sys.Services.ProfileService.set_path('" + profileServicePath + "');");
 
-				ScriptingAuthenticationServiceSection authenticationService = (ScriptingAuthenticationServiceSection) WebConfigurationManager.GetSection ("system.web.extensions/scripting/webServices/authenticationService");
+				var authenticationService = (ScriptingAuthenticationServiceSection) WebConfigurationManager.GetSection ("system.web.extensions/scripting/webServices/authenticationService");
 				if (authenticationService != null && authenticationService.Enabled) {
 					sb.AppendLine ("Sys.Services._AuthenticationService.DefaultWebServicePath = '" + ResolveClientUrl ("~/Authentication_JSON_AppService.axd") + "';");
 					if (Page.User.Identity.IsAuthenticated)
 						sb.AppendLine ("Sys.Services.AuthenticationService._setAuthenticated(true);");
 				}
-				string authenticationServicePath = GetAuthenticationServicePath ();
+				var authenticationServicePath = GetAuthenticationServicePath ();
 				if (!String.IsNullOrEmpty (authenticationServicePath))
 					sb.AppendLine ("Sys.Services.AuthenticationService.set_path('" + authenticationServicePath + "');");
 
@@ -592,28 +592,28 @@ namespace System.Web.UI
 			}
 			// Register Scripts
 			if (_scriptToRegister != null)
-				for (int i = 0; i < _scriptToRegister.Count; i++)
+				for (var i = 0; i < _scriptToRegister.Count; i++)
 					RegisterScriptReference (_scriptToRegister [i].Control, _scriptToRegister [i].ScriptReference, _scriptToRegister [i].LoadScriptsBeforeUI);
 
 			if (!IsInAsyncPostBack) {
 				// Register services
 				if (_services != null && _services.Count > 0) {
-					for (int i = 0; i < _services.Count; i++) {
+					for (var i = 0; i < _services.Count; i++) {
 						RegisterServiceReference (this, _services [i]);
 					}
 				}
 
 				if (_proxies != null && _proxies.Count > 0) {
-					for (int i = 0; i < _proxies.Count; i++) {
-						ScriptManagerProxy proxy = _proxies [i];
-						for (int j = 0; j < proxy.Services.Count; j++) {
+					for (var i = 0; i < _proxies.Count; i++) {
+						var proxy = _proxies [i];
+						for (var j = 0; j < proxy.Services.Count; j++) {
 							RegisterServiceReference (proxy, proxy.Services [j]);
 						}
 					}
 				}
 
 				if (EnablePageMethods) {
-					LogicalTypeInfo logicalTypeInfo = LogicalTypeInfo.GetLogicalTypeInfo (Page.GetType (), Page.Request.FilePath);
+					var logicalTypeInfo = LogicalTypeInfo.GetLogicalTypeInfo (Page.GetType (), Page.Request.FilePath);
 					RegisterClientScriptBlock (this, typeof (ScriptManager), "PageMethods", logicalTypeInfo.Proxy, true);
 				}
 
@@ -630,7 +630,7 @@ namespace System.Web.UI
 				return ResolveClientUrl (_profileService.Path);
 
 			if (_proxies != null && _proxies.Count > 0)
-				for (int i = 0; i < _proxies.Count; i++)
+				for (var i = 0; i < _proxies.Count; i++)
 					if (!String.IsNullOrEmpty (_proxies [i].ProfileService.Path))
 						return _proxies [i].ResolveClientUrl (_proxies [i].ProfileService.Path);
 			return null;
@@ -641,7 +641,7 @@ namespace System.Web.UI
 				return ResolveClientUrl (_authenticationService.Path);
 
 			if (_proxies != null && _proxies.Count > 0)
-				for (int i = 0; i < _proxies.Count; i++)
+				for (var i = 0; i < _proxies.Count; i++)
 					if (!String.IsNullOrEmpty (_proxies [i].AuthenticationService.Path))
 						return _proxies [i].ResolveClientUrl (_proxies [i].AuthenticationService.Path);
 			return null;
@@ -693,7 +693,7 @@ namespace System.Web.UI
 			get { return false; }
 		}
 
-		bool PanelRequiresUpdate (UpdatePanel panel)
+		bool PanelRequiresUpdate (UpdatePanel? panel)
 		{
 			if (panel == null || _panelsToRefresh == null || _panelsToRefresh.Count == 0)
 				return false;
@@ -701,7 +701,7 @@ namespace System.Web.UI
 			return _panelsToRefresh.Contains (panel);
 		}
 		
-		bool HasBeenRendered (Control control)
+		bool HasBeenRendered (Control? control)
 		{
 			if (control == null)
 				return false;
@@ -715,40 +715,40 @@ namespace System.Web.UI
 
 		IEnumerable<ScriptReferenceEntry> GetScriptReferences () {
 			if (_scripts != null && _scripts.Count > 0) {
-				for (int i = 0; i < _scripts.Count; i++) {
+				for (var i = 0; i < _scripts.Count; i++) {
 					yield return new ScriptReferenceEntry (this, _scripts [i], LoadScriptsBeforeUI);
 				}
 			}
 
 			if (_proxies != null && _proxies.Count > 0) {
-				for (int i = 0; i < _proxies.Count; i++) {
-					ScriptManagerProxy proxy = _proxies [i];
-					for (int j = 0; j < proxy.Scripts.Count; j++)
+				for (var i = 0; i < _proxies.Count; i++) {
+					var proxy = _proxies [i];
+					for (var j = 0; j < proxy.Scripts.Count; j++)
 						yield return new ScriptReferenceEntry (proxy, proxy.Scripts [j], LoadScriptsBeforeUI);
 				}
 			}
 
 			if (_registeredScriptControls != null && _registeredScriptControls.Count > 0) {
-				for (int i = 0; i < _registeredScriptControls.Count; i++) {
-					IEnumerable<ScriptReference> scripts = _registeredScriptControls [i].GetScriptReferences ();
+				for (var i = 0; i < _registeredScriptControls.Count; i++) {
+					var scripts = _registeredScriptControls [i].GetScriptReferences ();
 					if (scripts != null)
-						foreach (ScriptReference s in scripts)
+						foreach (var s in scripts)
 							yield return new ScriptReferenceEntry ((Control) _registeredScriptControls [i], s, LoadScriptsBeforeUI);
 				}
 			}
 
 			if (_registeredExtenderControls != null && _registeredExtenderControls.Count > 0) {
-				foreach (IExtenderControl ex in _registeredExtenderControls.Keys) {
-					IEnumerable<ScriptReference> scripts = ex.GetScriptReferences ();
+				foreach (var ex in _registeredExtenderControls.Keys) {
+					var scripts = ex.GetScriptReferences ();
 					if (scripts != null)
-						foreach (ScriptReference s in scripts)
+						foreach (var s in scripts)
 							yield return new ScriptReferenceEntry ((Control) ex, s, LoadScriptsBeforeUI);
 				}
 			}
 		}
 		protected virtual void OnResolveCompositeScriptReference (CompositeScriptReferenceEventArgs e)
 		{
-			EventHandler <CompositeScriptReferenceEventArgs> evt = ResolveCompositeScriptReference;
+			var evt = ResolveCompositeScriptReference;
 			if (evt != null)
 				evt (this, e);
 		}
@@ -767,8 +767,8 @@ namespace System.Web.UI
 		}
 
 		public static void RegisterArrayDeclaration (Control control, string arrayName, string arrayValue) {
-			Page page = control.Page;
-			ScriptManager sm = GetCurrentInternal (page);
+			var page = control.Page;
+			var sm = GetCurrentInternal (page);
 
 			if (sm == null)
 				return;
@@ -782,7 +782,7 @@ namespace System.Web.UI
 				page.ClientScript.RegisterArrayDeclaration (arrayName, arrayValue);
 		}
 
-		public void RegisterAsyncPostBackControl (Control control) {
+		public void RegisterAsyncPostBackControl (Control? control) {
 			if (control == null)
 				return;
 
@@ -800,8 +800,8 @@ namespace System.Web.UI
 		}
 
 		public static void RegisterClientScriptBlock (Control control, Type type, string key, string script, bool addScriptTags) {
-			Page page = control.Page;
-			ScriptManager sm = GetCurrentInternal (page);
+			var page = control.Page;
+			var sm = GetCurrentInternal (page);
 
 			if (sm == null)
 				return;
@@ -817,8 +817,8 @@ namespace System.Web.UI
 		}
 
 		public static void RegisterClientScriptInclude (Control control, Type type, string key, string url) {
-			Page page = control.Page;
-			ScriptManager sm = GetCurrentInternal (page);
+			var page = control.Page;
+			var sm = GetCurrentInternal (page);
 
 			if (sm == null)
 				return;
@@ -839,8 +839,8 @@ namespace System.Web.UI
 
 		void RegisterScriptReference (Control control, ScriptReferenceBase script, bool loadScriptsBeforeUI)
 		{
-			string scriptPath = script.Path;
-			string url = String.IsNullOrEmpty (scriptPath) ? script.GetUrl (this, false) : scriptPath;
+			var scriptPath = script.Path;
+			var url = String.IsNullOrEmpty (scriptPath) ? script.GetUrl (this, false) : scriptPath;
 			if (control != this && !String.IsNullOrEmpty (scriptPath))
 				url = control.ResolveClientUrl (scriptPath);
 
@@ -856,22 +856,22 @@ namespace System.Web.UI
 		void RegisterServiceReference (Control control, ServiceReference serviceReference)
 		{
 			if (serviceReference.InlineScript) {
-				string url = control.ResolveUrl (serviceReference.Path);
-				Type type = WebServiceParser.GetCompiledType (url, Context);
+				var url = control.ResolveUrl (serviceReference.Path);
+				var type = WebServiceParser.GetCompiledType (url, Context);
 				if (type != null) {
-					object[] attributes = type.GetCustomAttributes (typeof (ScriptServiceAttribute), true);
+					var attributes = type.GetCustomAttributes (typeof (ScriptServiceAttribute), true);
 					if (attributes.Length == 0)
 						throw new InvalidOperationException ("Only Web services with a [ScriptService] attribute on the class definition can be called from script.");
 				}
 				
-				LogicalTypeInfo logicalTypeInfo = LogicalTypeInfo.GetLogicalTypeInfo (type, url);
+				var logicalTypeInfo = LogicalTypeInfo.GetLogicalTypeInfo (type, url);
 				RegisterClientScriptBlock (control, typeof (ScriptManager), url, logicalTypeInfo.Proxy, true);
 			}
 			else {
-				string pathInfo = "/js";
+				var pathInfo = "/js";
 				if (IsDebuggingEnabled)
 					pathInfo += "debug";
-				string url = String.Concat (control.ResolveClientUrl (serviceReference.Path), pathInfo);
+				var url = String.Concat (control.ResolveClientUrl (serviceReference.Path), pathInfo);
 				RegisterClientScriptInclude (control, typeof (ScriptManager), url, url);
 			}
 		}
@@ -901,7 +901,7 @@ namespace System.Web.UI
 			if (disposeScript == null)
 				throw new ArgumentNullException ("disposeScript");
 
-			UpdatePanel updatePanel = GetUpdatePanel (control);
+			var updatePanel = GetUpdatePanel (control);
 			if (updatePanel == null)
 				return;
 
@@ -910,7 +910,7 @@ namespace System.Web.UI
 			_disposeScripts.Add (new RegisteredDisposeScript (control, disposeScript, updatePanel));
 		}
 
-		static UpdatePanel GetUpdatePanel (Control control) {
+		static UpdatePanel GetUpdatePanel (Control? control) {
 			if (control == null)
 				return null;
 
@@ -922,8 +922,8 @@ namespace System.Web.UI
 		}
 
 		public static void RegisterExpandoAttribute (Control control, string controlId, string attributeName, string attributeValue, bool encode) {
-			Page page = control.Page;
-			ScriptManager sm = GetCurrentInternal (page);
+			var page = control.Page;
+			var sm = GetCurrentInternal (page);
 
 			if (sm == null)
 				return;
@@ -942,8 +942,8 @@ namespace System.Web.UI
 		}
 
 		public static void RegisterHiddenField (Control control, string hiddenFieldName, string hiddenFieldInitialValue) {
-			Page page = control.Page;
-			ScriptManager sm = GetCurrentInternal (page);
+			var page = control.Page;
+			var sm = GetCurrentInternal (page);
 
 			if (sm == null)
 				return;
@@ -962,8 +962,8 @@ namespace System.Web.UI
 		}
 
 		public static void RegisterOnSubmitStatement (Control control, Type type, string key, string script) {
-			Page page = control.Page;
-			ScriptManager sm = GetCurrentInternal (page);
+			var page = control.Page;
+			var sm = GetCurrentInternal (page);
 
 			if (sm == null)
 				return;
@@ -974,7 +974,7 @@ namespace System.Web.UI
 				page.ClientScript.RegisterOnSubmitStatement (type, key, script);
 		}
 
-		public void RegisterPostBackControl (Control control) {
+		public void RegisterPostBackControl (Control? control) {
 			if (control == null)
 				return;
 
@@ -997,18 +997,18 @@ namespace System.Web.UI
 			_updatePanels.Add (updatePanel);
 		}
 
-		public void RegisterScriptDescriptors (IExtenderControl extenderControl) {
+		public void RegisterScriptDescriptors (IExtenderControl? extenderControl) {
 			if (extenderControl == null)
 				return;
 
 			if (_registeredExtenderControls == null || !_registeredExtenderControls.ContainsKey (extenderControl))
 				return;
 
-			Control targetControl = _registeredExtenderControls [extenderControl];
+			var targetControl = _registeredExtenderControls [extenderControl];
 			RegisterScriptDescriptors ((Control) extenderControl, extenderControl.GetScriptDescriptors (targetControl));
 		}
 
-		public void RegisterScriptDescriptors (IScriptControl scriptControl) {
+		public void RegisterScriptDescriptors (IScriptControl? scriptControl) {
 			if (scriptControl == null)
 				return;
 
@@ -1018,13 +1018,13 @@ namespace System.Web.UI
 			RegisterScriptDescriptors ((Control) scriptControl, scriptControl.GetScriptDescriptors ());
 		}
 
-		void RegisterScriptDescriptors (Control control, IEnumerable<ScriptDescriptor> scriptDescriptors)
+		void RegisterScriptDescriptors (Control control, IEnumerable<ScriptDescriptor>? scriptDescriptors)
 		{
 			if (scriptDescriptors == null)
 				return;
 
-			StringBuilder sb = new StringBuilder ();
-			foreach (ScriptDescriptor scriptDescriptor in scriptDescriptors) {
+			var sb = new StringBuilder ();
+			foreach (var scriptDescriptor in scriptDescriptors) {
 				if (IsMultiForm) {
 					scriptDescriptor.FormID = Page.Form.ClientID;
 					sb.AppendLine ("Sys.Application.getInstance($get(\"" + Page.Form.ClientID + "\")).add_init(function() {");
@@ -1035,7 +1035,7 @@ namespace System.Web.UI
 				sb.AppendLine (scriptDescriptor.GetScript ());
 				sb.AppendLine ("});");
 			}
-			string script = sb.ToString ();
+			var script = sb.ToString ();
 			RegisterStartupScript (control, typeof (ScriptDescriptor), script, script, true);
 		}
 
@@ -1044,8 +1044,8 @@ namespace System.Web.UI
 		}
 
 		public static void RegisterStartupScript (Control control, Type type, string key, string script, bool addScriptTags) {
-			Page page = control.Page;
-			ScriptManager sm = GetCurrentInternal (page);
+			var page = control.Page;
+			var sm = GetCurrentInternal (page);
 
 			if (sm == null)
 				return;
@@ -1080,7 +1080,7 @@ namespace System.Web.UI
 				_registeredExtenderControls.Add (extenderControl, targetControl);
 		}
 
-		static void RegisterScript (ref List<RegisteredScript> scriptList, Control control, Type type, string key, string script, string url, bool addScriptTag, RegisteredScriptType scriptType) {
+		static void RegisterScript (ref List<RegisteredScript>? scriptList, Control control, Type type, string key, string script, string url, bool addScriptTag, RegisteredScriptType scriptType) {
 			if (scriptList == null)
 				scriptList = new List<RegisteredScript> ();
 
@@ -1115,18 +1115,18 @@ namespace System.Web.UI
 			base.Render (writer);
 		}
 
-		static string FormatUpdatePanelIDs (List<UpdatePanel> list, bool useSingleQuote) {
+		static string FormatUpdatePanelIDs (List<UpdatePanel>? list, bool useSingleQuote) {
 			return FormatUpdatePanelIDs (list, useSingleQuote, false);
 		}
 		
-		static string FormatUpdatePanelIDs (List<UpdatePanel> list, bool useSingleQuote, bool useUntaggedName) {
+		static string FormatUpdatePanelIDs (List<UpdatePanel>? list, bool useSingleQuote, bool useUntaggedName) {
 			if (list == null || list.Count == 0)
 				return null;
 
-			string quote = useSingleQuote ? "'" : String.Empty;
+			var quote = useSingleQuote ? "'" : String.Empty;
 			string id;
-			StringBuilder sb = new StringBuilder ();
-			foreach (UpdatePanel panel in list) {
+			var sb = new StringBuilder ();
+			foreach (var panel in list) {
 				if (!panel.Visible)
 				 	continue;
 
@@ -1142,13 +1142,13 @@ namespace System.Web.UI
 			return sb.ToString ();
 		}
 
-		static string FormatListIDs<T> (List<T> list, bool useSingleQuote, bool skipInvisible) where T : Control
+		static string FormatListIDs<T> (List<T>? list, bool useSingleQuote, bool skipInvisible) where T : Control
 		{
 			if (list == null || list.Count == 0)
 				return null;
 
-			StringBuilder sb = new StringBuilder ();
-			for (int i = 0; i < list.Count; i++) {
+			var sb = new StringBuilder ();
+			for (var i = 0; i < list.Count; i++) {
 				if (skipInvisible && !list [i].Visible)
 					continue;
 				
@@ -1202,7 +1202,7 @@ namespace System.Web.UI
 
 		#endregion
 
-		internal static void WriteCallbackException (ScriptManager current, TextWriter output, Exception ex, bool writeMessage)
+		internal static void WriteCallbackException (ScriptManager? current, TextWriter output, Exception ex, bool writeMessage)
 		{
 #if TARGET_DOTNET
 			if (ex is HttpUnhandledException)
@@ -1249,7 +1249,7 @@ namespace System.Web.UI
 		static void WriteCallbackOutput (TextWriter output, string type, string name, object value) {
 			string str = value as string;
 			StringBuilder sb = str == null ? value as StringBuilder : null;
-			int length = 0;
+			var length = 0;
 			if (str != null)
 				length = str.Length;
 			else if (sb != null)
@@ -1262,7 +1262,7 @@ namespace System.Web.UI
 			output.Write ('|');
 			output.Write (name);
 			output.Write ('|');
-			for (int i = 0; i < length; i++)
+			for (var i = 0; i < length; i++)
 				if (str != null)
 					output.Write (str [i]);
 				else
@@ -1272,7 +1272,7 @@ namespace System.Web.UI
 
 		void RenderPageCallback (HtmlTextWriter output, Control container)
 		{
-			Page page = (Page) container;
+			var page = (Page) container;
 
 			// MSDN: http://msdn.microsoft.com/en-us/library/system.web.ui.updatepanel.aspx
 			//
@@ -1311,7 +1311,7 @@ namespace System.Web.UI
 			//
 			if (_updatePanels != null && _updatePanels.Count > 0) {
 				bool needsUpdate;
-				foreach (UpdatePanel panel in _updatePanels) {
+				foreach (var panel in _updatePanels) {
 					if (panel.RequiresUpdate || (!String.IsNullOrEmpty (_panelToRefreshID) && String.Compare (_panelToRefreshID, panel.UniqueID, StringComparison.Ordinal) == 0))
 						needsUpdate = true;
 					else
@@ -1324,12 +1324,12 @@ namespace System.Web.UI
 			}
 			
 			page.Form.SetRenderMethodDelegate (RenderFormCallback);
-			HtmlTextParser parser = new HtmlTextParser (output);
+			var parser = new HtmlTextParser (output);
 			page.Form.RenderControl (parser);
 
-			Dictionary <string, string> pageHiddenFields = parser.HiddenFields;
+			var pageHiddenFields = parser.HiddenFields;
 			if (pageHiddenFields != null)
-				foreach (KeyValuePair <string, string> kvp in pageHiddenFields)
+				foreach (var kvp in pageHiddenFields)
 					WriteCallbackOutput (output, hiddenField, kvp.Key, kvp.Value);
 			
 			WriteCallbackOutput (output, asyncPostBackControlIDs, null, FormatListIDs (_asyncPostBackControls, false, false));
@@ -1342,8 +1342,8 @@ namespace System.Web.UI
 				WriteCallbackOutput (output, pageTitle, null, Page.Title);
 
 			if (_dataItems != null)
-				foreach (Control control in _dataItems.Keys) {
-					DataItemEntry entry = _dataItems [control];
+				foreach (var control in _dataItems.Keys) {
+					var entry = _dataItems [control];
 					WriteCallbackOutput (output, entry.IsJsonSerialized ? dataItemJson : dataItem, control.ClientID, entry.DataItem);
 				}
 
@@ -1358,8 +1358,8 @@ namespace System.Web.UI
 				WriteCallbackOutput (output, focus, null, _controlIDToFocus);
 
 			if (_disposeScripts != null)
-				for (int i = 0; i < _disposeScripts.Count; i++) {
-					RegisteredDisposeScript entry = _disposeScripts [i];
+				for (var i = 0; i < _disposeScripts.Count; i++) {
+					var entry = _disposeScripts [i];
 					if ((_panelsToRefresh != null && _panelsToRefresh.IndexOf (entry.UpdatePanel) >= 0) || (_childUpdatePanels != null && _childUpdatePanels.IndexOf (entry.UpdatePanel) >= 0))
 						WriteCallbackOutput (output, scriptDispose, entry.UpdatePanel.ClientID, entry.Script);
 				}
@@ -1367,12 +1367,12 @@ namespace System.Web.UI
 
 		private void WriteExpandoAttributes (HtmlTextWriter writer) {
 			if (_expandoAttributes != null) {
-				for (int i = 0; i < _expandoAttributes.Count; i++) {
-					RegisteredExpandoAttribute attr = _expandoAttributes [i];
+				for (var i = 0; i < _expandoAttributes.Count; i++) {
+					var attr = _expandoAttributes [i];
 					if (HasBeenRendered (attr.Control)) {
 						string value;
 						if (attr.Encode) {
-							StringWriter sw = new StringWriter ();
+							var sw = new StringWriter ();
 							Newtonsoft.Json.JavaScriptUtils.WriteEscapedJavaScriptString (attr.Value, sw);
 							value = sw.ToString ();
 						}
@@ -1386,23 +1386,23 @@ namespace System.Web.UI
 
 		void WriteArrayDeclarations (HtmlTextWriter writer) {
 			if (_arrayDeclarations != null) {
-				for (int i = 0; i < _arrayDeclarations.Count; i++) {
-					RegisteredArrayDeclaration array = _arrayDeclarations [i];
+				for (var i = 0; i < _arrayDeclarations.Count; i++) {
+					var array = _arrayDeclarations [i];
 					if (Page == array.Control || HasBeenRendered (array.Control))
 						WriteCallbackOutput (writer, arrayDeclaration, array.Name, array.Value);
 				}
 			}
 		}
 
-		void WriteScriptBlocks (HtmlTextWriter output, List<RegisteredScript> scriptList) {
+		void WriteScriptBlocks (HtmlTextWriter output, List<RegisteredScript>? scriptList) {
 			if (scriptList == null)
 				return;
 			var registeredScripts = new Dictionary <string, RegisteredScript> ();
 			Control control;
-			Page page = Page;
+			var page = Page;
 			
-			for (int i = 0; i < scriptList.Count; i++) {
-				RegisteredScript scriptEntry = scriptList [i];
+			for (var i = 0; i < scriptList.Count; i++) {
+				var scriptEntry = scriptList [i];
 				if (registeredScripts.ContainsKey (scriptEntry.Key))
 					continue;
 
@@ -1436,9 +1436,9 @@ namespace System.Web.UI
 		void WriteHiddenFields (HtmlTextWriter output) {
 			if (_hiddenFields == null)
 				return;
-			Hashtable registeredFields = new Hashtable ();
-			for (int i = 0; i < _hiddenFields.Count; i++) {
-				RegisteredHiddenField field = _hiddenFields [i];
+			var registeredFields = new Hashtable ();
+			for (var i = 0; i < _hiddenFields.Count; i++) {
+				var field = _hiddenFields [i];
 				if (registeredFields.ContainsKey (field.Name))
 					continue;
 				if (Page == field.Control || HasBeenRendered (field.Control)) {
@@ -1450,12 +1450,12 @@ namespace System.Web.UI
 
 		static string SerializeScriptBlock (RegisteredScript scriptEntry) {
 			try {
-				XmlTextReader reader = new XmlTextReader (new StringReader (scriptEntry.Script));
+				var reader = new XmlTextReader (new StringReader (scriptEntry.Script));
 				while (reader.Read ()) {
 					switch (reader.NodeType) {
 					case XmlNodeType.Element:
 						if (String.Compare ("script", reader.Name, StringComparison.OrdinalIgnoreCase) == 0) {
-							Dictionary<string, string> dic = new Dictionary<string, string> ();
+							var dic = new Dictionary<string, string> ();
 							while (reader.MoveToNextAttribute ()) {
 								dic.Add (reader.Name, reader.Value);
 							}
@@ -1477,7 +1477,7 @@ namespace System.Web.UI
 		void RenderFormCallback (HtmlTextWriter output, Control container)
 		{
 			output = ((HtmlTextParser) output).ResponseOutput;
-			HtmlForm form = (HtmlForm) container;
+			var form = (HtmlForm) container;
 			HtmlTextWriter writer = new HtmlDropWriter (output);
 			
 			if (form.HasControls ()) {
@@ -1691,7 +1691,7 @@ namespace System.Web.UI
 				if (!_currentField.ContainsKey ("value"))
 					return;
 
-				string value = _currentField ["value"];
+				var value = _currentField ["value"];
 				if (value == null)
 					return;
 

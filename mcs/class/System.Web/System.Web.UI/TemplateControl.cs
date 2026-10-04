@@ -120,7 +120,7 @@ namespace System.Web.UI
 			if (offset > resource_data.MaxOffset - size)
 				throw new ArgumentOutOfRangeException ("size");
 
-			IntPtr ptr = AddOffset (resource_data.Ptr, offset);
+			var ptr = AddOffset (resource_data.Ptr, offset);
 			return new ResourceBasedLiteralControl (ptr, size);
 		}
 
@@ -139,13 +139,13 @@ namespace System.Web.UI
 				return;
 
 			/* Avoid expensive reflection operations by computing the event info only once */
-			Type type = GetType ();
-			ArrayList events = auto_event_info.InsertOrGet ((uint)type.GetHashCode (), type, null, CollectAutomaticEventInfo);
+			var type = GetType ();
+			var events = auto_event_info.InsertOrGet ((uint)type.GetHashCode (), type, null, CollectAutomaticEventInfo);
 
-			for (int i = 0; i < events.Count; ++i) {
+			for (var i = 0; i < events.Count; ++i) {
 				EvtInfo evinfo = (EvtInfo)events [i];
 				if (evinfo.noParams) {
-					NoParamsInvoker npi = new NoParamsInvoker (this, evinfo.method);
+					var npi = new NoParamsInvoker (this, evinfo.method);
 					evinfo.evt.AddEventHandler (this, npi.FakeDelegate);
 				} else
 					evinfo.evt.AddEventHandler (this, Delegate.CreateDelegate (typeof (EventHandler), this, evinfo.method));
@@ -153,9 +153,9 @@ namespace System.Web.UI
 		}
 
 		ArrayList CollectAutomaticEventInfo () {
-			ArrayList events = new ArrayList ();
+			var events = new ArrayList ();
 
-			foreach (string methodName in methodNames) {
+			foreach (var methodName in methodNames) {
 				MethodInfo method = null;
 				Type type;
 				for (type = GetType (); type.Assembly != _System_Web_Assembly; type = type.BaseType) {
@@ -175,23 +175,23 @@ namespace System.Web.UI
 				if (method.ReturnType != typeof (void))
 					continue;
 
-				ParameterInfo [] parms = method.GetParameters ();
-				int length = parms.Length;
-				bool noParams = (length == 0);
+				var parms = method.GetParameters ();
+				var length = parms.Length;
+				var noParams = (length == 0);
 				if (!noParams && (length != 2 ||
 				    parms [0].ParameterType != typeof (object) ||
 				    parms [1].ParameterType != typeof (EventArgs)))
 				    continue;
 
-				int pos = methodName.IndexOf ('_');
-				string eventName = methodName.Substring (pos + 1);
+				var pos = methodName.IndexOf ('_');
+				var eventName = methodName.Substring (pos + 1);
 				EventInfo evt = type.GetEvent (eventName);
 				if (evt == null) {
 					/* This should never happen */
 					continue;
 				}
 
-				EvtInfo evinfo = new EvtInfo ();
+				var evinfo = new EvtInfo ();
 				evinfo.method = method;
 				evinfo.methodName = methodName;
 				evinfo.evt = evt;
@@ -213,7 +213,7 @@ namespace System.Web.UI
 			if (virtualPath == null)
 				throw new ArgumentNullException ("virtualPath");
 
-			string vpath = UrlUtils.Combine (TemplateSourceDirectory, virtualPath);
+			var vpath = UrlUtils.Combine (TemplateSourceDirectory, virtualPath);
 			return BuildManager.GetCompiledType (vpath);
 		}
 
@@ -221,20 +221,20 @@ namespace System.Web.UI
 		{
 			if (virtualPath == null)
 				throw new ArgumentNullException ("virtualPath");
-			Type type = GetTypeFromControlPath (virtualPath);
+			var type = GetTypeFromControlPath (virtualPath);
 			
 			return LoadControl (type, null);
 		}
 
-		public Control LoadControl (Type t, object[] parameters) 
+		public Control LoadControl (Type? t, object[] parameters) 
 		{
 			object [] attrs = null;
 
 			if (t != null)
 				t.GetCustomAttributes (typeof (PartialCachingAttribute), true);
 			if (attrs != null && attrs.Length == 1) {
-				PartialCachingAttribute attr = (PartialCachingAttribute) attrs [0];
-				PartialCachingControl ctrl = new PartialCachingControl (t, parameters);
+				var attr = (PartialCachingAttribute) attrs [0];
+				var ctrl = new PartialCachingControl (t, parameters);
 				ctrl.VaryByParams = attr.VaryByParams;
 				ctrl.VaryByControls = attr.VaryByControls;
 				ctrl.VaryByCustom = attr.VaryByCustom;
@@ -252,7 +252,7 @@ namespace System.Web.UI
 		{
 			if (virtualPath == null)
 				throw new ArgumentNullException ("virtualPath");
-			Type t = GetTypeFromControlPath (virtualPath);
+			var t = GetTypeFromControlPath (virtualPath);
 			return new SimpleTemplate (t);
 		}
 
@@ -287,7 +287,7 @@ namespace System.Web.UI
 			// UserControlParser.GetCompiledType, but instead resort to some other way
 			// of creating the content (template instantiation? BuildManager? TBD)
 			TextReader reader = new StringReader (content);
-			Type control = UserControlParser.GetCompiledType (reader, content.GetHashCode (), HttpContext.Current);
+			var control = UserControlParser.GetCompiledType (reader, content.GetHashCode (), HttpContext.Current);
 			if (control == null)
 				return null;
 
@@ -299,12 +299,12 @@ namespace System.Web.UI
 				parsedControl.Page = (System.Web.UI.Page) this;
 			parsedControl.FrameworkInitialize ();
 			
-			Control ret = new Control ();
-			int count = parsedControl.Controls.Count;
-			Control[] parsedControlControls = new Control [count];
+			var ret = new Control ();
+			var count = parsedControl.Controls.Count;
+			var parsedControlControls = new Control [count];
 			parsedControl.Controls.CopyTo (parsedControlControls, 0);
 
-			for (int i = 0; i < count; i++)
+			for (var i = 0; i < count; i++)
 				ret.Controls.Add (parsedControlControls [i]);
 
 			parsedControl = null;
@@ -334,17 +334,17 @@ namespace System.Web.UI
 			return HttpContext.GetGlobalResourceObject (className, resourceKey);
 		}
 
-		protected object GetGlobalResourceObject (string className, string resourceKey, Type objType, string propName)
+		protected object GetGlobalResourceObject (string className, string resourceKey, Type? objType, string propName)
 		{
 			if (String.IsNullOrEmpty (resourceKey) || String.IsNullOrEmpty (propName) ||
 			    String.IsNullOrEmpty (className) || objType == null)
 				return null;
 
-			object globalObject = GetGlobalResourceObject (className, resourceKey);
+			var globalObject = GetGlobalResourceObject (className, resourceKey);
 			if (globalObject == null)
 				return null;
 			
-			TypeConverter converter = TypeDescriptor.GetProperties (objType) [propName].Converter;
+			var converter = TypeDescriptor.GetProperties (objType) [propName].Converter;
 			if (converter == null || !converter.CanConvertFrom (globalObject.GetType ()))
 				return null;
 			
@@ -357,16 +357,16 @@ namespace System.Web.UI
 								   resourceKey);
 		}
 		
-		protected object GetLocalResourceObject (string resourceKey, Type objType, string propName)
+		protected object GetLocalResourceObject (string resourceKey, Type? objType, string propName)
 		{
 			if (String.IsNullOrEmpty (resourceKey) || String.IsNullOrEmpty (propName) || objType == null)
 				return null;
 
-			object localObject = GetLocalResourceObject (resourceKey);
+			var localObject = GetLocalResourceObject (resourceKey);
 			if (localObject == null)
 				return null;
 			
-			TypeConverter converter = TypeDescriptor.GetProperties (objType) [propName].Converter;
+			var converter = TypeDescriptor.GetProperties (objType) [propName].Converter;
 			if (converter == null || !converter.CanConvertFrom (localObject.GetType ()))
 				return null;
 			
@@ -380,7 +380,7 @@ namespace System.Web.UI
 		[EditorBrowsable (EditorBrowsableState.Never)]
 		public static object ReadStringResource (Type t)
 		{
-			StringResourceData data = new StringResourceData ();
+			var data = new StringResourceData ();
 			if (ICalls.GetUnmanagedResourcesPtr (t.Assembly, out data.Ptr, out data.Length))
 				return data;
 
@@ -410,10 +410,10 @@ namespace System.Web.UI
 				return ptr;
 
 			if (IntPtr.Size == 4) {
-				int p = ptr.ToInt32 () + offset;
+				var p = ptr.ToInt32 () + offset;
 				ptr = new IntPtr (p);
 			} else {
-				long p = ptr.ToInt64 () + offset;
+				var p = ptr.ToInt64 () + offset;
 				ptr = new IntPtr (p);
 			}
 			return ptr;
@@ -430,11 +430,11 @@ namespace System.Web.UI
 				throw new ArgumentOutOfRangeException ("size");
 
 			//TODO: fAsciiOnly?
-			IntPtr ptr = AddOffset (resource_data.Ptr, offset);
-			HttpWriter writer = output.GetHttpWriter ();
+			var ptr = AddOffset (resource_data.Ptr, offset);
+			var writer = output.GetHttpWriter ();
 			
 			if (writer == null || writer.Response.ContentEncoding.CodePage != 65001) {
-				byte [] bytes = new byte [size];
+				var bytes = new byte [size];
 				Marshal.Copy (ptr, bytes, 0, size);
 				output.Write (Encoding.UTF8.GetString (bytes));
 				bytes = null;
@@ -485,42 +485,42 @@ namespace System.Web.UI
 			}
 		}
 
-		protected internal object Eval (string expression)
+		protected internal object Eval (string? expression)
 		{
 			return DataBinder.Eval (Page.GetDataItem(), expression);
 		}
 	
-		protected internal string Eval (string expression, string format)
+		protected internal string Eval (string? expression, string? format)
 		{
 			return DataBinder.Eval (Page.GetDataItem(), expression, format);
 		}
 	
-		protected internal object XPath (string xPathExpression)
+		protected internal object XPath (string? xPathExpression)
 		{
 			return XPathBinder.Eval (Page.GetDataItem(), xPathExpression);
 		}
 	
-		protected internal object XPath (string xPathExpression, IXmlNamespaceResolver resolver)
+		protected internal object XPath (string? xPathExpression, IXmlNamespaceResolver resolver)
 		{
 			return XPathBinder.Eval (Page.GetDataItem (), xPathExpression, null, resolver);
 		}
 
-		protected internal string XPath (string xPathExpression, string format)
+		protected internal string XPath (string? xPathExpression, string? format)
 		{
 			return XPathBinder.Eval (Page.GetDataItem(), xPathExpression, format);
 		}
 	
-		protected internal string XPath (string xPathExpression, string format, IXmlNamespaceResolver resolver)
+		protected internal string XPath (string? xPathExpression, string? format, IXmlNamespaceResolver resolver)
 		{
 			return XPathBinder.Eval (Page.GetDataItem (), xPathExpression, format, resolver);
 		}
 
-		protected internal IEnumerable XPathSelect (string xPathExpression)
+		protected internal IEnumerable XPathSelect (string? xPathExpression)
 		{
 			return XPathBinder.Select (Page.GetDataItem(), xPathExpression);
 		}
 
-		protected internal IEnumerable XPathSelect (string xPathExpression, IXmlNamespaceResolver resolver)
+		protected internal IEnumerable XPathSelect (string? xPathExpression, IXmlNamespaceResolver resolver)
 		{
 			return XPathBinder.Select (Page.GetDataItem (), xPathExpression, resolver);
 		}

@@ -20,7 +20,7 @@ namespace System.Web.Services.Interop {
                 return false;
             }
 
-            UserThread ut = (UserThread) obj;
+            var ut = (UserThread) obj;
 
             if (ut.dwTid == this.dwTid &&
                 ut.pSidBuffer == this.pSidBuffer &&

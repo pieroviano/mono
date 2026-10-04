@@ -137,7 +137,7 @@ namespace System.Web.UI.WebControls
 		
 		int IList.Add (object ob)
 		{
-			int res = list.Add ((WizardStepBase)ob);
+			var res = list.Add ((WizardStepBase)ob);
 			wizard.UpdateViews ();
 			return res;
 		}

@@ -69,7 +69,7 @@ namespace System.Web.UI.WebControls {
 			return new QueryStringParameter (this);
 		}
 		protected internal
-		override object Evaluate (HttpContext context, Control control)
+		override object Evaluate (HttpContext? context, Control control)
 		{
 			if (context == null || context.Request == null)
 				return null;

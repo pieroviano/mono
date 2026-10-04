@@ -59,8 +59,8 @@ namespace System.Configuration
 		}
 
 #if CONFIGURATION_DEP
-		public override void Initialize (string name,
-						 NameValueCollection values)
+		public override void Initialize (string? name,
+						 NameValueCollection? values)
 		{
 			if (name == null)
 				name = "LocalFileSettingsProvider";

@@ -242,7 +242,7 @@ namespace System.Web.Configuration
 			get { return properties; }
 		}
 
-		HttpCookieMode ParseCookieMode (string s)
+		HttpCookieMode ParseCookieMode (string? s)
 		{
 			if (s == "true")
 				return HttpCookieMode.UseUri;

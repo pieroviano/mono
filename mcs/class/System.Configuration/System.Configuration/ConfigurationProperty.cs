@@ -68,9 +68,9 @@ namespace System.Configuration
 		{ }
 
 		public ConfigurationProperty (
-					string name, Type type, object defaultValue,
-					TypeConverter typeConverter,
-					ConfigurationValidatorBase validator,
+					string name, Type type, object? defaultValue,
+					TypeConverter? typeConverter,
+					ConfigurationValidatorBase? validator,
 					ConfigurationPropertyOptions options,
 					string description)
 		{

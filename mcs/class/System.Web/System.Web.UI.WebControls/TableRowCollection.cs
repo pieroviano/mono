@@ -73,7 +73,7 @@ namespace System.Web.UI.WebControls {
 			if (row.TableRowSectionSet)
 				owner.GenerateTableSections = true;
 			row.Container = this;
-			int index = cc.IndexOf (row);
+			var index = cc.IndexOf (row);
 			if (index < 0) {
 				cc.Add (row);
 				index = cc.Count;
@@ -96,7 +96,7 @@ namespace System.Web.UI.WebControls {
 
 		public void AddRange (TableRow[] rows)
 		{
-			foreach (TableRow tr in rows) {
+			foreach (var tr in rows) {
 				if (tr == null)
 					throw new NullReferenceException (); // .NET compatibility
 				
@@ -125,7 +125,7 @@ namespace System.Web.UI.WebControls {
 			return cc.GetEnumerator ();
 		}
 
-		public int GetRowIndex (TableRow row)
+		public int GetRowIndex (TableRow? row)
 		{
 			return cc.IndexOf (row);
 		}
@@ -135,7 +135,7 @@ namespace System.Web.UI.WebControls {
 			owner.GenerateTableSections = true;
 		}
 		
-		public void Remove (TableRow row)
+		public void Remove (TableRow? row)
 		{
 			if (row != null)
 				row.Container = null;
@@ -144,7 +144,7 @@ namespace System.Web.UI.WebControls {
 
 		public void RemoveAt (int index)
 		{
-			TableRow row = this [index] as TableRow;
+			var row = this [index] as TableRow;
 			if (row != null)
 				row.Container = null;
 			

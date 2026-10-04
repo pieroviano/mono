@@ -222,8 +222,8 @@ namespace System.Web.UI.WebControls
 					throw new ArgumentNullException ("container");
 
 				this.container = container;
-				Menu owner = container.Owner;
-				Page page = owner.Page;
+				var owner = container.Owner;
+				var page = owner.Page;
 
 				Header = page != null ? page.Header : null;
 				ClientID = owner.ClientID;
@@ -257,11 +257,11 @@ namespace System.Web.UI.WebControls
 		
 		public virtual void AddAttributesToRender (HtmlTextWriter writer)
 		{
-			Menu owner = Owner;
-			Page page = owner.Page;
-			SubMenuStyle staticMenuStyle = owner.StaticMenuStyleInternal;
-			SubMenuStyleCollection levelSubMenuStyles = owner.LevelSubMenuStylesInternal;
-			bool haveSubStyles = levelSubMenuStyles != null && levelSubMenuStyles.Count > 0;
+			var owner = Owner;
+			var page = owner.Page;
+			var staticMenuStyle = owner.StaticMenuStyleInternal;
+			var levelSubMenuStyles = owner.LevelSubMenuStylesInternal;
+			var haveSubStyles = levelSubMenuStyles != null && levelSubMenuStyles.Count > 0;
 			Style controlStyle = haveSubStyles || staticMenuStyle != null ? owner.ControlStyle : null;
 			
 			if (page != null && page.Header != null) {	
@@ -306,7 +306,7 @@ namespace System.Web.UI.WebControls
 
 		public virtual void RenderItemContent (HtmlTextWriter writer, MenuItem item, bool isDynamicItem)
 		{
-			Menu owner = Owner;
+			var owner = Owner;
 			
 			if (!String.IsNullOrEmpty (item.ImageUrl)) {
 				writer.AddAttribute (HtmlTextWriterAttribute.Src, owner.ResolveClientUrl (item.ImageUrl));
@@ -344,8 +344,8 @@ namespace System.Web.UI.WebControls
 				writer.AddAttribute ("href", "#", false);
 				writer.AddStyleAttribute ("cursor", "text");
 			} else if (item.NavigateUrl != String.Empty) {
-				string target = item.Target != String.Empty ? item.Target : owner.Target;
-				string navUrl = owner.ResolveClientUrl (item.NavigateUrl);
+				var target = item.Target != String.Empty ? item.Target : owner.Target;
+				var navUrl = owner.ResolveClientUrl (item.NavigateUrl);
 				writer.AddAttribute ("href", navUrl);
 				if (target != String.Empty)
 					writer.AddAttribute ("target", target);
@@ -353,7 +353,7 @@ namespace System.Web.UI.WebControls
 				writer.AddAttribute ("href", GetClientEvent (owner, item));
 		}
 
-		public string GetPopOutImage (Menu owner, MenuItem item, bool isDynamicItem)
+		public string GetPopOutImage (Menu? owner, MenuItem item, bool isDynamicItem)
 		{
 			if (owner == null)
 				owner = Owner;
@@ -361,7 +361,7 @@ namespace System.Web.UI.WebControls
 			if (item.PopOutImageUrl != String.Empty)
 				return item.PopOutImageUrl;
 
-			bool needArrowResource = false;
+			var needArrowResource = false;
 			if (isDynamicItem) {
 				if (owner.DynamicPopOutImageUrl != String.Empty)
 					return owner.DynamicPopOutImageUrl;
@@ -382,7 +382,7 @@ namespace System.Web.UI.WebControls
 
 		public string GetArrowResourceUrl (Menu owner) 
 		{
-			Page page = owner.Page;
+			var page = owner.Page;
 			ClientScriptManager csm = page != null ? page.ClientScript : null;
 			if (csm != null)
 				return csm.GetWebResourceUrl (typeof (Menu), "arrow_plus.gif");
@@ -390,18 +390,18 @@ namespace System.Web.UI.WebControls
 			return null;
 		}
 		
-		public void FillMenuStyle (HtmlHead header, bool dynamic, int menuLevel, SubMenuStyle style)
+		public void FillMenuStyle (HtmlHead? header, bool dynamic, int menuLevel, SubMenuStyle style)
 		{
-			Menu owner = Owner;
+			var owner = Owner;
 			if (header == null) {
-				Page page = owner.Page;
+				var page = owner.Page;
 				header = page != null ? page.Header : null;
 			}
 			
-			SubMenuStyle staticMenuStyle = owner.StaticMenuStyleInternal;
+			var staticMenuStyle = owner.StaticMenuStyleInternal;
 //			MenuItemStyle dynamicMenuItemStyle = owner.DynamicMenuItemStyleInternal;
-			SubMenuStyle dynamicMenuStyle = owner.DynamicMenuStyleInternal;
-			SubMenuStyleCollection levelSubMenuStyles = owner.LevelSubMenuStylesInternal;
+			var dynamicMenuStyle = owner.DynamicMenuStyleInternal;
+			var levelSubMenuStyles = owner.LevelSubMenuStylesInternal;
 			
 			if (header != null) {
 				// styles are registered
@@ -428,12 +428,12 @@ namespace System.Web.UI.WebControls
 			}
 		}
 
-		public void RegisterStyle (Style baseStyle, Style linkStyle, HtmlHead head)
+		public void RegisterStyle (Style baseStyle, Style linkStyle, HtmlHead? head)
 		{
 			RegisterStyle (baseStyle, linkStyle, null, head);
 		}
 
-		public void RegisterStyle (Style baseStyle, Style linkStyle, string className, HtmlHead head)
+		public void RegisterStyle (Style baseStyle, Style linkStyle, string className, HtmlHead? head)
 		{
 			if (head == null)
 				return;
@@ -444,12 +444,12 @@ namespace System.Web.UI.WebControls
 			RegisterStyle (baseStyle, className, head);
 		}
 		
-		public void RegisterStyle (Style baseStyle, HtmlHead head)
+		public void RegisterStyle (Style baseStyle, HtmlHead? head)
 		{
 			RegisterStyle (baseStyle, (string)null, head);
 		}
 
-		public void RegisterStyle (Style baseStyle, string className, HtmlHead head)
+		public void RegisterStyle (Style baseStyle, string className, HtmlHead? head)
 		{
 			if (head == null)
 				return;
@@ -479,12 +479,12 @@ namespace System.Web.UI.WebControls
 			return IsDynamicItem (Owner, item);
 		}
 		
-		string GetClientEvent (Menu owner, MenuItem item)
+		string GetClientEvent (Menu? owner, MenuItem item)
 		{
 			if (owner == null)
 				owner = Owner;
 
-			Page page = owner.Page;
+			var page = owner.Page;
 			ClientScriptManager csm = page != null ? page.ClientScript : null;
 
 			if (csm == null)

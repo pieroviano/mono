@@ -45,7 +45,7 @@ namespace System.Configuration {
 				if (modified)
 					return true;
 
-				string str = ToString ();
+				var str = ToString ();
 				if (str == null)
 					return false;
 
@@ -93,8 +93,8 @@ namespace System.Configuration {
 
 		public CommaDelimitedStringCollection Clone ()
 		{
-			CommaDelimitedStringCollection col = new CommaDelimitedStringCollection();
-			string[] contents = new string[this.Count];
+			var col = new CommaDelimitedStringCollection();
+			var contents = new string[this.Count];
 			CopyTo (contents, 0);
 			
 			col.AddRange (contents);
@@ -129,7 +129,7 @@ namespace System.Configuration {
 			if (this.Count == 0)
 				return null;
 
-			string[] contents = new string[this.Count];
+			var contents = new string[this.Count];
 
 			CopyTo (contents, 0);
 
@@ -138,7 +138,7 @@ namespace System.Configuration {
 
 		internal void UpdateStringHash ()
 		{
-			string str = ToString ();
+			var str = ToString ();
 			if (str == null)
 				originalStringHash = 0;
 			else

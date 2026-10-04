@@ -66,12 +66,12 @@ namespace System.Web
 			base.TraceEvent (eventCache, source, severity, id, format, args);
 		}
 		
-		public override void Write (string message)
+		public override void Write (string? message)
 		{
 			HttpContext.Current.Trace.Write (message);
 		}
 
-		public override void Write (string message, string category)
+		public override void Write (string? message, string category)
 		{
 			Write (message);
 		}

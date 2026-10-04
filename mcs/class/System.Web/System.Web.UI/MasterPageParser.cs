@@ -84,24 +84,24 @@ namespace System.Web.UI
 		{
 			base.HandleOptions (obj);
 
-			MasterPage mp = (MasterPage)obj;
+			var mp = (MasterPage)obj;
 			mp.MasterPageFile = MasterPageFile;
 		}
 
 		internal override void AddDirective (string directive, IDictionary atts)
 		{
 			if (String.Compare ("MasterType", directive, StringComparison.OrdinalIgnoreCase) == 0) {
-				PageParserFilter pfilter = PageParserFilter;
+				var pfilter = PageParserFilter;
 				if (pfilter != null)
 					pfilter.PreprocessDirective (directive.ToLowerInvariant (), atts);
 				
-				string type = GetString (atts, "TypeName", null);
+				var type = GetString (atts, "TypeName", null);
 				if (type != null) {
 					masterType = LoadType (type);
 					if (masterType == null)
 						ThrowParseException ("Could not load type '" + type + "'.");
 				} else {
-					string path = GetString (atts, "VirtualPath", null);
+					var path = GetString (atts, "VirtualPath", null);
 					if (!String.IsNullOrEmpty (path)) {
 						var vpp = HostingEnvironment.VirtualPathProvider;
 						if (!vpp.FileExists (path))

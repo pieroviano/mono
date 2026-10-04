@@ -2,7 +2,7 @@ namespace System.Web.Services.Description {
 internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.XmlSerializationWriter {
         
 
-        public void Write125_definitions(object o) {
+        public void Write125_definitions(object? o) {
             WriteStartDocument();
             if (o == null) {
                 WriteNullTagLiteral(@"definitions", @"http://schemas.xmlsoap.org/wsdl/");
@@ -18,7 +18,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.ServiceDescription)) {
                 }
                 else {
@@ -28,10 +28,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             WriteStartElement(n, ns, o, false, o.@Namespaces);
             if (needType) WriteXsiType(@"ServiceDescription", @"http://schemas.xmlsoap.org/wsdl/");
             {
-                global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
+                var a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -45,9 +45,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
-                global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+                var a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         if ((a[ia]) is System.Xml.XmlNode || a[ia] == null) {
                             WriteElementLiteral((System.Xml.XmlNode)a[ia], @"", null, false, true);
                         }
@@ -58,42 +58,42 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 }
             }
             {
-                global::System.Web.Services.Description.ImportCollection a = (global::System.Web.Services.Description.ImportCollection)o.@Imports;
+                var a = (global::System.Web.Services.Description.ImportCollection)o.@Imports;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         Write4_Import(@"import", @"http://schemas.xmlsoap.org/wsdl/", ((global::System.Web.Services.Description.Import)a[ia]), false, false);
                     }
                 }
             }
             Write67_Types(@"types", @"http://schemas.xmlsoap.org/wsdl/", ((global::System.Web.Services.Description.Types)o.@Types), false, false);
             {
-                global::System.Web.Services.Description.MessageCollection a = (global::System.Web.Services.Description.MessageCollection)o.@Messages;
+                var a = (global::System.Web.Services.Description.MessageCollection)o.@Messages;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         Write69_Message(@"message", @"http://schemas.xmlsoap.org/wsdl/", ((global::System.Web.Services.Description.Message)a[ia]), false, false);
                     }
                 }
             }
             {
-                global::System.Web.Services.Description.PortTypeCollection a = (global::System.Web.Services.Description.PortTypeCollection)o.@PortTypes;
+                var a = (global::System.Web.Services.Description.PortTypeCollection)o.@PortTypes;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         Write75_PortType(@"portType", @"http://schemas.xmlsoap.org/wsdl/", ((global::System.Web.Services.Description.PortType)a[ia]), false, false);
                     }
                 }
             }
             {
-                global::System.Web.Services.Description.BindingCollection a = (global::System.Web.Services.Description.BindingCollection)o.@Bindings;
+                var a = (global::System.Web.Services.Description.BindingCollection)o.@Bindings;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         Write117_Binding(@"binding", @"http://schemas.xmlsoap.org/wsdl/", ((global::System.Web.Services.Description.Binding)a[ia]), false, false);
                     }
                 }
             }
             {
-                global::System.Web.Services.Description.ServiceCollection a = (global::System.Web.Services.Description.ServiceCollection)o.@Services;
+                var a = (global::System.Web.Services.Description.ServiceCollection)o.@Services;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         Write123_Service(@"service", @"http://schemas.xmlsoap.org/wsdl/", ((global::System.Web.Services.Description.Service)a[ia]), false, false);
                     }
                 }
@@ -107,7 +107,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.Service)) {
                 }
                 else {
@@ -117,10 +117,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             WriteStartElement(n, ns, o, false, o.@Namespaces);
             if (needType) WriteXsiType(@"Service", @"http://schemas.xmlsoap.org/wsdl/");
             {
-                global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
+                var a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -133,9 +133,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
-                global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+                var a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         if ((a[ia]) is System.Xml.XmlNode || a[ia] == null) {
                             WriteElementLiteral((System.Xml.XmlNode)a[ia], @"", null, false, true);
                         }
@@ -146,9 +146,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 }
             }
             {
-                global::System.Web.Services.Description.PortCollection a = (global::System.Web.Services.Description.PortCollection)o.@Ports;
+                var a = (global::System.Web.Services.Description.PortCollection)o.@Ports;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         Write122_Port(@"port", @"http://schemas.xmlsoap.org/wsdl/", ((global::System.Web.Services.Description.Port)a[ia]), false, false);
                     }
                 }
@@ -162,7 +162,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.Port)) {
                 }
                 else {
@@ -172,10 +172,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             WriteStartElement(n, ns, o, false, o.@Namespaces);
             if (needType) WriteXsiType(@"Port", @"http://schemas.xmlsoap.org/wsdl/");
             {
-                global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
+                var a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -189,10 +189,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
-                global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+                var a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
-                        global::System.Object ai = (global::System.Object)a[ia];
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                        var ai = (global::System.Object)a[ia];
                         {
                             if (ai is global::System.Web.Services.Description.Soap12AddressBinding) {
                                 Write121_Soap12AddressBinding(@"address", @"http://schemas.xmlsoap.org/wsdl/soap12/", ((global::System.Web.Services.Description.Soap12AddressBinding)ai), false, false);
@@ -204,7 +204,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                                 Write119_SoapAddressBinding(@"address", @"http://schemas.xmlsoap.org/wsdl/soap/", ((global::System.Web.Services.Description.SoapAddressBinding)ai), false, false);
                             }
                             else if (ai is System.Xml.XmlElement) {
-                                System.Xml.XmlElement elem = (System.Xml.XmlElement)ai;
+                                var elem = (System.Xml.XmlElement)ai;
                                 if ((elem) is System.Xml.XmlNode || elem == null) {
                                     WriteElementLiteral((System.Xml.XmlNode)elem, @"", null, false, true);
                                 }
@@ -230,7 +230,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.SoapAddressBinding)) {
                 }
                 else {
@@ -252,7 +252,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.HttpAddressBinding)) {
                 }
                 else {
@@ -274,7 +274,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.Soap12AddressBinding)) {
                 }
                 else {
@@ -296,7 +296,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.Binding)) {
                 }
                 else {
@@ -306,10 +306,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             WriteStartElement(n, ns, o, false, o.@Namespaces);
             if (needType) WriteXsiType(@"Binding", @"http://schemas.xmlsoap.org/wsdl/");
             {
-                global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
+                var a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -323,10 +323,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
-                global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+                var a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
-                        global::System.Object ai = (global::System.Object)a[ia];
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                        var ai = (global::System.Object)a[ia];
                         {
                             if (ai is global::System.Web.Services.Description.Soap12Binding) {
                                 Write84_Soap12Binding(@"binding", @"http://schemas.xmlsoap.org/wsdl/soap12/", ((global::System.Web.Services.Description.Soap12Binding)ai), false, false);
@@ -338,7 +338,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                                 Write80_SoapBinding(@"binding", @"http://schemas.xmlsoap.org/wsdl/soap/", ((global::System.Web.Services.Description.SoapBinding)ai), false, false);
                             }
                             else if (ai is System.Xml.XmlElement) {
-                                System.Xml.XmlElement elem = (System.Xml.XmlElement)ai;
+                                var elem = (System.Xml.XmlElement)ai;
                                 if ((elem) is System.Xml.XmlNode || elem == null) {
                                     WriteElementLiteral((System.Xml.XmlNode)elem, @"", null, false, true);
                                 }
@@ -356,9 +356,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 }
             }
             {
-                global::System.Web.Services.Description.OperationBindingCollection a = (global::System.Web.Services.Description.OperationBindingCollection)o.@Operations;
+                var a = (global::System.Web.Services.Description.OperationBindingCollection)o.@Operations;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         Write116_OperationBinding(@"operation", @"http://schemas.xmlsoap.org/wsdl/", ((global::System.Web.Services.Description.OperationBinding)a[ia]), false, false);
                     }
                 }
@@ -372,7 +372,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.OperationBinding)) {
                 }
                 else {
@@ -382,10 +382,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             WriteStartElement(n, ns, o, false, o.@Namespaces);
             if (needType) WriteXsiType(@"OperationBinding", @"http://schemas.xmlsoap.org/wsdl/");
             {
-                global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
+                var a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -398,10 +398,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
-                global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+                var a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
-                        global::System.Object ai = (global::System.Object)a[ia];
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                        var ai = (global::System.Object)a[ia];
                         {
                             if (ai is global::System.Web.Services.Description.Soap12OperationBinding) {
                                 Write88_Soap12OperationBinding(@"operation", @"http://schemas.xmlsoap.org/wsdl/soap12/", ((global::System.Web.Services.Description.Soap12OperationBinding)ai), false, false);
@@ -413,7 +413,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                                 Write86_SoapOperationBinding(@"operation", @"http://schemas.xmlsoap.org/wsdl/soap/", ((global::System.Web.Services.Description.SoapOperationBinding)ai), false, false);
                             }
                             else if (ai is System.Xml.XmlElement) {
-                                System.Xml.XmlElement elem = (System.Xml.XmlElement)ai;
+                                var elem = (System.Xml.XmlElement)ai;
                                 if ((elem) is System.Xml.XmlNode || elem == null) {
                                     WriteElementLiteral((System.Xml.XmlNode)elem, @"", null, false, true);
                                 }
@@ -433,9 +433,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             Write110_InputBinding(@"input", @"http://schemas.xmlsoap.org/wsdl/", ((global::System.Web.Services.Description.InputBinding)o.@Input), false, false);
             Write111_OutputBinding(@"output", @"http://schemas.xmlsoap.org/wsdl/", ((global::System.Web.Services.Description.OutputBinding)o.@Output), false, false);
             {
-                global::System.Web.Services.Description.FaultBindingCollection a = (global::System.Web.Services.Description.FaultBindingCollection)o.@Faults;
+                var a = (global::System.Web.Services.Description.FaultBindingCollection)o.@Faults;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         Write115_FaultBinding(@"fault", @"http://schemas.xmlsoap.org/wsdl/", ((global::System.Web.Services.Description.FaultBinding)a[ia]), false, false);
                     }
                 }
@@ -449,7 +449,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.FaultBinding)) {
                 }
                 else {
@@ -459,10 +459,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             WriteStartElement(n, ns, o, false, o.@Namespaces);
             if (needType) WriteXsiType(@"FaultBinding", @"http://schemas.xmlsoap.org/wsdl/");
             {
-                global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
+                var a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -475,10 +475,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
-                global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+                var a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
-                        global::System.Object ai = (global::System.Object)a[ia];
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                        var ai = (global::System.Object)a[ia];
                         {
                             if (ai is global::System.Web.Services.Description.Soap12FaultBinding) {
                                 Write114_Soap12FaultBinding(@"fault", @"http://schemas.xmlsoap.org/wsdl/soap12/", ((global::System.Web.Services.Description.Soap12FaultBinding)ai), false, false);
@@ -487,7 +487,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                                 Write112_SoapFaultBinding(@"fault", @"http://schemas.xmlsoap.org/wsdl/soap/", ((global::System.Web.Services.Description.SoapFaultBinding)ai), false, false);
                             }
                             else if (ai is System.Xml.XmlElement) {
-                                System.Xml.XmlElement elem = (System.Xml.XmlElement)ai;
+                                var elem = (System.Xml.XmlElement)ai;
                                 if ((elem) is System.Xml.XmlNode || elem == null) {
                                     WriteElementLiteral((System.Xml.XmlNode)elem, @"", null, false, true);
                                 }
@@ -513,7 +513,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.SoapFaultBinding)) {
                 }
                 else {
@@ -552,7 +552,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.Soap12FaultBinding)) {
                 }
                 else {
@@ -591,7 +591,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.OutputBinding)) {
                 }
                 else {
@@ -601,10 +601,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             WriteStartElement(n, ns, o, false, o.@Namespaces);
             if (needType) WriteXsiType(@"OutputBinding", @"http://schemas.xmlsoap.org/wsdl/");
             {
-                global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
+                var a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -617,10 +617,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
-                global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+                var a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
-                        global::System.Object ai = (global::System.Object)a[ia];
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                        var ai = (global::System.Object)a[ia];
                         {
                             if (ai is global::System.Web.Services.Description.Soap12BodyBinding) {
                                 Write102_Soap12BodyBinding(@"body", @"http://schemas.xmlsoap.org/wsdl/soap12/", ((global::System.Web.Services.Description.Soap12BodyBinding)ai), false, false);
@@ -647,7 +647,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                                 Write104_MimeMultipartRelatedBinding(@"multipartRelated", @"http://schemas.xmlsoap.org/wsdl/mime/", ((global::System.Web.Services.Description.MimeMultipartRelatedBinding)ai), false, false);
                             }
                             else if (ai is System.Xml.XmlElement) {
-                                System.Xml.XmlElement elem = (System.Xml.XmlElement)ai;
+                                var elem = (System.Xml.XmlElement)ai;
                                 if ((elem) is System.Xml.XmlNode || elem == null) {
                                     WriteElementLiteral((System.Xml.XmlNode)elem, @"", null, false, true);
                                 }
@@ -673,7 +673,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.MimeMultipartRelatedBinding)) {
                 }
                 else {
@@ -686,9 +686,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 WriteAttribute(@"required", @"http://schemas.xmlsoap.org/wsdl/", System.Xml.XmlConvert.ToString((global::System.Boolean)((global::System.Boolean)o.@Required)));
             }
             {
-                global::System.Web.Services.Description.MimePartCollection a = (global::System.Web.Services.Description.MimePartCollection)o.@Parts;
+                var a = (global::System.Web.Services.Description.MimePartCollection)o.@Parts;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         Write103_MimePart(@"part", @"http://schemas.xmlsoap.org/wsdl/mime/", ((global::System.Web.Services.Description.MimePart)a[ia]), false, false);
                     }
                 }
@@ -702,7 +702,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.MimePart)) {
                 }
                 else {
@@ -715,10 +715,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 WriteAttribute(@"required", @"http://schemas.xmlsoap.org/wsdl/", System.Xml.XmlConvert.ToString((global::System.Boolean)((global::System.Boolean)o.@Required)));
             }
             {
-                global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+                var a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
-                        global::System.Object ai = (global::System.Object)a[ia];
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                        var ai = (global::System.Object)a[ia];
                         {
                             if (ai is global::System.Web.Services.Description.Soap12BodyBinding) {
                                 Write102_Soap12BodyBinding(@"body", @"http://schemas.xmlsoap.org/wsdl/soap12/", ((global::System.Web.Services.Description.Soap12BodyBinding)ai), false, false);
@@ -736,7 +736,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                                 Write97_MimeTextBinding(@"text", @"http://microsoft.com/wsdl/mime/textMatching/", ((global::System.Web.Services.Description.MimeTextBinding)ai), false, false);
                             }
                             else if (ai is System.Xml.XmlElement) {
-                                System.Xml.XmlElement elem = (System.Xml.XmlElement)ai;
+                                var elem = (System.Xml.XmlElement)ai;
                                 if ((elem) is System.Xml.XmlNode || elem == null) {
                                     WriteElementLiteral((System.Xml.XmlNode)elem, @"", null, false, true);
                                 }
@@ -762,7 +762,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.MimeTextBinding)) {
                 }
                 else {
@@ -775,9 +775,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 WriteAttribute(@"required", @"http://schemas.xmlsoap.org/wsdl/", System.Xml.XmlConvert.ToString((global::System.Boolean)((global::System.Boolean)o.@Required)));
             }
             {
-                global::System.Web.Services.Description.MimeTextMatchCollection a = (global::System.Web.Services.Description.MimeTextMatchCollection)o.@Matches;
+                var a = (global::System.Web.Services.Description.MimeTextMatchCollection)o.@Matches;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         Write96_MimeTextMatch(@"match", @"http://microsoft.com/wsdl/mime/textMatching/", ((global::System.Web.Services.Description.MimeTextMatch)a[ia]), false, false);
                     }
                 }
@@ -791,7 +791,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.MimeTextMatch)) {
                 }
                 else {
@@ -814,9 +814,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             WriteAttribute(@"pattern", @"", ((global::System.String)o.@Pattern));
             WriteAttribute(@"ignoreCase", @"", System.Xml.XmlConvert.ToString((global::System.Boolean)((global::System.Boolean)o.@IgnoreCase)));
             {
-                global::System.Web.Services.Description.MimeTextMatchCollection a = (global::System.Web.Services.Description.MimeTextMatchCollection)o.@Matches;
+                var a = (global::System.Web.Services.Description.MimeTextMatchCollection)o.@Matches;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         Write96_MimeTextMatch(@"match", @"http://microsoft.com/wsdl/mime/textMatching/", ((global::System.Web.Services.Description.MimeTextMatch)a[ia]), false, false);
                     }
                 }
@@ -830,7 +830,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.MimeXmlBinding)) {
                 }
                 else {
@@ -852,7 +852,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.MimeContentBinding)) {
                 }
                 else {
@@ -875,7 +875,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.SoapBodyBinding)) {
                 }
                 else {
@@ -906,7 +906,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.Soap12BodyBinding)) {
                 }
                 else {
@@ -937,7 +937,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.SoapHeaderBinding)) {
                 }
                 else {
@@ -970,7 +970,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.SoapHeaderFaultBinding)) {
                 }
                 else {
@@ -1002,7 +1002,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.Soap12HeaderBinding)) {
                 }
                 else {
@@ -1035,7 +1035,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.SoapHeaderFaultBinding)) {
                 }
                 else {
@@ -1067,7 +1067,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.InputBinding)) {
                 }
                 else {
@@ -1077,10 +1077,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             WriteStartElement(n, ns, o, false, o.@Namespaces);
             if (needType) WriteXsiType(@"InputBinding", @"http://schemas.xmlsoap.org/wsdl/");
             {
-                global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
+                var a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -1093,10 +1093,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
-                global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+                var a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
-                        global::System.Object ai = (global::System.Object)a[ia];
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                        var ai = (global::System.Object)a[ia];
                         {
                             if (ai is global::System.Web.Services.Description.Soap12BodyBinding) {
                                 Write102_Soap12BodyBinding(@"body", @"http://schemas.xmlsoap.org/wsdl/soap12/", ((global::System.Web.Services.Description.Soap12BodyBinding)ai), false, false);
@@ -1129,7 +1129,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                                 Write94_MimeXmlBinding(@"mimeXml", @"http://schemas.xmlsoap.org/wsdl/mime/", ((global::System.Web.Services.Description.MimeXmlBinding)ai), false, false);
                             }
                             else if (ai is System.Xml.XmlElement) {
-                                System.Xml.XmlElement elem = (System.Xml.XmlElement)ai;
+                                var elem = (System.Xml.XmlElement)ai;
                                 if ((elem) is System.Xml.XmlNode || elem == null) {
                                     WriteElementLiteral((System.Xml.XmlNode)elem, @"", null, false, true);
                                 }
@@ -1155,7 +1155,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.HttpUrlEncodedBinding)) {
                 }
                 else {
@@ -1176,7 +1176,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.HttpUrlReplacementBinding)) {
                 }
                 else {
@@ -1197,7 +1197,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.SoapOperationBinding)) {
                 }
                 else {
@@ -1232,7 +1232,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.HttpOperationBinding)) {
                 }
                 else {
@@ -1254,7 +1254,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.Soap12OperationBinding)) {
                 }
                 else {
@@ -1292,7 +1292,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.SoapBinding)) {
                 }
                 else {
@@ -1317,7 +1317,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.HttpBinding)) {
                 }
                 else {
@@ -1339,7 +1339,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.Soap12Binding)) {
                 }
                 else {
@@ -1364,7 +1364,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.PortType)) {
                 }
                 else {
@@ -1374,10 +1374,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             WriteStartElement(n, ns, o, false, o.@Namespaces);
             if (needType) WriteXsiType(@"PortType", @"http://schemas.xmlsoap.org/wsdl/");
             {
-                global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
+                var a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -1390,9 +1390,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
-                global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+                var a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         if ((a[ia]) is System.Xml.XmlNode || a[ia] == null) {
                             WriteElementLiteral((System.Xml.XmlNode)a[ia], @"", null, false, true);
                         }
@@ -1403,9 +1403,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 }
             }
             {
-                global::System.Web.Services.Description.OperationCollection a = (global::System.Web.Services.Description.OperationCollection)o.@Operations;
+                var a = (global::System.Web.Services.Description.OperationCollection)o.@Operations;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         Write74_Operation(@"operation", @"http://schemas.xmlsoap.org/wsdl/", ((global::System.Web.Services.Description.Operation)a[ia]), false, false);
                     }
                 }
@@ -1419,7 +1419,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.Operation)) {
                 }
                 else {
@@ -1429,10 +1429,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             WriteStartElement(n, ns, o, false, o.@Namespaces);
             if (needType) WriteXsiType(@"Operation", @"http://schemas.xmlsoap.org/wsdl/");
             {
-                global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
+                var a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -1448,9 +1448,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
-                global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+                var a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         if ((a[ia]) is System.Xml.XmlNode || a[ia] == null) {
                             WriteElementLiteral((System.Xml.XmlNode)a[ia], @"", null, false, true);
                         }
@@ -1461,10 +1461,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 }
             }
             {
-                global::System.Web.Services.Description.OperationMessageCollection a = (global::System.Web.Services.Description.OperationMessageCollection)o.@Messages;
+                var a = (global::System.Web.Services.Description.OperationMessageCollection)o.@Messages;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
-                        global::System.Web.Services.Description.OperationMessage ai = (global::System.Web.Services.Description.OperationMessage)a[ia];
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                        var ai = (global::System.Web.Services.Description.OperationMessage)a[ia];
                         {
                             if (ai is global::System.Web.Services.Description.OperationOutput) {
                                 Write72_OperationOutput(@"output", @"http://schemas.xmlsoap.org/wsdl/", ((global::System.Web.Services.Description.OperationOutput)ai), false, false);
@@ -1482,9 +1482,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 }
             }
             {
-                global::System.Web.Services.Description.OperationFaultCollection a = (global::System.Web.Services.Description.OperationFaultCollection)o.@Faults;
+                var a = (global::System.Web.Services.Description.OperationFaultCollection)o.@Faults;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         Write73_OperationFault(@"fault", @"http://schemas.xmlsoap.org/wsdl/", ((global::System.Web.Services.Description.OperationFault)a[ia]), false, false);
                     }
                 }
@@ -1498,7 +1498,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.OperationFault)) {
                 }
                 else {
@@ -1508,10 +1508,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             WriteStartElement(n, ns, o, false, o.@Namespaces);
             if (needType) WriteXsiType(@"OperationFault", @"http://schemas.xmlsoap.org/wsdl/");
             {
-                global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
+                var a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -1525,9 +1525,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
-                global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+                var a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         if ((a[ia]) is System.Xml.XmlNode || a[ia] == null) {
                             WriteElementLiteral((System.Xml.XmlNode)a[ia], @"", null, false, true);
                         }
@@ -1546,7 +1546,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.OperationInput)) {
                 }
                 else {
@@ -1556,10 +1556,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             WriteStartElement(n, ns, o, false, o.@Namespaces);
             if (needType) WriteXsiType(@"OperationInput", @"http://schemas.xmlsoap.org/wsdl/");
             {
-                global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
+                var a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -1573,9 +1573,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
-                global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+                var a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         if ((a[ia]) is System.Xml.XmlNode || a[ia] == null) {
                             WriteElementLiteral((System.Xml.XmlNode)a[ia], @"", null, false, true);
                         }
@@ -1594,7 +1594,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.OperationOutput)) {
                 }
                 else {
@@ -1604,10 +1604,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             WriteStartElement(n, ns, o, false, o.@Namespaces);
             if (needType) WriteXsiType(@"OperationOutput", @"http://schemas.xmlsoap.org/wsdl/");
             {
-                global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
+                var a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -1621,9 +1621,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
-                global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+                var a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         if ((a[ia]) is System.Xml.XmlNode || a[ia] == null) {
                             WriteElementLiteral((System.Xml.XmlNode)a[ia], @"", null, false, true);
                         }
@@ -1642,7 +1642,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.Message)) {
                 }
                 else {
@@ -1652,10 +1652,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             WriteStartElement(n, ns, o, false, o.@Namespaces);
             if (needType) WriteXsiType(@"Message", @"http://schemas.xmlsoap.org/wsdl/");
             {
-                global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
+                var a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -1668,9 +1668,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
-                global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+                var a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         if ((a[ia]) is System.Xml.XmlNode || a[ia] == null) {
                             WriteElementLiteral((System.Xml.XmlNode)a[ia], @"", null, false, true);
                         }
@@ -1681,9 +1681,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 }
             }
             {
-                global::System.Web.Services.Description.MessagePartCollection a = (global::System.Web.Services.Description.MessagePartCollection)o.@Parts;
+                var a = (global::System.Web.Services.Description.MessagePartCollection)o.@Parts;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         Write68_MessagePart(@"part", @"http://schemas.xmlsoap.org/wsdl/", ((global::System.Web.Services.Description.MessagePart)a[ia]), false, false);
                     }
                 }
@@ -1697,7 +1697,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.MessagePart)) {
                 }
                 else {
@@ -1707,10 +1707,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             WriteStartElement(n, ns, o, false, o.@Namespaces);
             if (needType) WriteXsiType(@"MessagePart", @"http://schemas.xmlsoap.org/wsdl/");
             {
-                global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
+                var a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -1725,9 +1725,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
-                global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+                var a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         if ((a[ia]) is System.Xml.XmlNode || a[ia] == null) {
                             WriteElementLiteral((System.Xml.XmlNode)a[ia], @"", null, false, true);
                         }
@@ -1746,7 +1746,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.Types)) {
                 }
                 else {
@@ -1756,10 +1756,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             WriteStartElement(n, ns, o, false, o.@Namespaces);
             if (needType) WriteXsiType(@"Types", @"http://schemas.xmlsoap.org/wsdl/");
             {
-                global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
+                var a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -1771,9 +1771,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
-                global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+                var a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         if ((a[ia]) is System.Xml.XmlNode || a[ia] == null) {
                             WriteElementLiteral((System.Xml.XmlNode)a[ia], @"", null, false, true);
                         }
@@ -1784,9 +1784,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 }
             }
             {
-                global::System.Xml.Serialization.XmlSchemas a = (global::System.Xml.Serialization.XmlSchemas)o.@Schemas;
+                var a = (global::System.Xml.Serialization.XmlSchemas)o.@Schemas;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         Write66_XmlSchema(@"schema", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchema)a[ia]), false, false);
                     }
                 }
@@ -1800,7 +1800,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchema)) {
                 }
                 else {
@@ -1828,17 +1828,17 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
             }
             {
-                global::System.Xml.Schema.XmlSchemaObjectCollection a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Includes;
+                var a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Includes;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
-                        global::System.Xml.Schema.XmlSchemaObject ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                        var ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
                         {
                             if (ai is global::System.Xml.Schema.XmlSchemaRedefine) {
                                 Write64_XmlSchemaRedefine(@"redefine", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaRedefine)ai), false, false);
@@ -1859,10 +1859,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 }
             }
             {
-                global::System.Xml.Schema.XmlSchemaObjectCollection a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Items;
+                var a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Items;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
-                        global::System.Xml.Schema.XmlSchemaObject ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                        var ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
                         {
                             if (ai is global::System.Xml.Schema.XmlSchemaElement) {
                                 Write52_XmlSchemaElement(@"element", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaElement)ai), false, false);
@@ -1906,7 +1906,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaAnnotation)) {
                 }
                 else {
@@ -1920,17 +1920,17 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
             }
             {
-                global::System.Xml.Schema.XmlSchemaObjectCollection a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Items;
+                var a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Items;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
-                        global::System.Xml.Schema.XmlSchemaObject ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                        var ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
                         {
                             if (ai is global::System.Xml.Schema.XmlSchemaAppInfo) {
                                 Write10_XmlSchemaAppInfo(@"appinfo", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaAppInfo)ai), false, false);
@@ -1956,7 +1956,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaDocumentation)) {
                 }
                 else {
@@ -1971,11 +1971,11 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlNode[] a = (global::System.Xml.XmlNode[])o.@Markup;
                 if (a != null) {
-                    for (int ia = 0; ia < a.Length; ia++) {
-                        global::System.Xml.XmlNode ai = (global::System.Xml.XmlNode)a[ia];
+                    for (var ia = 0; ia < a.Length; ia++) {
+                        var ai = (global::System.Xml.XmlNode)a[ia];
                         {
                             if (ai is System.Xml.XmlElement) {
-                                System.Xml.XmlElement elem = (System.Xml.XmlElement)ai;
+                                var elem = (System.Xml.XmlElement)ai;
                                 if ((elem) is System.Xml.XmlNode || elem == null) {
                                     WriteElementLiteral((System.Xml.XmlNode)elem, @"", null, false, true);
                                 }
@@ -2004,7 +2004,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaAppInfo)) {
                 }
                 else {
@@ -2018,11 +2018,11 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlNode[] a = (global::System.Xml.XmlNode[])o.@Markup;
                 if (a != null) {
-                    for (int ia = 0; ia < a.Length; ia++) {
-                        global::System.Xml.XmlNode ai = (global::System.Xml.XmlNode)a[ia];
+                    for (var ia = 0; ia < a.Length; ia++) {
+                        var ai = (global::System.Xml.XmlNode)a[ia];
                         {
                             if (ai is System.Xml.XmlElement) {
-                                System.Xml.XmlElement elem = (System.Xml.XmlElement)ai;
+                                var elem = (System.Xml.XmlElement)ai;
                                 if ((elem) is System.Xml.XmlNode || elem == null) {
                                     WriteElementLiteral((System.Xml.XmlNode)elem, @"", null, false, true);
                                 }
@@ -2051,7 +2051,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaGroup)) {
                 }
                 else {
@@ -2065,8 +2065,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -2098,7 +2098,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaSequence)) {
                 }
                 else {
@@ -2112,8 +2112,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -2122,10 +2122,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             WriteAttribute(@"maxOccurs", @"", ((global::System.String)o.@MaxOccursString));
             Write11_XmlSchemaAnnotation(@"annotation", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaAnnotation)o.@Annotation), false, false);
             {
-                global::System.Xml.Schema.XmlSchemaObjectCollection a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Items;
+                var a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Items;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
-                        global::System.Xml.Schema.XmlSchemaObject ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                        var ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
                         {
                             if (ai is global::System.Xml.Schema.XmlSchemaChoice) {
                                 Write54_XmlSchemaChoice(@"choice", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaChoice)ai), false, false);
@@ -2160,7 +2160,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaAny)) {
                 }
                 else {
@@ -2174,8 +2174,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -2207,7 +2207,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaElement)) {
                 }
                 else {
@@ -2221,8 +2221,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -2267,10 +2267,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 }
             }
             {
-                global::System.Xml.Schema.XmlSchemaObjectCollection a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Constraints;
+                var a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Constraints;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
-                        global::System.Xml.Schema.XmlSchemaObject ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                        var ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
                         {
                             if (ai is global::System.Xml.Schema.XmlSchemaKeyref) {
                                 Write51_XmlSchemaKeyref(@"keyref", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaKeyref)ai), false, false);
@@ -2299,7 +2299,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaKey)) {
                 }
                 else {
@@ -2313,8 +2313,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -2323,9 +2323,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             Write11_XmlSchemaAnnotation(@"annotation", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaAnnotation)o.@Annotation), false, false);
             Write47_XmlSchemaXPath(@"selector", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaXPath)o.@Selector), false, false);
             {
-                global::System.Xml.Schema.XmlSchemaObjectCollection a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Fields;
+                var a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Fields;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         Write47_XmlSchemaXPath(@"field", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaXPath)a[ia]), false, false);
                     }
                 }
@@ -2339,7 +2339,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaXPath)) {
                 }
                 else {
@@ -2353,8 +2353,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -2372,7 +2372,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaUnique)) {
                 }
                 else {
@@ -2386,8 +2386,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -2396,9 +2396,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             Write11_XmlSchemaAnnotation(@"annotation", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaAnnotation)o.@Annotation), false, false);
             Write47_XmlSchemaXPath(@"selector", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaXPath)o.@Selector), false, false);
             {
-                global::System.Xml.Schema.XmlSchemaObjectCollection a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Fields;
+                var a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Fields;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         Write47_XmlSchemaXPath(@"field", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaXPath)a[ia]), false, false);
                     }
                 }
@@ -2412,7 +2412,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaKeyref)) {
                 }
                 else {
@@ -2426,8 +2426,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -2437,9 +2437,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             Write11_XmlSchemaAnnotation(@"annotation", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaAnnotation)o.@Annotation), false, false);
             Write47_XmlSchemaXPath(@"selector", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaXPath)o.@Selector), false, false);
             {
-                global::System.Xml.Schema.XmlSchemaObjectCollection a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Fields;
+                var a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Fields;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         Write47_XmlSchemaXPath(@"field", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaXPath)a[ia]), false, false);
                     }
                 }
@@ -2453,7 +2453,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaSimpleType)) {
                 }
                 else {
@@ -2467,8 +2467,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -2503,7 +2503,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaSimpleTypeList)) {
                 }
                 else {
@@ -2517,8 +2517,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -2535,7 +2535,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaSimpleTypeRestriction)) {
                 }
                 else {
@@ -2549,8 +2549,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -2559,10 +2559,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             Write11_XmlSchemaAnnotation(@"annotation", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaAnnotation)o.@Annotation), false, false);
             Write34_XmlSchemaSimpleType(@"simpleType", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaSimpleType)o.@BaseType), false, false);
             {
-                global::System.Xml.Schema.XmlSchemaObjectCollection a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Facets;
+                var a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Facets;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
-                        global::System.Xml.Schema.XmlSchemaObject ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                        var ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
                         {
                             if (ai is global::System.Xml.Schema.XmlSchemaLengthFacet) {
                                 Write23_XmlSchemaLengthFacet(@"length", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaLengthFacet)ai), false, false);
@@ -2618,7 +2618,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaEnumerationFacet)) {
                 }
                 else {
@@ -2632,8 +2632,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -2652,7 +2652,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaMaxInclusiveFacet)) {
                 }
                 else {
@@ -2666,8 +2666,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -2686,7 +2686,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaMinInclusiveFacet)) {
                 }
                 else {
@@ -2700,8 +2700,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -2720,7 +2720,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaPatternFacet)) {
                 }
                 else {
@@ -2734,8 +2734,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -2754,7 +2754,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaMinExclusiveFacet)) {
                 }
                 else {
@@ -2768,8 +2768,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -2788,7 +2788,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaWhiteSpaceFacet)) {
                 }
                 else {
@@ -2802,8 +2802,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -2822,7 +2822,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaMaxExclusiveFacet)) {
                 }
                 else {
@@ -2836,8 +2836,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -2856,7 +2856,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaMinLengthFacet)) {
                 }
                 else {
@@ -2870,8 +2870,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -2890,7 +2890,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaFractionDigitsFacet)) {
                 }
                 else {
@@ -2904,8 +2904,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -2924,7 +2924,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaMaxLengthFacet)) {
                 }
                 else {
@@ -2938,8 +2938,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -2958,7 +2958,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaTotalDigitsFacet)) {
                 }
                 else {
@@ -2972,8 +2972,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -2992,7 +2992,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaLengthFacet)) {
                 }
                 else {
@@ -3006,8 +3006,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -3026,7 +3026,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaSimpleTypeUnion)) {
                 }
                 else {
@@ -3040,8 +3040,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -3049,9 +3049,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlQualifiedName[] a = (global::System.Xml.XmlQualifiedName[])o.@MemberTypes;
                 if (a != null) {
-                    System.Text.StringBuilder sb = new System.Text.StringBuilder();
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlQualifiedName ai = (global::System.Xml.XmlQualifiedName)a[i];
+                    var sb = new System.Text.StringBuilder();
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlQualifiedName)a[i];
                         if (i != 0) sb.Append(" ");
                         sb.Append(FromXmlQualifiedName(ai));
                     }
@@ -3062,9 +3062,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Write11_XmlSchemaAnnotation(@"annotation", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaAnnotation)o.@Annotation), false, false);
             {
-                global::System.Xml.Schema.XmlSchemaObjectCollection a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@BaseTypes;
+                var a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@BaseTypes;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         Write34_XmlSchemaSimpleType(@"simpleType", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaSimpleType)a[ia]), false, false);
                     }
                 }
@@ -3105,7 +3105,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaComplexType)) {
                 }
                 else {
@@ -3119,8 +3119,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -3172,10 +3172,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 }
             }
             {
-                global::System.Xml.Schema.XmlSchemaObjectCollection a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Attributes;
+                var a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Attributes;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
-                        global::System.Xml.Schema.XmlSchemaObject ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                        var ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
                         {
                             if (ai is global::System.Xml.Schema.XmlSchemaAttributeGroupRef) {
                                 Write37_XmlSchemaAttributeGroupRef(@"attributeGroup", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaAttributeGroupRef)ai), false, false);
@@ -3202,7 +3202,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaAnyAttribute)) {
                 }
                 else {
@@ -3216,8 +3216,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -3236,7 +3236,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaAttribute)) {
                 }
                 else {
@@ -3250,8 +3250,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -3299,7 +3299,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaAttributeGroupRef)) {
                 }
                 else {
@@ -3313,8 +3313,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -3330,7 +3330,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaGroupRef)) {
                 }
                 else {
@@ -3344,8 +3344,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -3363,7 +3363,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaAll)) {
                 }
                 else {
@@ -3377,8 +3377,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -3387,9 +3387,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             WriteAttribute(@"maxOccurs", @"", ((global::System.String)o.@MaxOccursString));
             Write11_XmlSchemaAnnotation(@"annotation", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaAnnotation)o.@Annotation), false, false);
             {
-                global::System.Xml.Schema.XmlSchemaObjectCollection a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Items;
+                var a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Items;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         Write52_XmlSchemaElement(@"element", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaElement)a[ia]), false, false);
                     }
                 }
@@ -3403,7 +3403,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaChoice)) {
                 }
                 else {
@@ -3417,8 +3417,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -3427,10 +3427,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             WriteAttribute(@"maxOccurs", @"", ((global::System.String)o.@MaxOccursString));
             Write11_XmlSchemaAnnotation(@"annotation", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaAnnotation)o.@Annotation), false, false);
             {
-                global::System.Xml.Schema.XmlSchemaObjectCollection a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Items;
+                var a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Items;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
-                        global::System.Xml.Schema.XmlSchemaObject ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                        var ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
                         {
                             if (ai is global::System.Xml.Schema.XmlSchemaSequence) {
                                 Write53_XmlSchemaSequence(@"sequence", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaSequence)ai), false, false);
@@ -3465,7 +3465,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaComplexContent)) {
                 }
                 else {
@@ -3479,8 +3479,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -3509,7 +3509,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaComplexContentExtension)) {
                 }
                 else {
@@ -3523,8 +3523,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -3551,10 +3551,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 }
             }
             {
-                global::System.Xml.Schema.XmlSchemaObjectCollection a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Attributes;
+                var a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Attributes;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
-                        global::System.Xml.Schema.XmlSchemaObject ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                        var ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
                         {
                             if (ai is global::System.Xml.Schema.XmlSchemaAttribute) {
                                 Write36_XmlSchemaAttribute(@"attribute", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaAttribute)ai), false, false);
@@ -3581,7 +3581,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaComplexContentRestriction)) {
                 }
                 else {
@@ -3595,8 +3595,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -3623,10 +3623,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 }
             }
             {
-                global::System.Xml.Schema.XmlSchemaObjectCollection a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Attributes;
+                var a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Attributes;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
-                        global::System.Xml.Schema.XmlSchemaObject ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                        var ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
                         {
                             if (ai is global::System.Xml.Schema.XmlSchemaAttribute) {
                                 Write36_XmlSchemaAttribute(@"attribute", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaAttribute)ai), false, false);
@@ -3653,7 +3653,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaSimpleContent)) {
                 }
                 else {
@@ -3667,8 +3667,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -3696,7 +3696,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaSimpleContentRestriction)) {
                 }
                 else {
@@ -3710,8 +3710,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -3720,10 +3720,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             Write11_XmlSchemaAnnotation(@"annotation", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaAnnotation)o.@Annotation), false, false);
             Write34_XmlSchemaSimpleType(@"simpleType", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaSimpleType)o.@BaseType), false, false);
             {
-                global::System.Xml.Schema.XmlSchemaObjectCollection a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Facets;
+                var a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Facets;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
-                        global::System.Xml.Schema.XmlSchemaObject ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                        var ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
                         {
                             if (ai is global::System.Xml.Schema.XmlSchemaMinLengthFacet) {
                                 Write31_XmlSchemaMinLengthFacet(@"minLength", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaMinLengthFacet)ai), false, false);
@@ -3771,10 +3771,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 }
             }
             {
-                global::System.Xml.Schema.XmlSchemaObjectCollection a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Attributes;
+                var a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Attributes;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
-                        global::System.Xml.Schema.XmlSchemaObject ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                        var ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
                         {
                             if (ai is global::System.Xml.Schema.XmlSchemaAttribute) {
                                 Write36_XmlSchemaAttribute(@"attribute", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaAttribute)ai), false, false);
@@ -3801,7 +3801,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaSimpleContentExtension)) {
                 }
                 else {
@@ -3815,8 +3815,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -3824,10 +3824,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             WriteAttribute(@"base", @"", FromXmlQualifiedName(((global::System.Xml.XmlQualifiedName)o.@BaseTypeName)));
             Write11_XmlSchemaAnnotation(@"annotation", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaAnnotation)o.@Annotation), false, false);
             {
-                global::System.Xml.Schema.XmlSchemaObjectCollection a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Attributes;
+                var a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Attributes;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
-                        global::System.Xml.Schema.XmlSchemaObject ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                        var ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
                         {
                             if (ai is global::System.Xml.Schema.XmlSchemaAttribute) {
                                 Write36_XmlSchemaAttribute(@"attribute", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaAttribute)ai), false, false);
@@ -3854,7 +3854,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaNotation)) {
                 }
                 else {
@@ -3868,8 +3868,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -3887,7 +3887,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaAttributeGroup)) {
                 }
                 else {
@@ -3901,8 +3901,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -3910,10 +3910,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             WriteAttribute(@"name", @"", ((global::System.String)o.@Name));
             Write11_XmlSchemaAnnotation(@"annotation", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaAnnotation)o.@Annotation), false, false);
             {
-                global::System.Xml.Schema.XmlSchemaObjectCollection a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Attributes;
+                var a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Attributes;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
-                        global::System.Xml.Schema.XmlSchemaObject ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                        var ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
                         {
                             if (ai is global::System.Xml.Schema.XmlSchemaAttributeGroupRef) {
                                 Write37_XmlSchemaAttributeGroupRef(@"attributeGroup", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaAttributeGroupRef)ai), false, false);
@@ -3940,7 +3940,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaInclude)) {
                 }
                 else {
@@ -3955,8 +3955,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -3971,7 +3971,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaImport)) {
                 }
                 else {
@@ -3986,8 +3986,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -4003,7 +4003,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Xml.Schema.XmlSchemaRedefine)) {
                 }
                 else {
@@ -4018,17 +4018,17 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             {
                 global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@UnhandledAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
             }
             {
-                global::System.Xml.Schema.XmlSchemaObjectCollection a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Items;
+                var a = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Items;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
-                        global::System.Xml.Schema.XmlSchemaObject ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                        var ai = (global::System.Xml.Schema.XmlSchemaObject)a[ia];
                         {
                             if (ai is global::System.Xml.Schema.XmlSchemaSimpleType) {
                                 Write34_XmlSchemaSimpleType(@"simpleType", @"http://www.w3.org/2001/XMLSchema", ((global::System.Xml.Schema.XmlSchemaSimpleType)ai), false, false);
@@ -4063,7 +4063,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Description.Import)) {
                 }
                 else {
@@ -4073,10 +4073,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             WriteStartElement(n, ns, o, false, o.@Namespaces);
             if (needType) WriteXsiType(@"Import", @"http://schemas.xmlsoap.org/wsdl/");
             {
-                global::System.Xml.XmlAttribute[] a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
+                var a = (global::System.Xml.XmlAttribute[])o.@ExtensibleAttributes;
                 if (a != null) {
-                    for (int i = 0; i < a.Length; i++) {
-                        global::System.Xml.XmlAttribute ai = (global::System.Xml.XmlAttribute)a[i];
+                    for (var i = 0; i < a.Length; i++) {
+                        var ai = (global::System.Xml.XmlAttribute)a[i];
                         WriteXmlAttribute(ai, o);
                     }
                 }
@@ -4090,9 +4090,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
                 throw CreateInvalidAnyTypeException(o.@DocumentationElement);
             }
             {
-                global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+                var a = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         if ((a[ia]) is System.Xml.XmlNode || a[ia] == null) {
                             WriteElementLiteral((System.Xml.XmlNode)a[ia], @"", null, false, true);
                         }
@@ -4130,7 +4130,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.ServiceDescription Read124_ServiceDescription(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id3_ServiceDescription && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item)) {
@@ -4142,14 +4142,14 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Web.Services.Description.ServiceDescription o;
             o = new global::System.Web.Services.Description.ServiceDescription();
             global::System.Xml.XmlAttribute[] a_1 = null;
-            int ca_1 = 0;
-            global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a_4 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
-            global::System.Web.Services.Description.ImportCollection a_5 = (global::System.Web.Services.Description.ImportCollection)o.@Imports;
-            global::System.Web.Services.Description.MessageCollection a_7 = (global::System.Web.Services.Description.MessageCollection)o.@Messages;
-            global::System.Web.Services.Description.PortTypeCollection a_8 = (global::System.Web.Services.Description.PortTypeCollection)o.@PortTypes;
-            global::System.Web.Services.Description.BindingCollection a_9 = (global::System.Web.Services.Description.BindingCollection)o.@Bindings;
-            global::System.Web.Services.Description.ServiceCollection a_10 = (global::System.Web.Services.Description.ServiceCollection)o.@Services;
-            bool[] paramsRead = new bool[12];
+            var ca_1 = 0;
+            var a_4 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+            var a_5 = (global::System.Web.Services.Description.ImportCollection)o.@Imports;
+            var a_7 = (global::System.Web.Services.Description.MessageCollection)o.@Messages;
+            var a_8 = (global::System.Web.Services.Description.PortTypeCollection)o.@PortTypes;
+            var a_9 = (global::System.Web.Services.Description.BindingCollection)o.@Bindings;
+            var a_10 = (global::System.Web.Services.Description.ServiceCollection)o.@Services;
+            var paramsRead = new bool[12];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[3] && ((object) Reader.LocalName == (object)id4_name && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Name = Reader.Value;
@@ -4178,8 +4178,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations0 = 0;
-            int readerCount0 = ReaderCount;
+            var whileIterations0 = 0;
+            var readerCount0 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[0] && ((object) Reader.LocalName == (object)id7_documentation && (object) Reader.NamespaceURI == (object)id2_Item)) {
@@ -4222,7 +4222,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.Service Read123_Service(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id14_Service && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item)) {
@@ -4234,10 +4234,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Web.Services.Description.Service o;
             o = new global::System.Web.Services.Description.Service();
             global::System.Xml.XmlAttribute[] a_1 = null;
-            int ca_1 = 0;
-            global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a_4 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
-            global::System.Web.Services.Description.PortCollection a_5 = (global::System.Web.Services.Description.PortCollection)o.@Ports;
-            bool[] paramsRead = new bool[6];
+            var ca_1 = 0;
+            var a_4 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+            var a_5 = (global::System.Web.Services.Description.PortCollection)o.@Ports;
+            var paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[3] && ((object) Reader.LocalName == (object)id4_name && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Name = Reader.Value;
@@ -4262,8 +4262,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations1 = 0;
-            int readerCount1 = ReaderCount;
+            var whileIterations1 = 0;
+            var readerCount1 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[0] && ((object) Reader.LocalName == (object)id7_documentation && (object) Reader.NamespaceURI == (object)id2_Item)) {
@@ -4290,7 +4290,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.Port Read122_Port(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id16_Port && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item)) {
@@ -4302,9 +4302,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Web.Services.Description.Port o;
             o = new global::System.Web.Services.Description.Port();
             global::System.Xml.XmlAttribute[] a_1 = null;
-            int ca_1 = 0;
-            global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a_4 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
-            bool[] paramsRead = new bool[6];
+            var ca_1 = 0;
+            var a_4 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+            var paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[3] && ((object) Reader.LocalName == (object)id4_name && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Name = Reader.Value;
@@ -4333,8 +4333,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations2 = 0;
-            int readerCount2 = ReaderCount;
+            var whileIterations2 = 0;
+            var readerCount2 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[0] && ((object) Reader.LocalName == (object)id7_documentation && (object) Reader.NamespaceURI == (object)id2_Item)) {
@@ -4367,7 +4367,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.Soap12AddressBinding Read121_Soap12AddressBinding(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id21_Soap12AddressBinding && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id20_Item)) {
@@ -4378,7 +4378,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             if (isNull) return null;
             global::System.Web.Services.Description.Soap12AddressBinding o;
             o = new global::System.Web.Services.Description.Soap12AddressBinding();
-            bool[] paramsRead = new bool[2];
+            var paramsRead = new bool[2];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[0] && ((object) Reader.LocalName == (object)id22_required && (object) Reader.NamespaceURI == (object)id2_Item)) {
                     o.@Required = System.Xml.XmlConvert.ToBoolean(Reader.Value);
@@ -4399,8 +4399,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations3 = 0;
-            int readerCount3 = ReaderCount;
+            var whileIterations3 = 0;
+            var readerCount3 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     UnknownNode((object)o, @"");
@@ -4417,7 +4417,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.SoapAddressBinding Read119_SoapAddressBinding(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id24_SoapAddressBinding && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id19_Item)) {
@@ -4428,7 +4428,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             if (isNull) return null;
             global::System.Web.Services.Description.SoapAddressBinding o;
             o = new global::System.Web.Services.Description.SoapAddressBinding();
-            bool[] paramsRead = new bool[2];
+            var paramsRead = new bool[2];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[0] && ((object) Reader.LocalName == (object)id22_required && (object) Reader.NamespaceURI == (object)id2_Item)) {
                     o.@Required = System.Xml.XmlConvert.ToBoolean(Reader.Value);
@@ -4449,8 +4449,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations4 = 0;
-            int readerCount4 = ReaderCount;
+            var whileIterations4 = 0;
+            var readerCount4 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     UnknownNode((object)o, @"");
@@ -4467,7 +4467,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.HttpAddressBinding Read118_HttpAddressBinding(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id25_HttpAddressBinding && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id18_Item)) {
@@ -4478,7 +4478,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             if (isNull) return null;
             global::System.Web.Services.Description.HttpAddressBinding o;
             o = new global::System.Web.Services.Description.HttpAddressBinding();
-            bool[] paramsRead = new bool[2];
+            var paramsRead = new bool[2];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[0] && ((object) Reader.LocalName == (object)id22_required && (object) Reader.NamespaceURI == (object)id2_Item)) {
                     o.@Required = System.Xml.XmlConvert.ToBoolean(Reader.Value);
@@ -4499,8 +4499,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations5 = 0;
-            int readerCount5 = ReaderCount;
+            var whileIterations5 = 0;
+            var readerCount5 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     UnknownNode((object)o, @"");
@@ -4517,7 +4517,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.Binding Read117_Binding(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id26_Binding && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item)) {
@@ -4529,10 +4529,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Web.Services.Description.Binding o;
             o = new global::System.Web.Services.Description.Binding();
             global::System.Xml.XmlAttribute[] a_1 = null;
-            int ca_1 = 0;
-            global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a_4 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
-            global::System.Web.Services.Description.OperationBindingCollection a_5 = (global::System.Web.Services.Description.OperationBindingCollection)o.@Operations;
-            bool[] paramsRead = new bool[7];
+            var ca_1 = 0;
+            var a_4 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+            var a_5 = (global::System.Web.Services.Description.OperationBindingCollection)o.@Operations;
+            var paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[3] && ((object) Reader.LocalName == (object)id4_name && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Name = Reader.Value;
@@ -4561,8 +4561,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations6 = 0;
-            int readerCount6 = ReaderCount;
+            var whileIterations6 = 0;
+            var readerCount6 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[0] && ((object) Reader.LocalName == (object)id7_documentation && (object) Reader.NamespaceURI == (object)id2_Item)) {
@@ -4598,7 +4598,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.OperationBinding Read116_OperationBinding(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id29_OperationBinding && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item)) {
@@ -4610,10 +4610,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Web.Services.Description.OperationBinding o;
             o = new global::System.Web.Services.Description.OperationBinding();
             global::System.Xml.XmlAttribute[] a_1 = null;
-            int ca_1 = 0;
-            global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a_4 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
-            global::System.Web.Services.Description.FaultBindingCollection a_7 = (global::System.Web.Services.Description.FaultBindingCollection)o.@Faults;
-            bool[] paramsRead = new bool[8];
+            var ca_1 = 0;
+            var a_4 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+            var a_7 = (global::System.Web.Services.Description.FaultBindingCollection)o.@Faults;
+            var paramsRead = new bool[8];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[3] && ((object) Reader.LocalName == (object)id4_name && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Name = Reader.Value;
@@ -4638,8 +4638,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations7 = 0;
-            int readerCount7 = ReaderCount;
+            var whileIterations7 = 0;
+            var readerCount7 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[0] && ((object) Reader.LocalName == (object)id7_documentation && (object) Reader.NamespaceURI == (object)id2_Item)) {
@@ -4683,7 +4683,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.FaultBinding Read115_FaultBinding(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id33_FaultBinding && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item)) {
@@ -4695,9 +4695,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Web.Services.Description.FaultBinding o;
             o = new global::System.Web.Services.Description.FaultBinding();
             global::System.Xml.XmlAttribute[] a_1 = null;
-            int ca_1 = 0;
-            global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a_4 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
-            bool[] paramsRead = new bool[5];
+            var ca_1 = 0;
+            var a_4 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+            var paramsRead = new bool[5];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[3] && ((object) Reader.LocalName == (object)id4_name && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Name = Reader.Value;
@@ -4722,8 +4722,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations8 = 0;
-            int readerCount8 = ReaderCount;
+            var whileIterations8 = 0;
+            var readerCount8 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[0] && ((object) Reader.LocalName == (object)id7_documentation && (object) Reader.NamespaceURI == (object)id2_Item)) {
@@ -4753,7 +4753,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.Soap12FaultBinding Read114_Soap12FaultBinding(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id34_Soap12FaultBinding && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id20_Item)) {
@@ -4764,7 +4764,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             if (isNull) return null;
             global::System.Web.Services.Description.Soap12FaultBinding o;
             o = new global::System.Web.Services.Description.Soap12FaultBinding();
-            bool[] paramsRead = new bool[5];
+            var paramsRead = new bool[5];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[0] && ((object) Reader.LocalName == (object)id22_required && (object) Reader.NamespaceURI == (object)id2_Item)) {
                     o.@Required = System.Xml.XmlConvert.ToBoolean(Reader.Value);
@@ -4797,8 +4797,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations9 = 0;
-            int readerCount9 = ReaderCount;
+            var whileIterations9 = 0;
+            var readerCount9 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     UnknownNode((object)o, @"");
@@ -4823,7 +4823,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.SoapFaultBinding Read112_SoapFaultBinding(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id38_SoapFaultBinding && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id19_Item)) {
@@ -4834,7 +4834,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             if (isNull) return null;
             global::System.Web.Services.Description.SoapFaultBinding o;
             o = new global::System.Web.Services.Description.SoapFaultBinding();
-            bool[] paramsRead = new bool[5];
+            var paramsRead = new bool[5];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[0] && ((object) Reader.LocalName == (object)id22_required && (object) Reader.NamespaceURI == (object)id2_Item)) {
                     o.@Required = System.Xml.XmlConvert.ToBoolean(Reader.Value);
@@ -4867,8 +4867,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations10 = 0;
-            int readerCount10 = ReaderCount;
+            var whileIterations10 = 0;
+            var readerCount10 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     UnknownNode((object)o, @"");
@@ -4893,7 +4893,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.OutputBinding Read111_OutputBinding(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id39_OutputBinding && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item)) {
@@ -4905,9 +4905,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Web.Services.Description.OutputBinding o;
             o = new global::System.Web.Services.Description.OutputBinding();
             global::System.Xml.XmlAttribute[] a_1 = null;
-            int ca_1 = 0;
-            global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a_4 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
-            bool[] paramsRead = new bool[5];
+            var ca_1 = 0;
+            var a_4 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+            var paramsRead = new bool[5];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[3] && ((object) Reader.LocalName == (object)id4_name && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Name = Reader.Value;
@@ -4932,8 +4932,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations11 = 0;
-            int readerCount11 = ReaderCount;
+            var whileIterations11 = 0;
+            var readerCount11 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[0] && ((object) Reader.LocalName == (object)id7_documentation && (object) Reader.NamespaceURI == (object)id2_Item)) {
@@ -4981,7 +4981,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.Soap12HeaderBinding Read109_Soap12HeaderBinding(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id48_Soap12HeaderBinding && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id20_Item)) {
@@ -4992,7 +4992,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             if (isNull) return null;
             global::System.Web.Services.Description.Soap12HeaderBinding o;
             o = new global::System.Web.Services.Description.Soap12HeaderBinding();
-            bool[] paramsRead = new bool[7];
+            var paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[0] && ((object) Reader.LocalName == (object)id22_required && (object) Reader.NamespaceURI == (object)id2_Item)) {
                     o.@Required = System.Xml.XmlConvert.ToBoolean(Reader.Value);
@@ -5029,8 +5029,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations12 = 0;
-            int readerCount12 = ReaderCount;
+            var whileIterations12 = 0;
+            var readerCount12 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[6] && ((object) Reader.LocalName == (object)id50_headerfault && (object) Reader.NamespaceURI == (object)id20_Item)) {
@@ -5053,7 +5053,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.SoapHeaderFaultBinding Read107_SoapHeaderFaultBinding(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id51_SoapHeaderFaultBinding && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id20_Item)) {
@@ -5064,7 +5064,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             if (isNull) return null;
             global::System.Web.Services.Description.SoapHeaderFaultBinding o;
             o = new global::System.Web.Services.Description.SoapHeaderFaultBinding();
-            bool[] paramsRead = new bool[6];
+            var paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[0] && ((object) Reader.LocalName == (object)id22_required && (object) Reader.NamespaceURI == (object)id2_Item)) {
                     o.@Required = System.Xml.XmlConvert.ToBoolean(Reader.Value);
@@ -5101,8 +5101,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations13 = 0;
-            int readerCount13 = ReaderCount;
+            var whileIterations13 = 0;
+            var readerCount13 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     UnknownNode((object)o, @"");
@@ -5119,7 +5119,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.Soap12BodyBinding Read102_Soap12BodyBinding(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id52_Soap12BodyBinding && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id20_Item)) {
@@ -5130,7 +5130,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             if (isNull) return null;
             global::System.Web.Services.Description.Soap12BodyBinding o;
             o = new global::System.Web.Services.Description.Soap12BodyBinding();
-            bool[] paramsRead = new bool[5];
+            var paramsRead = new bool[5];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[0] && ((object) Reader.LocalName == (object)id22_required && (object) Reader.NamespaceURI == (object)id2_Item)) {
                     o.@Required = System.Xml.XmlConvert.ToBoolean(Reader.Value);
@@ -5163,8 +5163,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations14 = 0;
-            int readerCount14 = ReaderCount;
+            var whileIterations14 = 0;
+            var readerCount14 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     UnknownNode((object)o, @"");
@@ -5181,7 +5181,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.SoapHeaderBinding Read106_SoapHeaderBinding(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id54_SoapHeaderBinding && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id19_Item)) {
@@ -5192,7 +5192,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             if (isNull) return null;
             global::System.Web.Services.Description.SoapHeaderBinding o;
             o = new global::System.Web.Services.Description.SoapHeaderBinding();
-            bool[] paramsRead = new bool[7];
+            var paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[0] && ((object) Reader.LocalName == (object)id22_required && (object) Reader.NamespaceURI == (object)id2_Item)) {
                     o.@Required = System.Xml.XmlConvert.ToBoolean(Reader.Value);
@@ -5229,8 +5229,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations15 = 0;
-            int readerCount15 = ReaderCount;
+            var whileIterations15 = 0;
+            var readerCount15 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[6] && ((object) Reader.LocalName == (object)id50_headerfault && (object) Reader.NamespaceURI == (object)id19_Item)) {
@@ -5253,7 +5253,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.SoapHeaderFaultBinding Read105_SoapHeaderFaultBinding(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id51_SoapHeaderFaultBinding && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id19_Item)) {
@@ -5264,7 +5264,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             if (isNull) return null;
             global::System.Web.Services.Description.SoapHeaderFaultBinding o;
             o = new global::System.Web.Services.Description.SoapHeaderFaultBinding();
-            bool[] paramsRead = new bool[6];
+            var paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[0] && ((object) Reader.LocalName == (object)id22_required && (object) Reader.NamespaceURI == (object)id2_Item)) {
                     o.@Required = System.Xml.XmlConvert.ToBoolean(Reader.Value);
@@ -5301,8 +5301,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations16 = 0;
-            int readerCount16 = ReaderCount;
+            var whileIterations16 = 0;
+            var readerCount16 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     UnknownNode((object)o, @"");
@@ -5319,7 +5319,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.SoapBodyBinding Read99_SoapBodyBinding(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id55_SoapBodyBinding && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id19_Item)) {
@@ -5330,7 +5330,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             if (isNull) return null;
             global::System.Web.Services.Description.SoapBodyBinding o;
             o = new global::System.Web.Services.Description.SoapBodyBinding();
-            bool[] paramsRead = new bool[5];
+            var paramsRead = new bool[5];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[0] && ((object) Reader.LocalName == (object)id22_required && (object) Reader.NamespaceURI == (object)id2_Item)) {
                     o.@Required = System.Xml.XmlConvert.ToBoolean(Reader.Value);
@@ -5363,8 +5363,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations17 = 0;
-            int readerCount17 = ReaderCount;
+            var whileIterations17 = 0;
+            var readerCount17 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     UnknownNode((object)o, @"");
@@ -5381,7 +5381,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.MimeTextBinding Read97_MimeTextBinding(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id56_MimeTextBinding && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id45_Item)) {
@@ -5392,8 +5392,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             if (isNull) return null;
             global::System.Web.Services.Description.MimeTextBinding o;
             o = new global::System.Web.Services.Description.MimeTextBinding();
-            global::System.Web.Services.Description.MimeTextMatchCollection a_1 = (global::System.Web.Services.Description.MimeTextMatchCollection)o.@Matches;
-            bool[] paramsRead = new bool[2];
+            var a_1 = (global::System.Web.Services.Description.MimeTextMatchCollection)o.@Matches;
+            var paramsRead = new bool[2];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[0] && ((object) Reader.LocalName == (object)id22_required && (object) Reader.NamespaceURI == (object)id2_Item)) {
                     o.@Required = System.Xml.XmlConvert.ToBoolean(Reader.Value);
@@ -5410,8 +5410,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations18 = 0;
-            int readerCount18 = ReaderCount;
+            var whileIterations18 = 0;
+            var readerCount18 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (((object) Reader.LocalName == (object)id57_match && (object) Reader.NamespaceURI == (object)id45_Item)) {
@@ -5433,7 +5433,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.MimeTextMatch Read96_MimeTextMatch(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id58_MimeTextMatch && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id45_Item)) {
@@ -5444,8 +5444,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             if (isNull) return null;
             global::System.Web.Services.Description.MimeTextMatch o;
             o = new global::System.Web.Services.Description.MimeTextMatch();
-            global::System.Web.Services.Description.MimeTextMatchCollection a_7 = (global::System.Web.Services.Description.MimeTextMatchCollection)o.@Matches;
-            bool[] paramsRead = new bool[8];
+            var a_7 = (global::System.Web.Services.Description.MimeTextMatchCollection)o.@Matches;
+            var paramsRead = new bool[8];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[0] && ((object) Reader.LocalName == (object)id4_name && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Name = Reader.Value;
@@ -5486,8 +5486,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations19 = 0;
-            int readerCount19 = ReaderCount;
+            var whileIterations19 = 0;
+            var readerCount19 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (((object) Reader.LocalName == (object)id57_match && (object) Reader.NamespaceURI == (object)id45_Item)) {
@@ -5509,7 +5509,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.MimeMultipartRelatedBinding Read104_MimeMultipartRelatedBinding(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id64_MimeMultipartRelatedBinding && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id41_Item)) {
@@ -5520,8 +5520,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             if (isNull) return null;
             global::System.Web.Services.Description.MimeMultipartRelatedBinding o;
             o = new global::System.Web.Services.Description.MimeMultipartRelatedBinding();
-            global::System.Web.Services.Description.MimePartCollection a_1 = (global::System.Web.Services.Description.MimePartCollection)o.@Parts;
-            bool[] paramsRead = new bool[2];
+            var a_1 = (global::System.Web.Services.Description.MimePartCollection)o.@Parts;
+            var paramsRead = new bool[2];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[0] && ((object) Reader.LocalName == (object)id22_required && (object) Reader.NamespaceURI == (object)id2_Item)) {
                     o.@Required = System.Xml.XmlConvert.ToBoolean(Reader.Value);
@@ -5538,8 +5538,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations20 = 0;
-            int readerCount20 = ReaderCount;
+            var whileIterations20 = 0;
+            var readerCount20 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (((object) Reader.LocalName == (object)id49_part && (object) Reader.NamespaceURI == (object)id41_Item)) {
@@ -5561,7 +5561,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.MimePart Read103_MimePart(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id65_MimePart && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id41_Item)) {
@@ -5572,8 +5572,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             if (isNull) return null;
             global::System.Web.Services.Description.MimePart o;
             o = new global::System.Web.Services.Description.MimePart();
-            global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a_1 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
-            bool[] paramsRead = new bool[2];
+            var a_1 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+            var paramsRead = new bool[2];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[0] && ((object) Reader.LocalName == (object)id22_required && (object) Reader.NamespaceURI == (object)id2_Item)) {
                     o.@Required = System.Xml.XmlConvert.ToBoolean(Reader.Value);
@@ -5590,8 +5590,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations21 = 0;
-            int readerCount21 = ReaderCount;
+            var whileIterations21 = 0;
+            var readerCount21 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (((object) Reader.LocalName == (object)id40_content && (object) Reader.NamespaceURI == (object)id41_Item)) {
@@ -5625,7 +5625,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.MimeXmlBinding Read94_MimeXmlBinding(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id66_MimeXmlBinding && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id41_Item)) {
@@ -5636,7 +5636,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             if (isNull) return null;
             global::System.Web.Services.Description.MimeXmlBinding o;
             o = new global::System.Web.Services.Description.MimeXmlBinding();
-            bool[] paramsRead = new bool[2];
+            var paramsRead = new bool[2];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[0] && ((object) Reader.LocalName == (object)id22_required && (object) Reader.NamespaceURI == (object)id2_Item)) {
                     o.@Required = System.Xml.XmlConvert.ToBoolean(Reader.Value);
@@ -5657,8 +5657,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations22 = 0;
-            int readerCount22 = ReaderCount;
+            var whileIterations22 = 0;
+            var readerCount22 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     UnknownNode((object)o, @"");
@@ -5675,7 +5675,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.MimeContentBinding Read93_MimeContentBinding(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id67_MimeContentBinding && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id41_Item)) {
@@ -5686,7 +5686,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             if (isNull) return null;
             global::System.Web.Services.Description.MimeContentBinding o;
             o = new global::System.Web.Services.Description.MimeContentBinding();
-            bool[] paramsRead = new bool[3];
+            var paramsRead = new bool[3];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[0] && ((object) Reader.LocalName == (object)id22_required && (object) Reader.NamespaceURI == (object)id2_Item)) {
                     o.@Required = System.Xml.XmlConvert.ToBoolean(Reader.Value);
@@ -5711,8 +5711,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations23 = 0;
-            int readerCount23 = ReaderCount;
+            var whileIterations23 = 0;
+            var readerCount23 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     UnknownNode((object)o, @"");
@@ -5729,7 +5729,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.InputBinding Read110_InputBinding(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id68_InputBinding && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item)) {
@@ -5741,9 +5741,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Web.Services.Description.InputBinding o;
             o = new global::System.Web.Services.Description.InputBinding();
             global::System.Xml.XmlAttribute[] a_1 = null;
-            int ca_1 = 0;
-            global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a_4 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
-            bool[] paramsRead = new bool[5];
+            var ca_1 = 0;
+            var a_4 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+            var paramsRead = new bool[5];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[3] && ((object) Reader.LocalName == (object)id4_name && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Name = Reader.Value;
@@ -5768,8 +5768,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations24 = 0;
-            int readerCount24 = ReaderCount;
+            var whileIterations24 = 0;
+            var readerCount24 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[0] && ((object) Reader.LocalName == (object)id7_documentation && (object) Reader.NamespaceURI == (object)id2_Item)) {
@@ -5823,7 +5823,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.HttpUrlReplacementBinding Read91_HttpUrlReplacementBinding(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id71_HttpUrlReplacementBinding && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id18_Item)) {
@@ -5834,7 +5834,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             if (isNull) return null;
             global::System.Web.Services.Description.HttpUrlReplacementBinding o;
             o = new global::System.Web.Services.Description.HttpUrlReplacementBinding();
-            bool[] paramsRead = new bool[1];
+            var paramsRead = new bool[1];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[0] && ((object) Reader.LocalName == (object)id22_required && (object) Reader.NamespaceURI == (object)id2_Item)) {
                     o.@Required = System.Xml.XmlConvert.ToBoolean(Reader.Value);
@@ -5851,8 +5851,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations25 = 0;
-            int readerCount25 = ReaderCount;
+            var whileIterations25 = 0;
+            var readerCount25 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     UnknownNode((object)o, @"");
@@ -5869,7 +5869,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.HttpUrlEncodedBinding Read90_HttpUrlEncodedBinding(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id72_HttpUrlEncodedBinding && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id18_Item)) {
@@ -5880,7 +5880,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             if (isNull) return null;
             global::System.Web.Services.Description.HttpUrlEncodedBinding o;
             o = new global::System.Web.Services.Description.HttpUrlEncodedBinding();
-            bool[] paramsRead = new bool[1];
+            var paramsRead = new bool[1];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[0] && ((object) Reader.LocalName == (object)id22_required && (object) Reader.NamespaceURI == (object)id2_Item)) {
                     o.@Required = System.Xml.XmlConvert.ToBoolean(Reader.Value);
@@ -5897,8 +5897,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations26 = 0;
-            int readerCount26 = ReaderCount;
+            var whileIterations26 = 0;
+            var readerCount26 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     UnknownNode((object)o, @"");
@@ -5915,7 +5915,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.Soap12OperationBinding Read88_Soap12OperationBinding(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id73_Soap12OperationBinding && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id20_Item)) {
@@ -5926,7 +5926,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             if (isNull) return null;
             global::System.Web.Services.Description.Soap12OperationBinding o;
             o = new global::System.Web.Services.Description.Soap12OperationBinding();
-            bool[] paramsRead = new bool[4];
+            var paramsRead = new bool[4];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[0] && ((object) Reader.LocalName == (object)id22_required && (object) Reader.NamespaceURI == (object)id2_Item)) {
                     o.@Required = System.Xml.XmlConvert.ToBoolean(Reader.Value);
@@ -5955,8 +5955,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations27 = 0;
-            int readerCount27 = ReaderCount;
+            var whileIterations27 = 0;
+            var readerCount27 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     UnknownNode((object)o, @"");
@@ -5981,7 +5981,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.SoapOperationBinding Read86_SoapOperationBinding(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id77_SoapOperationBinding && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id19_Item)) {
@@ -5992,7 +5992,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             if (isNull) return null;
             global::System.Web.Services.Description.SoapOperationBinding o;
             o = new global::System.Web.Services.Description.SoapOperationBinding();
-            bool[] paramsRead = new bool[3];
+            var paramsRead = new bool[3];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[0] && ((object) Reader.LocalName == (object)id22_required && (object) Reader.NamespaceURI == (object)id2_Item)) {
                     o.@Required = System.Xml.XmlConvert.ToBoolean(Reader.Value);
@@ -6017,8 +6017,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations28 = 0;
-            int readerCount28 = ReaderCount;
+            var whileIterations28 = 0;
+            var readerCount28 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     UnknownNode((object)o, @"");
@@ -6043,7 +6043,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.HttpOperationBinding Read85_HttpOperationBinding(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id78_HttpOperationBinding && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id18_Item)) {
@@ -6054,7 +6054,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             if (isNull) return null;
             global::System.Web.Services.Description.HttpOperationBinding o;
             o = new global::System.Web.Services.Description.HttpOperationBinding();
-            bool[] paramsRead = new bool[2];
+            var paramsRead = new bool[2];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[0] && ((object) Reader.LocalName == (object)id22_required && (object) Reader.NamespaceURI == (object)id2_Item)) {
                     o.@Required = System.Xml.XmlConvert.ToBoolean(Reader.Value);
@@ -6075,8 +6075,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations29 = 0;
-            int readerCount29 = ReaderCount;
+            var whileIterations29 = 0;
+            var readerCount29 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     UnknownNode((object)o, @"");
@@ -6093,7 +6093,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.Soap12Binding Read84_Soap12Binding(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id79_Soap12Binding && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id20_Item)) {
@@ -6104,7 +6104,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             if (isNull) return null;
             global::System.Web.Services.Description.Soap12Binding o;
             o = new global::System.Web.Services.Description.Soap12Binding();
-            bool[] paramsRead = new bool[3];
+            var paramsRead = new bool[3];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[0] && ((object) Reader.LocalName == (object)id22_required && (object) Reader.NamespaceURI == (object)id2_Item)) {
                     o.@Required = System.Xml.XmlConvert.ToBoolean(Reader.Value);
@@ -6129,8 +6129,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations30 = 0;
-            int readerCount30 = ReaderCount;
+            var whileIterations30 = 0;
+            var readerCount30 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     UnknownNode((object)o, @"");
@@ -6147,7 +6147,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.SoapBinding Read80_SoapBinding(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id81_SoapBinding && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id19_Item)) {
@@ -6158,7 +6158,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             if (isNull) return null;
             global::System.Web.Services.Description.SoapBinding o;
             o = new global::System.Web.Services.Description.SoapBinding();
-            bool[] paramsRead = new bool[3];
+            var paramsRead = new bool[3];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[0] && ((object) Reader.LocalName == (object)id22_required && (object) Reader.NamespaceURI == (object)id2_Item)) {
                     o.@Required = System.Xml.XmlConvert.ToBoolean(Reader.Value);
@@ -6183,8 +6183,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations31 = 0;
-            int readerCount31 = ReaderCount;
+            var whileIterations31 = 0;
+            var readerCount31 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     UnknownNode((object)o, @"");
@@ -6201,7 +6201,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.HttpBinding Read77_HttpBinding(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id82_HttpBinding && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id18_Item)) {
@@ -6212,7 +6212,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             if (isNull) return null;
             global::System.Web.Services.Description.HttpBinding o;
             o = new global::System.Web.Services.Description.HttpBinding();
-            bool[] paramsRead = new bool[2];
+            var paramsRead = new bool[2];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[0] && ((object) Reader.LocalName == (object)id22_required && (object) Reader.NamespaceURI == (object)id2_Item)) {
                     o.@Required = System.Xml.XmlConvert.ToBoolean(Reader.Value);
@@ -6233,8 +6233,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations32 = 0;
-            int readerCount32 = ReaderCount;
+            var whileIterations32 = 0;
+            var readerCount32 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     UnknownNode((object)o, @"");
@@ -6251,7 +6251,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.PortType Read75_PortType(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id84_PortType && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item)) {
@@ -6263,10 +6263,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Web.Services.Description.PortType o;
             o = new global::System.Web.Services.Description.PortType();
             global::System.Xml.XmlAttribute[] a_1 = null;
-            int ca_1 = 0;
-            global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a_4 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
-            global::System.Web.Services.Description.OperationCollection a_5 = (global::System.Web.Services.Description.OperationCollection)o.@Operations;
-            bool[] paramsRead = new bool[6];
+            var ca_1 = 0;
+            var a_4 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+            var a_5 = (global::System.Web.Services.Description.OperationCollection)o.@Operations;
+            var paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[3] && ((object) Reader.LocalName == (object)id4_name && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Name = Reader.Value;
@@ -6291,8 +6291,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations33 = 0;
-            int readerCount33 = ReaderCount;
+            var whileIterations33 = 0;
+            var readerCount33 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[0] && ((object) Reader.LocalName == (object)id7_documentation && (object) Reader.NamespaceURI == (object)id2_Item)) {
@@ -6319,7 +6319,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.Operation Read74_Operation(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id85_Operation && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item)) {
@@ -6331,11 +6331,11 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Web.Services.Description.Operation o;
             o = new global::System.Web.Services.Description.Operation();
             global::System.Xml.XmlAttribute[] a_1 = null;
-            int ca_1 = 0;
-            global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a_4 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
-            global::System.Web.Services.Description.OperationMessageCollection a_6 = (global::System.Web.Services.Description.OperationMessageCollection)o.@Messages;
-            global::System.Web.Services.Description.OperationFaultCollection a_7 = (global::System.Web.Services.Description.OperationFaultCollection)o.@Faults;
-            bool[] paramsRead = new bool[8];
+            var ca_1 = 0;
+            var a_4 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+            var a_6 = (global::System.Web.Services.Description.OperationMessageCollection)o.@Messages;
+            var a_7 = (global::System.Web.Services.Description.OperationFaultCollection)o.@Faults;
+            var paramsRead = new bool[8];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[3] && ((object) Reader.LocalName == (object)id4_name && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Name = Reader.Value;
@@ -6364,8 +6364,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations34 = 0;
-            int readerCount34 = ReaderCount;
+            var whileIterations34 = 0;
+            var readerCount34 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[0] && ((object) Reader.LocalName == (object)id7_documentation && (object) Reader.NamespaceURI == (object)id2_Item)) {
@@ -6398,7 +6398,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.OperationFault Read73_OperationFault(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id87_OperationFault && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item)) {
@@ -6410,9 +6410,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Web.Services.Description.OperationFault o;
             o = new global::System.Web.Services.Description.OperationFault();
             global::System.Xml.XmlAttribute[] a_1 = null;
-            int ca_1 = 0;
-            global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a_5 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
-            bool[] paramsRead = new bool[6];
+            var ca_1 = 0;
+            var a_5 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+            var paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[3] && ((object) Reader.LocalName == (object)id4_name && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Name = Reader.Value;
@@ -6441,8 +6441,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations35 = 0;
-            int readerCount35 = ReaderCount;
+            var whileIterations35 = 0;
+            var readerCount35 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[0] && ((object) Reader.LocalName == (object)id7_documentation && (object) Reader.NamespaceURI == (object)id2_Item)) {
@@ -6466,7 +6466,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.OperationOutput Read72_OperationOutput(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id88_OperationOutput && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item)) {
@@ -6478,9 +6478,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Web.Services.Description.OperationOutput o;
             o = new global::System.Web.Services.Description.OperationOutput();
             global::System.Xml.XmlAttribute[] a_1 = null;
-            int ca_1 = 0;
-            global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a_5 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
-            bool[] paramsRead = new bool[6];
+            var ca_1 = 0;
+            var a_5 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+            var paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[3] && ((object) Reader.LocalName == (object)id4_name && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Name = Reader.Value;
@@ -6509,8 +6509,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations36 = 0;
-            int readerCount36 = ReaderCount;
+            var whileIterations36 = 0;
+            var readerCount36 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[0] && ((object) Reader.LocalName == (object)id7_documentation && (object) Reader.NamespaceURI == (object)id2_Item)) {
@@ -6534,7 +6534,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.OperationInput Read71_OperationInput(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id89_OperationInput && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item)) {
@@ -6546,9 +6546,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Web.Services.Description.OperationInput o;
             o = new global::System.Web.Services.Description.OperationInput();
             global::System.Xml.XmlAttribute[] a_1 = null;
-            int ca_1 = 0;
-            global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a_5 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
-            bool[] paramsRead = new bool[6];
+            var ca_1 = 0;
+            var a_5 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+            var paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[3] && ((object) Reader.LocalName == (object)id4_name && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Name = Reader.Value;
@@ -6577,8 +6577,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations37 = 0;
-            int readerCount37 = ReaderCount;
+            var whileIterations37 = 0;
+            var readerCount37 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[0] && ((object) Reader.LocalName == (object)id7_documentation && (object) Reader.NamespaceURI == (object)id2_Item)) {
@@ -6602,7 +6602,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.Message Read69_Message(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id90_Message && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item)) {
@@ -6614,10 +6614,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Web.Services.Description.Message o;
             o = new global::System.Web.Services.Description.Message();
             global::System.Xml.XmlAttribute[] a_1 = null;
-            int ca_1 = 0;
-            global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a_4 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
-            global::System.Web.Services.Description.MessagePartCollection a_5 = (global::System.Web.Services.Description.MessagePartCollection)o.@Parts;
-            bool[] paramsRead = new bool[6];
+            var ca_1 = 0;
+            var a_4 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+            var a_5 = (global::System.Web.Services.Description.MessagePartCollection)o.@Parts;
+            var paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[3] && ((object) Reader.LocalName == (object)id4_name && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Name = Reader.Value;
@@ -6642,8 +6642,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations38 = 0;
-            int readerCount38 = ReaderCount;
+            var whileIterations38 = 0;
+            var readerCount38 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[0] && ((object) Reader.LocalName == (object)id7_documentation && (object) Reader.NamespaceURI == (object)id2_Item)) {
@@ -6670,7 +6670,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.MessagePart Read68_MessagePart(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id91_MessagePart && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item)) {
@@ -6682,9 +6682,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Web.Services.Description.MessagePart o;
             o = new global::System.Web.Services.Description.MessagePart();
             global::System.Xml.XmlAttribute[] a_1 = null;
-            int ca_1 = 0;
-            global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a_4 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
-            bool[] paramsRead = new bool[7];
+            var ca_1 = 0;
+            var a_4 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+            var paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[3] && ((object) Reader.LocalName == (object)id4_name && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Name = Reader.Value;
@@ -6717,8 +6717,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations39 = 0;
-            int readerCount39 = ReaderCount;
+            var whileIterations39 = 0;
+            var readerCount39 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[0] && ((object) Reader.LocalName == (object)id7_documentation && (object) Reader.NamespaceURI == (object)id2_Item)) {
@@ -6742,7 +6742,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.Types Read67_Types(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id93_Types && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item)) {
@@ -6754,10 +6754,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Web.Services.Description.Types o;
             o = new global::System.Web.Services.Description.Types();
             global::System.Xml.XmlAttribute[] a_1 = null;
-            int ca_1 = 0;
-            global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a_3 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
-            global::System.Xml.Serialization.XmlSchemas a_4 = (global::System.Xml.Serialization.XmlSchemas)o.@Schemas;
-            bool[] paramsRead = new bool[5];
+            var ca_1 = 0;
+            var a_3 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+            var a_4 = (global::System.Xml.Serialization.XmlSchemas)o.@Schemas;
+            var paramsRead = new bool[5];
             while (Reader.MoveToNextAttribute()) {
                 if (IsXmlnsAttribute(Reader.Name)) {
                     if (o.@Namespaces == null) o.@Namespaces = new global::System.Xml.Serialization.XmlSerializerNamespaces();
@@ -6778,8 +6778,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations40 = 0;
-            int readerCount40 = ReaderCount;
+            var whileIterations40 = 0;
+            var readerCount40 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[0] && ((object) Reader.LocalName == (object)id7_documentation && (object) Reader.NamespaceURI == (object)id2_Item)) {
@@ -6806,7 +6806,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchema Read66_XmlSchema(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id96_XmlSchema && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -6818,11 +6818,11 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             DecodeName = false;
             global::System.Xml.Schema.XmlSchema o;
             o = new global::System.Xml.Schema.XmlSchema();
-            global::System.Xml.Schema.XmlSchemaObjectCollection a_7 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Includes;
-            global::System.Xml.Schema.XmlSchemaObjectCollection a_8 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Items;
+            var a_7 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Includes;
+            var a_8 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Items;
             global::System.Xml.XmlAttribute[] a_10 = null;
-            int ca_10 = 0;
-            bool[] paramsRead = new bool[11];
+            var ca_10 = 0;
+            var paramsRead = new bool[11];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id97_attributeFormDefault && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@AttributeFormDefault = Read6_XmlSchemaForm(Reader.Value);
@@ -6871,8 +6871,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations41 = 0;
-            int readerCount41 = ReaderCount;
+            var whileIterations41 = 0;
+            var readerCount41 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (((object) Reader.LocalName == (object)id103_include && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -6925,7 +6925,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaAttributeGroup Read40_XmlSchemaAttributeGroup(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id111_XmlSchemaAttributeGroup && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -6938,9 +6938,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaAttributeGroup o;
             o = new global::System.Xml.Schema.XmlSchemaAttributeGroup();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            global::System.Xml.Schema.XmlSchemaObjectCollection a_5 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Attributes;
-            bool[] paramsRead = new bool[7];
+            var ca_3 = 0;
+            var a_5 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Attributes;
+            var paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -6969,8 +6969,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations42 = 0;
-            int readerCount42 = ReaderCount;
+            var whileIterations42 = 0;
+            var readerCount42 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -7004,7 +7004,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaAnyAttribute Read39_XmlSchemaAnyAttribute(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id113_XmlSchemaAnyAttribute && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -7017,8 +7017,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaAnyAttribute o;
             o = new global::System.Xml.Schema.XmlSchemaAnyAttribute();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            bool[] paramsRead = new bool[6];
+            var ca_3 = 0;
+            var paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -7051,8 +7051,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations43 = 0;
-            int readerCount43 = ReaderCount;
+            var whileIterations43 = 0;
+            var readerCount43 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -7076,7 +7076,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaAnnotation Read11_XmlSchemaAnnotation(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id115_XmlSchemaAnnotation && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -7088,10 +7088,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             DecodeName = false;
             global::System.Xml.Schema.XmlSchemaAnnotation o;
             o = new global::System.Xml.Schema.XmlSchemaAnnotation();
-            global::System.Xml.Schema.XmlSchemaObjectCollection a_2 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Items;
+            var a_2 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Items;
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            bool[] paramsRead = new bool[4];
+            var ca_3 = 0;
+            var paramsRead = new bool[4];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -7116,8 +7116,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations44 = 0;
-            int readerCount44 = ReaderCount;
+            var whileIterations44 = 0;
+            var readerCount44 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (((object) Reader.LocalName == (object)id7_documentation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -7143,7 +7143,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaAppInfo Read10_XmlSchemaAppInfo(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id117_XmlSchemaAppInfo && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -7156,8 +7156,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaAppInfo o;
             o = new global::System.Xml.Schema.XmlSchemaAppInfo();
             global::System.Xml.XmlNode[] a_2 = null;
-            int ca_2 = 0;
-            bool[] paramsRead = new bool[3];
+            var ca_2 = 0;
+            var paramsRead = new bool[3];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id118_source && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Source = CollapseWhitespace(Reader.Value);
@@ -7179,8 +7179,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations45 = 0;
-            int readerCount45 = ReaderCount;
+            var whileIterations45 = 0;
+            var readerCount45 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     a_2 = (global::System.Xml.XmlNode[])EnsureArrayIndex(a_2, ca_2, typeof(global::System.Xml.XmlNode)); a_2[ca_2++] = (global::System.Xml.XmlNode)ReadXmlNode(false);
@@ -7204,7 +7204,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaDocumentation Read9_XmlSchemaDocumentation(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id119_XmlSchemaDocumentation && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -7217,8 +7217,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaDocumentation o;
             o = new global::System.Xml.Schema.XmlSchemaDocumentation();
             global::System.Xml.XmlNode[] a_3 = null;
-            int ca_3 = 0;
-            bool[] paramsRead = new bool[4];
+            var ca_3 = 0;
+            var paramsRead = new bool[4];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id118_source && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Source = CollapseWhitespace(Reader.Value);
@@ -7244,8 +7244,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations46 = 0;
-            int readerCount46 = ReaderCount;
+            var whileIterations46 = 0;
+            var readerCount46 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     a_3 = (global::System.Xml.XmlNode[])EnsureArrayIndex(a_3, ca_3, typeof(global::System.Xml.XmlNode)); a_3[ca_3++] = (global::System.Xml.XmlNode)ReadXmlNode(false);
@@ -7278,7 +7278,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaAttributeGroupRef Read37_XmlSchemaAttributeGroupRef(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id122_XmlSchemaAttributeGroupRef && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -7291,8 +7291,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaAttributeGroupRef o;
             o = new global::System.Xml.Schema.XmlSchemaAttributeGroupRef();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            bool[] paramsRead = new bool[5];
+            var ca_3 = 0;
+            var paramsRead = new bool[5];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -7321,8 +7321,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations47 = 0;
-            int readerCount47 = ReaderCount;
+            var whileIterations47 = 0;
+            var readerCount47 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -7346,7 +7346,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaAttribute Read36_XmlSchemaAttribute(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id124_XmlSchemaAttribute && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -7359,8 +7359,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaAttribute o;
             o = new global::System.Xml.Schema.XmlSchemaAttribute();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            bool[] paramsRead = new bool[12];
+            var ca_3 = 0;
+            var paramsRead = new bool[12];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -7413,8 +7413,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations48 = 0;
-            int readerCount48 = ReaderCount;
+            var whileIterations48 = 0;
+            var readerCount48 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -7442,7 +7442,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaSimpleType Read34_XmlSchemaSimpleType(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id128_XmlSchemaSimpleType && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -7455,8 +7455,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaSimpleType o;
             o = new global::System.Xml.Schema.XmlSchemaSimpleType();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            bool[] paramsRead = new bool[7];
+            var ca_3 = 0;
+            var paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -7489,8 +7489,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations49 = 0;
-            int readerCount49 = ReaderCount;
+            var whileIterations49 = 0;
+            var readerCount49 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -7526,7 +7526,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaSimpleTypeUnion Read33_XmlSchemaSimpleTypeUnion(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id133_XmlSchemaSimpleTypeUnion && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -7539,20 +7539,20 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaSimpleTypeUnion o;
             o = new global::System.Xml.Schema.XmlSchemaSimpleTypeUnion();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            global::System.Xml.Schema.XmlSchemaObjectCollection a_4 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@BaseTypes;
+            var ca_3 = 0;
+            var a_4 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@BaseTypes;
             global::System.Xml.XmlQualifiedName[] a_5 = null;
-            int ca_5 = 0;
-            bool[] paramsRead = new bool[6];
+            var ca_5 = 0;
+            var paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
                     paramsRead[1] = true;
                 }
                 else if (((object) Reader.LocalName == (object)id134_memberTypes && (object) Reader.NamespaceURI == (object)id5_Item)) {
-                    string listValues = Reader.Value;
-                    string[] vals = listValues.Split(null);
-                    for (int i = 0; i < vals.Length; i++) {
+                    var listValues = Reader.Value;
+                    var vals = listValues.Split(null);
+                    for (var i = 0; i < vals.Length; i++) {
                         a_5 = (global::System.Xml.XmlQualifiedName[])EnsureArrayIndex(a_5, ca_5, typeof(global::System.Xml.XmlQualifiedName)); a_5[ca_5++] = ToXmlQualifiedName(vals[i]);
                     }
                 }
@@ -7577,8 +7577,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations50 = 0;
-            int readerCount50 = ReaderCount;
+            var whileIterations50 = 0;
+            var readerCount50 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -7606,7 +7606,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaSimpleTypeRestriction Read32_XmlSchemaSimpleTypeRestriction(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id135_XmlSchemaSimpleTypeRestriction && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -7619,9 +7619,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaSimpleTypeRestriction o;
             o = new global::System.Xml.Schema.XmlSchemaSimpleTypeRestriction();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            global::System.Xml.Schema.XmlSchemaObjectCollection a_6 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Facets;
-            bool[] paramsRead = new bool[7];
+            var ca_3 = 0;
+            var a_6 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Facets;
+            var paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -7650,8 +7650,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations51 = 0;
-            int readerCount51 = ReaderCount;
+            var whileIterations51 = 0;
+            var readerCount51 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -7715,7 +7715,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaMinLengthFacet Read31_XmlSchemaMinLengthFacet(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id148_XmlSchemaMinLengthFacet && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -7728,8 +7728,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaMinLengthFacet o;
             o = new global::System.Xml.Schema.XmlSchemaMinLengthFacet();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            bool[] paramsRead = new bool[6];
+            var ca_3 = 0;
+            var paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -7762,8 +7762,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations52 = 0;
-            int readerCount52 = ReaderCount;
+            var whileIterations52 = 0;
+            var readerCount52 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -7787,7 +7787,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaMinExclusiveFacet Read30_XmlSchemaMinExclusiveFacet(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id150_XmlSchemaMinExclusiveFacet && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -7800,8 +7800,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaMinExclusiveFacet o;
             o = new global::System.Xml.Schema.XmlSchemaMinExclusiveFacet();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            bool[] paramsRead = new bool[6];
+            var ca_3 = 0;
+            var paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -7834,8 +7834,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations53 = 0;
-            int readerCount53 = ReaderCount;
+            var whileIterations53 = 0;
+            var readerCount53 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -7859,7 +7859,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaWhiteSpaceFacet Read29_XmlSchemaWhiteSpaceFacet(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id151_XmlSchemaWhiteSpaceFacet && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -7872,8 +7872,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaWhiteSpaceFacet o;
             o = new global::System.Xml.Schema.XmlSchemaWhiteSpaceFacet();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            bool[] paramsRead = new bool[6];
+            var ca_3 = 0;
+            var paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -7906,8 +7906,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations54 = 0;
-            int readerCount54 = ReaderCount;
+            var whileIterations54 = 0;
+            var readerCount54 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -7931,7 +7931,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaMaxExclusiveFacet Read28_XmlSchemaMaxExclusiveFacet(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id152_XmlSchemaMaxExclusiveFacet && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -7944,8 +7944,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaMaxExclusiveFacet o;
             o = new global::System.Xml.Schema.XmlSchemaMaxExclusiveFacet();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            bool[] paramsRead = new bool[6];
+            var ca_3 = 0;
+            var paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -7978,8 +7978,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations55 = 0;
-            int readerCount55 = ReaderCount;
+            var whileIterations55 = 0;
+            var readerCount55 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -8003,7 +8003,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaMaxInclusiveFacet Read27_XmlSchemaMaxInclusiveFacet(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id153_XmlSchemaMaxInclusiveFacet && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -8016,8 +8016,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaMaxInclusiveFacet o;
             o = new global::System.Xml.Schema.XmlSchemaMaxInclusiveFacet();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            bool[] paramsRead = new bool[6];
+            var ca_3 = 0;
+            var paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -8050,8 +8050,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations56 = 0;
-            int readerCount56 = ReaderCount;
+            var whileIterations56 = 0;
+            var readerCount56 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -8075,7 +8075,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaEnumerationFacet Read26_XmlSchemaEnumerationFacet(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id154_XmlSchemaEnumerationFacet && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -8088,8 +8088,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaEnumerationFacet o;
             o = new global::System.Xml.Schema.XmlSchemaEnumerationFacet();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            bool[] paramsRead = new bool[6];
+            var ca_3 = 0;
+            var paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -8122,8 +8122,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations57 = 0;
-            int readerCount57 = ReaderCount;
+            var whileIterations57 = 0;
+            var readerCount57 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -8147,7 +8147,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaPatternFacet Read25_XmlSchemaPatternFacet(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id155_XmlSchemaPatternFacet && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -8160,8 +8160,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaPatternFacet o;
             o = new global::System.Xml.Schema.XmlSchemaPatternFacet();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            bool[] paramsRead = new bool[6];
+            var ca_3 = 0;
+            var paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -8194,8 +8194,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations58 = 0;
-            int readerCount58 = ReaderCount;
+            var whileIterations58 = 0;
+            var readerCount58 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -8219,7 +8219,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaTotalDigitsFacet Read24_XmlSchemaTotalDigitsFacet(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id156_XmlSchemaTotalDigitsFacet && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -8232,8 +8232,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaTotalDigitsFacet o;
             o = new global::System.Xml.Schema.XmlSchemaTotalDigitsFacet();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            bool[] paramsRead = new bool[6];
+            var ca_3 = 0;
+            var paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -8266,8 +8266,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations59 = 0;
-            int readerCount59 = ReaderCount;
+            var whileIterations59 = 0;
+            var readerCount59 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -8291,7 +8291,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaLengthFacet Read23_XmlSchemaLengthFacet(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id157_XmlSchemaLengthFacet && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -8304,8 +8304,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaLengthFacet o;
             o = new global::System.Xml.Schema.XmlSchemaLengthFacet();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            bool[] paramsRead = new bool[6];
+            var ca_3 = 0;
+            var paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -8338,8 +8338,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations60 = 0;
-            int readerCount60 = ReaderCount;
+            var whileIterations60 = 0;
+            var readerCount60 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -8363,7 +8363,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaMaxLengthFacet Read22_XmlSchemaMaxLengthFacet(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id158_XmlSchemaMaxLengthFacet && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -8376,8 +8376,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaMaxLengthFacet o;
             o = new global::System.Xml.Schema.XmlSchemaMaxLengthFacet();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            bool[] paramsRead = new bool[6];
+            var ca_3 = 0;
+            var paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -8410,8 +8410,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations61 = 0;
-            int readerCount61 = ReaderCount;
+            var whileIterations61 = 0;
+            var readerCount61 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -8435,7 +8435,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaMinInclusiveFacet Read21_XmlSchemaMinInclusiveFacet(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id159_XmlSchemaMinInclusiveFacet && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -8448,8 +8448,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaMinInclusiveFacet o;
             o = new global::System.Xml.Schema.XmlSchemaMinInclusiveFacet();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            bool[] paramsRead = new bool[6];
+            var ca_3 = 0;
+            var paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -8482,8 +8482,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations62 = 0;
-            int readerCount62 = ReaderCount;
+            var whileIterations62 = 0;
+            var readerCount62 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -8507,7 +8507,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaFractionDigitsFacet Read20_XmlSchemaFractionDigitsFacet(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id160_XmlSchemaFractionDigitsFacet && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -8520,8 +8520,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaFractionDigitsFacet o;
             o = new global::System.Xml.Schema.XmlSchemaFractionDigitsFacet();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            bool[] paramsRead = new bool[6];
+            var ca_3 = 0;
+            var paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -8554,8 +8554,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations63 = 0;
-            int readerCount63 = ReaderCount;
+            var whileIterations63 = 0;
+            var readerCount63 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -8579,7 +8579,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaSimpleTypeList Read17_XmlSchemaSimpleTypeList(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id161_XmlSchemaSimpleTypeList && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -8592,8 +8592,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaSimpleTypeList o;
             o = new global::System.Xml.Schema.XmlSchemaSimpleTypeList();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            bool[] paramsRead = new bool[6];
+            var ca_3 = 0;
+            var paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -8622,8 +8622,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations64 = 0;
-            int readerCount64 = ReaderCount;
+            var whileIterations64 = 0;
+            var readerCount64 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -8654,7 +8654,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
         internal System.Collections.Hashtable XmlSchemaDerivationMethodValues {
             get {
                 if ((object)_XmlSchemaDerivationMethodValues == null) {
-                    System.Collections.Hashtable h = new System.Collections.Hashtable();
+                    var h = new System.Collections.Hashtable();
                     h.Add(@"", (long)global::System.Xml.Schema.XmlSchemaDerivationMethod.@Empty);
                     h.Add(@"substitution", (long)global::System.Xml.Schema.XmlSchemaDerivationMethod.@Substitution);
                     h.Add(@"extension", (long)global::System.Xml.Schema.XmlSchemaDerivationMethod.@Extension);
@@ -8691,7 +8691,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaElement Read52_XmlSchemaElement(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id163_XmlSchemaElement && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -8704,9 +8704,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaElement o;
             o = new global::System.Xml.Schema.XmlSchemaElement();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            global::System.Xml.Schema.XmlSchemaObjectCollection a_18 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Constraints;
-            bool[] paramsRead = new bool[19];
+            var ca_3 = 0;
+            var a_18 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Constraints;
+            var paramsRead = new bool[19];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -8783,8 +8783,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations65 = 0;
-            int readerCount65 = ReaderCount;
+            var whileIterations65 = 0;
+            var readerCount65 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -8825,7 +8825,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaKeyref Read51_XmlSchemaKeyref(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id173_XmlSchemaKeyref && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -8838,9 +8838,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaKeyref o;
             o = new global::System.Xml.Schema.XmlSchemaKeyref();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            global::System.Xml.Schema.XmlSchemaObjectCollection a_6 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Fields;
-            bool[] paramsRead = new bool[8];
+            var ca_3 = 0;
+            var a_6 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Fields;
+            var paramsRead = new bool[8];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -8873,8 +8873,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations66 = 0;
-            int readerCount66 = ReaderCount;
+            var whileIterations66 = 0;
+            var readerCount66 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -8905,7 +8905,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaXPath Read47_XmlSchemaXPath(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id177_XmlSchemaXPath && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -8918,8 +8918,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaXPath o;
             o = new global::System.Xml.Schema.XmlSchemaXPath();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            bool[] paramsRead = new bool[5];
+            var ca_3 = 0;
+            var paramsRead = new bool[5];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -8948,8 +8948,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations67 = 0;
-            int readerCount67 = ReaderCount;
+            var whileIterations67 = 0;
+            var readerCount67 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -8973,7 +8973,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaUnique Read50_XmlSchemaUnique(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id179_XmlSchemaUnique && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -8986,9 +8986,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaUnique o;
             o = new global::System.Xml.Schema.XmlSchemaUnique();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            global::System.Xml.Schema.XmlSchemaObjectCollection a_6 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Fields;
-            bool[] paramsRead = new bool[7];
+            var ca_3 = 0;
+            var a_6 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Fields;
+            var paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -9017,8 +9017,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations68 = 0;
-            int readerCount68 = ReaderCount;
+            var whileIterations68 = 0;
+            var readerCount68 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -9049,7 +9049,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaKey Read49_XmlSchemaKey(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id180_XmlSchemaKey && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -9062,9 +9062,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaKey o;
             o = new global::System.Xml.Schema.XmlSchemaKey();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            global::System.Xml.Schema.XmlSchemaObjectCollection a_6 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Fields;
-            bool[] paramsRead = new bool[7];
+            var ca_3 = 0;
+            var a_6 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Fields;
+            var paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -9093,8 +9093,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations69 = 0;
-            int readerCount69 = ReaderCount;
+            var whileIterations69 = 0;
+            var readerCount69 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -9125,7 +9125,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaComplexType Read62_XmlSchemaComplexType(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id181_XmlSchemaComplexType && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -9138,9 +9138,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaComplexType o;
             o = new global::System.Xml.Schema.XmlSchemaComplexType();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            global::System.Xml.Schema.XmlSchemaObjectCollection a_11 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Attributes;
-            bool[] paramsRead = new bool[13];
+            var ca_3 = 0;
+            var a_11 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Attributes;
+            var paramsRead = new bool[13];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -9185,8 +9185,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations70 = 0;
-            int readerCount70 = ReaderCount;
+            var whileIterations70 = 0;
+            var readerCount70 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -9244,7 +9244,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaAll Read55_XmlSchemaAll(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id188_XmlSchemaAll && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -9257,9 +9257,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaAll o;
             o = new global::System.Xml.Schema.XmlSchemaAll();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            global::System.Xml.Schema.XmlSchemaObjectCollection a_6 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Items;
-            bool[] paramsRead = new bool[7];
+            var ca_3 = 0;
+            var a_6 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Items;
+            var paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -9292,8 +9292,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations71 = 0;
-            int readerCount71 = ReaderCount;
+            var whileIterations71 = 0;
+            var readerCount71 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -9320,7 +9320,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaChoice Read54_XmlSchemaChoice(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id189_XmlSchemaChoice && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -9333,9 +9333,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaChoice o;
             o = new global::System.Xml.Schema.XmlSchemaChoice();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            global::System.Xml.Schema.XmlSchemaObjectCollection a_6 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Items;
-            bool[] paramsRead = new bool[7];
+            var ca_3 = 0;
+            var a_6 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Items;
+            var paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -9368,8 +9368,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations72 = 0;
-            int readerCount72 = ReaderCount;
+            var whileIterations72 = 0;
+            var readerCount72 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -9408,7 +9408,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaGroupRef Read44_XmlSchemaGroupRef(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id191_XmlSchemaGroupRef && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -9421,8 +9421,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaGroupRef o;
             o = new global::System.Xml.Schema.XmlSchemaGroupRef();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            bool[] paramsRead = new bool[7];
+            var ca_3 = 0;
+            var paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -9459,8 +9459,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations73 = 0;
-            int readerCount73 = ReaderCount;
+            var whileIterations73 = 0;
+            var readerCount73 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -9484,7 +9484,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaSequence Read53_XmlSchemaSequence(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id192_XmlSchemaSequence && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -9497,9 +9497,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaSequence o;
             o = new global::System.Xml.Schema.XmlSchemaSequence();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            global::System.Xml.Schema.XmlSchemaObjectCollection a_6 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Items;
-            bool[] paramsRead = new bool[7];
+            var ca_3 = 0;
+            var a_6 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Items;
+            var paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -9532,8 +9532,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations74 = 0;
-            int readerCount74 = ReaderCount;
+            var whileIterations74 = 0;
+            var readerCount74 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -9572,7 +9572,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaAny Read46_XmlSchemaAny(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id193_XmlSchemaAny && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -9585,8 +9585,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaAny o;
             o = new global::System.Xml.Schema.XmlSchemaAny();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            bool[] paramsRead = new bool[8];
+            var ca_3 = 0;
+            var paramsRead = new bool[8];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -9627,8 +9627,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations75 = 0;
-            int readerCount75 = ReaderCount;
+            var whileIterations75 = 0;
+            var readerCount75 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -9652,7 +9652,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaSimpleContent Read61_XmlSchemaSimpleContent(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id194_XmlSchemaSimpleContent && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -9665,8 +9665,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaSimpleContent o;
             o = new global::System.Xml.Schema.XmlSchemaSimpleContent();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            bool[] paramsRead = new bool[5];
+            var ca_3 = 0;
+            var paramsRead = new bool[5];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -9691,8 +9691,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations76 = 0;
-            int readerCount76 = ReaderCount;
+            var whileIterations76 = 0;
+            var readerCount76 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -9724,7 +9724,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaSimpleContentExtension Read60_Item(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id196_Item && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -9737,9 +9737,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaSimpleContentExtension o;
             o = new global::System.Xml.Schema.XmlSchemaSimpleContentExtension();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            global::System.Xml.Schema.XmlSchemaObjectCollection a_5 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Attributes;
-            bool[] paramsRead = new bool[7];
+            var ca_3 = 0;
+            var a_5 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Attributes;
+            var paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -9768,8 +9768,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations77 = 0;
-            int readerCount77 = ReaderCount;
+            var whileIterations77 = 0;
+            var readerCount77 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -9803,7 +9803,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaSimpleContentRestriction Read59_Item(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id197_Item && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -9816,10 +9816,10 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaSimpleContentRestriction o;
             o = new global::System.Xml.Schema.XmlSchemaSimpleContentRestriction();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            global::System.Xml.Schema.XmlSchemaObjectCollection a_6 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Facets;
-            global::System.Xml.Schema.XmlSchemaObjectCollection a_7 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Attributes;
-            bool[] paramsRead = new bool[9];
+            var ca_3 = 0;
+            var a_6 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Facets;
+            var a_7 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Attributes;
+            var paramsRead = new bool[9];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -9848,8 +9848,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations78 = 0;
-            int readerCount78 = ReaderCount;
+            var whileIterations78 = 0;
+            var readerCount78 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -9923,7 +9923,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaComplexContent Read58_XmlSchemaComplexContent(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id198_XmlSchemaComplexContent && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -9936,8 +9936,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaComplexContent o;
             o = new global::System.Xml.Schema.XmlSchemaComplexContent();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            bool[] paramsRead = new bool[6];
+            var ca_3 = 0;
+            var paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -9966,8 +9966,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations79 = 0;
-            int readerCount79 = ReaderCount;
+            var whileIterations79 = 0;
+            var readerCount79 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -9999,7 +9999,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaComplexContentRestriction Read57_Item(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id199_Item && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -10012,9 +10012,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaComplexContentRestriction o;
             o = new global::System.Xml.Schema.XmlSchemaComplexContentRestriction();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            global::System.Xml.Schema.XmlSchemaObjectCollection a_6 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Attributes;
-            bool[] paramsRead = new bool[8];
+            var ca_3 = 0;
+            var a_6 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Attributes;
+            var paramsRead = new bool[8];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -10043,8 +10043,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations80 = 0;
-            int readerCount80 = ReaderCount;
+            var whileIterations80 = 0;
+            var readerCount80 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -10094,7 +10094,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaComplexContentExtension Read56_Item(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id200_Item && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -10107,9 +10107,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaComplexContentExtension o;
             o = new global::System.Xml.Schema.XmlSchemaComplexContentExtension();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            global::System.Xml.Schema.XmlSchemaObjectCollection a_6 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Attributes;
-            bool[] paramsRead = new bool[8];
+            var ca_3 = 0;
+            var a_6 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Attributes;
+            var paramsRead = new bool[8];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -10138,8 +10138,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations81 = 0;
-            int readerCount81 = ReaderCount;
+            var whileIterations81 = 0;
+            var readerCount81 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -10189,7 +10189,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaGroup Read63_XmlSchemaGroup(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id201_XmlSchemaGroup && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -10202,8 +10202,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaGroup o;
             o = new global::System.Xml.Schema.XmlSchemaGroup();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            bool[] paramsRead = new bool[6];
+            var ca_3 = 0;
+            var paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -10232,8 +10232,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations82 = 0;
-            int readerCount82 = ReaderCount;
+            var whileIterations82 = 0;
+            var readerCount82 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -10269,7 +10269,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaNotation Read65_XmlSchemaNotation(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id202_XmlSchemaNotation && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -10282,8 +10282,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaNotation o;
             o = new global::System.Xml.Schema.XmlSchemaNotation();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            bool[] paramsRead = new bool[7];
+            var ca_3 = 0;
+            var paramsRead = new bool[7];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id102_id && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Id = CollapseWhitespace(Reader.Value);
@@ -10320,8 +10320,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations83 = 0;
-            int readerCount83 = ReaderCount;
+            var whileIterations83 = 0;
+            var readerCount83 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[2] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -10345,7 +10345,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaRedefine Read64_XmlSchemaRedefine(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id205_XmlSchemaRedefine && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -10358,9 +10358,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaRedefine o;
             o = new global::System.Xml.Schema.XmlSchemaRedefine();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            global::System.Xml.Schema.XmlSchemaObjectCollection a_4 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Items;
-            bool[] paramsRead = new bool[5];
+            var ca_3 = 0;
+            var a_4 = (global::System.Xml.Schema.XmlSchemaObjectCollection)o.@Items;
+            var paramsRead = new bool[5];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id206_schemaLocation && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@SchemaLocation = CollapseWhitespace(Reader.Value);
@@ -10389,8 +10389,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations84 = 0;
-            int readerCount84 = ReaderCount;
+            var whileIterations84 = 0;
+            var readerCount84 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (((object) Reader.LocalName == (object)id110_attributeGroup && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -10425,7 +10425,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaImport Read13_XmlSchemaImport(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id207_XmlSchemaImport && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -10438,8 +10438,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaImport o;
             o = new global::System.Xml.Schema.XmlSchemaImport();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            bool[] paramsRead = new bool[6];
+            var ca_3 = 0;
+            var paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id206_schemaLocation && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@SchemaLocation = CollapseWhitespace(Reader.Value);
@@ -10472,8 +10472,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations85 = 0;
-            int readerCount85 = ReaderCount;
+            var whileIterations85 = 0;
+            var readerCount85 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[5] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -10497,7 +10497,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Xml.Schema.XmlSchemaInclude Read12_XmlSchemaInclude(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id208_XmlSchemaInclude && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id95_Item)) {
@@ -10510,8 +10510,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Xml.Schema.XmlSchemaInclude o;
             o = new global::System.Xml.Schema.XmlSchemaInclude();
             global::System.Xml.XmlAttribute[] a_3 = null;
-            int ca_3 = 0;
-            bool[] paramsRead = new bool[5];
+            var ca_3 = 0;
+            var paramsRead = new bool[5];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[1] && ((object) Reader.LocalName == (object)id206_schemaLocation && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@SchemaLocation = CollapseWhitespace(Reader.Value);
@@ -10540,8 +10540,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations86 = 0;
-            int readerCount86 = ReaderCount;
+            var whileIterations86 = 0;
+            var readerCount86 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[4] && ((object) Reader.LocalName == (object)id107_annotation && (object) Reader.NamespaceURI == (object)id95_Item)) {
@@ -10565,7 +10565,7 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
 
         global::System.Web.Services.Description.Import Read4_Import(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id209_Import && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item)) {
@@ -10577,9 +10577,9 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             global::System.Web.Services.Description.Import o;
             o = new global::System.Web.Services.Description.Import();
             global::System.Xml.XmlAttribute[] a_1 = null;
-            int ca_1 = 0;
-            global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection a_3 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
-            bool[] paramsRead = new bool[6];
+            var ca_1 = 0;
+            var a_3 = (global::System.Web.Services.Description.ServiceDescriptionFormatExtensionCollection)o.@Extensions;
+            var paramsRead = new bool[6];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[4] && ((object) Reader.LocalName == (object)id36_namespace && (object) Reader.NamespaceURI == (object)id5_Item)) {
                     o.@Namespace = Reader.Value;
@@ -10608,8 +10608,8 @@ internal class ServiceDescriptionSerializationWriter : System.Xml.Serialization.
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations87 = 0;
-            int readerCount87 = ReaderCount;
+            var whileIterations87 = 0;
+            var readerCount87 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (!paramsRead[0] && ((object) Reader.LocalName == (object)id7_documentation && (object) Reader.NamespaceURI == (object)id2_Item)) {

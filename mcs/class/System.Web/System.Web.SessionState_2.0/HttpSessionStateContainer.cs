@@ -78,7 +78,7 @@ namespace System.Web.SessionState
 		
 		public int CodePage {
 			get {
-				HttpContext current = HttpContext.Current;
+				var current = HttpContext.Current;
 				if (current == null)
 					return Encoding.Default.CodePage;
 
@@ -86,7 +86,7 @@ namespace System.Web.SessionState
 			}
 			
 			set {
-				HttpContext current = HttpContext.Current;
+				var current = HttpContext.Current;
 				if (current != null)
 					current.Response.ContentEncoding = Encoding.GetEncoding (value);
 			}
@@ -216,8 +216,8 @@ namespace System.Web.SessionState
 		{
 			if (sessionItems == null)
 				return;
-			NameObjectCollectionBase.KeysCollection all = sessionItems.Keys;
-			for (int i = 0; i < all.Count; i++)
+			var all = sessionItems.Keys;
+			for (var i = 0; i < all.Count; i++)
 				array.SetValue (all.Get(i), i + index);
 		}
 

@@ -135,8 +135,8 @@ namespace System.Web.UI.WebControls
 
 			// Register all of the checked controls so we can
 			// find out when they are unchecked.
-			Page page = Page;
-			for (int i = 0; i < Items.Count; i++) {
+			var page = Page;
+			for (var i = 0; i < Items.Count; i++) {
 				if (Items [i].Selected) {
 					check_box.ID = i.ToString (Helpers.InvariantCulture);
 					if (page != null)
@@ -150,7 +150,7 @@ namespace System.Web.UI.WebControls
 			if (Items.Count == 0)
 				return;
 
-			RepeatInfo ri = new RepeatInfo ();
+			var ri = new RepeatInfo ();
 			ri.RepeatColumns = RepeatColumns;
 			ri.RepeatDirection = RepeatDirection;
 			ri.RepeatLayout = RepeatLayout;
@@ -162,7 +162,7 @@ namespace System.Web.UI.WebControls
 				TabIndex = 0;
 			}
 
-			string ak = AccessKey;
+			var ak = AccessKey;
 			check_box.AccessKey = ak;
 			this.AccessKey = null;
 
@@ -179,10 +179,10 @@ namespace System.Web.UI.WebControls
 				return false;
 
 			EnsureDataBound ();
-			int checkbox = -1;
+			var checkbox = -1;
 
 			try {
-				string id = postDataKey.Substring (ClientID.Length + 1);
+				var id = postDataKey.Substring (ClientID.Length + 1);
 				if (Char.IsDigit (id [0]))
 					checkbox = Int32.Parse (id, Helpers.InvariantCulture);
 			} catch {
@@ -193,11 +193,11 @@ namespace System.Web.UI.WebControls
 				return false;
 
 
-			ListItem item = Items [checkbox];
+			var item = Items [checkbox];
 
 			if (item.Enabled) {
 				string val = postCollection [postDataKey];
-				bool ischecked = val == "on";
+				var ischecked = val == "on";
 #if NET_4_0
 				if (!RenderingCompatibilityLessThan40) {
 					ischecked = val == item.Value;
@@ -218,7 +218,7 @@ namespace System.Web.UI.WebControls
 		protected virtual void RaisePostDataChangedEvent ()
 		{
 			if (CausesValidation) {
-				Page page = Page;
+				var page = Page;
 				if (page != null)
 					page.Validate (ValidationGroup);
 			}
@@ -280,9 +280,9 @@ namespace System.Web.UI.WebControls
 
 		protected virtual void RenderItem (ListItemType itemType, int repeatIndex, RepeatInfo repeatInfo, HtmlTextWriter writer)
 		{
-			ListItem item = Items [repeatIndex];
+			var item = Items [repeatIndex];
 
-			string cssClass = check_box.CssClass;
+			var cssClass = check_box.CssClass;
 			if (!String.IsNullOrEmpty (cssClass))
 				check_box.CssClass = String.Empty;
 			check_box.ID = repeatIndex.ToString (Helpers.InvariantCulture);

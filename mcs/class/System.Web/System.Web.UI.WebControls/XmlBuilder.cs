@@ -56,15 +56,15 @@ namespace System.Web.UI.WebControls
 
 		public override void SetTagInnerText (string text)
 		{
-			string trimmed = text.Trim ();
+			var trimmed = text.Trim ();
 			if (trimmed == "")
 				return;
 
-			XmlDocument doc = new XmlDocument ();
+			var doc = new XmlDocument ();
 			try {
 				doc.LoadXml (text);
 			} catch (XmlException xmle) {
-				Location newloc = new Location (Location);
+				var newloc = new Location (Location);
 				if (xmle.LineNumber >= 0)
 					newloc.BeginLine += xmle.LineNumber - 1;
 

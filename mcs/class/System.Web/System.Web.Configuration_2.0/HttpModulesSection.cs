@@ -66,7 +66,7 @@ namespace System.Web.Configuration
 		/* stolen from the 1.0 S.W.Config ModulesConfiguration.cs */
 		internal HttpModuleCollection LoadModules (HttpApplication app)
 		{
-			HttpModuleCollection coll = new HttpModuleCollection ();
+			var coll = new HttpModuleCollection ();
 			Type type;
 			
 			foreach (HttpModuleAction item in Modules){

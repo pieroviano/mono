@@ -42,7 +42,7 @@ namespace System.Web.UI.WebControls {
 		
 		IEnumerator IEnumerable.GetEnumerator ()
 		{
-			ArrayList ret = new ArrayList (nodeList.Count);
+			var ret = new ArrayList (nodeList.Count);
 			
 			foreach (XmlNode node in nodeList) {
 				if (node.NodeType == XmlNodeType.Element)

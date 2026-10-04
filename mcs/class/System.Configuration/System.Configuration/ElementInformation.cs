@@ -89,7 +89,7 @@ namespace System.Configuration
 		internal void Reset (ElementInformation parentInfo)
 		{
 			foreach (PropertyInformation prop in Properties) {
-				PropertyInformation parentProp = parentInfo.Properties [prop.Name];
+				var parentProp = parentInfo.Properties [prop.Name];
 				prop.Reset (parentProp);
 			}
 		}

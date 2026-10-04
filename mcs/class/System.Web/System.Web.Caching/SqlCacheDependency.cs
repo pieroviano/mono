@@ -66,10 +66,10 @@ namespace System.Web.Caching
 				throw new ArgumentException (InvalidDependencyFormatMessage (dependency), "dependency");
 
 			int colon;
-			string[] pairs = dependency.Split (';');
+			var pairs = dependency.Split (';');
 			var dependencies = new List <SqlCacheDependency> ();
 
-			foreach (string pair in pairs) {
+			foreach (var pair in pairs) {
 				colon = pair.IndexOf (':');
 				if (colon == -1)
 					throw new ArgumentException (InvalidDependencyFormatMessage (dependency), "dependency");

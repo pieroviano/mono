@@ -88,13 +88,13 @@ namespace System.Web.UI.WebControls
 
 		public virtual void RenderItem (HtmlTextWriter writer, bool extractRows, bool tableLayout)
 		{
-			bool span = (!extractRows && !tableLayout); 
+			var span = (!extractRows && !tableLayout); 
 			if (span)
 				writer.RenderBeginTag (TagKey);
 			
 			if (HasControls ()) {
 				if (extractRows) {
-					bool table = false;
+					var table = false;
 					foreach (Control c in Controls) {
 						Table t = (c as Table);
 						if (t != null) {

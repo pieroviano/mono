@@ -166,7 +166,7 @@ namespace System.Web.UI.WebControls
 		#endregion	// Public Instance Properties
 
 		#region Public Instance Methods
-		public override void CopyFrom(Style s)
+		public override void CopyFrom(Style? s)
 		{
 			base.CopyFrom (s);
 
@@ -192,7 +192,7 @@ namespace System.Web.UI.WebControls
 				this.Visible = ((DataGridPagerStyle)s).Visible;
 		}
 
-		public override void MergeWith(Style s)
+		public override void MergeWith(Style? s)
 		{
 			base.MergeWith (s);
 

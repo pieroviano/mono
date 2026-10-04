@@ -94,7 +94,7 @@ namespace System.Web.UI
 
 		public override int GetHashCode ()
 		{
-			int hash = SortExpression != null ? SortExpression.GetHashCode() : 0;
+			var hash = SortExpression != null ? SortExpression.GetHashCode() : 0;
 			return hash ^ StartRowIndex ^ MaximumRows ^ RetrieveTotalRowCount.GetHashCode() ^ TotalRowCount;
 		}
 
@@ -106,8 +106,8 @@ namespace System.Web.UI
 		// capability defined in the DataSourceCapabilities enumeration. 
 		public void RaiseUnsupportedCapabilitiesError (DataSourceView view)
 		{
-			DataSourceCapabilities requestedCaps = RequestedCapabilities;
-			DataSourceCapabilities notSupportedCaps = (requestedCaps ^ dsc) & requestedCaps;
+			var requestedCaps = RequestedCapabilities;
+			var notSupportedCaps = (requestedCaps ^ dsc) & requestedCaps;
 			if (notSupportedCaps == DataSourceCapabilities.None)
 				return;
 
@@ -121,7 +121,7 @@ namespace System.Web.UI
 
 		DataSourceCapabilities RequestedCapabilities {
 			get {
-				DataSourceCapabilities caps = DataSourceCapabilities.None;
+				var caps = DataSourceCapabilities.None;
 				if (!String.IsNullOrEmpty (SortExpression))
 					caps |= DataSourceCapabilities.Sort;
 				if (RetrieveTotalRowCount)

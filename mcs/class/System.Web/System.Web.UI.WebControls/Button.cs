@@ -109,7 +109,7 @@ namespace System.Web.UI.WebControls
 
 		protected override void AddAttributesToRender (HtmlTextWriter writer)
 		{
-			Page page = Page;
+			var page = Page;
 			if (page != null)
 				page.VerifyRenderingInServerForm (this);
 			
@@ -117,7 +117,7 @@ namespace System.Web.UI.WebControls
 			writer.AddAttribute (HtmlTextWriterAttribute.Name, UniqueID);
 			writer.AddAttribute (HtmlTextWriterAttribute.Value, Text);
 
-			string onclick = OnClientClick;
+			var onclick = OnClientClick;
 			onclick = ClientScriptManager.EnsureEndsWithSemicolon (onclick);
 			if (HasAttributes && Attributes ["onclick"] != null) {
 				onclick = ClientScriptManager.EnsureEndsWithSemicolon (onclick + Attributes ["onclick"]);
@@ -135,8 +135,8 @@ namespace System.Web.UI.WebControls
 
 		internal virtual string GetClientScriptEventReference ()
 		{
-			PostBackOptions options = GetPostBackOptions ();
-			Page page = Page;
+			var options = GetPostBackOptions ();
+			var page = Page;
 			if (page != null)
 				return page.ClientScript.GetPostBackEventReference (options, true);
 			else
@@ -145,7 +145,7 @@ namespace System.Web.UI.WebControls
 
 		protected virtual PostBackOptions GetPostBackOptions () 
 		{
-			PostBackOptions options = new PostBackOptions (this);
+			var options = new PostBackOptions (this);
 			options.ActionUrl = (PostBackUrl.Length > 0 ? 
 				Page.ResolveClientUrl (PostBackUrl) 
 				: null);
@@ -154,7 +154,7 @@ namespace System.Web.UI.WebControls
 			options.RequiresJavaScriptProtocol = false;
 			options.ClientSubmit = !UseSubmitBehavior;
 
-			Page page = Page;
+			var page = Page;
 			options.PerformValidation = CausesValidation && page != null && page.AreValidatorsUplevel (ValidationGroup);
 			if (options.PerformValidation)
 				options.ValidationGroup = ValidationGroup;
@@ -191,7 +191,7 @@ namespace System.Web.UI.WebControls
 		{
 			ValidateEvent (UniqueID, eventArgument);
 			if (CausesValidation) {
-				Page page = Page;
+				var page = Page;
 				if (page != null)
 					page.Validate (ValidationGroup);
 			}

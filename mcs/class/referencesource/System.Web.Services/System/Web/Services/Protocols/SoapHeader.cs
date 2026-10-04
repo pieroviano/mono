@@ -208,7 +208,7 @@ namespace System.Web.Services.Protocols {
         void OnUnknownElement(object sender, XmlElementEventArgs e) {
             if (Thread.CurrentThread.GetHashCode() != this.currentThread) return;
             if (e.Element == null) return;
-            SoapUnknownHeader header = new SoapUnknownHeader();
+            var header = new SoapUnknownHeader();
             header.Element = e.Element;
             unknownHeaders.Add(header);
         }
@@ -223,7 +223,7 @@ namespace System.Web.Services.Protocols {
         }
 
         // return first missing header name;
-        public string ReadHeaders(XmlReader reader, XmlSerializer serializer, SoapHeaderCollection headers, SoapHeaderMapping[] mappings, SoapHeaderDirection direction, string envelopeNS, string encodingStyle, bool checkRequiredHeaders) {
+        public string ReadHeaders(XmlReader reader, XmlSerializer serializer, SoapHeaderCollection headers, SoapHeaderMapping[]? mappings, SoapHeaderDirection direction, string envelopeNS, string encodingStyle, bool checkRequiredHeaders) {
             string missingHeader = null;
             reader.MoveToContent();
             if (!reader.IsStartElement(Soap.Element.Header, envelopeNS)) {
@@ -239,11 +239,11 @@ namespace System.Web.Services.Protocols {
             this.currentThread = Thread.CurrentThread.GetHashCode();
             this.envelopeNS = envelopeNS;
 
-            int depth = reader.Depth;
+            var depth = reader.Depth;
             reader.ReadStartElement();
             reader.MoveToContent();
 
-            XmlDeserializationEvents events = new XmlDeserializationEvents();
+            var events = new XmlDeserializationEvents();
             events.OnUnknownElement = new XmlElementEventHandler(this.OnUnknownElement);
             events.OnUnreferencedObject = new UnreferencedObjectEventHandler(this.OnUnreferencedObject);
 
@@ -251,9 +251,9 @@ namespace System.Web.Services.Protocols {
             if (Tracing.On) Tracing.Enter(Tracing.TraceId(Res.TraceReadHeaders), caller, new TraceMethod(serializer, "Deserialize", reader, encodingStyle));
             object[] headerValues = (object[])serializer.Deserialize(reader, encodingStyle, events);
             if (Tracing.On) Tracing.Exit(Tracing.TraceId(Res.TraceReadHeaders), caller);
-            for (int i = 0; i < headerValues.Length; i++) {
+            for (var i = 0; i < headerValues.Length; i++) {
                 if (headerValues[i] != null) {
-                    SoapHeader header = (SoapHeader)headerValues[i];
+                    var header = (SoapHeader)headerValues[i];
                     header.DidUnderstand = true;
                     headers.Add(header);
                 }
@@ -302,12 +302,12 @@ namespace System.Web.Services.Protocols {
                 encodingStyle = Soap.Encoding;
             }
 
-            int unknownHeaderCount = 0;
-            ArrayList otherHeaders = new ArrayList();
-            SoapHeader[] headerArray = new SoapHeader[mappings.Length];
-            bool[] headerSet = new bool[headerArray.Length];
-            for (int i = 0; i < headers.Count; i++) {
-                SoapHeader header = headers[i];
+            var unknownHeaderCount = 0;
+            var otherHeaders = new ArrayList();
+            var headerArray = new SoapHeader[mappings.Length];
+            var headerSet = new bool[headerArray.Length];
+            for (var i = 0; i < headers.Count; i++) {
+                var header = headers[i];
                 if (header == null) continue;
                 int headerPosition;
                 header.version = version;
@@ -323,14 +323,14 @@ namespace System.Web.Services.Protocols {
                     otherHeaders.Add(header);
                 }
             }
-            int otherHeaderCount = otherHeaders.Count - unknownHeaderCount;
+            var otherHeaderCount = otherHeaders.Count - unknownHeaderCount;
             if (isEncoded && otherHeaderCount > 0) {
-                SoapHeader[] newHeaderArray = new SoapHeader[mappings.Length + otherHeaderCount];
+                var newHeaderArray = new SoapHeader[mappings.Length + otherHeaderCount];
                 headerArray.CopyTo(newHeaderArray, 0);
 
                 // fill in the non-statically known headers (otherHeaders) starting after the statically-known ones
-                int count = mappings.Length;
-                for (int i = 0; i < otherHeaders.Count; i++) {
+                var count = mappings.Length;
+                for (var i = 0; i < otherHeaders.Count; i++) {
                     if (!(otherHeaders[i] is SoapUnknownHeader))
                         newHeaderArray[count++] = (SoapHeader)otherHeaders[i];
                 }
@@ -345,13 +345,13 @@ namespace System.Web.Services.Protocols {
 
             foreach (SoapHeader header in otherHeaders) {
                 if (header is SoapUnknownHeader) {
-                    SoapUnknownHeader unknown = (SoapUnknownHeader)header;
+                    var unknown = (SoapUnknownHeader)header;
                     if (unknown.Element != null)
                         unknown.Element.WriteTo(writer);
                 }
                 else if (!isEncoded) { // encoded headers already appended to members mapping
-                    string ns = SoapReflector.GetLiteralNamespace(defaultNS, serviceDefaultIsEncoded);
-                    XmlSerializer headerSerializer = new XmlSerializer(header.GetType(), ns);
+                    var ns = SoapReflector.GetLiteralNamespace(defaultNS, serviceDefaultIsEncoded);
+                    var headerSerializer = new XmlSerializer(header.GetType(), ns);
 
                     if (Tracing.On) Tracing.Enter(Tracing.TraceId(Res.TraceWriteHeaders), caller, new TraceMethod(headerSerializer, "Serialize", writer, header));
                     headerSerializer.Serialize(writer, header);
@@ -360,8 +360,8 @@ namespace System.Web.Services.Protocols {
             }
 
             // reset the soap version
-            for (int i = 0; i < headers.Count; i++) {
-                SoapHeader header = headers[i];
+            for (var i = 0; i < headers.Count; i++) {
+                var header = headers[i];
                 if (header != null)
                     header.version = SoapProtocolVersion.Default;
             }
@@ -371,7 +371,7 @@ namespace System.Web.Services.Protocols {
         }
 
         public static void WriteUnknownHeaders(XmlWriter writer, SoapHeaderCollection headers, string envelopeNS) {
-            bool first = true;
+            var first = true;
             foreach (SoapHeader header in headers) {
                 SoapUnknownHeader unknown = header as SoapUnknownHeader;
                 if (unknown != null) {
@@ -387,16 +387,16 @@ namespace System.Web.Services.Protocols {
                 writer.WriteEndElement(); // </soap:Header>
         }
 
-        public static void SetHeaderMembers(SoapHeaderCollection headers, object target, SoapHeaderMapping[] mappings, SoapHeaderDirection direction, bool client) {
-            bool[] headerHandled = new bool[headers.Count];
+        public static void SetHeaderMembers(SoapHeaderCollection headers, object target, SoapHeaderMapping[]? mappings, SoapHeaderDirection direction, bool client) {
+            var headerHandled = new bool[headers.Count];
             if (mappings != null) {
-                for (int i = 0; i < mappings.Length; i++) {
-                    SoapHeaderMapping mapping = mappings[i];
+                for (var i = 0; i < mappings.Length; i++) {
+                    var mapping = mappings[i];
                     if ((mapping.direction & direction) == 0) continue;
                     if (mapping.repeats) {
-                        ArrayList list = new ArrayList();
-                        for (int j = 0; j < headers.Count; j++) {
-                            SoapHeader header = headers[j];
+                        var list = new ArrayList();
+                        for (var j = 0; j < headers.Count; j++) {
+                            var header = headers[j];
                             if (headerHandled[j]) continue;
                             if (mapping.headerType.IsAssignableFrom(header.GetType())) {
                                 list.Add(header);
@@ -406,9 +406,9 @@ namespace System.Web.Services.Protocols {
                         MemberHelper.SetValue(mapping.memberInfo, target, list.ToArray(mapping.headerType));
                     }
                     else {
-                        bool handled = false;
-                        for (int j = 0; j < headers.Count; j++) {
-                            SoapHeader header = headers[j];
+                        var handled = false;
+                        for (var j = 0; j < headers.Count; j++) {
+                            var header = headers[j];
                             if (headerHandled[j]) continue;
                             if (mapping.headerType.IsAssignableFrom(header.GetType())) {
                                 if (handled) {
@@ -423,9 +423,9 @@ namespace System.Web.Services.Protocols {
                     }
                 }
             }
-            for (int i = 0; i < headerHandled.Length; i++) {
+            for (var i = 0; i < headerHandled.Length; i++) {
                 if (!headerHandled[i]) {
-                    SoapHeader header = headers[i];
+                    var header = headers[i];
                     if (header.MustUnderstand && !header.DidUnderstand) {
                         throw new SoapHeaderException(Res.GetString(Res.WebCannotUnderstandHeader, GetHeaderElementName(header)),
                             new XmlQualifiedName(Soap.Code.MustUnderstand, Soap.Namespace));
@@ -434,16 +434,16 @@ namespace System.Web.Services.Protocols {
             }
         }
 
-        public static void GetHeaderMembers(SoapHeaderCollection headers, object target, SoapHeaderMapping[] mappings, SoapHeaderDirection direction, bool client) {
+        public static void GetHeaderMembers(SoapHeaderCollection headers, object target, SoapHeaderMapping[]? mappings, SoapHeaderDirection direction, bool client) {
             if (mappings == null || mappings.Length == 0) return;
-            for (int i = 0; i < mappings.Length; i++) {
-                SoapHeaderMapping mapping = mappings[i];
+            for (var i = 0; i < mappings.Length; i++) {
+                var mapping = mappings[i];
                 if ((mapping.direction & direction) == 0) continue;
-                object value = MemberHelper.GetValue(mapping.memberInfo, target);
+                var value = MemberHelper.GetValue(mapping.memberInfo, target);
                 if (mapping.repeats) {
-                    object[] values = (object[])value;
+                    var values = (object[])value;
                     if (values == null) continue;
-                    for (int j = 0; j < values.Length; j++) {
+                    for (var j = 0; j < values.Length; j++) {
                         if (values[j] != null) headers.Add((SoapHeader)values[j]);
                     }
                 }
@@ -454,8 +454,8 @@ namespace System.Web.Services.Protocols {
         }
 
         public static void EnsureHeadersUnderstood(SoapHeaderCollection headers) {
-            for (int i = 0; i < headers.Count; i++) {
-                SoapHeader header = headers[i];
+            for (var i = 0; i < headers.Count; i++) {
+                var header = headers[i];
                 if (header.MustUnderstand && !header.DidUnderstand) {
                     throw new SoapHeaderException(Res.GetString(Res.WebCannotUnderstandHeader, GetHeaderElementName(header)),
                         new XmlQualifiedName(Soap.Code.MustUnderstand, Soap.Namespace));
@@ -463,11 +463,11 @@ namespace System.Web.Services.Protocols {
             }
         }
 
-        static int FindMapping(SoapHeaderMapping[] mappings, SoapHeader header, SoapHeaderDirection direction) {
+        static int FindMapping(SoapHeaderMapping[]? mappings, SoapHeader header, SoapHeaderDirection direction) {
             if (mappings == null || mappings.Length == 0) return -1;
-            Type headerType = header.GetType();
-            for (int i = 0; i < mappings.Length; i++) {
-                SoapHeaderMapping mapping = mappings[i];
+            var headerType = header.GetType();
+            for (var i = 0; i < mappings.Length; i++) {
+                var mapping = mappings[i];
                 if ((mapping.direction & direction) == 0) continue;
                 if (!mapping.custom) continue;
                 if (mapping.headerType.IsAssignableFrom(headerType)) {
@@ -478,9 +478,9 @@ namespace System.Web.Services.Protocols {
         }
 
         static string GetHeaderElementName(Type headerType) {
-            XmlReflectionImporter importer = SoapReflector.CreateXmlImporter(null, false);
+            var importer = SoapReflector.CreateXmlImporter(null, false);
 
-            XmlTypeMapping mapping = importer.ImportTypeMapping(headerType);
+            var mapping = importer.ImportTypeMapping(headerType);
             return mapping.XsdElementName;
         }
 

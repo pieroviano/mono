@@ -46,7 +46,7 @@ namespace System.Web.Compilation
 
 	internal class AppResourcesLengthComparer<T>: IComparer<T>
 	{
-		int CompareStrings (string a, string b)
+		int CompareStrings (string? a, string? b)
 		{
 			if (a == null || b == null)
 				return 0;
@@ -130,8 +130,8 @@ namespace System.Web.Compilation
 		{
 			if (String.IsNullOrEmpty (sourceDir))
 			    return;
-			DirectoryInfo di = new DirectoryInfo (sourceDir);
-			FileInfo[] infos = di.GetFiles ();
+			var di = new DirectoryInfo (sourceDir);
+			var infos = di.GetFiles ();
 			if (infos.Length == 0)
 				return;
 
@@ -139,7 +139,7 @@ namespace System.Web.Compilation
 			AppResourceFileInfo arfi;
 			AppResourceFileKind kind;
 			
-			foreach (FileInfo fi in infos) {
+			foreach (var fi in infos) {
 				extension = fi.Extension;
 				if (Acceptable (extension, out kind))
 					arfi = new AppResourceFileInfo (fi, kind);
@@ -151,7 +151,7 @@ namespace System.Web.Compilation
 
 			if (isGlobal && files.Count == 0)
 				return;
-			AppResourcesLengthComparer<AppResourceFileInfo> lcFiles = new AppResourcesLengthComparer<AppResourceFileInfo> ();
+			var lcFiles = new AppResourcesLengthComparer<AppResourceFileInfo> ();
 			files.Sort (lcFiles);
 		}
 

@@ -65,10 +65,10 @@ namespace System.Web
 
 		protected override void InsertInfo()
 		{
-			HttpWorkerRequest worker_request = _request.WorkerRequest;
+			var worker_request = _request.WorkerRequest;
 			if (null != worker_request) 
 			{
-				for (int i = 0; i < HttpWorkerRequest.RequestHeaderMaximum; i++) {
+				for (var i = 0; i < HttpWorkerRequest.RequestHeaderMaximum; i++) {
 					string hval = worker_request.GetKnownRequestHeader (i);
 
 					if (hval == null || hval == "")
@@ -77,11 +77,11 @@ namespace System.Web
 					Add (HttpWorkerRequest.GetKnownRequestHeaderName (i), hval);
 				}
 
-				string [] [] unknown = worker_request.GetUnknownRequestHeaders ();
+				var unknown = worker_request.GetUnknownRequestHeaders ();
 				if (unknown != null && unknown.GetUpperBound (0) != -1) {
-					int top = unknown.GetUpperBound (0) + 1;
+					var top = unknown.GetUpperBound (0) + 1;
 
-					for (int i = 0; i < top; i++) {
+					for (var i = 0; i < top; i++) {
 						// should check if unknown [i] is not null, but MS does not. 
 
 						Add (unknown [i] [0], unknown [i] [1]);
@@ -93,7 +93,7 @@ namespace System.Web
 
 		protected override string InternalGet(string name)
 		{
-			int headerIndex = HttpWorkerRequest.GetKnownRequestHeaderIndex(name);
+			var headerIndex = HttpWorkerRequest.GetKnownRequestHeaderIndex(name);
 			string headerValue = null;
 			if (headerIndex >= 0)
 				headerValue = _request.WorkerRequest.GetKnownRequestHeader(headerIndex);

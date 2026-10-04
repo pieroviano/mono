@@ -24,7 +24,7 @@ namespace System.Web.Util {
         static readonly DateTime    MaxValueMinusOneDay = DateTime.MaxValue.AddDays(-1);
 
         static internal DateTime FromFileTimeToUtc(long filetime) {
-            long universalTicks = filetime + FileTimeOffset;
+            var universalTicks = filetime + FileTimeOffset;
             // Dev10 733288: Caching: behavior change for CacheDependency when using UseMemoryCache=1
             // ObjectCacheHost converts DateTime to a DateTimeOffset, and the conversion requires
             // that DateTimeKind be set correctly

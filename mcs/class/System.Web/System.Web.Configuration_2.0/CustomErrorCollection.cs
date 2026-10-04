@@ -92,13 +92,13 @@ namespace System.Web.Configuration {
 
 		public void Set (CustomError customError)
 		{
-			CustomError existing = Get (customError.StatusCode.ToString());
+			var existing = Get (customError.StatusCode.ToString());
 
 			if (existing == null) {
 				Add (customError);
 			}
 			else {
-				int index = BaseIndexOf (existing);
+				var index = BaseIndexOf (existing);
 				RemoveAt (index);
 				BaseAdd (index, customError);
 			}
@@ -106,8 +106,8 @@ namespace System.Web.Configuration {
 
 		public string[] AllKeys {
 			get {
-				string[] keys = new string[Count];
-				for (int i = 0; i < Count; i ++)
+				var keys = new string[Count];
+				for (var i = 0; i < Count; i ++)
 					keys[i] = this[i].StatusCode.ToString();
 				return keys;
 			}

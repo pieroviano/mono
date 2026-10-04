@@ -61,7 +61,7 @@ namespace System.Web
 			return null;
 		}
 		
-		public void Add (string name, Func <string, string> valueProvider)
+		public void Add (string name, Func <string, string>? valueProvider)
 		{
 			if (String.IsNullOrEmpty (name))
 				throw new ArgumentNullException ("name");
@@ -75,7 +75,7 @@ namespace System.Web
 			Values [name] = new ExceptionPageTemplateFragmentValue (name, valueProvider);
 		}
 
-		public void Add (string name, string value)
+		public void Add (string name, string? value)
 		{
 			if (String.IsNullOrEmpty (name))
 				throw new ArgumentNullException ("name");

@@ -60,7 +60,7 @@ namespace System.Web.UI
 		
 		public override int GetHashCode ()
 		{
-			int ret = 0;
+			var ret = 0;
 
 			if (Assembly != null)
 				ret ^= Assembly.GetHashCode ();

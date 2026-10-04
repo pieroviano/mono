@@ -68,11 +68,11 @@ namespace System.Web.UI.WebControls
 			if (nodes == null)
 				DoXPathSelect();
 
-			ArrayList list = new ArrayList ();
-			int max = arguments.StartRowIndex + (arguments.MaximumRows > 0 ? arguments.MaximumRows : nodes.Count);
+			var list = new ArrayList ();
+			var max = arguments.StartRowIndex + (arguments.MaximumRows > 0 ? arguments.MaximumRows : nodes.Count);
 			if (max > nodes.Count) max = nodes.Count;
 
-			for (int n = arguments.StartRowIndex; n < max; n++)
+			for (var n = arguments.StartRowIndex; n < max; n++)
 				list.Add (new XmlDataSourceNodeDescriptor ((XmlElement) nodes [n]));
 				
 			if (arguments.RetrieveTotalRowCount)

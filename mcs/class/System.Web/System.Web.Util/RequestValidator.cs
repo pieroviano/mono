@@ -86,7 +86,7 @@ namespace System.Web.Util
 					return;
 				}
 
-				int comma = spec.IndexOf (',');
+				var comma = spec.IndexOf (',');
 				if (comma == -1) {
 					typeName = spec;
 					assemblyName = null;
@@ -103,9 +103,9 @@ namespace System.Web.Util
 		
 		static RequestValidator LoadConfiguredValidator ()
 		{
-			HttpRuntimeSection runtimeConfig = HttpRuntime.Section;
+			var runtimeConfig = HttpRuntime.Section;
 			Type validatorType = null;
-			string typeSpec = runtimeConfig.RequestValidationType;
+			var typeSpec = runtimeConfig.RequestValidationType;
 			
 			try {
 				validatorType = HttpApplication.LoadType <RequestValidator> (typeSpec, true);

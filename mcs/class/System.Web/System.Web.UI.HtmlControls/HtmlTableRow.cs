@@ -51,7 +51,7 @@ namespace System.Web.UI.HtmlControls
 		[WebCategory("Layout")]
 		public string Align {
 			get {
-				string s = Attributes ["align"];
+				var s = Attributes ["align"];
 				return (s == null) ? String.Empty : s;
 			}
 			set {
@@ -68,7 +68,7 @@ namespace System.Web.UI.HtmlControls
 		[WebCategory("Appearance")]
 		public string BgColor {
 			get {
-				string s = Attributes ["bgcolor"];
+				var s = Attributes ["bgcolor"];
 				return (s == null) ? String.Empty : s;
 			}
 			set {
@@ -85,7 +85,7 @@ namespace System.Web.UI.HtmlControls
 		[WebCategory("Appearance")]
 		public string BorderColor {
 			get {
-				string s = Attributes ["bordercolor"];
+				var s = Attributes ["bordercolor"];
 				return (s == null) ? String.Empty : s;
 			}
 			set {
@@ -112,7 +112,7 @@ namespace System.Web.UI.HtmlControls
 		[WebCategory("Layout")]
 		public string Height {
 			get {
-				string s = Attributes ["height"];
+				var s = Attributes ["height"];
 				return (s == null) ? String.Empty : s;
 			}
 			set {
@@ -139,7 +139,7 @@ namespace System.Web.UI.HtmlControls
 		[WebCategory("Layout")]
 		public string VAlign {
 			get {
-				string s = Attributes ["valign"];
+				var s = Attributes ["valign"];
 				return (s == null) ? String.Empty : s;
 			}
 			set {

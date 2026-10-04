@@ -66,7 +66,7 @@ namespace System.Web.Caching
 
 		void ResizeHeap (int newSize)
 		{
-			CacheItem[] oldHeap = heap;
+			var oldHeap = heap;
 			Array.Resize <CacheItem> (ref heap, newSize);
 			heapSize = newSize;
 			
@@ -103,7 +103,7 @@ namespace System.Web.Caching
 				return null;
 
 			if (heapSize > HEAP_RESIZE_THRESHOLD) {
-				int halfTheSize = heapSize >> 1;
+				var halfTheSize = heapSize >> 1;
 
 				if (heapCount < halfTheSize)
 					ResizeHeap (halfTheSize + (heapCount / 3));
@@ -112,7 +112,7 @@ namespace System.Web.Caching
 			return heap;
 		}
 		
-		public void Enqueue (CacheItem item)
+		public void Enqueue (CacheItem? item)
 		{
 			if (item == null)
 				return;
@@ -161,14 +161,14 @@ namespace System.Web.Caching
 			}
 		}
 
-		public bool Update (CacheItem item)
+		public bool Update (CacheItem? item)
 		{
 			if (item == null || item.PriorityQueueIndex <= 0 || item.PriorityQueueIndex >= heapCount - 1)
 				return false;
 
 			try {
 				queueLock.EnterWriteLock ();
-				CacheItem stored = heap [item.PriorityQueueIndex];
+				var stored = heap [item.PriorityQueueIndex];
 				if (stored == null ||
 				    String.Compare (stored.Key, item.Key, StringComparison.Ordinal) != 0
 #if DEBUG
@@ -177,8 +177,8 @@ namespace System.Web.Caching
 				)
 					return false;
 
-				int oldIndex = item.PriorityQueueIndex;
-				int index = BubbleUp (heap, oldIndex);
+				var oldIndex = item.PriorityQueueIndex;
+				var index = BubbleUp (heap, oldIndex);
 				if (index > -1 && index >= oldIndex) 
 					BubbleDown (heap, index);
 
@@ -211,12 +211,12 @@ namespace System.Web.Caching
 		
 		int BubbleDown (CacheItem[] heap, int startIndex)
 		{
-			int index = startIndex;
-			int left = startIndex + 1;
-			int right = startIndex + 2;
+			var index = startIndex;
+			var left = startIndex + 1;
+			var right = startIndex + 2;
 			CacheItem item = heap [index], tmpItem;
 
-			int selected = (right < heapCount && heap [right].ExpiresAt < heap [left].ExpiresAt) ? 2 : 1;
+			var selected = (right < heapCount && heap [right].ExpiresAt < heap [left].ExpiresAt) ? 2 : 1;
 
 			do {
 				selected = index;
@@ -247,7 +247,7 @@ namespace System.Web.Caching
 			if (heapCount <= 1)
 				return -1;
 			
-			int maxIndex = heapCount - 1;
+			var maxIndex = heapCount - 1;
 			if (startIndex < 0 || startIndex > maxIndex)
 				return -1;
 			

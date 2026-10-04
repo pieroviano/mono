@@ -76,7 +76,7 @@ namespace System.Web.UI.WebControls {
 		[WebCategory ("Accessibility")]
 		public virtual string Caption {
 			get {
-				object o = ViewState ["Caption"];
+				var o = ViewState ["Caption"];
 				return (o == null) ? String.Empty : (string) o;
 			}
 			set {
@@ -91,7 +91,7 @@ namespace System.Web.UI.WebControls {
 		[WebCategory ("Accessibility")]
 		public virtual TableCaptionAlign CaptionAlign {
 			get {
-				object o = ViewState ["CaptionAlign"];
+				var o = ViewState ["CaptionAlign"];
 				return (o == null) ? TableCaptionAlign.NotSet : (TableCaptionAlign) o;
 			}
 			set {
@@ -185,9 +185,9 @@ namespace System.Web.UI.WebControls {
 		protected internal
 		override void RenderContents (HtmlTextWriter writer)
 		{
-			TableRowSection currentTableSection = TableRowSection.TableHeader;
+			var currentTableSection = TableRowSection.TableHeader;
 			TableRowSection rowSection;
-			bool sectionStarted = false;
+			var sectionStarted = false;
 			
 			if (Rows.Count > 0) {
 				foreach (TableRow row in Rows) {
@@ -238,9 +238,9 @@ namespace System.Web.UI.WebControls {
 		{
 			base.RenderBeginTag (writer);
 
-			string s = Caption;
+			var s = Caption;
 			if (s.Length > 0) {
-				TableCaptionAlign tca = CaptionAlign;
+				var tca = CaptionAlign;
 				if (tca != TableCaptionAlign.NotSet)
 					writer.AddAttribute (HtmlTextWriterAttribute.Align, tca.ToString ());
 				

@@ -98,7 +98,7 @@ namespace System.Web.UI.WebControls
 
 		protected override void SetDirtyObject (object o)
 		{
-			HotSpot spot = (HotSpot)o;
+			var spot = (HotSpot)o;
 			spot.SetDirty ();
 		}
 	}

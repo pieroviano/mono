@@ -21,8 +21,8 @@ namespace System.Web.Util
         static int atoi2(string s, int startIndex)
         {
             try {
-                int tens = s[0 + startIndex] - '0';
-                int ones = s[1 + startIndex] - '0';
+                var tens = s[0 + startIndex] - '0';
+                var ones = s[1 + startIndex] - '0';
             
                 return s_tensDigit[tens] + ones;
             } 
@@ -163,7 +163,7 @@ namespace System.Web.Util
                 // or: Thu, 10 Jan 1993 01:29:59 GMT */
                 //
         
-                int length = time.Length - i;
+                var length = time.Length - i;
                 while (--length > 0 && time[++i] == ' ') ;
 
                 if (time[i+2] == '-' ) {      /* First format */
@@ -201,7 +201,7 @@ namespace System.Web.Util
             } else {    /* Try the other format:  Wed Jun 09 01:29:59 1993 GMT */
         
                 i = -1;
-                int length = time.Length + 1;
+                var length = time.Length + 1;
                 while (--length > 0 && time[++i] == ' ');
         
                 if (length < 24) {

@@ -60,8 +60,8 @@ namespace System.Web.Util {
 
 		internal static byte [] GetBytes (string key, int len)
 		{
-			byte [] result = new byte [len / 2];
-			for (int i = 0; i < len; i += 2)
+			var result = new byte [len / 2];
+			for (var i = 0; i < len; i += 2)
 				result [i / 2] = (byte) (ToHexValue (key [i], true) + ToHexValue (key [i + 1], false));
 
 			return result;
@@ -69,13 +69,13 @@ namespace System.Web.Util {
 
 		static public string GetHexString (byte [] bytes)
 		{
-			StringBuilder sb = new StringBuilder (bytes.Length * 2);
-			int letterPart = 55;
+			var sb = new StringBuilder (bytes.Length * 2);
+			var letterPart = 55;
 			const int numberPart = 48;
-			for (int i = 0; i < bytes.Length; i++) {
-				int tmp = (int) bytes [i];
-				int second = tmp & 15;
-				int first = (tmp >> 4) & 15;
+			for (var i = 0; i < bytes.Length; i++) {
+				var tmp = (int) bytes [i];
+				var second = tmp & 15;
+				var first = (tmp >> 4) & 15;
 				sb.Append ((char) (first > 9 ? letterPart + first : numberPart + first));
 				sb.Append ((char) (second > 9 ? letterPart + second : numberPart + second));
 			}
@@ -135,7 +135,7 @@ namespace System.Web.Util {
 				break;
 			case MachineKeyValidation.Custom:
 				// remove the "alg:" from the start of the string
-				string algo = section.ValidationAlgorithm;
+				var algo = section.ValidationAlgorithm;
 				if (algo.StartsWith ("alg:"))
 					kha = KeyedHashAlgorithm.Create (algo.Substring (4));
 				break;
@@ -190,7 +190,7 @@ namespace System.Web.Util {
 
 		static byte [] Decrypt (MachineKeySection section, byte [] encodedData, int offset, int length)
 		{
-			using (SymmetricAlgorithm sa = GetDecryptionAlgorithm (section)) {
+			using (var sa = GetDecryptionAlgorithm (section)) {
 				sa.Key = GetDecryptionKey (section);
 				return Decrypt (sa, encodedData, offset, length);
 			}
@@ -200,9 +200,9 @@ namespace System.Web.Util {
 		{
 			// alg.IV is randomly set (default behavior) and perfect for our needs
 			// iv is the first part of the encodedPassword
-			byte [] iv = new byte [alg.IV.Length];
+			var iv = new byte [alg.IV.Length];
 			Array.Copy (encodedData, 0, iv, 0, iv.Length);
-			using (ICryptoTransform decryptor = alg.CreateDecryptor (alg.Key, iv)) {
+			using (var decryptor = alg.CreateDecryptor (alg.Key, iv)) {
 				try {
 					return decryptor.TransformFinalBlock (encodedData, iv.Length + offset, length - iv.Length);
 				}
@@ -214,7 +214,7 @@ namespace System.Web.Util {
 
 		static public byte [] Encrypt (MachineKeySection section, byte [] data)
 		{
-			using (SymmetricAlgorithm sa = GetDecryptionAlgorithm (section)) {
+			using (var sa = GetDecryptionAlgorithm (section)) {
 				sa.Key = GetDecryptionKey (section);
 				return Encrypt (sa, data);
 			}
@@ -223,10 +223,10 @@ namespace System.Web.Util {
 		static public byte [] Encrypt (SymmetricAlgorithm alg, byte [] data)
 		{
 			// alg.IV is randomly set (default behavior) and perfect for our needs
-			byte [] iv = alg.IV;
-			using (ICryptoTransform encryptor = alg.CreateEncryptor (alg.Key, iv)) {
-				byte [] encrypted = encryptor.TransformFinalBlock (data, 0, data.Length);
-				byte [] output = new byte [iv.Length + encrypted.Length];
+			var iv = alg.IV;
+			using (var encryptor = alg.CreateEncryptor (alg.Key, iv)) {
+				var encrypted = encryptor.TransformFinalBlock (data, 0, data.Length);
+				var output = new byte [iv.Length + encrypted.Length];
 				// note: the IV can be public, however it should not be based on the password
 				Array.Copy (iv, 0, output, 0, iv.Length);
 				Array.Copy (encrypted, 0, output, iv.Length, encrypted.Length);
@@ -243,10 +243,10 @@ namespace System.Web.Util {
 
 		static byte [] Sign (MachineKeySection section, byte [] data, int offset, int length)
 		{
-			using (KeyedHashAlgorithm kha = GetValidationAlgorithm (section)) {
+			using (var kha = GetValidationAlgorithm (section)) {
 				kha.Key = GetValidationKey (section);
-				byte [] signature = kha.ComputeHash (data, offset, length);
-				byte [] block = new byte [length + signature.Length];
+				var signature = kha.ComputeHash (data, offset, length);
+				var block = new byte [length + signature.Length];
 				Array.Copy (data, block, length);
 				Array.Copy (signature, 0, block, length, signature.Length);
 				return block;
@@ -256,12 +256,12 @@ namespace System.Web.Util {
 		public static byte [] Verify (MachineKeySection section, byte [] data)
 		{
 			byte [] unsigned_data = null;
-			bool valid = true;
-			using (KeyedHashAlgorithm kha = GetValidationAlgorithm (section)) {
+			var valid = true;
+			using (var kha = GetValidationAlgorithm (section)) {
 				kha.Key = GetValidationKey (section);
-				int signlen = kha.HashSize >> 3; // bits to bytes
-				byte [] signature = Sign (section, data, 0, data.Length - signlen);
-				for (int i = 0; i < signature.Length; i++) {
+				var signlen = kha.HashSize >> 3; // bits to bytes
+				var signature = Sign (section, data, 0, data.Length - signlen);
+				for (var i = 0; i < signature.Length; i++) {
 					if (signature [i] != data [data.Length - signature.Length + i])
 						valid = false; // do not return (timing attack)
 				}
@@ -275,21 +275,21 @@ namespace System.Web.Util {
 
 		public static byte [] EncryptSign (MachineKeySection section, byte [] data)
 		{
-			byte [] encdata = Encrypt (section, data);
+			var encdata = Encrypt (section, data);
 			return Sign (section, encdata);
 		}
 
 		// note: take no shortcut (timing attack) while verifying or decrypting
 		public static byte [] VerifyDecrypt (MachineKeySection section, byte [] block)
 		{
-			bool valid = true;
+			var valid = true;
 			int signlen;
 
-			using (KeyedHashAlgorithm kha = GetValidationAlgorithm (section)) {
+			using (var kha = GetValidationAlgorithm (section)) {
 				kha.Key = GetValidationKey (section);
 				signlen = kha.HashSize >> 3; // bits to bytes
-				byte [] signature = Sign (section, block, 0, block.Length - signlen);
-				for (int i = 0; i < signature.Length; i++) {
+				var signature = Sign (section, block, 0, block.Length - signlen);
+				for (var i = 0; i < signature.Length; i++) {
 					if (signature [i] != block [block.Length - signature.Length + i])
 						valid = false; // do not return (timing attack)
 				}
@@ -297,7 +297,7 @@ namespace System.Web.Util {
 
 			// whatever the signature continue with decryption
 			try {
-				byte [] decdata = Decrypt (section, block, 0, block.Length - signlen);
+				var decdata = Decrypt (section, block, 0, block.Length - signlen);
 				return valid ? decdata : null;
 			}
 			catch {

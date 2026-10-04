@@ -87,7 +87,7 @@ namespace System.Web.UI.WebControls
 		protected override void CopyProperties (DataControlField newField)
 		{
 			base.CopyProperties (newField);
-			ButtonFieldBase field = (ButtonFieldBase) newField;
+			var field = (ButtonFieldBase) newField;
 			field.ButtonType = ButtonType;
 			field.CausesValidation = CausesValidation;
 			field.ShowHeader = ShowHeader;

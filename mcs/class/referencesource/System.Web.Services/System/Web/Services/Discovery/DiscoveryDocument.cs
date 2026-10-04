@@ -55,7 +55,7 @@ namespace System.Web.Services.Discovery {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public static DiscoveryDocument Read(Stream stream) {
-            XmlTextReader r = new XmlTextReader(stream);
+            var r = new XmlTextReader(stream);
             r.WhitespaceHandling = WhitespaceHandling.Significant;
             r.XmlResolver = null;
             r.DtdProcessing = DtdProcessing.Prohibit;
@@ -67,7 +67,7 @@ namespace System.Web.Services.Discovery {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public static DiscoveryDocument Read(TextReader reader) {
-            XmlTextReader r = new XmlTextReader(reader);
+            var r = new XmlTextReader(reader);
             r.WhitespaceHandling = WhitespaceHandling.Significant;
             r.XmlResolver = null;
             r.DtdProcessing = DtdProcessing.Prohibit;
@@ -95,7 +95,7 @@ namespace System.Web.Services.Discovery {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public void Write(TextWriter writer) {
-            XmlTextWriter xmlWriter = new XmlTextWriter(writer);
+            var xmlWriter = new XmlTextWriter(writer);
             xmlWriter.Formatting = Formatting.Indented;
             xmlWriter.Indentation = 2;
             Write(xmlWriter);
@@ -115,8 +115,8 @@ namespace System.Web.Services.Discovery {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public void Write(XmlWriter writer) {
-            XmlSerializer serializer = WebServicesSection.Current.DiscoveryDocumentSerializer;
-            XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+            var serializer = WebServicesSection.Current.DiscoveryDocumentSerializer;
+            var ns = new XmlSerializerNamespaces();
             serializer.Serialize(writer, this, ns);
         }
 
@@ -150,7 +150,7 @@ namespace System.Web.Services.Discovery {
         public override bool CanDeserialize(System.Xml.XmlReader xmlReader) {
             return xmlReader.IsStartElement("discovery", "http://schemas.xmlsoap.org/disco/");
         }
-        protected override void Serialize(Object objectToSerialize, XmlSerializationWriter writer) {
+        protected override void Serialize(Object? objectToSerialize, XmlSerializationWriter writer) {
             ((DiscoveryDocumentSerializationWriter)writer).Write10_discovery(objectToSerialize);
         }
         protected override object Deserialize(XmlSerializationReader reader) {

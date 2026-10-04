@@ -91,7 +91,7 @@ namespace System.Web.Services.Configuration
 
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value) {
             if (value is string) {
-                TypeAndName baseValue = (TypeAndName)base.ConvertFrom(context, culture, value);
+                var baseValue = (TypeAndName)base.ConvertFrom(context, culture, value);
                 return baseValue.type;
             }
 
@@ -101,7 +101,7 @@ namespace System.Web.Services.Configuration
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType) {
 
             if (destinationType == typeof(string)) {
-                TypeAndName castedValue = new TypeAndName((Type)value);
+                var castedValue = new TypeAndName((Type)value);
                 return base.ConvertTo(context, culture, castedValue, destinationType);
             }
 

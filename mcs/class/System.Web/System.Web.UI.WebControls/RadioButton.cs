@@ -62,11 +62,11 @@ namespace System.Web.UI.WebControls {
 		internal override string NameAttribute 
 		{
 			get {
-				string unique = UniqueID;
-				string gn = GroupName;
+				var unique = UniqueID;
+				var gn = GroupName;
 				if (gn.Length == 0)
 					return unique;
-				int colon = -1;
+				var colon = -1;
 				if (unique != null) {
 					colon = unique.LastIndexOf (IdSeparator);
 				}
@@ -80,11 +80,11 @@ namespace System.Web.UI.WebControls {
 
 		internal string ValueAttribute {
 			get {
-				string val = (string)ViewState ["Value"];
+				var val = (string)ViewState ["Value"];
 				if (val != null)
 					return val;
 				
-				string id = ID;
+				var id = ID;
 				if (!String.IsNullOrEmpty (id))
 					return id;
 				else
@@ -97,7 +97,7 @@ namespace System.Web.UI.WebControls {
 
 		internal override void InternalAddAttributesToRender (HtmlTextWriter w, bool enabled)
 		{
-			Page page = Page;
+			var page = Page;
 			if (page != null)
 				page.ClientScript.RegisterForEventValidation (NameAttribute, ValueAttribute);
 			base.InternalAddAttributesToRender (w, enabled);
@@ -114,7 +114,7 @@ namespace System.Web.UI.WebControls {
 		bool LoadPostData (string postDataKey, NameValueCollection postCollection) 
 		{
 			string value = postCollection [NameAttribute];
-			bool checkedOnClient = value == ValueAttribute;
+			var checkedOnClient = value == ValueAttribute;
 			ValidateEvent (NameAttribute, value);
 			if (Checked == checkedOnClient)
 				return false;

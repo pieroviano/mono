@@ -154,12 +154,12 @@ namespace System.Web.Hosting {
 			HttpRuntime.UnloadAppDomain ();
 		}
 
-		public static string MapPath (string virtualPath)
+		public static string MapPath (string? virtualPath)
 		{
 			if (virtualPath == null || virtualPath == "")
 				throw new ArgumentNullException ("virtualPath");
 			
-			HttpContext context = HttpContext.Current;
+			var context = HttpContext.Current;
 			HttpRequest req = context == null ? null : context.Request;
 			if (req == null)
 				return null;
@@ -184,7 +184,7 @@ namespace System.Web.Hosting {
 			if (virtualPathProvider == null)
 				throw new ArgumentNullException ("virtualPathProvider");
 
-			VirtualPathProvider previous = vpath_provider;
+			var previous = vpath_provider;
 			vpath_provider = virtualPathProvider;
 			vpath_provider.InitializeAndSetPrevious (previous);
 			if (!(virtualPathProvider is DefaultVirtualPathProvider))
@@ -197,7 +197,7 @@ namespace System.Web.Hosting {
 		{
 			GlobalizationSection gs = WebConfigurationManager.GetSection ("system.web/globalization", virtualPath) as GlobalizationSection;
 			IDisposable ret = Thread.CurrentThread.CurrentCulture as IDisposable;
-			string culture = gs.Culture;
+			var culture = gs.Culture;
 			if (String.IsNullOrEmpty (culture))
 				return ret;
 			Thread.CurrentThread.CurrentCulture = new CultureInfo (culture);
@@ -252,7 +252,7 @@ namespace System.Web.Hosting {
 		// work item will be considered finished when the returned Task transitions to a
 		// terminal state.
 		[SecurityPermission(SecurityAction.LinkDemand, Unrestricted = true)]
-		public static void QueueBackgroundWorkItem(Func<CancellationToken, Task> workItem) {
+		public static void QueueBackgroundWorkItem(Func<CancellationToken, Task>? workItem) {
 			if (workItem == null) {
 				throw new ArgumentNullException("workItem");
 			}
@@ -263,14 +263,14 @@ namespace System.Web.Hosting {
 			QueueBackgroundWorkItemInternal(workItem);
 		}
 
-		static void QueueBackgroundWorkItemInternal(Func<CancellationToken, Task> workItem) {
+		static void QueueBackgroundWorkItemInternal(Func<CancellationToken, Task>? workItem) {
 			Debug.Assert(workItem != null);
 
-			BackgroundWorkScheduler scheduler = Volatile.Read(ref _backgroundWorkScheduler);
+			var scheduler = Volatile.Read(ref _backgroundWorkScheduler);
 
 			// If the scheduler doesn't exist, lazily create it, but only allow one instance to ever be published to the backing field
 			if (scheduler == null) {
-				BackgroundWorkScheduler newlyCreatedScheduler = new BackgroundWorkScheduler(UnregisterObject, WriteUnhandledException);
+				var newlyCreatedScheduler = new BackgroundWorkScheduler(UnregisterObject, WriteUnhandledException);
 				scheduler = Interlocked.CompareExchange(ref _backgroundWorkScheduler, newlyCreatedScheduler, null) ?? newlyCreatedScheduler;
 				if (scheduler == newlyCreatedScheduler) {
 					RegisterObject(scheduler); // Only call RegisterObject if we just created the "winning" one

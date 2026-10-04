@@ -52,7 +52,7 @@ namespace System.Web.UI.WebControls
 
 		public override void PreRender (Page page, HtmlHead head, ClientScriptManager csm, string cmenu, StringBuilder script)
 		{
-			Menu owner = Owner;
+			var owner = Owner;
 			script.AppendFormat ("new Sys.WebForms.Menu ({{ element: '{0}', disappearAfter: {1}, orientation: '{2}', tabIndex: {3}, disabled: {4} }});",
 					     owner.ClientID,
 					     ClientScriptManager.GetScriptLiteral (owner.DisappearAfter),
@@ -60,9 +60,9 @@ namespace System.Web.UI.WebControls
 					     ClientScriptManager.GetScriptLiteral (owner.TabIndex),
 					     (!owner.Enabled).ToString ().ToLowerInvariant ());
 
-			Type mt = typeof (Menu);
+			var mt = typeof (Menu);
 			if (!csm.IsClientScriptIncludeRegistered (mt, "MenuModern.js")) {
-				string url = csm.GetWebResourceUrl (mt, "MenuModern.js");
+				var url = csm.GetWebResourceUrl (mt, "MenuModern.js");
 				csm.RegisterClientScriptInclude (mt, "MenuModern.js", url);
 			}
 			
@@ -72,9 +72,9 @@ namespace System.Web.UI.WebControls
 			if (head == null)
 				throw new InvalidOperationException ("Using Menu.IncludeStyleBlock requires Page.Header to be non-null (e.g. <head runat=\"server\" />).");
 
-			StyleBlock block = new StyleBlock (owner.ClientID);
-			Style style = owner.ControlStyle;
-			bool horizontal = owner.Orientation == Orientation.Horizontal;
+			var block = new StyleBlock (owner.ClientID);
+			var style = owner.ControlStyle;
+			var horizontal = owner.Orientation == Orientation.Horizontal;
 			if (style != null)
 				block.RegisterStyle (style);
 			
@@ -97,14 +97,14 @@ namespace System.Web.UI.WebControls
 				.Add (HtmlTextWriterStyle.Padding, "0")
 				.Add (HtmlTextWriterStyle.Width, "auto");
 
-			SubMenuStyle sms = owner.StaticMenuStyleInternal;
+			var sms = owner.StaticMenuStyleInternal;
 			if (sms != null) {
 				// #MenuId ul.static { ... }
 				block.RegisterStyle (sms, "ul.static");
 			}
 
 			// #MenuId ul.dynamic { ...; z-index:1; ... }
-			NamedCssStyleCollection css = block.RegisterStyle ("ul.dynamic");
+			var css = block.RegisterStyle ("ul.dynamic");
 			sms = owner.DynamicMenuStyleInternal;
 			if (sms != null) {
 				sms.ForeColor = Color.Empty;
@@ -112,7 +112,7 @@ namespace System.Web.UI.WebControls
 			}
 			
 			css.Add (HtmlTextWriterStyle.ZIndex, "1");
-			int num = owner.DynamicHorizontalOffset;
+			var num = owner.DynamicHorizontalOffset;
 			if (num != 0)
 				css.Add (HtmlTextWriterStyle.MarginLeft, num + "px");
 			num = owner.DynamicVerticalOffset;
@@ -136,11 +136,11 @@ namespace System.Web.UI.WebControls
 			RenderAnchorStyle (block, owner.StaticMenuItemStyleInternal, "a.static");
 			
 			// #MenuId a.popout { background-image:url("...");background-repeat:no-repeat;background-position:right center;padding-right:14px; }
-			bool needDynamicPopOut = false;
-			string str = owner.StaticPopOutImageUrl;
+			var needDynamicPopOut = false;
+			var str = owner.StaticPopOutImageUrl;
 
 			css = null;
-			string urlFormat = "url(\"{0}\")";
+			var urlFormat = "url(\"{0}\")";
 			if (String.IsNullOrEmpty (str)) {
 				if (owner.StaticEnableDefaultPopOutImage)
 					css = block.RegisterStyle (HtmlTextWriterStyle.BackgroundImage, String.Format (urlFormat, GetArrowResourceUrl (owner)), "a.popout");
@@ -158,7 +158,7 @@ namespace System.Web.UI.WebControls
 
 			// #MenuId a.popout-dynamic { background:url("...") no-repeat right center;padding-right:14px; }
 			str = owner.DynamicPopOutImageUrl;
-			bool haveDynamicUrl = !String.IsNullOrEmpty (str);
+			var haveDynamicUrl = !String.IsNullOrEmpty (str);
 			css = null;
 			if (needDynamicPopOut || haveDynamicUrl) {
 				urlFormat = "url(\"{0}\") no-repeat right center";
@@ -177,7 +177,7 @@ namespace System.Web.UI.WebControls
 			RenderAnchorStyle (block, owner.DynamicMenuItemStyleInternal, "a.dynamic");
 			
 			num = owner.StaticDisplayLevels;
-			Unit ssmi = owner.StaticSubMenuIndent;
+			var ssmi = owner.StaticSubMenuIndent;
 			string unitName;
 			double indent;
 				
@@ -216,7 +216,7 @@ namespace System.Web.UI.WebControls
 		
 		public override void RenderBeginTag (HtmlTextWriter writer, string skipLinkText)
 		{
-			Menu owner = Owner;
+			var owner = Owner;
 			
 			// <a href="#ID_SkipLink">
 			writer.AddAttribute (HtmlTextWriterAttribute.Href, "#" + owner.ClientID + "_SkipLink");
@@ -224,8 +224,8 @@ namespace System.Web.UI.WebControls
 				
 			// <img alt="" height="0" width="0" src="" style="border-width:0px;"/>
 			writer.AddAttribute (HtmlTextWriterAttribute.Alt, skipLinkText);
-			Page page = owner.Page;
-			ClientScriptManager csm = page != null ? page.ClientScript : new ClientScriptManager (null);
+			var page = owner.Page;
+			var csm = page != null ? page.ClientScript : new ClientScriptManager (null);
 				
 			writer.AddAttribute (HtmlTextWriterAttribute.Src, csm.GetWebResourceUrl (typeof (SiteMapPath), "transparent.gif"));
 			writer.AddAttribute (HtmlTextWriterAttribute.Width, "0");
@@ -249,8 +249,8 @@ namespace System.Web.UI.WebControls
 
 		public override void RenderContents (HtmlTextWriter writer)
 		{
-			Menu owner = Owner;
-			MenuItemCollection items = owner.Items;
+			var owner = Owner;
+			var items = owner.Items;
 			owner.RenderMenu (writer, items, owner.Orientation == Orientation.Vertical, false, 0, items.Count > 1);
 		}
 		
@@ -273,12 +273,12 @@ namespace System.Web.UI.WebControls
 		
 		public override void RenderMenuBody (HtmlTextWriter writer, MenuItemCollection items, bool vertical, bool dynamic, bool notLast)
 		{
-			Menu owner = Owner;
-			int count = items.Count;
+			var owner = Owner;
+			var count = items.Count;
 			var oc = new OwnerContext (this);
 			
-			for (int n = 0; n < count; n++) {
-				MenuItem item = items [n];
+			for (var n = 0; n < count; n++) {
+				var item = items [n];
 				Adapters.MenuAdapter adapter = owner.Adapter as Adapters.MenuAdapter;
 				if (adapter != null)
 					adapter.RenderItem (writer, item, n);
@@ -289,10 +289,10 @@ namespace System.Web.UI.WebControls
 
 		protected override void RenderMenuItem (HtmlTextWriter writer, MenuItem item, bool vertical, bool notLast, bool isFirst, OwnerContext oc)
 		{
-			Menu owner = Owner;
-			bool displayChildren = owner.DisplayChildren (item);
-			bool isDynamicItem = IsDynamicItem (owner, item);
-			int itemLevel = item.Depth + 1;
+			var owner = Owner;
+			var displayChildren = owner.DisplayChildren (item);
+			var isDynamicItem = IsDynamicItem (owner, item);
+			var itemLevel = item.Depth + 1;
 			string str;
 			
 			writer.RenderBeginTag (HtmlTextWriterTag.Li);
@@ -307,10 +307,10 @@ namespace System.Web.UI.WebControls
 				AddCssClass (linkStyle, isDynamicItem && haveDynamicPopOut ? "popout-dynamic" : "popout");
 			AddCssClass (linkStyle, "level" + itemLevel);
 
-			MenuItemStyleCollection levelStyles = oc.LevelMenuItemStyles;
+			var levelStyles = oc.LevelMenuItemStyles;
 			if (levelStyles != null && levelStyles.Count >= itemLevel) {
-				MenuItemStyle style = levelStyles [itemLevel - 1];
-				string cssClass = style.CssClass;
+				var style = levelStyles [itemLevel - 1];
+				var cssClass = style.CssClass;
 				if (!String.IsNullOrEmpty (cssClass))
 					AddCssClass (linkStyle, cssClass);
 			}
@@ -357,30 +357,30 @@ namespace System.Web.UI.WebControls
 			return item.Depth + 1 >= Owner.StaticDisplayLevels;
 		}
 		
-		NamedCssStyleCollection RenderAnchorStyle (StyleBlock block, Style style, string styleName)
+		NamedCssStyleCollection RenderAnchorStyle (StyleBlock? block, Style? style, string? styleName)
 		{
 			if (style == null || block == null)
 				return null;
 
 			style.AlwaysRenderTextDecoration = true;
-			NamedCssStyleCollection css = block.RegisterStyle (style, styleName);
+			var css = block.RegisterStyle (style, styleName);
 			if (style.BorderStyle == BorderStyle.NotSet)
 				css.Add (HtmlTextWriterStyle.BorderStyle, "none");
 
 			return css;
 		}
 
-		void RenderLevelStyles (StyleBlock block, int num, IList levelStyles, string name, string unitName = null, double indent = 0)
+		void RenderLevelStyles (StyleBlock? block, int num, IList? levelStyles, string name, string unitName = null, double indent = 0)
 		{
-			int stylesCount = levelStyles != null ? levelStyles.Count : 0;
-			bool haveStyles = stylesCount > 0;
+			var stylesCount = levelStyles != null ? levelStyles.Count : 0;
+			var haveStyles = stylesCount > 0;
 			if (!haveStyles || block == null)
 				return;
 
 			NamedCssStyleCollection css;
 			Style style;
-			bool haveIndent = !String.IsNullOrEmpty (unitName) && indent != 0;
-			for (int i = 0; i < stylesCount; i++) {
+			var haveIndent = !String.IsNullOrEmpty (unitName) && indent != 0;
+			for (var i = 0; i < stylesCount; i++) {
 				if ((i == 0 && !haveStyles))
 					continue;
 				

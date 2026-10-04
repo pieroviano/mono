@@ -40,7 +40,7 @@ namespace System.Web.SessionState {
 		
 		internal static string Create ()
 		{
-			byte[] key = new byte [half_len];
+			var key = new byte [half_len];
 
 			lock (rng) {
 				rng.GetBytes (key);

@@ -49,13 +49,13 @@ namespace System.Web.Services.Protocols {
             //
             // parse the uri from a string into a URI object
             //
-            Uri uriObject = new Uri(uri, true);
+            var uriObject = new Uri(uri, true);
             //
             // and get rid of the query string if there's one
             //
             uri = uriObject.GetLeftPart(UriPartial.Path);
             methodInfo = new LogicalMethodInfo(typeof(DocumentationServerProtocol).GetMethod("Documentation", BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic));
-            ServiceDescriptionReflector reflector = new ServiceDescriptionReflector(this.UriFixups);
+            var reflector = new ServiceDescriptionReflector(this.UriFixups);
             reflector.Reflect(type, uri);
             schemas = reflector.Schemas;
             serviceDescriptions = reflector.ServiceDescriptions;
@@ -118,15 +118,15 @@ namespace System.Web.Services.Protocols {
                         // if not create a new DocumentationServerType and cache it
                         //
                         // 
-                        bool excludeSchemeHostPortFromCachingKey = this.IsCacheUnderPressure(typeof(DocumentationServerProtocol), Type);
-                        string escapedUri = RuntimeUtils.EscapeUri(Request.Url);
+                        var excludeSchemeHostPortFromCachingKey = this.IsCacheUnderPressure(typeof(DocumentationServerProtocol), Type);
+                        var escapedUri = RuntimeUtils.EscapeUri(Request.Url);
                         serverType = new DocumentationServerType(Type, escapedUri, excludeSchemeHostPortFromCachingKey);
                         AddToCache(typeof(DocumentationServerProtocol), Type, serverType, excludeSchemeHostPortFromCachingKey);
                     }
                 }
             }
 
-            WebServicesSection config = WebServicesSection.Current;
+            var config = WebServicesSection.Current;
             if (config.WsdlHelpGenerator.Href != null && config.WsdlHelpGenerator.Href.Length > 0)
             {
                 TraceMethod caller = Tracing.On ? new TraceMethod(this, "Initialize") : null;
@@ -213,7 +213,7 @@ namespace System.Web.Services.Protocols {
 
         void RunUriFixups()
         {
-            foreach (Action<Uri> fixup in this.serverType.UriFixups)
+            foreach (var fixup in this.serverType.UriFixups)
             {
                 fixup(this.Context.Request.Url);
             }

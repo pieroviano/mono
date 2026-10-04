@@ -35,18 +35,18 @@
         }
 
         protected virtual void ProcessRequest(HttpContextBase httpContext) {
-            RouteData routeData = RouteCollection.GetRouteData(httpContext);
+            var routeData = RouteCollection.GetRouteData(httpContext);
             if (routeData == null) {
                 throw new HttpException(404, SR.GetString(SR.UrlRoutingHandler_NoRouteMatches));
             }
 
-            IRouteHandler routeHandler = routeData.RouteHandler;
+            var routeHandler = routeData.RouteHandler;
             if (routeHandler == null) {
                 throw new InvalidOperationException(SR.GetString(SR.UrlRoutingModule_NoRouteHandler));
             }
 
-            RequestContext requestContext = new RequestContext(httpContext, routeData);
-            IHttpHandler httpHandler = routeHandler.GetHttpHandler(requestContext);
+            var requestContext = new RequestContext(httpContext, routeData);
+            var httpHandler = routeHandler.GetHttpHandler(requestContext);
             if (httpHandler == null) {
                 throw new InvalidOperationException(
                     String.Format(

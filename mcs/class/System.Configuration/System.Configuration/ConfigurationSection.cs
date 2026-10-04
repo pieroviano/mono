@@ -94,13 +94,13 @@ namespace System.Configuration
 					DoDeserializeSection (reader);
 					
 					if (!String.IsNullOrEmpty (SectionInformation.ConfigSource)) {
-						string fileDir = SectionInformation.ConfigFilePath;
+						var fileDir = SectionInformation.ConfigFilePath;
 						if (!String.IsNullOrEmpty (fileDir))
 							fileDir = Path.GetDirectoryName (fileDir);
 						else
 							fileDir = String.Empty;
 					
-						string path = Path.Combine (fileDir, SectionInformation.ConfigSource);
+						var path = Path.Combine (fileDir, SectionInformation.ConfigSource);
 						if (File.Exists (path)) {
 							RawXml = File.ReadAllText (path);
 							SectionInformation.SetRawXml (RawXml);
@@ -158,14 +158,14 @@ namespace System.Configuration
 			/* XXX this stuff shouldn't be here */
 			{
 				if (protection_provider != null) {
-					ProtectedConfigurationProvider prov = ProtectedConfiguration.GetProvider (protection_provider, true);
+					var prov = ProtectedConfiguration.GetProvider (protection_provider, true);
 					XmlDocument doc = new ConfigurationXmlDocument ();
 
 					reader.MoveToElement ();
 
 					doc.Load (new StringReader (reader.ReadInnerXml ()));
 
-					XmlNode n = prov.Decrypt (doc);
+					var n = prov.Decrypt (doc);
 
 					reader = new XmlNodeReader (n);
 
@@ -198,7 +198,7 @@ namespace System.Configuration
 
 		internal void DeserializeConfigSource (string basePath)
 		{
-			string config_source = SectionInformation.ConfigSource;
+			var config_source = SectionInformation.ConfigSource;
 
 			if (String.IsNullOrEmpty (config_source))
 				return;
@@ -209,7 +209,7 @@ namespace System.Configuration
 			if (HasLocalModifications ())
 				throw new ConfigurationErrorsException ("A section using 'configSource' may contain no other attributes or elements.");
 			
-			string path = Path.Combine (basePath, config_source);
+			var path = Path.Combine (basePath, config_source);
 			if (!File.Exists (path)) {
 				RawXml = null;
 				SectionInformation.SetRawXml (null);
@@ -221,7 +221,7 @@ namespace System.Configuration
 			DeserializeElement (new ConfigXmlTextReader (new StringReader (RawXml), path), false);
 		}
 
-		protected internal virtual string SerializeSection (ConfigurationElement parentElement, string name, ConfigurationSaveMode saveMode)
+		protected internal virtual string SerializeSection (ConfigurationElement? parentElement, string name, ConfigurationSaveMode saveMode)
 		{
 			externalDataXml = null;
 			ConfigurationElement elem;
@@ -240,11 +240,11 @@ namespace System.Configuration
 			 * 
 			 */
 			elem.PrepareSave (parentElement, saveMode);
-			bool hasValues = elem.HasValues (parentElement, saveMode);
+			var hasValues = elem.HasValues (parentElement, saveMode);
 
 			string ret;			
-			using (StringWriter sw = new StringWriter ()) {
-				using (XmlTextWriter tw = new XmlTextWriter (sw)) {
+			using (var sw = new StringWriter ()) {
+				using (var tw = new XmlTextWriter (sw)) {
 					tw.Formatting = Formatting.Indented;
 					if (hasValues)
 						elem.SerializeToXmlElement (tw, name);
@@ -259,16 +259,16 @@ namespace System.Configuration
 				ret = sw.ToString ();
 			}
 			
-			string config_source = SectionInformation.ConfigSource;
+			var config_source = SectionInformation.ConfigSource;
 			
 			if (String.IsNullOrEmpty (config_source))
 				return ret;
 
 			externalDataXml = ret;
-			using (StringWriter sw = new StringWriter ()) {
-				bool haveName = !String.IsNullOrEmpty (name);
+			using (var sw = new StringWriter ()) {
+				var haveName = !String.IsNullOrEmpty (name);
 
-				using (XmlTextWriter tw = new XmlTextWriter (sw)) {
+				using (var tw = new XmlTextWriter (sw)) {
 					if (haveName)
 						tw.WriteStartElement (name);
 					tw.WriteAttributeString ("configSource", config_source);

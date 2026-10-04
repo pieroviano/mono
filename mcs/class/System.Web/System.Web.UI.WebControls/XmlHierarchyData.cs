@@ -100,7 +100,7 @@ namespace System.Web.UI.WebControls {
 		
 		PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties (Attribute [] attrFilter)
 		{
-			ArrayList ret = new ArrayList ();
+			var ret = new ArrayList ();
 			ret.Add (new XmlHierarchyDataPropertyDescriptor (item, "##Name##"));
 			ret.Add (new XmlHierarchyDataPropertyDescriptor (item, "##Value##"));
 			ret.Add (new XmlHierarchyDataPropertyDescriptor (item, "##InnerText##"));
@@ -141,10 +141,10 @@ namespace System.Web.UI.WebControls {
 		
 		string IHierarchyData.Path {
 			get { 
-				System.Text.StringBuilder sb = new System.Text.StringBuilder();
-				XmlNode nod = item;
+				var sb = new System.Text.StringBuilder();
+				var nod = item;
 				do {
-					int n=1;
+					var n=1;
 					XmlNode prev = nod.PreviousSibling;
 					while (prev != null) {
 						prev = prev.PreviousSibling;

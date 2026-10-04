@@ -69,7 +69,7 @@ namespace System.Web.Configuration {
 
 		public string GetKey (int index)
 		{
-			SqlCacheDependencyDatabase db = Get (index);
+			var db = Get (index);
 			if (db == null)
 				return null;
 			return db.Name;
@@ -87,13 +87,13 @@ namespace System.Web.Configuration {
 
 		public void Set (SqlCacheDependencyDatabase user)
 		{
-			SqlCacheDependencyDatabase existing = Get (user.Name);
+			var existing = Get (user.Name);
 
 			if (existing == null) {
 				Add (user);
 			}
 			else {
-				int index = BaseIndexOf (existing);
+				var index = BaseIndexOf (existing);
 				RemoveAt (index);
 				BaseAdd (index, user);
 			}
@@ -101,8 +101,8 @@ namespace System.Web.Configuration {
 
 		public string[] AllKeys {
 			get {
-				string[] keys = new string[Count];
-				for (int i = 0; i < Count; i ++)
+				var keys = new string[Count];
+				for (var i = 0; i < Count; i ++)
 					keys[i] = this[i].Name;
 				return keys;
 			}

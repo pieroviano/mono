@@ -35,16 +35,16 @@ namespace System.Web.Script.Serialization
 {
 	internal static class Json
 	{
-		public static void Serialize (object obj, JavaScriptSerializer jss, StringBuilder output)
+		public static void Serialize (object? obj, JavaScriptSerializer jss, StringBuilder output)
 		{
-			JsonSerializer js = new JsonSerializer (jss);
+			var js = new JsonSerializer (jss);
 			js.Serialize (obj, output);
 			js = null;
 		}
 
-		public static void Serialize (object obj, JavaScriptSerializer jss, TextWriter output)
+		public static void Serialize (object? obj, JavaScriptSerializer jss, TextWriter output)
 		{
-			JsonSerializer js = new JsonSerializer (jss);
+			var js = new JsonSerializer (jss);
 			js.Serialize (obj, output);
 			js = null;
 		}
@@ -62,7 +62,7 @@ namespace System.Web.Script.Serialization
 			if (jss == null)
 				throw new ArgumentNullException ("jss");
 			
-			JsonDeserializer ser = new JsonDeserializer (jss);
+			var ser = new JsonDeserializer (jss);
 			return ser.Deserialize (input);
 		}
 	}

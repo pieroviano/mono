@@ -53,7 +53,7 @@ namespace System.Web.Services.Discovery {
         ///    Write this instance to a stream.
         /// </devdoc>
         public void Write(Stream stream) {
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(DynamicDiscoveryDocument));
+            var xmlSerializer = new XmlSerializer(typeof(DynamicDiscoveryDocument));
             xmlSerializer.Serialize(new StreamWriter(stream, new UTF8Encoding(false)), this);
         }
 
@@ -62,7 +62,7 @@ namespace System.Web.Services.Discovery {
         ///    Read an instance of WebMethodsFile from a stream.
         /// </devdoc>
         public static DynamicDiscoveryDocument Load(Stream stream) {
-            XmlSerializer xmlSerializer = new XmlSerializer(typeof(DynamicDiscoveryDocument));
+            var xmlSerializer = new XmlSerializer(typeof(DynamicDiscoveryDocument));
             return (DynamicDiscoveryDocument) xmlSerializer.Deserialize(stream);
         }
     }

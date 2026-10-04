@@ -49,7 +49,7 @@ namespace System.Configuration
 		
 		public object GetSection (string section, string configPath)
 		{
-			IInternalConfigRecord rec = GetConfigRecord (configPath);
+			var rec = GetConfigRecord (configPath);
 			return rec.GetSection (section);
 		}
 

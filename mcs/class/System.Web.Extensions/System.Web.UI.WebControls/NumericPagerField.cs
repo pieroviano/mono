@@ -79,17 +79,17 @@ namespace System.Web.UI.WebControls
 			_totalRowCount = totalRowCount;
 			_fieldIndex = fieldIndex;
 
-			bool setPagePropertiesNeeded = false;
-			bool queryMode = GetQueryModeStartRowIndex (_totalRowCount, _maximumRows, ref _startRowIndex, ref setPagePropertiesNeeded);
-			bool addNonBreakingSpace = RenderNonBreakingSpacesBetweenControls;
-			int buttonCount = ButtonCount;
-			int totalPages = totalRowCount / maximumRows + (totalRowCount % maximumRows > 0 ? 1 : 0);
-			int currentPage = startRowIndex == 0 ? 1 : (startRowIndex / maximumRows) + 1;
-			int activePage = ((startRowIndex / (maximumRows * buttonCount)) * buttonCount) + 1;
-			int lastPage = activePage + buttonCount - 1;
+			var setPagePropertiesNeeded = false;
+			var queryMode = GetQueryModeStartRowIndex (_totalRowCount, _maximumRows, ref _startRowIndex, ref setPagePropertiesNeeded);
+			var addNonBreakingSpace = RenderNonBreakingSpacesBetweenControls;
+			var buttonCount = ButtonCount;
+			var totalPages = totalRowCount / maximumRows + (totalRowCount % maximumRows > 0 ? 1 : 0);
+			var currentPage = startRowIndex == 0 ? 1 : (startRowIndex / maximumRows) + 1;
+			var activePage = ((startRowIndex / (maximumRows * buttonCount)) * buttonCount) + 1;
+			var lastPage = activePage + buttonCount - 1;
 			
-			bool showPreviousPage = activePage > buttonCount;
-			bool showNextPage = totalPages - activePage >= buttonCount;
+			var showPreviousPage = activePage > buttonCount;
+			var showNextPage = totalPages - activePage >= buttonCount;
 
 			if (lastPage > totalPages)
 				lastPage = totalPages;
@@ -104,7 +104,7 @@ namespace System.Web.UI.WebControls
 					      NextPreviousButtonCssClass, newPageNum, queryMode, true, addNonBreakingSpace, false);
 			}
 
-			string numericButtonCssClass = NumericButtonCssClass;
+			var numericButtonCssClass = NumericButtonCssClass;
 			bool enabled;
 			string pageString;
 			while (activePage <= lastPage) {
@@ -138,7 +138,7 @@ namespace System.Web.UI.WebControls
 					span.CssClass = cssClass;
 					ctl = span;
 				} else {
-					HyperLink h = new HyperLink ();
+					var h = new HyperLink ();
 					h.Text = text;
 					h.ImageUrl = imageUrl;
 					h.Enabled = enabled;
@@ -148,21 +148,21 @@ namespace System.Web.UI.WebControls
 				}
 			} else {
 				if (!enabled) {
-					Label l = new Label ();
+					var l = new Label ();
 					l.Text = text;
 					l.CssClass = cssClass;
 					ctl = l;
 				} else {
 					switch (ButtonType) {
 						case ButtonType.Button:
-							Button btn = new Button ();
+							var btn = new Button ();
 							btn.CommandName = commandName;
 							btn.CommandArgument = pageNum.ToString ();
 							btn.Text = text;
 							break;
 
 						case ButtonType.Link:
-							LinkButton lbtn = new LinkButton ();
+							var lbtn = new LinkButton ();
 							lbtn.CommandName = commandName;
 							lbtn.CommandArgument = pageNum.ToString ();
 							lbtn.Text = text;
@@ -170,7 +170,7 @@ namespace System.Web.UI.WebControls
 							break;
 
 						case ButtonType.Image:
-							ImageButton ibtn = new ImageButton ();
+							var ibtn = new ImageButton ();
 							ibtn.CommandName = commandName;
 							ibtn.CommandArgument = pageNum.ToString ();
 							ibtn.ImageUrl = imageUrl;
@@ -237,7 +237,7 @@ namespace System.Web.UI.WebControls
 
 		public override int GetHashCode ()
 		{
-			int ret = 0;
+			var ret = 0;
 
 			// Base the calculation on the properties that are copied in CopyProperties
 			ret |= ButtonCount.GetHashCode ();
@@ -256,7 +256,7 @@ namespace System.Web.UI.WebControls
 
 		public override void HandleEvent (CommandEventArgs e)
 		{
-			string commandName = e.CommandName;
+			var commandName = e.CommandName;
 			int pageNum;
 
 			if (!Int32.TryParse (e.CommandArgument as string, out pageNum))
@@ -266,9 +266,9 @@ namespace System.Web.UI.WebControls
 			else if (pageNum < 0)
 				pageNum = 0;
 			
-			int newStartIndex = -1;
-			int pageSize = DataPager.PageSize;
-			int offset = pageSize * pageNum;
+			var newStartIndex = -1;
+			var pageSize = DataPager.PageSize;
+			var offset = pageSize * pageNum;
 			
 			if (String.Compare (commandName, DataControlCommands.NextPageCommandArgument, StringComparison.OrdinalIgnoreCase) == 0 ||
 			    String.Compare (commandName, DataControlCommands.PreviousPageCommandArgument, StringComparison.OrdinalIgnoreCase) == 0) {
@@ -282,7 +282,7 @@ namespace System.Web.UI.WebControls
 
 		public int ButtonCount {
 			get {
-				object o = ViewState ["ButtonCount"];
+				var o = ViewState ["ButtonCount"];
 				if (o != null)
 					return (int)o;
 				
@@ -299,7 +299,7 @@ namespace System.Web.UI.WebControls
 
 		public ButtonType ButtonType {
 			get {
-				object o = ViewState ["ButtonType"];
+				var o = ViewState ["ButtonType"];
 				if (o != null)
 					return (ButtonType)o;
 

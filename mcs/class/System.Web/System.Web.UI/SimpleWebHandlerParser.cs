@@ -66,7 +66,7 @@ namespace System.Web.UI
 		: this (context, virtualPath, physicalPath, null)
 		{}
 		
-		internal SimpleWebHandlerParser (HttpContext context, string virtualPath, string physicalPath, TextReader reader)
+		internal SimpleWebHandlerParser (HttpContext? context, string virtualPath, string? physicalPath, TextReader reader)
 		{
 			this.reader = reader;
 			cachedType = CachingCompiler.GetTypeFromCache (physicalPath);
@@ -93,11 +93,11 @@ namespace System.Web.UI
 			}
 
 			assemblies = new ArrayList ();
-			string location = Context.ApplicationInstance.AssemblyLocation;
+			var location = Context.ApplicationInstance.AssemblyLocation;
 			if (location != typeof (TemplateParser).Assembly.Location)
 				appAssemblyIndex = assemblies.Add (location);
 
-			bool addAssembliesInBin = false;
+			var addAssembliesInBin = false;
 			foreach (AssemblyInfo info in CompilationConfig.Assemblies) {
 				if (info.Assembly == "*")
 					addAssembliesInBin = true;
@@ -119,10 +119,10 @@ namespace System.Web.UI
 		void GetDirectivesAndContent ()
 		{
 			string line;
-			bool directiveFound = false;
-			bool inDirective = false;
+			var directiveFound = false;
+			var inDirective = false;
 			StringBuilder directive = null;
-			StringBuilder content = new StringBuilder ();
+			var content = new StringBuilder ();
 			int idxStart, idxEnd, length;
 			StreamReader sr;
 
@@ -165,7 +165,7 @@ namespace System.Web.UI
 					}
 
 					if (inDirective) {
-						int idx = line.IndexOf ("%>");
+						var idx = line.IndexOf ("%>");
 						if (idx > -1) {
 							directive.Append (line.Substring (0, idx + 2));
 							if (idx < length)
@@ -203,7 +203,7 @@ namespace System.Web.UI
 				this.program = content.ToString ();
 		}
 
-		void TagParsed (ILocation location, System.Web.Compilation.TagType tagtype, string tagid, TagAttributes attributes)
+		void TagParsed (ILocation location, System.Web.Compilation.TagType tagtype, string? tagid, TagAttributes attributes)
 		{
 			if (tagtype != System.Web.Compilation.TagType.Directive)
 				throw new ParseException (location, "Unexpected tag");
@@ -239,7 +239,7 @@ namespace System.Web.UI
 		{
 			AspParser parser;
 
-			using (StringReader input = new StringReader (line)) {
+			using (var input = new StringReader (line)) {
 				parser = new AspParser (physPath, input);
 			}
 			
@@ -259,12 +259,12 @@ namespace System.Web.UI
 				throw new ParseException (location, "duplicate " + DefaultDirectiveName + " directive");
 
 			gotDefault = true;
-			IDictionary attributes = attrs.GetDictionary (null);
+			var attributes = attrs.GetDictionary (null);
 			className = GetAndRemove (attributes, "class");
 			if (className == null)
 				throw new ParseException (null, "No Class attribute found.");
 			
-			string d = GetAndRemove (attributes, "debug");
+			var d = GetAndRemove (attributes, "debug");
 			if (d != null) {
 				debug = (String.Compare (d, "true", true, Helpers.InvariantCulture) == 0);
 				if (debug == false && String.Compare (d, "false", true, Helpers.InvariantCulture) != 0)
@@ -284,9 +284,9 @@ namespace System.Web.UI
 
 		internal virtual void AddAssemblyDirective (ILocation location, TagAttributes attrs)
 		{
-			IDictionary tbl = attrs.GetDictionary (null);
-			string name = GetAndRemove (tbl, "Name");
-			string src = GetAndRemove (tbl, "Src");
+			var tbl = attrs.GetDictionary (null);
+			var name = GetAndRemove (tbl, "Name");
+			var src = GetAndRemove (tbl, "Src");
 			if (name == null && src == null)
 				throw new ParseException (location, "You gotta specify Src or Name");
 
@@ -312,7 +312,7 @@ namespace System.Web.UI
 				anames = new Hashtable ();
 
 			string name = assembly.GetName ().Name;
-			string loc = assembly.Location;
+			var loc = assembly.Location;
 			if (fullPath) {
 				if (!assemblies.Contains (loc)) {
 					assemblies.Add (loc);
@@ -342,7 +342,7 @@ namespace System.Web.UI
 				return (Assembly) o;
 			}
 
-			Assembly assembly = LoadAssemblyFromBin (name);
+			var assembly = LoadAssemblyFromBin (name);
 			if (assembly != null) {
 				AddAssembly (assembly, true);
 				return assembly;
@@ -366,11 +366,11 @@ namespace System.Web.UI
 		void AddAssembliesInBin ()
 		{
 			Exception ex;
-			foreach (string s in HttpApplication.BinDirectoryAssemblies) {
+			foreach (var s in HttpApplication.BinDirectoryAssemblies) {
 				ex = null;
 				
 				try {
-					Assembly assembly = Assembly.LoadFrom (s);
+					var assembly = Assembly.LoadFrom (s);
 					AddAssembly (assembly, true);
 				} catch (FileLoadException e) {
 					ex = e;
@@ -393,8 +393,8 @@ namespace System.Web.UI
 		Assembly LoadAssemblyFromBin (string name)
 		{
 			Assembly assembly = null;
-			foreach (string dll in HttpApplication.BinDirectoryAssemblies) {
-				string fn = Path.GetFileName (dll);
+			foreach (var dll in HttpApplication.BinDirectoryAssemblies) {
+				var fn = Path.GetFileName (dll);
 				fn = Path.ChangeExtension (fn, null);
 				if (fn != name)
 					continue;
@@ -409,15 +409,15 @@ namespace System.Web.UI
 		Assembly GetAssemblyFromSource (string vpath, ILocation location)
 		{
 			vpath = UrlUtils.Combine (BaseVirtualDir, vpath);
-			string realPath = context.Request.MapPath (vpath);
+			var realPath = context.Request.MapPath (vpath);
 			if (!File.Exists (realPath))
 				throw new ParseException (location, "File " + vpath + " not found");
 
 			AddDependency (vpath);
 
-			CompilerResults result = CachingCompiler.Compile (language, realPath, realPath, assemblies);
+			var result = CachingCompiler.Compile (language, realPath, realPath, assemblies);
 			if (result.NativeCompilerReturnValue != 0) {
-				using (StreamReader sr = new StreamReader (realPath)) {
+				using (var sr = new StreamReader (realPath)) {
 					throw new CompilationException (realPath, result.Errors, sr.ReadToEnd ());
 				}
 			}
@@ -426,7 +426,7 @@ namespace System.Web.UI
 			return result.CompiledAssembly;
 		}
 		
-		internal Type GetTypeFromBin (string tname)
+		internal Type GetTypeFromBin (string? tname)
 		{
 			if (tname == null || tname.Length == 0)
 				throw new ArgumentNullException ("tname");
@@ -434,7 +434,7 @@ namespace System.Web.UI
 			Type result = null;
 			string typeName;
 			string assemblyName;
-			int comma = tname.IndexOf (',');
+			var comma = tname.IndexOf (',');
 			
 			if (comma != -1) {
 				typeName = tname.Substring (0, comma).Trim ();
@@ -454,7 +454,7 @@ namespace System.Web.UI
 					return type;
 			}
 			
-			IList toplevelAssemblies = BuildManager.TopLevelAssemblies;
+			var toplevelAssemblies = BuildManager.TopLevelAssemblies;
 			if (toplevelAssemblies != null && toplevelAssemblies.Count > 0) {
 				foreach (Assembly asm in toplevelAssemblies) {
 					type = asm.GetType (typeName, false);
@@ -466,7 +466,7 @@ namespace System.Web.UI
 				}
 			}
 
-			foreach (string dll in HttpApplication.BinDirectoryAssemblies) {
+			foreach (var dll in HttpApplication.BinDirectoryAssemblies) {
 				try {
 					assembly = Assembly.LoadFrom (dll);
 				} catch (FileLoadException) {
@@ -575,7 +575,7 @@ namespace System.Web.UI
 
 		CompilationSection CompilationConfig {
 			get {
-				string vp = VirtualPath;
+				var vp = VirtualPath;
 				if (String.IsNullOrEmpty (vp))
 					return WebConfigurationManager.GetWebApplicationSection ("system.web/compilation") as CompilationSection;
 				else

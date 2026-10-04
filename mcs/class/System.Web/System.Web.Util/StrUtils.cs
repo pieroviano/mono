@@ -44,11 +44,11 @@ namespace System.Web.Util {
 
 		public static bool StartsWith (string str1, string str2, bool ignore_case)
 		{
-			int l2 = str2.Length;
+			var l2 = str2.Length;
 			if (l2 == 0)
 				return true;
 
-			int l1 = str1.Length;
+			var l1 = str1.Length;
 			if (l2 > l1)
 				return false;
 
@@ -62,11 +62,11 @@ namespace System.Web.Util {
 
 		public static bool EndsWith (string str1, string str2, bool ignore_case)
 		{
-			int l2 = str2.Length;
+			var l2 = str2.Length;
 			if (l2 == 0)
 				return true;
 
-			int l1 = str1.Length;
+			var l1 = str1.Length;
 			if (l2 > l1)
 				return false;
 
@@ -76,8 +76,8 @@ namespace System.Web.Util {
 		public static string EscapeQuotesAndBackslashes (string attributeValue)
 		{
 			StringBuilder sb = null;
-			for (int i = 0; i < attributeValue.Length; i++) {
-				char ch = attributeValue [i];
+			for (var i = 0; i < attributeValue.Length; i++) {
+				var ch = attributeValue [i];
 				if (ch == '\'' || ch == '"' || ch == '\\') {
 					if (sb == null) {
 						sb = new StringBuilder ();

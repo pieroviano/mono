@@ -26,7 +26,7 @@ namespace System.Web.Services.Protocols {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         protected override WebRequest GetWebRequest(Uri uri) {
-            WebRequest request = base.GetWebRequest(uri);            
+            var request = base.GetWebRequest(uri);            
             request.Method = "GET";
             return request;
         }

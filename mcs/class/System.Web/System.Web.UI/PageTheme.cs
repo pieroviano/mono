@@ -47,12 +47,12 @@ namespace System.Web.UI {
 			return string.Concat (skinID, ":", controlType);
 		}
 
-		protected object Eval (string expression)
+		protected object Eval (string? expression)
 		{
 			return Page.Eval (expression);
 		}
 
-		protected string Eval (string expression, string format)
+		protected string Eval (string? expression, string? format)
 		{
 			return Page.Eval (expression, format);
 		}
@@ -63,32 +63,32 @@ namespace System.Web.UI {
 			throw new NotImplementedException ();
 		}
 
-		protected object XPath (string xPathExpression)
+		protected object XPath (string? xPathExpression)
 		{
 			return Page.XPath (xPathExpression);
 		}
 
-		protected object XPath (string xPathExpression, IXmlNamespaceResolver resolver)
+		protected object XPath (string? xPathExpression, IXmlNamespaceResolver resolver)
 		{
 			return Page.XPath (xPathExpression, resolver);
 		}
 
-		protected string XPath (string xPathExpression, string format)
+		protected string XPath (string? xPathExpression, string? format)
 		{
 			return Page.XPath (xPathExpression, format);
 		}
 
-		protected string XPath (string xPathExpression, string format, IXmlNamespaceResolver resolver)
+		protected string XPath (string? xPathExpression, string? format, IXmlNamespaceResolver resolver)
 		{
 			return Page.XPath (xPathExpression, format, resolver);
 		}
 
-		protected IEnumerable XPathSelect (string xPathExpression)
+		protected IEnumerable XPathSelect (string? xPathExpression)
 		{
 			return Page.XPathSelect (xPathExpression);
 		}
 
-		protected IEnumerable XPathSelect (string xPathExpression, IXmlNamespaceResolver resolver)
+		protected IEnumerable XPathSelect (string? xPathExpression, IXmlNamespaceResolver resolver)
 		{
 			return Page.XPathSelect (xPathExpression, resolver);
 		}
@@ -108,7 +108,7 @@ namespace System.Web.UI {
 
 		internal ControlSkin GetControlSkin (Type controlType, string skinID)
 		{
-			object key = PageTheme.CreateSkinKey (controlType, skinID);
+			var key = PageTheme.CreateSkinKey (controlType, skinID);
 			return ControlSkins[key] as ControlSkin;
 		}
 

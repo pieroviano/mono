@@ -90,7 +90,7 @@ namespace System.Web
 			if (values == null)
 				throw new ArgumentNullException ("values");
 
-			string tmp = Value;
+			var tmp = Value;
 			if (tmp != null) {
 				values.Add (Name, tmp);
 				return;
@@ -109,16 +109,16 @@ namespace System.Web
 			}
 		}
 
-		public virtual bool Visible (ExceptionPageTemplateValues values)
+		public virtual bool Visible (ExceptionPageTemplateValues? values)
 		{
-			List <string> required = RequiredMacros;
+			var required = RequiredMacros;
 			if (required == null || required.Count == 0)
 				return true;
 
 			if (values == null || values.Count == 0)
 				return false;
 			
-			foreach (string macro in required) {
+			foreach (var macro in required) {
 				if (values.Get (macro) == null)
 					return false;
 			}
@@ -134,14 +134,14 @@ namespace System.Web
 			if (values == null)
 				throw new ArgumentNullException ("values");
 
-			List <string> macroNames = MacroNames;
+			var macroNames = MacroNames;
 			if (macroNames == null || macroNames.Count == 0)
 				return value;
 
 			var sb = new StringBuilder (value);
 			string macroValue;
 			
-			foreach (string macro in macroNames) {
+			foreach (var macro in macroNames) {
 				if (String.IsNullOrEmpty (macro))
 					continue;
 
@@ -175,7 +175,7 @@ namespace System.Web
 
 		protected virtual string LoadResource (string resourceName)
 		{
-			string assemblyName = ResourceAssembly;
+			var assemblyName = ResourceAssembly;
 			Assembly asm;
 			
 			if (String.IsNullOrEmpty (assemblyName))
@@ -199,7 +199,7 @@ namespace System.Web
 					return String.Empty;
 				}
 
-				using (StreamReader sr = new StreamReader (st))
+				using (var sr = new StreamReader (st))
 					return sr.ReadToEnd ();
 			} catch (Exception ex) {
 				Console.Error.WriteLine ("Error reading manifest resource '{0}' from assembly '{1}', required for exception template. Exception {2} has been thrown: {3}",

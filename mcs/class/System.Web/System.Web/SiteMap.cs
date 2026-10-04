@@ -43,7 +43,7 @@ namespace System.Web
 		{
 			lock (locker) {
 				if (provider == null) {
-					SiteMapSection section = (SiteMapSection) WebConfigurationManager.GetSection ("system.web/siteMap");
+					var section = (SiteMapSection) WebConfigurationManager.GetSection ("system.web/siteMap");
 
 					if (!section.Enabled)
 						throw new InvalidOperationException ("This feature is currently disabled.  Please enable it in the system.web/siteMap section in the web.config file.");
@@ -88,7 +88,7 @@ namespace System.Web
 
 		public static bool Enabled {
 			get {
-				SiteMapSection section = (SiteMapSection) WebConfigurationManager.GetSection ("system.web/siteMap");
+				var section = (SiteMapSection) WebConfigurationManager.GetSection ("system.web/siteMap");
 				return section.Enabled;
 			}
 		}		

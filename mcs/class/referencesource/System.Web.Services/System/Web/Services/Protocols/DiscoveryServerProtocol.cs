@@ -49,35 +49,35 @@ namespace System.Web.Services.Protocols {
             //
             // parse the uri from a string into a Uri object
             //
-            Uri uriObject = new Uri(uri, true);
+            var uriObject = new Uri(uri, true);
             //
             // and get rid of the query string if there's one
             //
             uri = uriObject.GetLeftPart(UriPartial.Path);
             methodInfo = new LogicalMethodInfo(typeof(DiscoveryServerProtocol).GetMethod("Discover", BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic));
-            ServiceDescriptionReflector reflector = new ServiceDescriptionReflector(this.UriFixups);
+            var reflector = new ServiceDescriptionReflector(this.UriFixups);
             reflector.Reflect(type, uri);
 
-            XmlSchemas schemas = reflector.Schemas;
+            var schemas = reflector.Schemas;
             this.description = reflector.ServiceDescription;
             
             // We need to force initialization of ServiceDescription's XmlSerializer since we
             // won't necessarily have the permissions to do it when we actually need it
-            XmlSerializer serializer = ServiceDescription.Serializer;
+            var serializer = ServiceDescription.Serializer;
 
             // add imports to the external schemas
             AddSchemaImports(schemas, uri, reflector.ServiceDescriptions);
 
             // add imports to the other service descriptions
-            for (int i = 1; i < reflector.ServiceDescriptions.Count; i++) {
-                ServiceDescription description = reflector.ServiceDescriptions[i];
-                Import import = new Import();
+            for (var i = 1; i < reflector.ServiceDescriptions.Count; i++) {
+                var description = reflector.ServiceDescriptions[i];
+                var import = new Import();
                 import.Namespace = description.TargetNamespace;
 
                 // 
 
 
-                string id = "wsdl" + i.ToString(CultureInfo.InvariantCulture);
+                var id = "wsdl" + i.ToString(CultureInfo.InvariantCulture);
 
                 import.Location = uri + "?wsdl=" + id;
                 this.AddUriFixup(delegate(Uri current)
@@ -89,7 +89,7 @@ namespace System.Web.Services.Protocols {
             }
 
             discoDoc = new DiscoveryDocument();
-            ContractReference contractReference = new ContractReference(uri + "?wsdl", uri);
+            var contractReference = new ContractReference(uri + "?wsdl", uri);
             this.AddUriFixup(delegate(Uri current)
             {
                 contractReference.Ref = CombineUris(current, contractReference.Ref);
@@ -99,9 +99,9 @@ namespace System.Web.Services.Protocols {
 
             foreach (Service service in reflector.ServiceDescription.Services) {
                 foreach (Port port in service.Ports) {
-                    SoapAddressBinding soapAddress = (SoapAddressBinding)port.Extensions.Find(typeof(SoapAddressBinding));
+                    var soapAddress = (SoapAddressBinding)port.Extensions.Find(typeof(SoapAddressBinding));
                     if (soapAddress != null) {
-                        System.Web.Services.Discovery.SoapBinding binding = new System.Web.Services.Discovery.SoapBinding();
+                        var binding = new System.Web.Services.Discovery.SoapBinding();
                         binding.Binding = port.Binding;
                         binding.Address = soapAddress.Location;
                         this.AddUriFixup(delegate(Uri current)
@@ -114,12 +114,12 @@ namespace System.Web.Services.Protocols {
             }
         }
 
-        internal void AddExternal(XmlSchema schema, string ns, string location) {
+        internal void AddExternal(XmlSchema? schema, string ns, string location) {
             if (schema == null)
                 return;
 
             if (schema.TargetNamespace == ns) {
-                XmlSchemaInclude include = new XmlSchemaInclude();
+                var include = new XmlSchemaInclude();
                 include.SchemaLocation = location;
                 this.AddUriFixup(delegate(Uri current)
                 {
@@ -128,7 +128,7 @@ namespace System.Web.Services.Protocols {
                 schema.Includes.Add(include);
             }
             else {
-                XmlSchemaImport import = new XmlSchemaImport();
+                var import = new XmlSchemaImport();
                 import.SchemaLocation = location;
                 this.AddUriFixup(delegate(Uri current)
                 {
@@ -140,7 +140,7 @@ namespace System.Web.Services.Protocols {
         }
 
         void AddSchemaImports(XmlSchemas schemas, string uri, ServiceDescriptionCollection descriptions) {
-            int id = 0;
+            var id = 0;
             foreach (XmlSchema schema in schemas) {
                 if (schema == null)
                     continue;
@@ -148,10 +148,10 @@ namespace System.Web.Services.Protocols {
                 if (schema.Id == null || schema.Id.Length == 0)
                     schema.Id = "schema" + (++id).ToString(CultureInfo.InvariantCulture);
 
-                string location = uri + "?schema=" + schema.Id;
+                var location = uri + "?schema=" + schema.Id;
                 foreach (ServiceDescription description in descriptions) {
                     if (description.Types.Schemas.Count == 0) {
-                        XmlSchema top = new XmlSchema();
+                        var top = new XmlSchema();
                         top.TargetNamespace = description.TargetNamespace;
                         schema.ElementFormDefault = XmlSchemaForm.Qualified;
                         AddExternal(top, schema.TargetNamespace, location);
@@ -237,8 +237,8 @@ namespace System.Web.Services.Protocols {
                         //
                         // if not create a new DiscoveryServerType and cache it
                         //
-                        bool excludeSchemeHostPortFromCachingKey = this.IsCacheUnderPressure(typeof(DiscoveryServerProtocol), Type);
-                        string escapedUri = RuntimeUtils.EscapeUri(Request.Url);
+                        var excludeSchemeHostPortFromCachingKey = this.IsCacheUnderPressure(typeof(DiscoveryServerProtocol), Type);
+                        var escapedUri = RuntimeUtils.EscapeUri(Request.Url);
                         serverType = new DiscoveryServerType(Type, escapedUri, excludeSchemeHostPortFromCachingKey);
                         AddToCache(typeof(DiscoveryServerProtocol), Type, serverType, excludeSchemeHostPortFromCachingKey);
                     }
@@ -269,7 +269,7 @@ namespace System.Web.Services.Protocols {
             Encoding encoding = new UTF8Encoding(false);
 
             if (id != null) {
-                XmlSchema schema = serverType.GetSchema(id);
+                var schema = serverType.GetSchema(id);
                 if (schema == null) throw new InvalidOperationException(Res.GetString(Res.WebSchemaNotFound));
                 Response.ContentType = ContentType.Compose("text/xml", encoding);
                 schema.Write(new StreamWriter(outputStream, encoding));
@@ -278,7 +278,7 @@ namespace System.Web.Services.Protocols {
            
             id = Request.QueryString["wsdl"];
             if (id != null) {
-                ServiceDescription description = serverType.GetServiceDescription(id);
+                var description = serverType.GetServiceDescription(id);
                 if (description == null) throw new InvalidOperationException(Res.GetString(Res.ServiceDescriptionWasNotFound0));
                 Response.ContentType = ContentType.Compose("text/xml", encoding);
                 if (this.serverType.UriFixups == null)
@@ -341,7 +341,7 @@ namespace System.Web.Services.Protocols {
             Response.ContentType = ContentType.Compose("text/plain", Encoding.UTF8);
             Response.StatusCode = (int) HttpStatusCode.InternalServerError;
             Response.StatusDescription = HttpWorkerRequest.GetStatusDescription(Response.StatusCode);
-            StreamWriter writer = new StreamWriter(outputStream, new UTF8Encoding(false));
+            var writer = new StreamWriter(outputStream, new UTF8Encoding(false));
             writer.WriteLine(GenerateFaultString(e, true));
             writer.Flush();
             return true;
@@ -353,7 +353,7 @@ namespace System.Web.Services.Protocols {
 
         void RunUriFixups()
         {
-            foreach (Action<Uri> fixup in this.serverType.UriFixups)
+            foreach (var fixup in this.serverType.UriFixups)
             {
                 fixup(this.Context.Request.Url);
             }

@@ -376,19 +376,19 @@ namespace System.Web.UI.WebControls
 		
 		public int Update ()
 		{
-			Hashtable empty = new Hashtable ();
+			var empty = new Hashtable ();
 			return DefaultView.Update (empty, empty, null);
 		}
 
 		public int Delete ()
 		{
-			Hashtable empty = new Hashtable ();
+			var empty = new Hashtable ();
 			return DefaultView.Delete (empty, null);
 		}
 		
 		public int Insert ()
 		{
-			Hashtable empty = new Hashtable ();
+			var empty = new Hashtable ();
 			return DefaultView.Insert (empty);
 		}
 		
@@ -403,13 +403,13 @@ namespace System.Web.UI.WebControls
 			SelectParameters.UpdateValues (Context, this);
 		}
 		
-		protected override void LoadViewState (object savedState)
+		protected override void LoadViewState (object? savedState)
 		{
 			if (savedState == null) {
 				base.LoadViewState (null);
 				((IStateManager)DefaultView).LoadViewState (null);
 			} else {
-				Pair p = (Pair) savedState;
+				var p = (Pair) savedState;
 				base.LoadViewState (p.First);
 				((IStateManager)DefaultView).LoadViewState (p.Second);
 			}
@@ -417,8 +417,8 @@ namespace System.Web.UI.WebControls
 
 		protected override object SaveViewState()
 		{
-			object baseState = base.SaveViewState ();
-			object viewState = ((IStateManager)DefaultView).SaveViewState ();
+			var baseState = base.SaveViewState ();
+			var viewState = ((IStateManager)DefaultView).SaveViewState ();
 			if (baseState != null || viewState != null) return new Pair (baseState, viewState);
 			else return null;
 		}

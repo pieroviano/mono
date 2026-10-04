@@ -86,7 +86,7 @@ public sealed class HttpSessionState : ICollection, IEnumerable
 		get { return container.IsSynchronized; }
 	}
 
-	public object this [string name] {
+	public object? this [string name] {
 		get { return container [name]; }
 		set { container [name] = value; }
 	}

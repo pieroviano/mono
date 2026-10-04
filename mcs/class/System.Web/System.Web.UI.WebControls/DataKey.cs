@@ -79,19 +79,19 @@ namespace System.Web.UI.WebControls
 				return readonlyKeyTable; 
 			}
 		}
-		public bool Equals (DataKey other)
+		public bool Equals (DataKey? other)
 		{
 			if (other == null)
 				return false;
 
-			IOrderedDictionary otherKeyTable = other.keyTable;
+			var otherKeyTable = other.keyTable;
 			if (keyTable != null && otherKeyTable != null) {
 				if (keyTable.Count != otherKeyTable.Count)
 					return false;
 				
 				object thisValue, otherValue;
 				
-				foreach (object key in keyTable.Keys) {
+				foreach (var key in keyTable.Keys) {
 					if (!otherKeyTable.Contains (key))
 						return false;
 
@@ -106,13 +106,13 @@ namespace System.Web.UI.WebControls
 				}
 			}
 			
-			string[] otherKeyNames = other.keyNames;
+			var otherKeyNames = other.keyNames;
 			if (keyNames != null && otherKeyNames != null) {
-				int len = keyNames.Length;
+				var len = keyNames.Length;
 				if (len != otherKeyNames.Length)
 					return false;
 
-				for (int i = 0; i < len; i++)
+				for (var i = 0; i < len; i++)
 					if (String.Compare (keyNames [i], otherKeyNames [i], StringComparison.Ordinal) != 0)
 						return false;
 			} else if (keyNames == null ^ otherKeyNames == null)
@@ -123,15 +123,15 @@ namespace System.Web.UI.WebControls
 		protected virtual void LoadViewState (object state)
 		{
 			if (state is Pair) {
-				Pair p = (Pair) state;
-				object[] akeys = (object[]) p.First;
-				object[] avals = (object[]) p.Second;
-				for (int n=0; n<akeys.Length; n++) {
+				var p = (Pair) state;
+				var akeys = (object[]) p.First;
+				var avals = (object[]) p.Second;
+				for (var n=0; n<akeys.Length; n++) {
 					keyTable [akeys[n]] = avals [n];
 				}
 			} else if (state is object[]) {
-				object[] avals = (object[]) state;
-				for (int n=0; n<avals.Length; n++)
+				var avals = (object[]) state;
+				for (var n=0; n<avals.Length; n++)
 					keyTable [keyNames[n]] = avals [n];
 			}
 		}
@@ -142,15 +142,15 @@ namespace System.Web.UI.WebControls
 				return null;
 			
 			if (keyNames != null) {
-				object[] avals = new object [keyTable.Count];
-				int n=0;
-				foreach (object val in keyTable.Values)
+				var avals = new object [keyTable.Count];
+				var n=0;
+				foreach (var val in keyTable.Values)
 					avals [n++] = val;
 				return avals;
 			} else {
-				object[] avals = new object [keyTable.Count];
-				object[] akeys = new object [keyTable.Count];
-				int n=0;
+				var avals = new object [keyTable.Count];
+				var akeys = new object [keyTable.Count];
+				var n=0;
 				foreach (DictionaryEntry de in keyTable) {
 					akeys [n] = de.Key;
 					avals [n++] = de.Value;

@@ -52,7 +52,7 @@ namespace System.Web.Compilation
 
 		public static Type CompileApplicationType (ApplicationFileParser parser)
 		{
-			AspGenerator generator = new AspGenerator (parser);
+			var generator = new AspGenerator (parser);
 			return generator.GetCompiledType ();
 		}
 
@@ -68,13 +68,13 @@ namespace System.Web.Compilation
 			if (builder.Children == null)
 				return;
 
-			foreach (object t in builder.Children) {
+			foreach (var t in builder.Children) {
 				if (!(t is ObjectTagBuilder))
 					continue;
 
-				ObjectTagBuilder tag = (ObjectTagBuilder) t;
+				var tag = (ObjectTagBuilder) t;
 				if (tag.Scope == null) {
-					string fname = CreateFieldForObject (tag.Type, tag.ObjectID);
+					var fname = CreateFieldForObject (tag.Type, tag.ObjectID);
 					CreatePropertyForObject (tag.Type, tag.ObjectID, fname, true);
 					continue;
 				}

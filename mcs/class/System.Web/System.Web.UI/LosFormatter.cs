@@ -51,7 +51,7 @@ namespace System.Web.UI {
 		{
 		}
 
-		public LosFormatter (bool enableMac, byte[] macKeyModifier)
+		public LosFormatter (bool enableMac, byte[]? macKeyModifier)
 		{
 			osf = new ObjectStateFormatter ();
 			if (enableMac && (macKeyModifier != null)) {
@@ -75,7 +75,7 @@ namespace System.Web.UI {
 		{
 			if (stream == null)
 				throw new ArgumentNullException ("stream");
-			using (StreamReader sr = new StreamReader (stream)) {
+			using (var sr = new StreamReader (stream)) {
 				return Deserialize (sr.ReadToEnd ());
 			}
 		}
@@ -88,7 +88,7 @@ namespace System.Web.UI {
 			return Deserialize (input.ReadToEnd ());
 		}
 
-		public object Deserialize (string input)
+		public object Deserialize (string? input)
 		{
 			if (input == null)
 				return null;
@@ -96,23 +96,23 @@ namespace System.Web.UI {
 			return osf.Deserialize (input);
 		}
 
-		internal string SerializeToBase64 (object value)
+		internal string SerializeToBase64 (object? value)
 		{
 			return osf.Serialize (value);
 		}
 
-		public void Serialize (Stream stream, object value)
+		public void Serialize (Stream stream, object? value)
 		{
 			if (stream == null)
 				throw new ArgumentNullException ("stream");
 			if (!stream.CanSeek)
 				throw new NotSupportedException ();
-			string b64 = SerializeToBase64 (value);
-			byte [] bytes = Encoding.ASCII.GetBytes (b64);
+			var b64 = SerializeToBase64 (value);
+			var bytes = Encoding.ASCII.GetBytes (b64);
 			stream.Write (bytes, 0, bytes.Length);
 		}
 
-		public void Serialize (TextWriter output, object value)
+		public void Serialize (TextWriter output, object? value)
 		{
 			if (output == null)
 				throw new ArgumentNullException ("output");

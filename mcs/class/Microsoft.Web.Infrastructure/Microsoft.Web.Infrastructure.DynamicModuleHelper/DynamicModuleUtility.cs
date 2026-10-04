@@ -37,7 +37,7 @@ namespace Microsoft.Web.Infrastructure.DynamicModuleHelper
 	public static class DynamicModuleUtility
 	{
 		[SecuritySafeCritical]
-		public static void RegisterModule (Type moduleType)
+		public static void RegisterModule (Type? moduleType)
 		{
 			if (moduleType == null)
 				return;

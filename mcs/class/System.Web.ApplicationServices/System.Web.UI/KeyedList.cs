@@ -71,7 +71,7 @@ namespace System.Web.UI
 		public void Remove (object key)
 		{
 			objectTable.Remove (key);
-			int index = IndexOf (key);
+			var index = IndexOf (key);
 			if (index >= 0)
 				objectList.RemoveAt (index);
 		}
@@ -121,7 +121,7 @@ namespace System.Web.UI
 				if (idx < 0 || idx >= Count)
 					throw new ArgumentOutOfRangeException ("index");
 
-				object key = ((DictionaryEntry) objectList[idx]).Key;
+				var key = ((DictionaryEntry) objectList[idx]).Key;
 				objectList[idx] = new DictionaryEntry (key, value);
 				objectTable[key] = value;
 			}
@@ -142,8 +142,8 @@ namespace System.Web.UI
 
 		public ICollection Keys {
 			get { 
-				ArrayList retList = new ArrayList ();
-				for (int i = 0; i < objectList.Count; i++)
+				var retList = new ArrayList ();
+				for (var i = 0; i < objectList.Count; i++)
 				{
 					retList.Add ( ((DictionaryEntry)objectList[i]).Key );
 				}
@@ -153,8 +153,8 @@ namespace System.Web.UI
 
 		public ICollection Values {
 			get {
-				ArrayList retList = new ArrayList ();
-				for (int i = 0; i < objectList.Count; i++)
+				var retList = new ArrayList ();
+				for (var i = 0; i < objectList.Count; i++)
 				{
 					retList.Add ( ((DictionaryEntry)objectList[i]).Value );
 				}
@@ -168,7 +168,7 @@ namespace System.Web.UI
 
 		int IndexOf (object key)
 		{
-			for (int i = 0; i < objectList.Count; i++)
+			for (var i = 0; i < objectList.Count; i++)
 			{
 				if (((DictionaryEntry) objectList[i]).Key.Equals (key))
 				{

@@ -309,7 +309,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValue (true)]
 		public virtual bool ConvertEmptyStringToNull {
 			get {
-				object o = ViewState ["ConvertEmptyStringToNull"];
+				var o = ViewState ["ConvertEmptyStringToNull"];
 				if (o != null)
 					return (bool) o;
 
@@ -397,7 +397,7 @@ namespace System.Web.UI.WebControls
 		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public virtual ListViewItem EditItem {
 			get {
-				IList <ListViewDataItem> items = Items;
+				var items = Items;
 				if (_editIndex >= 0 && _editIndex < items.Count)
 					return items [_editIndex];
 				return null;
@@ -437,7 +437,7 @@ namespace System.Web.UI.WebControls
 		[MonoTODO ("Figure out where it is used and what's the effect of setting it to true.")]
 		public virtual bool EnableModelValidation {
 			get {
-				object o = ViewState ["EnableModelValidation"];
+				var o = ViewState ["EnableModelValidation"];
 				if (o == null)
 					return false;
 
@@ -617,8 +617,8 @@ namespace System.Web.UI.WebControls
 				if (_dataKeyNames == null || _dataKeyNames.Length == 0)
 					throw new InvalidOperationException ("Data keys must be specified on ListView '" + ID + "' before the selected data keys can be retrieved. Use the DataKeyNames property to specify data keys.");
 
-				DataKeyArray dataKeys = DataKeys;
-				int selIndex = SelectedIndex;
+				var dataKeys = DataKeys;
+				var selIndex = SelectedIndex;
 				if (selIndex > -1 && selIndex < dataKeys.Count)
 					return dataKeys [selIndex];
 
@@ -662,7 +662,7 @@ namespace System.Web.UI.WebControls
 		[Browsable (false)]
 		public object SelectedValue {
 			get {
-				DataKey dk = SelectedDataKey;
+				var dk = SelectedDataKey;
 				if (dk != null)
 					return dk.Value;
 
@@ -766,14 +766,14 @@ namespace System.Web.UI.WebControls
 	
 		protected internal override void CreateChildControls ()
 		{
-			object itemCount = ViewState ["_!ItemCount"];
+			var itemCount = ViewState ["_!ItemCount"];
 			if (itemCount != null) {
-				int c = (int)itemCount;
+				var c = (int)itemCount;
 				if (c >= 0) {
 					// Fake data - we only need to make sure
 					// OnTotalRowCountAvailable is called now - so that any
 					// pagers can create child controls.
-					object[] data = new object [c];
+					var data = new object [c];
 					usingFakeData = true;
 					try {
 						CreateChildControls (data, false);
@@ -787,7 +787,7 @@ namespace System.Web.UI.WebControls
 			base.CreateChildControls ();
 		}
 
-		protected virtual int CreateChildControls (IEnumerable dataSource, bool dataBinding)
+		protected virtual int CreateChildControls (IEnumerable? dataSource, bool dataBinding)
 		{
 			IList <ListViewDataItem> retList = null;
 			EnsureLayoutTemplate ();
@@ -796,15 +796,15 @@ namespace System.Web.UI.WebControls
 			// If any of the _maximumRows or _startRowIndex is different to their
 			// defaults, it means we are paging - i.e. SetPageProperties has been
 			// called.
-			bool haveDataToPage = _maximumRows > 0 || _startRowIndex > 0;
+			var haveDataToPage = _maximumRows > 0 || _startRowIndex > 0;
 			var pagedDataSource = new ListViewPagedDataSource ();
 			
 			if (dataBinding) {
-				DataSourceView view = GetData ();
+				var view = GetData ();
 				if (view == null)
 					throw new InvalidOperationException ("dataSource returned a null reference for DataSourceView.");
 
-				int totalRowCount = 0;
+				var totalRowCount = 0;
 				if (haveDataToPage && view.CanPage) {
 					pagedDataSource.AllowServerPaging = true;
 					if (view.CanRetrieveTotalRowCount)
@@ -831,7 +831,7 @@ namespace System.Web.UI.WebControls
 			pagedDataSource.MaximumRows = MaximumRows;
 			pagedDataSource.DataSource = dataSource;
 
-			bool emptySet = false;
+			var emptySet = false;
 			if (dataSource != null) {
 				if (GroupItemCount <= 1 && GroupTemplate == null)
 					retList = CreateItemsWithoutGroups (pagedDataSource, dataBinding, InsertItemPosition, DataKeyArray);
@@ -877,8 +877,8 @@ namespace System.Web.UI.WebControls
 	
 		protected override DataSourceSelectArguments CreateDataSourceSelectArguments ()
 		{
-			DataSourceSelectArguments arg = DataSourceSelectArguments.Empty;
-			DataSourceView view = GetData();
+			var arg = DataSourceSelectArguments.Empty;
+			var view = GetData();
 			
 			if (view.CanPage) {
 				arg.StartRowIndex = _startRowIndex;
@@ -902,7 +902,7 @@ namespace System.Web.UI.WebControls
 		protected virtual void CreateEmptyDataItem ()
 		{
 			if (_emptyDataTemplate != null) {
-				ListViewItem item = CreateItem (ListViewItemType.EmptyItem);
+				var item = CreateItem (ListViewItemType.EmptyItem);
 				InstantiateEmptyDataTemplate (item);
 				OnItemCreated (new ListViewItemEventArgs (item));
 				AddControlToContainer (item, this, 0);
@@ -912,7 +912,7 @@ namespace System.Web.UI.WebControls
 		protected virtual ListViewItem CreateEmptyItem ()
 		{
 			if (_emptyItemTemplate != null) {
-				ListViewItem item = CreateItem (ListViewItemType.EmptyItem);
+				var item = CreateItem (ListViewItemType.EmptyItem);
 				InstantiateEmptyItemTemplate (item);
 				OnItemCreated (new ListViewItemEventArgs (item));
 				return item;
@@ -928,7 +928,7 @@ namespace System.Web.UI.WebControls
 				// this one
 				throw new InvalidOperationException ("The ListView control '" + ID + "' does not have an InsertItemTemplate template specified.");
 			
-			ListViewItem ret = CreateItem (ListViewItemType.InsertItem);
+			var ret = CreateItem (ListViewItemType.InsertItem);
 			InstantiateInsertItemTemplate (ret);
 			OnItemCreated (new ListViewItemEventArgs (ret));
 			InsertItem = ret;
@@ -950,19 +950,19 @@ namespace System.Web.UI.WebControls
 
 		ListViewDataItem InsertDataItem (object dataItem, Control container, bool dataBinding, ArrayList keyArray, int startIndex, int position, ref int displayIndex)
 		{
-			ListViewDataItem lvdi = CreateDataItem (startIndex + displayIndex, displayIndex);
+			var lvdi = CreateDataItem (startIndex + displayIndex, displayIndex);
 			InstantiateItemTemplate (lvdi, displayIndex);
 
 			if (dataBinding) {
 				lvdi.DataItem = dataItem;
 
-				OrderedDictionary dict = new OrderedDictionary ();
-				string[] dataKeyNames = DataKeyNames;
+				var dict = new OrderedDictionary ();
+				var dataKeyNames = DataKeyNames;
 					
-				foreach (string s in dataKeyNames)
+				foreach (var s in dataKeyNames)
 					dict.Add (s, DataBinder.GetPropertyValue (dataItem, s));
 					
-				DataKey dk = new DataKey (dict, dataKeyNames);
+				var dk = new DataKey (dict, dataKeyNames);
 				if (keyArray.Count == displayIndex)
 					keyArray.Add (dk);
 				else
@@ -993,7 +993,7 @@ namespace System.Web.UI.WebControls
 			if (_groupedItemsContainer == null)
 				throw NoPlaceholder (true);
 
-			Control parent = _groupedItemsContainer.Parent;
+			var parent = _groupedItemsContainer.Parent;
 			int gpos;
 			if (_groupedItemsContainerPlaceholderIndex == -1) {
 				gpos = 0;
@@ -1010,17 +1010,17 @@ namespace System.Web.UI.WebControls
 				ResetChildNames (_firstIdAfterLayoutTemplate);
 			}
 
-			IList <ListViewDataItem> ret = Items;
+			var ret = Items;
 			ret.Clear ();
 
-			int firstItemIndexInGroup = -1;
-			Control currentGroup = StartNewGroup (false, ref gpos, ref firstItemIndexInGroup);
-			int groupItemCount = GroupItemCount;
-			int itemPosInGroup = firstItemIndexInGroup;
-			int groupItemCounter = groupItemCount;
+			var firstItemIndexInGroup = -1;
+			var currentGroup = StartNewGroup (false, ref gpos, ref firstItemIndexInGroup);
+			var groupItemCount = GroupItemCount;
+			var itemPosInGroup = firstItemIndexInGroup;
+			var groupItemCounter = groupItemCount;
 			ListViewItem lvi;
-			bool needSeparator = false;
-			bool haveSeparatorTemplate = _itemSeparatorTemplate != null;
+			var needSeparator = false;
+			var haveSeparatorTemplate = _itemSeparatorTemplate != null;
 			
 			if (insertPosition == InsertItemPosition.FirstItem) {
 				lvi = CreateInsertItem ();
@@ -1029,10 +1029,10 @@ namespace System.Web.UI.WebControls
 				needSeparator = true;
 			}
 
-			int displayIndex = 0;
-			int startIndex = dataSource.StartRowIndex;
-			int dataCount = dataSource.Count;
-			int numberOfGroups = (dataCount / groupItemCount) + (dataCount % groupItemCount) - 1;
+			var displayIndex = 0;
+			var startIndex = dataSource.StartRowIndex;
+			var dataCount = dataSource.Count;
+			var numberOfGroups = (dataCount / groupItemCount) + (dataCount % groupItemCount) - 1;
 			GroupStart groupStart = () => {
 				if (groupItemCounter <= 0) {
 					groupItemCounter = groupItemCount;
@@ -1044,7 +1044,7 @@ namespace System.Web.UI.WebControls
 				}
 			};
 			
-			foreach (object item in dataSource) {
+			foreach (var item in dataSource) {
 				groupStart ();
 				if (needSeparator && haveSeparatorTemplate)
 					InsertSeparatorItem (currentGroup, itemPosInGroup++);
@@ -1085,15 +1085,15 @@ namespace System.Web.UI.WebControls
 		{
 			Control control = new ListViewContainer ();
 			InstantiateGroupTemplate (control);
-			Control placeholder = FindPlaceholder (ItemPlaceholderID, control);
+			var placeholder = FindPlaceholder (ItemPlaceholderID, control);
 			if (placeholder == null)
 				throw NoPlaceholder (false);
 			
-			Control parent = placeholder.Parent;
+			var parent = placeholder.Parent;
 			
 			firstItemIndexInGroup = parent.Controls.IndexOf (placeholder);
 			if (needSeparator) {
-				Control separator = new Control ();
+				var separator = new Control ();
 				InstantiateGroupSeparatorTemplate (separator);
 				if (separator.Controls.Count > 0) {
 					AddControlToContainer (separator, _groupedItemsContainer, position++);
@@ -1118,7 +1118,7 @@ namespace System.Web.UI.WebControls
 			if (_nonGroupedItemsContainer == null)
 				throw NoPlaceholder (false);
 
-			Control parent = _nonGroupedItemsContainer.Parent;
+			var parent = _nonGroupedItemsContainer.Parent;
 			
 			int ipos;
 			if (_nonGroupedItemsContainerFirstItemIndex == -1) {
@@ -1136,12 +1136,12 @@ namespace System.Web.UI.WebControls
 				ResetChildNames (_firstIdAfterLayoutTemplate);
 			}
 			
-			IList <ListViewDataItem> ret = Items;
+			var ret = Items;
 			ret.Clear ();
 			
 			ListViewItem lvi;
 			ListViewItem container;
-			bool needSeparator = false;
+			var needSeparator = false;
 
 			if (insertPosition == InsertItemPosition.FirstItem) {
 				lvi = CreateInsertItem ();
@@ -1150,11 +1150,11 @@ namespace System.Web.UI.WebControls
 				needSeparator = true;
 			}
 
-			bool haveSeparatorTemplate = _itemSeparatorTemplate != null;
-			int displayIndex = 0;
-			int startIndex = dataSource.StartRowIndex;
+			var haveSeparatorTemplate = _itemSeparatorTemplate != null;
+			var displayIndex = 0;
+			var startIndex = dataSource.StartRowIndex;
 
-			foreach (object item in dataSource) {
+			foreach (var item in dataSource) {
 				if (needSeparator && haveSeparatorTemplate) {
 					InsertSeparatorItem (_nonGroupedItemsContainer, ipos++);
 					_nonGroupedItemsContainerItemCount++;
@@ -1199,7 +1199,7 @@ namespace System.Web.UI.WebControls
 			if (itemIndex < 0)
 				throw new InvalidOperationException ("itemIndex is less than 0.");
 
-			IList <ListViewDataItem> items = Items;
+			var items = Items;
 			if (itemIndex < items.Count)
 				DoDelete (items [itemIndex], itemIndex);
 		}
@@ -1224,7 +1224,7 @@ namespace System.Web.UI.WebControls
 				if (dataItem == null)
 					throw new InvalidOperationException ("item is not a ListViewDataItem object.");
 
-				int displayIndex = dataItem.DisplayIndex;
+				var displayIndex = dataItem.DisplayIndex;
 				if (_editItemTemplate != null && displayIndex == EditIndex)
 					bt = (IBindableTemplate) _editItemTemplate;
 				else if (_selectedItemTemplate != null && (displayIndex == SelectedIndex))
@@ -1239,15 +1239,15 @@ namespace System.Web.UI.WebControls
 			if (bt == null)
 				return;
 
-			IOrderedDictionary values = bt.ExtractValues (item);
+			var values = bt.ExtractValues (item);
 			if (values == null || values.Count == 0)
 				return;
 
 			string[] keyNames = includePrimaryKey ? null : DataKeyNames;
-			bool haveKeyNames = keyNames != null && keyNames.Length > 0;
+			var haveKeyNames = keyNames != null && keyNames.Length > 0;
 			object key, value;
 			string s;
-			bool convertEmptyStringToNull = ConvertEmptyStringToNull;
+			var convertEmptyStringToNull = ConvertEmptyStringToNull;
 			
 			foreach (DictionaryEntry de in values) {
 				key = de.Key;
@@ -1273,7 +1273,7 @@ namespace System.Web.UI.WebControls
 			if (container.ID == containerID)
 				return container;
 			
-			Control ret = container.FindControl (containerID);
+			var ret = container.FindControl (containerID);
 			if (ret != null)
 				return ret;
 
@@ -1288,13 +1288,13 @@ namespace System.Web.UI.WebControls
 	
 		public virtual void InsertNewItem (bool causesValidation)
 		{
-			ListViewItem insertItem = InsertItem;
+			var insertItem = InsertItem;
 
 			if (insertItem == null)
 				throw new InvalidOperationException ("The ListView control does not have an insert item.");
 
 			if (causesValidation) {
-				Page page = Page;
+				var page = Page;
 				if (page != null)
 					page.Validate ();
 			}
@@ -1307,12 +1307,12 @@ namespace System.Web.UI.WebControls
 			if (itemIndex < 0)
 				throw new InvalidOperationException ("itemIndex is less than 0.");
 
-			IList <ListViewDataItem> items = Items;
+			var items = Items;
 			if (itemIndex > items.Count)
 				return;
 
 			if (causesValidation) {
-				Page page = Page;
+				var page = Page;
 				if (page != null)
 					page.Validate ();
 			}
@@ -1361,7 +1361,7 @@ namespace System.Web.UI.WebControls
 			if (_itemTemplate == null)
 				throw new InvalidOperationException ("ItemTemplate is missing");
 
-			ITemplate template = _itemTemplate;
+			var template = _itemTemplate;
 
 			if (_alternatingItemTemplate != null && (displayIndex % 2 != 0))
 				template = _alternatingItemTemplate;
@@ -1378,16 +1378,16 @@ namespace System.Web.UI.WebControls
 		void LoadDataKeysState (object savedState)
 		{
 			object[] state = savedState as object[];
-			int len = state != null ? state.Length : 0;
+			var len = state != null ? state.Length : 0;
 
 			if (len == 0)
 				return;
 
-			ArrayList dataKeyArray = DataKeyArray;
+			var dataKeyArray = DataKeyArray;
 			DataKey dk;
-			string[] keyNames = DataKeyNames;
+			var keyNames = DataKeyNames;
 			
-			for (int i = 0; i < len; i++) {
+			for (var i = 0; i < len; i++) {
 				dk = new DataKey (new OrderedDictionary (), keyNames);
 				((IStateManager)dk).LoadViewState (state [i]);
 				dataKeyArray.Add (dk);
@@ -1427,7 +1427,7 @@ namespace System.Web.UI.WebControls
 		protected override void LoadViewState (object savedState)
 		{
 			object[] state = savedState as object[];
-			int len = state != null ? state.Length : 0;
+			var len = state != null ? state.Length : 0;
 
 			if (len == 0)
 				return;
@@ -1438,9 +1438,9 @@ namespace System.Web.UI.WebControls
 				return;
 
 			Pair pair;
-			IOrderedDictionary currentEditOldValues = CurrentEditOldValues;
+			var currentEditOldValues = CurrentEditOldValues;
 			currentEditOldValues.Clear ();
-			foreach (object value in values) {
+			foreach (var value in values) {
 				pair = value as Pair;
 				if (pair == null)
 					continue;
@@ -1455,7 +1455,7 @@ namespace System.Web.UI.WebControls
 				args = new ListViewCommandEventArgs (CreateItem (ListViewItemType.EmptyItem), source, e as CommandEventArgs);
 			
 			if (args != null) {
-				bool causesValidation = false;
+				var causesValidation = false;
 				IButtonControl button = args.CommandSource as IButtonControl;
 				if (button != null && button.CausesValidation) {
 					Page.Validate (button.ValidationGroup);
@@ -1473,7 +1473,7 @@ namespace System.Web.UI.WebControls
 		{
 			OnItemCommand (args);
 
-			string commandName = args.CommandName;
+			var commandName = args.CommandName;
 			string commandArgument = args.CommandArgument as string;
 
 			if (String.Compare (commandName, DataControlCommands.SortCommandName, StringComparison.OrdinalIgnoreCase) == 0)
@@ -1490,7 +1490,7 @@ namespace System.Web.UI.WebControls
 				DoSelect (args);
 			else if (String.Compare (commandName, DataControlCommands.UpdateCommandName, StringComparison.OrdinalIgnoreCase) == 0) {
 				if (causesValidation) {
-					Page page = Page;
+					var page = Page;
 					if (page != null && !page.IsValid)
 						return;
 				}
@@ -1498,12 +1498,12 @@ namespace System.Web.UI.WebControls
 			}
 		}
 
-		int GetItemIndex (ListViewDataItem item)
+		int GetItemIndex (ListViewDataItem? item)
 		{
 			if (item == null)
 				return -1;
 
-			int index = item.DisplayIndex;
+			var index = item.DisplayIndex;
 			if (index < 0)
 				return -1;
 
@@ -1513,7 +1513,7 @@ namespace System.Web.UI.WebControls
 		void DoSelect (ListViewCommandEventArgs args)
 		{
 			ListViewDataItem item = args.Item as ListViewDataItem;
-			int index = GetItemIndex (item);
+			var index = GetItemIndex (item);
 			if (index < 0)
 				return;
 
@@ -1528,7 +1528,7 @@ namespace System.Web.UI.WebControls
 		
 		void DoInsert (ListViewCommandEventArgs args, bool causesValidation)
 		{
-			ListViewItem item = args.Item as ListViewItem;
+			var item = args.Item as ListViewItem;
 			if (item == null)
 				return;
 
@@ -1538,14 +1538,14 @@ namespace System.Web.UI.WebControls
 		void DoInsert (ListViewItem item, bool causesValidation)
 		{
 			if (causesValidation) {
-				Page page = Page;
+				var page = Page;
 				if (page != null && !page.IsValid)
 					return;
 			}
 
 			DataSourceView view;
 			ListViewInsertEventArgs insertingArgs;
-			bool usingDataSourceID = IsBoundUsingDataSourceID;
+			var usingDataSourceID = IsBoundUsingDataSourceID;
 			
 			if (usingDataSourceID) {
 				view = GetData ();
@@ -1598,7 +1598,7 @@ namespace System.Web.UI.WebControls
 		void DoDelete (ListViewCommandEventArgs args)
 		{
 			ListViewDataItem item = args.Item as ListViewDataItem;
-			int index = GetItemIndex (item);
+			var index = GetItemIndex (item);
 			if (index < 0)
 				return;
 
@@ -1607,11 +1607,11 @@ namespace System.Web.UI.WebControls
 		
 		void DoDelete (ListViewDataItem item, int index)
 		{
-			bool usingDataSourceID = IsBoundUsingDataSourceID;
+			var usingDataSourceID = IsBoundUsingDataSourceID;
 			var deletingArgs = new ListViewDeleteEventArgs (index);
 
 			if (usingDataSourceID) {
-				DataKeyArray dka = DataKeys;
+				var dka = DataKeys;
 				if (index < dka.Count)
 					dka [index].Values.CopyTo (deletingArgs.Keys);
 				
@@ -1621,7 +1621,7 @@ namespace System.Web.UI.WebControls
 			if (!usingDataSourceID || deletingArgs.Cancel)
 				return;
 
-			DataSourceView view = GetData ();
+			var view = GetData ();
 			if (view == null)
 				throw NoDataSourceView ();
 			_currentDeletingItemKeys = deletingArgs.Keys;
@@ -1644,7 +1644,7 @@ namespace System.Web.UI.WebControls
 		void DoUpdate (ListViewCommandEventArgs args, bool causesValidation)
 		{
 			ListViewDataItem item = args.Item as ListViewDataItem;
-			int index = GetItemIndex (item);
+			var index = GetItemIndex (item);
 			if (index < 0)
 				return;
 
@@ -1654,15 +1654,15 @@ namespace System.Web.UI.WebControls
 		void DoUpdate (ListViewDataItem item, int index, bool causesValidation)
 		{
 			if (causesValidation) {
-				Page page = Page;
+				var page = Page;
 				if (page != null && !page.IsValid)
 					return;
 			}
 			
-			bool usingDataSourceID = IsBoundUsingDataSourceID;
+			var usingDataSourceID = IsBoundUsingDataSourceID;
 			var updatingArgs = new ListViewUpdateEventArgs (index);
 			if (usingDataSourceID) {
-				DataKeyArray dka = DataKeys;
+				var dka = DataKeys;
 				if (index < dka.Count)
 					dka [index].Values.CopyTo (updatingArgs.Keys);
 
@@ -1674,7 +1674,7 @@ namespace System.Web.UI.WebControls
 			if (!usingDataSourceID || updatingArgs.Cancel)
 				return;
 
-			DataSourceView view = GetData ();
+			var view = GetData ();
 			if (view == null)
 				throw NoDataSourceView ();
 
@@ -1701,7 +1701,7 @@ namespace System.Web.UI.WebControls
 		void DoCancel (ListViewCommandEventArgs args)
 		{
 			ListViewDataItem item = args.Item as ListViewDataItem;
-			int index = GetItemIndex (item);
+			var index = GetItemIndex (item);
 			if (index < 0)
 				return;
 
@@ -1726,7 +1726,7 @@ namespace System.Web.UI.WebControls
 		
 		void DoEdit (ListViewCommandEventArgs args)
 		{
-			int index = GetItemIndex (args.Item as ListViewDataItem);
+			var index = GetItemIndex (args.Item as ListViewDataItem);
 			if (index < 0)
 				return;
 
@@ -1764,7 +1764,7 @@ namespace System.Web.UI.WebControls
 
 		void InvokeEvent <T> (object key, T args) where T : EventArgs
 		{
-			EventHandlerList events = Events;
+			var events = Events;
 
 			if (events != null) {
 				EventHandler <T> eh = events [key] as EventHandler <T>;
@@ -1775,7 +1775,7 @@ namespace System.Web.UI.WebControls
 
 		void InvokeEvent (object key, EventArgs args)
 		{
-			EventHandlerList events = Events;
+			var events = Events;
 
 			if (events != null) {
 				EventHandler eh = events [key] as EventHandler;
@@ -1885,8 +1885,8 @@ namespace System.Web.UI.WebControls
 			TrackViewState ();
 			
 			if (IsBoundUsingDataSourceID) {
-				int editIndex = EditIndex;
-				IList <ListViewDataItem> items = Items;
+				var editIndex = EditIndex;
+				var items = Items;
 				
 				if (editIndex > 0 && editIndex < items.Count) {
 					CurrentEditOldValues.Clear ();
@@ -1894,7 +1894,7 @@ namespace System.Web.UI.WebControls
 				}
 			}
 					
-			int childCount = CreateChildControls (data, true);
+			var childCount = CreateChildControls (data, true);
 			ChildControlsCreated = true;
 			ViewState ["_!ItemCount"] = childCount;
 		}
@@ -1915,7 +1915,7 @@ namespace System.Web.UI.WebControls
 
 		void RemoveItems (Control container, int start, int count)
 		{
-			int i = count;
+			var i = count;
 			while (i-- > 0)
 				container.Controls.RemoveAt (start);
 		}
@@ -1928,15 +1928,15 @@ namespace System.Web.UI.WebControls
 
 		object SaveDataKeysState ()
 		{
-			DataKeyArray dka = DataKeys;
+			var dka = DataKeys;
 
-			int len = dka != null ? dka.Count : 0;
+			var len = dka != null ? dka.Count : 0;
 			if (len == 0)
 				return null;
 
-			object[] state = new object [len];
+			var state = new object [len];
 			DataKey dk;
-			for (int i = 0; i < len; i++) {
+			for (var i = 0; i < len; i++) {
 				dk = dka [i];
 				if (dk == null) {
 					state [i] = null;
@@ -1951,9 +1951,9 @@ namespace System.Web.UI.WebControls
 		
 		protected internal override object SaveControlState ()
 		{
-			object[] ret = new object [CSTATE_COUNT];
-			string[] dataKeyNames = DataKeyNames;
-			object dataKeysState = SaveDataKeysState ();
+			var ret = new object [CSTATE_COUNT];
+			var dataKeyNames = DataKeyNames;
+			var dataKeysState = SaveDataKeysState ();
 			
 			ret [CSTATE_BASE_STATE] = base.SaveControlState ();
 			ret [CSTATE_DATAKEYNAMES] = dataKeyNames.Length > 0 ? dataKeyNames : null;
@@ -1970,15 +1970,15 @@ namespace System.Web.UI.WebControls
 
 		object SaveCurrentEditOldValues ()
 		{
-			IOrderedDictionary values = CurrentEditOldValues;
-			int count = values.Count;
+			var values = CurrentEditOldValues;
+			var count = values.Count;
 			if (count == 0)
 				return null;
 
-			object[] ret = new object [count];
+			var ret = new object [count];
 			DictionaryEntry entry;
-			int i = -1;
-			foreach (object o in values) {
+			var i = -1;
+			foreach (var o in values) {
 				i++;
 				entry = (DictionaryEntry)o;
 				ret [i] = new Pair (entry.Key, entry.Value);
@@ -1989,7 +1989,7 @@ namespace System.Web.UI.WebControls
 		
 		protected override object SaveViewState ()
 		{
-			object[] states = new object [2];
+			var states = new object [2];
 
 			states [0] = base.SaveViewState ();
 			states [1] = SaveCurrentEditOldValues ();
@@ -2026,14 +2026,14 @@ namespace System.Web.UI.WebControls
 	
 		public virtual void Sort (string sortExpression, SortDirection sortDirection)
 		{
-			ListViewSortEventArgs args = new ListViewSortEventArgs (sortExpression, sortDirection);
+			var args = new ListViewSortEventArgs (sortExpression, sortDirection);
 			OnSorting (args);
 
 			if (args.Cancel)
 				return;
 			
 			if (IsBoundUsingDataSourceID) {
-				DataSourceView dsv = GetData ();
+				var dsv = GetData ();
 				if (dsv == null)
 					throw new InvalidOperationException ("Missing data.");
 				

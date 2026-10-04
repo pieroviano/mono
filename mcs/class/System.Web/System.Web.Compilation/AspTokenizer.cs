@@ -118,7 +118,7 @@ namespace System.Web.Compilation
 			if (putBackBuffer == null)
 				putBackBuffer = new Stack ();
 
-			string val = Value;
+			var val = Value;
 			putBackBuffer.Push (new PutBackItem (val, position, current_token, inTag));
 			position -= val.Length;
 		}
@@ -129,7 +129,7 @@ namespace System.Web.Compilation
 				PutBackItem pbi;
 				if (verbatim) {
 					pbi = putBackBuffer.Pop () as PutBackItem;
-					string value = pbi.Value;
+					var value = pbi.Value;
 					switch (value.Length) {
 						case 0:
 							// do nothing, CurrentToken will be used
@@ -186,7 +186,7 @@ namespace System.Web.Compilation
 
 		void TransformNextBlock (int count, bool final)
 		{
-			byte[] input = Encoding.UTF8.GetBytes (checksum_buf, 0, count);
+			var input = Encoding.UTF8.GetBytes (checksum_buf, 0, count);
 
 			if (checksum == null)
 				checksum = MD5.Create ();
@@ -202,7 +202,7 @@ namespace System.Web.Compilation
 		
 		void UpdateChecksum (int c)
 		{
-			bool final = c == -1;
+			var final = c == -1;
 
 			if (!final) {
 				if (checksum_buf_pos + 1 >= CHECKSUM_BUF_SIZE)
@@ -244,8 +244,8 @@ namespace System.Web.Compilation
 
 		int ReadAttValue (int start)
 		{
-			int quoteChar = 0;
-			bool quoted = false;
+			var quoteChar = 0;
+			var quoted = false;
 
 			if (start == '"' || start == '\'') {
 				quoteChar = start;
@@ -255,8 +255,8 @@ namespace System.Web.Compilation
 			}
 
 			int c;
-			int last = 0;
-			bool inServerTag = false;
+			var last = 0;
+			var inServerTag = false;
 			alternatingQuotes = true;
 			
 			while ((c = sr.Peek ()) != -1) {

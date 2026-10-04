@@ -54,12 +54,12 @@ namespace System.Web {
 			}
 		}
 		
-		public static string AppendTrailingSlash (string virtualPath)
+		public static string AppendTrailingSlash (string? virtualPath)
 		{
 			if (virtualPath == null)
 				return virtualPath;
 
-			int length = virtualPath.Length;
+			var length = virtualPath.Length;
 			if (length == 0 || virtualPath [length - 1] == '/')
 				return virtualPath;
 
@@ -73,10 +73,10 @@ namespace System.Web {
 			if (IsRooted (relativePath))
 				return Normalize (relativePath);
 
-			int basePathLen = basePath.Length;
+			var basePathLen = basePath.Length;
 			if (basePath [basePathLen - 1] != '/') {
 				if (basePathLen > 1) {
-					int lastSlash = basePath.LastIndexOf ('/');
+					var lastSlash = basePath.LastIndexOf ('/');
 					if (lastSlash >= 0)
 						basePath = basePath.Substring (0, lastSlash + 1);
 				} else { // "~" only
@@ -97,7 +97,7 @@ namespace System.Web {
 			if (normalize)
 				virtualPath = Normalize (virtualPath);
 
-			int vpLen = virtualPath.Length;
+			var vpLen = virtualPath.Length;
 			if (IsAppRelative (virtualPath) && vpLen < 3) { // "~" or "~/"
 				virtualPath = ToAbsolute (virtualPath);
 				vpLen = virtualPath.Length;
@@ -106,7 +106,7 @@ namespace System.Web {
 			if (vpLen == 1 && virtualPath [0] == '/') // "/"
 				return null;
 
-			int last = virtualPath.LastIndexOf ('/', vpLen - 2, vpLen - 2);
+			var last = virtualPath.LastIndexOf ('/', vpLen - 2, vpLen - 2);
 			if (last > 0)
 				return virtualPath.Substring (0, last + 1);
 			else
@@ -120,7 +120,7 @@ namespace System.Web {
 
 			virtualPath = Canonize (virtualPath);
 
-			int dot = virtualPath.LastIndexOf ('.');
+			var dot = virtualPath.LastIndexOf ('.');
 			if (dot == -1 || dot == virtualPath.Length - 1 || dot < virtualPath.LastIndexOf ('/'))
 				return String.Empty;
 
@@ -140,7 +140,7 @@ namespace System.Web {
 			}
 
 			virtualPath = RemoveTrailingSlash (virtualPath);
-			int last = virtualPath.LastIndexOf ('/');
+			var last = virtualPath.LastIndexOf ('/');
 			return virtualPath.Substring (last + 1);
 		}
 
@@ -175,7 +175,7 @@ namespace System.Web {
 		// they do not equal the root operator (the tilde [~]), do not start with a tilde (~), 
 		// such as a tilde and a slash mark (~/) or a tilde and a double backslash (~//), 
 		// or do not start with a slash mark (/), an ArgumentException exception is thrown.
-		public static string MakeRelative (string fromPath, string toPath)
+		public static string MakeRelative (string? fromPath, string? toPath)
 		{
 			if (fromPath == null || toPath == null)
 				throw new NullReferenceException (); // yeah!
@@ -189,20 +189,20 @@ namespace System.Web {
 			if (String.CompareOrdinal (fromPath, toPath) == 0 && fromPath [fromPath.Length - 1] == '/')
 				return "./";
 
-			string [] toPath_parts = toPath.Split ('/');
-			string [] fromPath_parts = fromPath.Split ('/');
-			int dest = 1;
+			var toPath_parts = toPath.Split ('/');
+			var fromPath_parts = fromPath.Split ('/');
+			var dest = 1;
 			while (toPath_parts [dest] == fromPath_parts [dest]) {
 				if (toPath_parts.Length == (dest + 1) || fromPath_parts.Length == (dest + 1)) {
 					break;
 				}
 				dest++;
 			}
-			StringBuilder res = new StringBuilder();
-			for (int i = 1; i < fromPath_parts.Length - dest; i++) {
+			var res = new StringBuilder();
+			for (var i = 1; i < fromPath_parts.Length - dest; i++) {
 				res.Append ("../");
 			}
-			for (int i = dest; i < toPath_parts.Length; i++) {
+			for (var i = dest; i < toPath_parts.Length; i++) {
 				res.Append (toPath_parts [i]);
 				if (i < toPath_parts.Length - 1)
 					res.Append ('/');
@@ -220,12 +220,12 @@ namespace System.Web {
 			throw new ArgumentOutOfRangeException ("Specified argument was out of the range of valid values.");
 		}
 
-		public static string RemoveTrailingSlash (string virtualPath)
+		public static string RemoveTrailingSlash (string? virtualPath)
 		{
 			if (virtualPath == null || virtualPath == "")
 				return null;
 
-			int last = virtualPath.Length - 1;
+			var last = virtualPath.Length - 1;
 			if (last == 0 || virtualPath [last] != '/')
 				return virtualPath;
 
@@ -246,7 +246,7 @@ namespace System.Web {
 					return virtualPath;
 			}
 
-			string apppath = HttpRuntime.AppDomainAppVirtualPath;
+			var apppath = HttpRuntime.AppDomainAppVirtualPath;
 			if (apppath == null)
 				throw new HttpException ("The path to the application is not known");
 
@@ -277,7 +277,7 @@ namespace System.Web {
 				if (applicationPath [0] != '/')
 					throw new ArgumentException ("appPath is not rooted", "applicationPath");
 					
-				string path = applicationPath + (virtualPath.Length == 1 ? "/" : virtualPath.Substring (1));
+				var path = applicationPath + (virtualPath.Length == 1 ? "/" : virtualPath.Substring (1));
 				if (normalize)
 					return Normalize (path);
 				else
@@ -296,7 +296,7 @@ namespace System.Web {
 
 		public static string ToAppRelative (string virtualPath)
 		{
-			string apppath = HttpRuntime.AppDomainAppVirtualPath;
+			var apppath = HttpRuntime.AppDomainAppVirtualPath;
 			if (apppath == null)
 				throw new HttpException ("The path to the application is not known");
 
@@ -317,7 +317,7 @@ namespace System.Web {
 			if (applicationPath.Length == 1)
 				return "~" + virtualPath;
 
-			int appPath_lenght = applicationPath.Length;
+			var appPath_lenght = applicationPath.Length;
 			if (String.CompareOrdinal (virtualPath, applicationPath) == 0)
 				return "~/";
 			if (String.CompareOrdinal (virtualPath, 0, applicationPath, 0, appPath_lenght) == 0)
@@ -338,12 +338,12 @@ namespace System.Web {
 
 			path = Canonize (path);
 
-			int dotPos = path.IndexOf ('.');
+			var dotPos = path.IndexOf ('.');
 			while (dotPos >= 0) {
 				if (++dotPos == path.Length)
 					break;
 
-				char nextChar = path [dotPos];
+				var nextChar = path [dotPos];
 
 				if ((nextChar == '/') || (nextChar == '.'))
 					break;
@@ -354,8 +354,8 @@ namespace System.Web {
 			if (dotPos < 0)
 				return path;
 
-			bool starts_with_tilda = false;
-			bool ends_with_slash = false;
+			var starts_with_tilda = false;
+			var ends_with_slash = false;
 			string [] apppath_parts= null;
 
 			if (path [0] == '~') {
@@ -371,13 +371,13 @@ namespace System.Web {
 			if (path [path.Length - 1] == '/')
 				ends_with_slash = true;
 
-			string [] parts = StrUtils.SplitRemoveEmptyEntries (path, path_sep);
-			int end = parts.Length;
+			var parts = StrUtils.SplitRemoveEmptyEntries (path, path_sep);
+			var end = parts.Length;
 
-			int dest = 0;
+			var dest = 0;
 
-			for (int i = 0; i < end; i++) {
-				string current = parts [i];
+			for (var i = 0; i < end; i++) {
+				var current = parts [i];
 				if (current == ".")
 					continue;
 
@@ -389,7 +389,7 @@ namespace System.Web {
 
 					if (starts_with_tilda) {
 						if (apppath_parts == null) {
-							string apppath = HttpRuntime.AppDomainAppVirtualPath;
+							var apppath = HttpRuntime.AppDomainAppVirtualPath;
 							apppath_parts = StrUtils.SplitRemoveEmptyEntries (apppath, path_sep);
 						}
 
@@ -408,13 +408,13 @@ namespace System.Web {
 				dest++;
 			}
 
-			StringBuilder str = new StringBuilder();
+			var str = new StringBuilder();
 			if (apppath_parts != null) {
 				starts_with_tilda = false;
-				int count = apppath_parts.Length;
+				var count = apppath_parts.Length;
 				if (dest < 0)
 					count += dest;
-				for (int i = 0; i < count; i++) {
+				for (var i = 0; i < count; i++) {
 					str.Append ('/');
 					str.Append (apppath_parts [i]);
 				}
@@ -423,7 +423,7 @@ namespace System.Web {
 				str.Append ('~');
 			}
 
-			for (int i = 0; i < dest; i++) {
+			for (var i = 0; i < dest; i++) {
 				str.Append ('/');
 				str.Append (parts [i]);
 			}
@@ -441,8 +441,8 @@ namespace System.Web {
 
 		internal static string Canonize (string path)
 		{
-			int index = -1;
-			for (int i=0; i < path.Length; i++) {
+			var index = -1;
+			for (var i=0; i < path.Length; i++) {
 				if ((path [i] == '\\') || (path [i] == '/' && (i + 1) < path.Length && (path [i + 1] == '/' || path [i + 1] == '\\'))) {
 					index = i;
 					break;
@@ -451,12 +451,12 @@ namespace System.Web {
 			if (index < 0)
 				return path;
 
-			StringBuilder sb = new StringBuilder (path.Length);
+			var sb = new StringBuilder (path.Length);
 			sb.Append (path, 0, index);
 
-			for (int i = index; i < path.Length; i++) {
+			for (var i = index; i < path.Length; i++) {
 				if (path [i] == '\\' || path [i] == '/') {
-					int next = i + 1;
+					var next = i + 1;
 					if (next < path.Length && (path [next] == '\\' || path [next] == '/'))
 						continue;
 					sb.Append ('/');
@@ -473,12 +473,12 @@ namespace System.Web {
 		// See: https://bugzilla.novell.com/show_bug.cgi?id=509163
 		static readonly char[] invalidVirtualPathChars = {':', '*'};
 		static readonly string aspNetVerificationKey = "HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\ASP.NET";
-		internal static bool IsValidVirtualPath (string path)
+		internal static bool IsValidVirtualPath (string? path)
 		{
 			if (path == null)
 				return false;
 
-			bool doValidate = true;
+			var doValidate = true;
 			if (runningOnWindows) {
 				try {
 					object v = Registry.GetValue (aspNetVerificationKey, "VerificationCompatibility", null);

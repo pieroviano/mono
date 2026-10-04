@@ -92,20 +92,20 @@ namespace System.Web.UI.WebControls
 				if (HeaderText.Length > 0 && sortingEnabled && SortExpression.Length > 0)
 					cell.Controls.Add ((Control) DataControlButton.CreateButton (String.IsNullOrEmpty (HeaderImageUrl) ? ButtonType.Link : ButtonType.Image, control, HeaderText, HeaderImageUrl, DataControlCommands.SortCommandName, SortExpression, true));
 				else if (HeaderImageUrl.Length > 0) {
-					Image image = new Image ();
+					var image = new Image ();
 					image.ImageUrl = HeaderImageUrl;
 					cell.Controls.Add (image);
 				} else
 					cell.Text = HeaderText.Length > 0 ? HeaderText : "&nbsp;";
 			} else if (cellType == DataControlCellType.Footer) {
-				string footerText = FooterText;
+				var footerText = FooterText;
 				cell.Text = (footerText.Length > 0) ? footerText : "&nbsp;";
 			}
 		}
 		
 		protected internal DataControlField CloneField ()
 		{
-			DataControlField field = CreateField ();
+			var field = CreateField ();
 			CopyProperties (field);
 			return field;
 		}
@@ -136,12 +136,12 @@ namespace System.Web.UI.WebControls
 				eh (this, EventArgs.Empty);
 		}	
 	
-		protected virtual void LoadViewState (object savedState)
+		protected virtual void LoadViewState (object? savedState)
 		{
 			if (savedState == null)
 				return;
 				
-			object [] states = (object []) savedState;
+			var states = (object []) savedState;
 			viewState.LoadViewState (states[0]);
 			
 			if (states[1] != null)
@@ -156,7 +156,7 @@ namespace System.Web.UI.WebControls
 
 		protected virtual object SaveViewState ()
 		{
-			object[] state = new object [5];
+			var state = new object [5];
 			state [0] = viewState.SaveViewState ();
 			if (controlStyle != null)
 				state [1] = ((IStateManager) controlStyle).SaveViewState ();
@@ -189,7 +189,7 @@ namespace System.Web.UI.WebControls
 			throw new NotSupportedException ("Callback not supported");
 		}
 
-		void IStateManager.LoadViewState (object savedState)
+		void IStateManager.LoadViewState (object? savedState)
 		{
 			LoadViewState (savedState);
 		}
@@ -223,7 +223,7 @@ namespace System.Web.UI.WebControls
 		[WebCategoryAttribute ("Accessibility")]
 		public virtual string AccessibleHeaderText {
 			get {
-				object val = viewState ["accessibleHeaderText"];
+				var val = viewState ["accessibleHeaderText"];
 				return val != null ? (string) val : String.Empty;
 			}
 			set { 
@@ -275,7 +275,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValue ("")]
 		public virtual string FooterText {
 			get {
-				object val = viewState ["footerText"];
+				var val = viewState ["footerText"];
 				return val != null ? (string) val : String.Empty;
 			}
 			set { 
@@ -290,7 +290,7 @@ namespace System.Web.UI.WebControls
 		[WebCategoryAttribute ("Appearance")]
 		public virtual string HeaderImageUrl {
 			get {
-				object val = viewState ["headerImageUrl"];
+				var val = viewState ["headerImageUrl"];
 				return val != null ? (string) val : String.Empty;
 			}
 			set { 
@@ -319,7 +319,7 @@ namespace System.Web.UI.WebControls
 		[WebCategoryAttribute ("Appearance")]
 		public virtual string HeaderText {
 			get {
-				object val = viewState ["headerText"];
+				var val = viewState ["headerText"];
 				return val != null ? (string) val : String.Empty;
 			}
 			set { 
@@ -332,7 +332,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValueAttribute (true)]
 		public virtual bool InsertVisible {
 			get {
-				object val = viewState ["InsertVisible"];
+				var val = viewState ["InsertVisible"];
 				return val != null ? (bool) val : true;
 			}
 			set { 
@@ -360,7 +360,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValueAttribute (true)]
 		public virtual bool ShowHeader {
 			get {
-				object val = viewState ["showHeader"];
+				var val = viewState ["showHeader"];
 				return val != null ? (bool) val : true;
 			}
 			set { 
@@ -374,7 +374,7 @@ namespace System.Web.UI.WebControls
 		[WebCategoryAttribute ("Behavior")]
 		public virtual string SortExpression {
 			get {
-				object val = viewState ["sortExpression"];
+				var val = viewState ["sortExpression"];
 				return val != null ? (string) val : String.Empty;
 			}
 			set { 
@@ -387,7 +387,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValueAttribute (true)]
 		public bool Visible {
 			get {
-				object val = viewState ["visible"];
+				var val = viewState ["visible"];
 				return val != null ? (bool) val : true;
 			}
 			set { 

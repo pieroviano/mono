@@ -89,7 +89,7 @@ namespace System.Web.UI
 
 			if (String.IsNullOrEmpty (TargetControlID))
 				throw new InvalidOperationException (String.Format ("The TargetControlID of '{0}' is not valid. The value cannot be null or empty.", ID));
-			Control c = FindControl (TargetControlID);
+			var c = FindControl (TargetControlID);
 			if (c == null)
 				throw new InvalidOperationException (String.Format ("The TargetControlID of '{0}' is not valid. A control with ID '{1}' could not be found.", ID, TargetControlID));
 

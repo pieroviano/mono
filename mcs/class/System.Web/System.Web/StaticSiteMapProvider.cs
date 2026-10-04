@@ -50,20 +50,20 @@ namespace System.Web
 			urlToNode = new Dictionary<string, SiteMapNode> (StringComparer.InvariantCultureIgnoreCase);
 		}
 
-		internal protected override void AddNode (SiteMapNode node, SiteMapNode parentNode)
+		internal protected override void AddNode (SiteMapNode node, SiteMapNode? parentNode)
 		{
 			if (node == null)
 				throw new ArgumentNullException ("node");
 
 			lock (this_lock) {
-				string nodeKey = node.Key;
+				var nodeKey = node.Key;
 				if (FindSiteMapNodeFromKey (nodeKey) != null && node.Provider == this)
 					throw new InvalidOperationException (string.Format ("A node with key '{0}' already exists.",nodeKey));
 
-				string nodeUrl = node.Url;
+				var nodeUrl = node.Url;
 				if (!String.IsNullOrEmpty (nodeUrl)) {
-					string url = MapUrl (nodeUrl);
-					SiteMapNode foundNode = FindSiteMapNode (url);
+					var url = MapUrl (nodeUrl);
+					var foundNode = FindSiteMapNode (url);
 					if (foundNode != null && String.Compare (foundNode.Url, url, RuntimeHelpers.StringComparison) == 0)
 						throw new InvalidOperationException (String.Format (
 							"Multiple nodes with the same URL '{0}' were found. " + 
@@ -131,11 +131,11 @@ namespace System.Web
 				return SiteMapNodeCollection.EmptyCollection;
 			
 			SiteMapNodeCollection ret = null;
-			for (int n=0; n<col.Count; n++) {
+			for (var n=0; n<col.Count; n++) {
 				if (!IsAccessibleToUser (HttpContext.Current, col[n])) {
 					if (ret == null) {
 						ret = new SiteMapNodeCollection ();
-						for (int m=0; m<n; m++)
+						for (var m=0; m<n; m++)
 							ret.Add (col[m]);
 					}
 				} else if (ret != null)
@@ -166,7 +166,7 @@ namespace System.Web
 			if (node == null)
 				throw new ArgumentNullException("node");
 
-			string key = node.Key;
+			var key = node.Key;
 			string url;
 			
 			lock (this_lock) {
@@ -204,7 +204,7 @@ namespace System.Web
 
 		public abstract SiteMapNode BuildSiteMap ();
 		
-		SiteMapNode CheckAccessibility (SiteMapNode node) {
+		SiteMapNode CheckAccessibility (SiteMapNode? node) {
 			return (node != null && IsAccessibleToUser (HttpContext.Current, node)) ? node : null;
 		}
 
@@ -213,7 +213,7 @@ namespace System.Web
 			if (String.IsNullOrEmpty (url))
 				return url;
 
-			string appVPath = HttpRuntime.AppDomainAppVirtualPath;
+			var appVPath = HttpRuntime.AppDomainAppVirtualPath;
 			if (String.IsNullOrEmpty (appVPath))
 				appVPath = "/";
 			

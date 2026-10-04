@@ -75,7 +75,7 @@
             GetModelStateForKey(key).Errors.Add(exception);
         }
 
-        public void AddModelError(string key, string errorMessage) {
+        public void AddModelError(string key, string? errorMessage) {
             GetModelStateForKey(key).Errors.Add(errorMessage);
         }
 
@@ -122,7 +122,7 @@
             return DictionaryHelpers.FindKeysWithPrefix(this, key).All(entry => entry.Value.Errors.Count == 0);
         }
 
-        public void Merge(ModelStateDictionary dictionary) {
+        public void Merge(ModelStateDictionary? dictionary) {
             if (dictionary == null) {
                 return;
             }

@@ -23,10 +23,10 @@ namespace System {
 			var GacPath = Path.GetDirectoryName ((string) getGacMethod.Invoke (null, null));
 
 			if (Path.DirectorySeparatorChar == '\\') {
-				StringBuilder moduleName = new StringBuilder (1024);
+				var moduleName = new StringBuilder (1024);
 				GetModuleFileName (IntPtr.Zero, moduleName, moduleName.Capacity);
-				string processExe = moduleName.ToString ();
-				string fileName = Path.GetFileName (processExe);
+				var processExe = moduleName.ToString ();
+				var fileName = Path.GetFileName (processExe);
 				if (fileName.StartsWith ("mono") && fileName.EndsWith (".exe"))
 					Mono = processExe;
 

@@ -89,7 +89,7 @@ namespace System.Configuration
 
 		[MonoTODO]
 		protected internal override void Unmerge (
-				ConfigurationElement sourceElement, ConfigurationElement parentElement,
+				ConfigurationElement sourceElement, ConfigurationElement? parentElement,
 				ConfigurationSaveMode saveMode)
 		{
 			base.Unmerge (sourceElement, parentElement, saveMode);

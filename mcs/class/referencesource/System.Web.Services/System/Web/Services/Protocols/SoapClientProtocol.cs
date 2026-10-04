@@ -43,22 +43,22 @@ namespace System.Web.Services.Protocols {
             // the generated proxy does not have a WebServiceAttribute; however all have a WebServiceBindingAttribute. 
             serviceNamespace = binding.Namespace;
             serviceDefaultIsEncoded = SoapReflector.ServiceDefaultIsEncoded(type);
-            ArrayList soapMethodList = new ArrayList();
-            ArrayList mappings = new ArrayList();
+            var soapMethodList = new ArrayList();
+            var mappings = new ArrayList();
             GenerateXmlMappings(type, soapMethodList, serviceNamespace, serviceDefaultIsEncoded, mappings);
-            XmlMapping[] xmlMappings = (XmlMapping[])mappings.ToArray(typeof(XmlMapping));
+            var xmlMappings = (XmlMapping[])mappings.ToArray(typeof(XmlMapping));
 
             TraceMethod caller = Tracing.On ? new TraceMethod(this, ".ctor", type) : null;
             if (Tracing.On) Tracing.Enter(Tracing.TraceId(Res.TraceCreateSerializer), caller, new TraceMethod(typeof(XmlSerializer), "FromMappings", xmlMappings, type));
             XmlSerializer[] serializers = XmlSerializer.FromMappings(xmlMappings, type);
             if (Tracing.On) Tracing.Exit(Tracing.TraceId(Res.TraceCreateSerializer), caller);
 
-            SoapExtensionTypeElementCollection extensionTypes = WebServicesSection.Current.SoapExtensionTypes;
-            ArrayList highPri = new ArrayList();
-            ArrayList lowPri = new ArrayList();
-            for (int i = 0; i < extensionTypes.Count; i++) {
-                SoapExtensionTypeElement element = extensionTypes[i];
-                SoapReflectedExtension extension = new SoapReflectedExtension(extensionTypes[i].Type, null, extensionTypes[i].Priority);
+            var extensionTypes = WebServicesSection.Current.SoapExtensionTypes;
+            var highPri = new ArrayList();
+            var lowPri = new ArrayList();
+            for (var i = 0; i < extensionTypes.Count; i++) {
+                var element = extensionTypes[i];
+                var extension = new SoapReflectedExtension(extensionTypes[i].Type, null, extensionTypes[i].Priority);
                 if (extensionTypes[i].Group == PriorityGroup.High)
                     highPri.Add(extension);
                 else
@@ -72,10 +72,10 @@ namespace System.Web.Services.Protocols {
             HighPriExtensionInitializers = SoapReflectedExtension.GetInitializers(type, HighPriExtensions);
             LowPriExtensionInitializers = SoapReflectedExtension.GetInitializers(type, LowPriExtensions);
 
-            int count = 0;
-            for (int i = 0; i < soapMethodList.Count; i++) {
+            var count = 0;
+            for (var i = 0; i < soapMethodList.Count; i++) {
                 SoapReflectedMethod soapMethod = (SoapReflectedMethod)soapMethodList[i];
-                SoapClientMethod clientMethod = new SoapClientMethod();
+                var clientMethod = new SoapClientMethod();
                 clientMethod.parameterSerializer = serializers[count++]; 
                 if (soapMethod.responseMappings != null) clientMethod.returnSerializer = serializers[count++];
                 clientMethod.inHeaderSerializer = serializers[count++];
@@ -88,11 +88,11 @@ namespace System.Web.Services.Protocols {
                 clientMethod.methodInfo = soapMethod.methodInfo;
                 clientMethod.extensions = soapMethod.extensions;
                 clientMethod.extensionInitializers = SoapReflectedExtension.GetInitializers(clientMethod.methodInfo, soapMethod.extensions);
-                ArrayList inHeaders = new ArrayList();
-                ArrayList outHeaders = new ArrayList();
-                for (int j = 0; j < soapMethod.headers.Length; j++) {
-                    SoapHeaderMapping mapping = new SoapHeaderMapping();
-                    SoapReflectedHeader soapHeader = soapMethod.headers[j];
+                var inHeaders = new ArrayList();
+                var outHeaders = new ArrayList();
+                for (var j = 0; j < soapMethod.headers.Length; j++) {
+                    var mapping = new SoapHeaderMapping();
+                    var soapHeader = soapMethod.headers[j];
                     mapping.memberInfo = soapHeader.memberInfo;
                     mapping.repeats = soapHeader.repeats;
                     mapping.custom = soapHeader.custom;
@@ -111,17 +111,17 @@ namespace System.Web.Services.Protocols {
         }
 
         internal static void GenerateXmlMappings(Type type, ArrayList soapMethodList, string serviceNamespace, bool serviceDefaultIsEncoded, ArrayList mappings) {
-            LogicalMethodInfo[] methodInfos = LogicalMethodInfo.Create(type.GetMethods(BindingFlags.Public | BindingFlags.Instance), LogicalMethodTypes.Sync);
+            var methodInfos = LogicalMethodInfo.Create(type.GetMethods(BindingFlags.Public | BindingFlags.Instance), LogicalMethodTypes.Sync);
            
-            SoapReflectionImporter soapImporter = SoapReflector.CreateSoapImporter(serviceNamespace, serviceDefaultIsEncoded);
-            XmlReflectionImporter xmlImporter = SoapReflector.CreateXmlImporter(serviceNamespace, serviceDefaultIsEncoded);
+            var soapImporter = SoapReflector.CreateSoapImporter(serviceNamespace, serviceDefaultIsEncoded);
+            var xmlImporter = SoapReflector.CreateXmlImporter(serviceNamespace, serviceDefaultIsEncoded);
             WebMethodReflector.IncludeTypes(methodInfos, xmlImporter);
             SoapReflector.IncludeTypes(methodInfos, soapImporter);
  
  
-            for (int i = 0; i < methodInfos.Length; i++) {
-                LogicalMethodInfo methodInfo = methodInfos[i];
-                SoapReflectedMethod soapMethod = SoapReflector.ReflectMethod(methodInfo, true, xmlImporter, soapImporter, serviceNamespace);
+            for (var i = 0; i < methodInfos.Length; i++) {
+                var methodInfo = methodInfos[i];
+                var soapMethod = SoapReflector.ReflectMethod(methodInfo, true, xmlImporter, soapImporter, serviceNamespace);
                 if (soapMethod == null) continue;
                 soapMethodList.Add(soapMethod);
                 mappings.Add(soapMethod.requestMappings);
@@ -176,7 +176,7 @@ namespace System.Web.Services.Protocols {
         /// </devdoc>
         public SoapHttpClientProtocol() 
             : base() {
-            Type type = this.GetType();
+            var type = this.GetType();
             clientType = (SoapClientType)GetFromCache(type);
             if (clientType == null) {
                 lock (InternalSyncObject) {
@@ -196,9 +196,9 @@ namespace System.Web.Services.Protocols {
         public void Discover() {
             if (clientType.Binding == null)
                 throw new InvalidOperationException(Res.GetString(Res.DiscoveryIsNotPossibleBecauseTypeIsMissing1, this.GetType().FullName));
-            DiscoveryClientProtocol disco = new DiscoveryClientProtocol(this);            
-            DiscoveryDocument doc = disco.Discover(Url);
-            foreach (object item in doc.References) {
+            var disco = new DiscoveryClientProtocol(this);            
+            var doc = disco.Discover(Url);
+            foreach (var item in doc.References) {
                 System.Web.Services.Discovery.SoapBinding soapBinding = item as System.Web.Services.Discovery.SoapBinding;
                 if (soapBinding != null) {
                     if (clientType.Binding.Name == soapBinding.Binding.Name &&
@@ -216,7 +216,7 @@ namespace System.Web.Services.Protocols {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         protected override WebRequest GetWebRequest(Uri uri) {            
-            WebRequest request = base.GetWebRequest(uri);            
+            var request = base.GetWebRequest(uri);            
             return request;
         }
 
@@ -237,7 +237,7 @@ namespace System.Web.Services.Protocols {
         protected virtual XmlWriter GetWriterForMessage(SoapClientMessage message, int bufferSize) {
             if (bufferSize < 512)
                 bufferSize = 512;
-            XmlTextWriter writer = new XmlTextWriter(new StreamWriter(message.Stream, RequestEncoding != null ? RequestEncoding : new UTF8Encoding(false), bufferSize));
+            var writer = new XmlTextWriter(new StreamWriter(message.Stream, RequestEncoding != null ? RequestEncoding : new UTF8Encoding(false), bufferSize));
             /*
             if (RequestEncoding != null && RequestEncoding.GetType() != typeof(UTF8Encoding)) {
                 writer = new XmlTextWriter(new StreamWriter(message.Stream, RequestEncoding, bufferSize));
@@ -262,7 +262,7 @@ namespace System.Web.Services.Protocols {
         
         [PermissionSet(SecurityAction.LinkDemand | SecurityAction.InheritanceDemand, Name = "FullTrust")]
         protected virtual XmlReader GetReaderForMessage(SoapClientMessage message, int bufferSize) {
-            Encoding enc = message.SoapVersion == SoapProtocolVersion.Soap12 ? RequestResponseUtils.GetEncoding2(message.ContentType) : RequestResponseUtils.GetEncoding(message.ContentType);
+            var enc = message.SoapVersion == SoapProtocolVersion.Soap12 ? RequestResponseUtils.GetEncoding2(message.ContentType) : RequestResponseUtils.GetEncoding(message.ContentType);
             if (bufferSize < 512)
                 bufferSize = 512;
             XmlTextReader reader;
@@ -293,8 +293,8 @@ namespace System.Web.Services.Protocols {
                 NotifyClientCallOut(request);
                 // 
                 PendingSyncRequest = request;
-                SoapClientMessage message = BeforeSerialize(request, methodName, parameters);            
-                Stream requestStream = request.GetRequestStream();            
+                var message = BeforeSerialize(request, methodName, parameters);            
+                var requestStream = request.GetRequestStream();            
                 try {                                
                     message.SetStream(requestStream);
                     Serialize(message);           
@@ -331,8 +331,8 @@ namespace System.Web.Services.Protocols {
         ///    </para>
         /// </devdoc>
         protected IAsyncResult BeginInvoke(string methodName, object[] parameters, AsyncCallback callback, object asyncState) {
-            InvokeAsyncState invokeState = new InvokeAsyncState(methodName, parameters);
-            WebClientAsyncResult asyncResult = new WebClientAsyncResult(this, invokeState, null, callback, asyncState);
+            var invokeState = new InvokeAsyncState(methodName, parameters);
+            var asyncResult = new WebClientAsyncResult(this, invokeState, null, callback, asyncState);
             return BeginSend(Uri, asyncResult, true);
         }
 
@@ -341,13 +341,13 @@ namespace System.Web.Services.Protocols {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         internal override void InitializeAsyncRequest(WebRequest request, object internalAsyncState) {
-            InvokeAsyncState invokeState = (InvokeAsyncState)internalAsyncState;
+            var invokeState = (InvokeAsyncState)internalAsyncState;
             invokeState.Message = BeforeSerialize(request, invokeState.MethodName, invokeState.Parameters);            
         }
 
         internal override void AsyncBufferedSerialize(WebRequest request, Stream requestStream, object internalAsyncState) {
-            InvokeAsyncState invokeState = (InvokeAsyncState)internalAsyncState;
-            SoapClientMessage message = invokeState.Message;
+            var invokeState = (InvokeAsyncState)internalAsyncState;
+            var message = invokeState.Message;
             message.SetStream(requestStream);
             Serialize(invokeState.Message);
         }
@@ -373,8 +373,8 @@ namespace System.Web.Services.Protocols {
             object o = null;
             Stream responseStream = null;
             try {
-                WebResponse response = EndSend(asyncResult, ref o, ref responseStream);
-                InvokeAsyncState invokeState = (InvokeAsyncState)o;
+                var response = EndSend(asyncResult, ref o, ref responseStream);
+                var invokeState = (InvokeAsyncState)o;
                 return ReadResponse(invokeState.Message, response, responseStream, true);
             }
             catch (XmlException e) {
@@ -390,13 +390,13 @@ namespace System.Web.Services.Protocols {
             object[] parameters = null;
             Exception exception = null;
     
-            WebClientAsyncResult asyncResult = (WebClientAsyncResult)result;
+            var asyncResult = (WebClientAsyncResult)result;
             if (asyncResult.Request != null) {
                 object o = null;
                 Stream responseStream = null;
                 try {
-                    WebResponse response = EndSend(asyncResult, ref o, ref responseStream);
-                    InvokeAsyncState invokeState = (InvokeAsyncState)o;
+                    var response = EndSend(asyncResult, ref o, ref responseStream);
+                    var invokeState = (InvokeAsyncState)o;
                     parameters = ReadResponse(invokeState.Message, response, responseStream, true);
                 } 
                 catch (XmlException e) {
@@ -431,12 +431,12 @@ namespace System.Web.Services.Protocols {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        protected void InvokeAsync(string methodName, object[] parameters, SendOrPostCallback callback, object userState) {
+        protected void InvokeAsync(string methodName, object[] parameters, SendOrPostCallback callback, object? userState) {
             if (userState == null)
                 userState = NullToken;
-            InvokeAsyncState invokeState = new InvokeAsyncState(methodName, parameters);
-            AsyncOperation asyncOp = AsyncOperationManager.CreateOperation(new UserToken(callback, userState));
-            WebClientAsyncResult asyncResult = new WebClientAsyncResult(this, invokeState, null, new AsyncCallback(InvokeAsyncCallback), asyncOp);
+            var invokeState = new InvokeAsyncState(methodName, parameters);
+            var asyncOp = AsyncOperationManager.CreateOperation(new UserToken(callback, userState));
+            var asyncResult = new WebClientAsyncResult(this, invokeState, null, new AsyncCallback(InvokeAsyncCallback), asyncOp);
             try {
                 AsyncInvokes.Add(userState, asyncResult);
             }
@@ -445,7 +445,7 @@ namespace System.Web.Services.Protocols {
                     throw;
                 if (Tracing.On) Tracing.ExceptionCatch(TraceEventType.Warning, this, "InvokeAsync", e);
                 Exception exception = new ArgumentException(Res.GetString(Res.AsyncDuplicateUserState), e);
-                InvokeCompletedEventArgs eventArgs = new InvokeCompletedEventArgs(new object[] { null }, exception, false, userState);
+                var eventArgs = new InvokeCompletedEventArgs(new object[] { null }, exception, false, userState);
                 asyncOp.PostOperationCompleted(callback, eventArgs);
                 return;
             }
@@ -461,7 +461,7 @@ namespace System.Web.Services.Protocols {
         }
 
         private static Array CombineExtensionsHelper(Array array1, Array array2, Array array3, Type elementType) {
-            int length = array1.Length + array2.Length + array3.Length;
+            var length = array1.Length + array2.Length + array3.Length;
             if (length == 0)
                 return null;
             Array result = null;
@@ -472,7 +472,7 @@ namespace System.Web.Services.Protocols {
             else
                 throw new ArgumentException(Res.GetString(Res.ElementTypeMustBeObjectOrSoapReflectedException), "elementType");
             
-            int pos = 0;
+            var pos = 0;
             Array.Copy(array1, 0, result, pos, array1.Length);
             pos += array1.Length;
             Array.Copy(array2, 0, result, pos, array2.Length);
@@ -501,21 +501,21 @@ namespace System.Web.Services.Protocols {
 
         SoapClientMessage BeforeSerialize(WebRequest request, string methodName, object[] parameters) {
             if (parameters == null) throw new ArgumentNullException("parameters");
-            SoapClientMethod method = clientType.GetMethod(methodName);
+            var method = clientType.GetMethod(methodName);
             if (method == null) throw new ArgumentException(Res.GetString(Res.WebInvalidMethodName, methodName));            
 
             // Run BeforeSerialize extension pass. Extensions are not allowed
             // to write into the stream during this pass.
-            SoapReflectedExtension[] allExtensions = (SoapReflectedExtension[])CombineExtensionsHelper(clientType.HighPriExtensions, method.extensions, clientType.LowPriExtensions, typeof(SoapReflectedExtension));
-            object[] allExtensionInitializers = (object[])CombineExtensionsHelper(clientType.HighPriExtensionInitializers, method.extensionInitializers, clientType.LowPriExtensionInitializers, typeof(object));
-            SoapExtension[] initializedExtensions = SoapMessage.InitializeExtensions(allExtensions, allExtensionInitializers);
-            SoapClientMessage message = new SoapClientMessage(this, method, Url);
+            var allExtensions = (SoapReflectedExtension[])CombineExtensionsHelper(clientType.HighPriExtensions, method.extensions, clientType.LowPriExtensions, typeof(SoapReflectedExtension));
+            var allExtensionInitializers = (object[])CombineExtensionsHelper(clientType.HighPriExtensionInitializers, method.extensionInitializers, clientType.LowPriExtensionInitializers, typeof(object));
+            var initializedExtensions = SoapMessage.InitializeExtensions(allExtensions, allExtensionInitializers);
+            var message = new SoapClientMessage(this, method, Url);
             message.initializedExtensions = initializedExtensions;
             if (initializedExtensions != null)
                 message.SetExtensionStream(new SoapExtensionStream());
             message.InitExtensionStreamChain(message.initializedExtensions);            
 
-            string soapAction = UrlEncoder.EscapeString(method.action, Encoding.UTF8);
+            var soapAction = UrlEncoder.EscapeString(method.action, Encoding.UTF8);
             message.SetStage(SoapMessageStage.BeforeSerialize);
             if (this.version == SoapProtocolVersion.Soap12)
                 message.ContentType = ContentType.Compose(ContentType.ApplicationSoap, RequestEncoding != null ? RequestEncoding : Encoding.UTF8, soapAction);
@@ -532,7 +532,7 @@ namespace System.Web.Services.Protocols {
 
             request.Method = "POST";
             if (this.version != SoapProtocolVersion.Soap12 && request.Headers[Soap.Action] == null) {
-                StringBuilder actionStringBuilder = new StringBuilder(soapAction.Length + 2);            
+                var actionStringBuilder = new StringBuilder(soapAction.Length + 2);            
                 actionStringBuilder.Append('"');
                 actionStringBuilder.Append(soapAction);
                 actionStringBuilder.Append('"');
@@ -543,15 +543,15 @@ namespace System.Web.Services.Protocols {
         }
 
         void Serialize(SoapClientMessage message) {
-            Stream stream = message.Stream;            
-            SoapClientMethod method = message.Method;
-            bool isEncoded = method.use == SoapBindingUse.Encoded;
+            var stream = message.Stream;            
+            var method = message.Method;
+            var isEncoded = method.use == SoapBindingUse.Encoded;
 
             // Serialize the message.  
-            string envelopeNs = EnvelopeNs;
-            string encodingNs = EncodingNs;
+            var envelopeNs = EnvelopeNs;
+            var encodingNs = EncodingNs;
 
-            XmlWriter writer = GetWriterForMessage(message, 1024);
+            var writer = GetWriterForMessage(message, 1024);
             if (writer == null)
                 throw new InvalidOperationException(Res.GetString(Res.WebNullWriterForMessage));
 
@@ -570,7 +570,7 @@ namespace System.Web.Services.Protocols {
             if (isEncoded && version != SoapProtocolVersion.Soap12) // don't write encodingStyle on soap:Body for soap 1.2
                 writer.WriteAttributeString("soap", Soap.Attribute.EncodingStyle, null, encodingNs);
 
-            object[] parameters = message.GetParameterValues();
+            var parameters = message.GetParameterValues();
             TraceMethod caller = Tracing.On ? new TraceMethod(this, "Serialize") : null;
 
             if (Tracing.On) Tracing.Enter(Tracing.TraceId(Res.TraceWriteRequest), caller, new TraceMethod(method.parameterSerializer, "Serialize", writer, parameters, null, isEncoded ? encodingNs : null));
@@ -587,13 +587,13 @@ namespace System.Web.Services.Protocols {
         }
 
         object[] ReadResponse(SoapClientMessage message, WebResponse response, Stream responseStream, bool asyncCall) {
-            SoapClientMethod method = message.Method;
+            var method = message.Method;
 
             // 
 
 
             HttpWebResponse httpResponse = response as HttpWebResponse;
-            int statusCode = httpResponse != null ? (int)httpResponse.StatusCode : -1;
+            var statusCode = httpResponse != null ? (int)httpResponse.StatusCode : -1;
             if (statusCode >= 300 && statusCode != 500 && statusCode != 400)
                 throw new WebException(RequestResponseUtils.CreateResponseExceptionString(httpResponse, responseStream), null, 
                     WebExceptionStatus.ProtocolError, httpResponse);
@@ -612,7 +612,7 @@ namespace System.Web.Services.Protocols {
             }
 
             // this statusCode check is just so we don't repeat the contentType check we did above
-            bool isSoap = ContentType.IsSoap(message.ContentType);
+            var isSoap = ContentType.IsSoap(message.ContentType);
             if (!isSoap || (isSoap && (httpResponse != null) && (httpResponse.ContentLength == 0))) {
                 // special-case 400 since we exempted it above on the off-chance it might be a soap 1.2 sender fault. 
                 // based on the content-type, it looks like it's probably just a regular old 400
@@ -635,16 +635,16 @@ namespace System.Web.Services.Protocols {
             else {
                 bufferSize = RequestResponseUtils.GetBufferSize((int)httpResponse.ContentLength);
             }
-            XmlReader reader = GetReaderForMessage(message, bufferSize);
+            var reader = GetReaderForMessage(message, bufferSize);
             if (reader == null)
                 throw new InvalidOperationException(Res.GetString(Res.WebNullReaderForMessage));
 
             reader.MoveToContent();
-            int depth = reader.Depth;
+            var depth = reader.Depth;
 
             // should be able to handle no ns, soap 1.1 ns, or soap 1.2 ns
-            string encodingNs = EncodingNs;
-            string envelopeNs = reader.NamespaceURI;
+            var encodingNs = EncodingNs;
+            var envelopeNs = reader.NamespaceURI;
 
             if (envelopeNs == null || envelopeNs.Length == 0)
                 // ok to omit namespace -- assume correct version
@@ -657,7 +657,7 @@ namespace System.Web.Services.Protocols {
                 throw new SoapException(Res.GetString(Res.WebInvalidEnvelopeNamespace, envelopeNs, EnvelopeNs), SoapException.VersionMismatchFaultCode);
 
             reader.MoveToContent();
-            SoapHeaderHandling headerHandler = new SoapHeaderHandling();
+            var headerHandler = new SoapHeaderHandling();
             headerHandler.ReadHeaders(reader, method.outHeaderSerializer, message.Headers, method.outHeaderMappings, SoapHeaderDirection.Out | SoapHeaderDirection.Fault, envelopeNs, method.use == SoapBindingUse.Encoded ? encodingNs : null, false);
             reader.MoveToContent();
             reader.ReadStartElement(Soap.Element.Body, envelopeNs);
@@ -672,12 +672,12 @@ namespace System.Web.Services.Protocols {
                 }
                 else {
                     TraceMethod caller = Tracing.On ? new TraceMethod(this, "ReadResponse") : null;
-                    bool isEncodedSoap = method.use == SoapBindingUse.Encoded;
+                    var isEncodedSoap = method.use == SoapBindingUse.Encoded;
                     if (Tracing.On) Tracing.Enter(Tracing.TraceId(Res.TraceReadResponse), caller, new TraceMethod(method.returnSerializer, "Deserialize", reader, isEncodedSoap ? encodingNs : null));
 
-                    bool useDeserializationEvents = !isEncodedSoap && (WebServicesSection.Current.SoapEnvelopeProcessing.IsStrict || Tracing.On);
+                    var useDeserializationEvents = !isEncodedSoap && (WebServicesSection.Current.SoapEnvelopeProcessing.IsStrict || Tracing.On);
                     if (useDeserializationEvents) {
-                        XmlDeserializationEvents events = Tracing.On ? Tracing.GetDeserializationEvents() : RuntimeUtils.GetDeserializationEvents();
+                        var events = Tracing.On ? Tracing.GetDeserializationEvents() : RuntimeUtils.GetDeserializationEvents();
                         message.SetParameterValues((object[])method.returnSerializer.Deserialize(reader, null, events));
                     }
                     else {
@@ -706,21 +706,21 @@ namespace System.Web.Services.Protocols {
         }
 
         SoapException ReadSoapException(XmlReader reader) {
-            XmlQualifiedName faultCode = XmlQualifiedName.Empty;
+            var faultCode = XmlQualifiedName.Empty;
             string faultString = null;
             string faultActor = null;
             string faultRole = null;
             XmlNode detail = null;
             SoapFaultSubCode subcode = null;
             string lang = null;
-            bool soap12 = (reader.NamespaceURI == Soap12.Namespace);
+            var soap12 = (reader.NamespaceURI == Soap12.Namespace);
             if (reader.IsEmptyElement) {
                 reader.Skip();
             }
             else {
                 reader.ReadStartElement();
                 reader.MoveToContent();
-                int depth = reader.Depth;
+                var depth = reader.Depth;
                 while (reader.NodeType != XmlNodeType.EndElement && reader.NodeType != XmlNodeType.None) {
                     if (reader.NamespaceURI == Soap.Namespace || reader.NamespaceURI == Soap12.Namespace || reader.NamespaceURI == null || reader.NamespaceURI.Length == 0) {
                         if (reader.LocalName == Soap.Element.FaultCode || reader.LocalName == Soap12.Element.FaultCode) {
@@ -788,7 +788,7 @@ namespace System.Web.Services.Protocols {
         }
 
         private XmlQualifiedName ReadSoap12FaultCode(XmlReader reader, out SoapFaultSubCode subcode) {
-            SoapFaultSubCode code = ReadSoap12FaultCodesRecursive(reader, 0);
+            var code = ReadSoap12FaultCodesRecursive(reader, 0);
             if (code == null) {
                 subcode = null;
                 return null;
@@ -807,7 +807,7 @@ namespace System.Web.Services.Protocols {
             }
             XmlQualifiedName code = null;
             SoapFaultSubCode subcode = null;
-            int faultDepth = reader.Depth;
+            var faultDepth = reader.Depth;
             reader.ReadStartElement();
             reader.MoveToContent();
             while (reader.NodeType != XmlNodeType.EndElement && reader.NodeType != XmlNodeType.None) {
@@ -845,11 +845,11 @@ namespace System.Web.Services.Protocols {
                 return null;
             }
             reader.ReadStartElement();
-            string qnameValue = reader.ReadString();
-            int colon = qnameValue.IndexOf(":", StringComparison.Ordinal);
-            string ns = reader.NamespaceURI;
+            var qnameValue = reader.ReadString();
+            var colon = qnameValue.IndexOf(":", StringComparison.Ordinal);
+            var ns = reader.NamespaceURI;
             if (colon >= 0) {
-                string prefix = qnameValue.Substring(0, colon);
+                var prefix = qnameValue.Substring(0, colon);
                 ns = reader.LookupNamespace(prefix);
                 if (ns == null)
                     throw new InvalidOperationException(Res.GetString(Res.WebQNamePrefixUndefined, prefix));

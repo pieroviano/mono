@@ -72,7 +72,7 @@ namespace System.Web.Services.Protocols {
 
             TraceMethod caller = Tracing.On ? new TraceMethod(this, "RouteRequest") : null;
             if (Tracing.On) Tracing.Enter("RouteRequest", caller, new TraceMethod(ServerType, "GetMethod", methodKey), Tracing.Details(ServerProtocol.Request));
-            SoapServerMethod method = ServerType.GetMethod(methodKey);
+            var method = ServerType.GetMethod(methodKey);
             if (Tracing.On) Tracing.Exit("RouteRequest", caller);
 
             if (method == null) {
@@ -85,12 +85,12 @@ namespace System.Web.Services.Protocols {
             return method;
         }
         
-        internal override void WriteFault(XmlWriter writer, SoapException soapException, HttpStatusCode statusCode) {
+        internal override void WriteFault(XmlWriter writer, SoapException? soapException, HttpStatusCode statusCode) {
             if (statusCode != HttpStatusCode.InternalServerError)
                 return;
             if (soapException == null)
                 return;
-            SoapServerMessage message = ServerProtocol.Message;
+            var message = ServerProtocol.Message;
             writer.WriteStartDocument();
             writer.WriteStartElement(Soap.Prefix, Soap.Element.Envelope, Soap.Namespace);
             writer.WriteAttributeString("xmlns", Soap.Prefix, null, Soap.Namespace);
@@ -104,7 +104,7 @@ namespace System.Web.Services.Protocols {
             
             writer.WriteStartElement(Soap.Element.Fault, Soap.Namespace);
             writer.WriteStartElement(Soap.Element.FaultCode, "");
-            XmlQualifiedName code = TranslateFaultCode(soapException.Code);
+            var code = TranslateFaultCode(soapException.Code);
             if (code.Namespace != null && code.Namespace.Length > 0 && writer.LookupPrefix(code.Namespace) == null)
                 writer.WriteAttributeString("xmlns", "q0", null, code.Namespace);
             writer.WriteQualifiedName(code.Name, code.Namespace);
@@ -117,7 +117,7 @@ namespace System.Web.Services.Protocols {
             writer.WriteString(ServerProtocol.GenerateFaultString(soapException));
             writer.WriteEndElement();
             // Only write an actor element if the actor was specified (it's optional for end-points)
-            string actor = soapException.Actor;
+            var actor = soapException.Actor;
             if (actor.Length > 0)
                 writer.WriteElementString(Soap.Element.FaultActor, "", actor);
             

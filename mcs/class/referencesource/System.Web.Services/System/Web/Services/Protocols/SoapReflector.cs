@@ -54,15 +54,15 @@ namespace System.Web.Services.Protocols {
         }
             
         internal static object[] GetInitializers(LogicalMethodInfo methodInfo, SoapReflectedExtension[] extensions) {
-            object[] initializers = new object[extensions.Length];
-            for (int i = 0; i < initializers.Length; i++)
+            var initializers = new object[extensions.Length];
+            for (var i = 0; i < initializers.Length; i++)
                 initializers[i] = extensions[i].GetInitializer(methodInfo);
             return initializers;
         }
 
         internal static object[] GetInitializers(Type serviceType, SoapReflectedExtension[] extensions) {
-            object[] initializers = new object[extensions.Length];
-            for (int i = 0; i < initializers.Length; i++)
+            var initializers = new object[extensions.Length];
+            for (var i = 0; i < initializers.Length; i++)
                 initializers[i] = extensions[i].GetInitializer(serviceType);
             return initializers;
         }
@@ -121,7 +121,7 @@ namespace System.Web.Services.Protocols {
             return ServiceDefaultIsEncoded(GetSoapServiceAttribute(type));
         }
 
-        internal static bool ServiceDefaultIsEncoded(object soapServiceAttribute) {
+        internal static bool ServiceDefaultIsEncoded(object? soapServiceAttribute) {
             if (soapServiceAttribute == null)
                 return false;
             if (soapServiceAttribute is SoapDocumentServiceAttribute) {
@@ -158,8 +158,8 @@ namespace System.Web.Services.Protocols {
         }
         
         internal static void IncludeTypes(LogicalMethodInfo[] methods, SoapReflectionImporter importer) {
-            for (int i = 0; i < methods.Length; i++) {
-                LogicalMethodInfo method = methods[i];
+            for (var i = 0; i < methods.Length; i++) {
+                var method = methods[i];
                 IncludeTypes(method, importer);
             }
         }
@@ -174,8 +174,8 @@ namespace System.Web.Services.Protocols {
         }
 
         internal static object GetSoapMethodAttribute(LogicalMethodInfo methodInfo) {
-            object[] rpcMethodAttributes = methodInfo.GetCustomAttributes(typeof(SoapRpcMethodAttribute));
-            object[] docMethodAttributes = methodInfo.GetCustomAttributes(typeof(SoapDocumentMethodAttribute));
+            var rpcMethodAttributes = methodInfo.GetCustomAttributes(typeof(SoapRpcMethodAttribute));
+            var docMethodAttributes = methodInfo.GetCustomAttributes(typeof(SoapDocumentMethodAttribute));
             if (rpcMethodAttributes.Length > 0) {
                 if (docMethodAttributes.Length > 0) throw new ArgumentException(Res.GetString(Res.WebBothMethodAttrs), "methodInfo");
                 return rpcMethodAttributes[0];
@@ -187,8 +187,8 @@ namespace System.Web.Services.Protocols {
         }
 
         internal static object GetSoapServiceAttribute(Type type) {
-            object[] rpcServiceAttributes = type.GetCustomAttributes(typeof(SoapRpcServiceAttribute), false);
-            object[] docServiceAttributes = type.GetCustomAttributes(typeof(SoapDocumentServiceAttribute), false);
+            var rpcServiceAttributes = type.GetCustomAttributes(typeof(SoapRpcServiceAttribute), false);
+            var docServiceAttributes = type.GetCustomAttributes(typeof(SoapDocumentServiceAttribute), false);
             if (rpcServiceAttributes.Length > 0) {
                 if (docServiceAttributes.Length > 0) throw new ArgumentException(Res.GetString(Res.WebBothServiceAttrs), "methodInfo");
                 return rpcServiceAttributes[0];
@@ -210,7 +210,7 @@ namespace System.Web.Services.Protocols {
 
         internal static string GetSoapMethodBinding(LogicalMethodInfo method) {
             string binding;
-            object[] attrs = method.GetCustomAttributes(typeof(SoapDocumentMethodAttribute));
+            var attrs = method.GetCustomAttributes(typeof(SoapDocumentMethodAttribute));
             if (attrs.Length == 0) {
                 attrs = method.GetCustomAttributes(typeof(SoapRpcMethodAttribute));
                 if (attrs.Length == 0) 
@@ -232,22 +232,22 @@ namespace System.Web.Services.Protocols {
 
         internal static SoapReflectedMethod ReflectMethod(LogicalMethodInfo methodInfo, bool client, XmlReflectionImporter xmlImporter, SoapReflectionImporter soapImporter, string defaultNs) {
             try {
-                string methodId = methodInfo.GetKey();
-                SoapReflectedMethod soapMethod = new SoapReflectedMethod();
-                MethodAttribute methodAttribute = new MethodAttribute();
+                var methodId = methodInfo.GetKey();
+                var soapMethod = new SoapReflectedMethod();
+                var methodAttribute = new MethodAttribute();
 
-                object serviceAttr = GetSoapServiceAttribute(methodInfo.DeclaringType);
-                bool serviceDefaultIsEncoded = ServiceDefaultIsEncoded(serviceAttr);
-                object methodAttr = GetSoapMethodAttribute(methodInfo);
+                var serviceAttr = GetSoapServiceAttribute(methodInfo.DeclaringType);
+                var serviceDefaultIsEncoded = ServiceDefaultIsEncoded(serviceAttr);
+                var methodAttr = GetSoapMethodAttribute(methodInfo);
                 if (methodAttr == null) {
                     if (client) return null; // method attribute required on the client
                     if (serviceAttr is SoapRpcServiceAttribute) {
-                        SoapRpcMethodAttribute method = new SoapRpcMethodAttribute();
+                        var method = new SoapRpcMethodAttribute();
                         method.Use = ((SoapRpcServiceAttribute)serviceAttr).Use;
                         methodAttr = method;
                     }
                     else if (serviceAttr is SoapDocumentServiceAttribute) {
-                        SoapDocumentMethodAttribute method = new SoapDocumentMethodAttribute();
+                        var method = new SoapDocumentMethodAttribute();
                         method.Use = ((SoapDocumentServiceAttribute)serviceAttr).Use;
                         methodAttr = method;
                     }
@@ -257,7 +257,7 @@ namespace System.Web.Services.Protocols {
                 }
 
                 if (methodAttr is SoapRpcMethodAttribute) {
-                    SoapRpcMethodAttribute attr = (SoapRpcMethodAttribute)methodAttr;
+                    var attr = (SoapRpcMethodAttribute)methodAttr;
 
                     soapMethod.rpc = true;
                     soapMethod.use = attr.Use;
@@ -270,7 +270,7 @@ namespace System.Web.Services.Protocols {
                     methodAttribute.responseNs = attr.ResponseNamespace;
                 }
                 else {
-                    SoapDocumentMethodAttribute attr = (SoapDocumentMethodAttribute)methodAttr;
+                    var attr = (SoapDocumentMethodAttribute)methodAttr;
                     
                     soapMethod.rpc = false;
                     soapMethod.use = attr.Use;
@@ -302,7 +302,7 @@ namespace System.Web.Services.Protocols {
                     soapMethod.binding = WebServiceBindingReflector.GetAttribute(methodInfo, methodAttribute.binding);
                 }
 
-                WebMethodAttribute webMethodAttribute = methodInfo.MethodAttribute;
+                var webMethodAttribute = methodInfo.MethodAttribute;
 
                 // 
                 soapMethod.name = webMethodAttribute.MessageName;
@@ -316,7 +316,7 @@ namespace System.Web.Services.Protocols {
                 else {
                     requestElementName = methodAttribute.requestName.Length == 0 ? soapMethod.name : methodAttribute.requestName;
                 }
-                string requestNamespace = methodAttribute.requestNs;
+                var requestNamespace = methodAttribute.requestNs;
 
                 if (requestNamespace == null) {
                     if (soapMethod.binding != null && soapMethod.binding.Namespace != null && soapMethod.binding.Namespace.Length != 0)
@@ -335,7 +335,7 @@ namespace System.Web.Services.Protocols {
                 {
                     responseElementName = methodAttribute.responseName.Length == 0 ? soapMethod.name + "Response" : methodAttribute.responseName;
                 }
-                string responseNamespace = methodAttribute.responseNs;
+                var responseNamespace = methodAttribute.responseNs;
 
                 if (responseNamespace == null) {
                     if (soapMethod.binding != null && soapMethod.binding.Namespace != null && soapMethod.binding.Namespace.Length != 0)
@@ -344,8 +344,8 @@ namespace System.Web.Services.Protocols {
                         responseNamespace = defaultNs;
                 }
 
-                SoapParameterInfo[] inParameters = ReflectParameters(methodInfo.InParameters, requestNamespace);
-                SoapParameterInfo[] outParameters = ReflectParameters(methodInfo.OutParameters, responseNamespace);
+                var inParameters = ReflectParameters(methodInfo.InParameters, requestNamespace);
+                var outParameters = ReflectParameters(methodInfo.OutParameters, responseNamespace);
 
                 soapMethod.action = methodAttribute.action;
                 if (soapMethod.action == null)
@@ -357,10 +357,10 @@ namespace System.Web.Services.Protocols {
                     if (methodInfo.ReturnType != typeof(void)) throw new ArgumentException(Res.GetString(Res.WebOneWayReturnValue), "methodInfo");
                 }
 
-                XmlReflectionMember[] members = new XmlReflectionMember[inParameters.Length];
-                for (int i = 0; i < members.Length; i++) {
-                    SoapParameterInfo soapParamInfo = inParameters[i];
-                    XmlReflectionMember member = new XmlReflectionMember();
+                var members = new XmlReflectionMember[inParameters.Length];
+                for (var i = 0; i < members.Length; i++) {
+                    var soapParamInfo = inParameters[i];
+                    var member = new XmlReflectionMember();
                     member.MemberName = soapParamInfo.parameterInfo.Name;
                     member.MemberType = soapParamInfo.parameterInfo.ParameterType;
                     if (member.MemberType.IsByRef)
@@ -376,8 +376,8 @@ namespace System.Web.Services.Protocols {
                     soapMethod.requestMappings.Count != 1)
                     throw new ArgumentException(Res.GetString(Res.WhenUsingAMessageStyleOfParametersAsDocument0), "methodInfo");
 
-                string elementName = "";
-                string elementNamespace = "";
+                var elementName = "";
+                var elementNamespace = "";
                 if (soapMethod.paramStyle == SoapParameterStyle.Bare) {
                     if (soapMethod.requestMappings.Count == 1) {
                         elementName = soapMethod.requestMappings[0].XsdElementName;
@@ -393,8 +393,8 @@ namespace System.Web.Services.Protocols {
                 soapMethod.requestElementName = new XmlQualifiedName(elementName, elementNamespace);
                 
                 if (!soapMethod.oneWay) {
-                    int numOutParams = outParameters.Length;
-                    int count = 0;
+                    var numOutParams = outParameters.Length;
+                    var count = 0;
                     CodeIdentifiers identifiers = null;
                     if (methodInfo.ReturnType != typeof(void)) {
                         numOutParams++;
@@ -403,9 +403,9 @@ namespace System.Web.Services.Protocols {
                     }
                     members = new XmlReflectionMember[numOutParams];
 
-                    for (int i = 0; i < outParameters.Length; i++) {
-                        SoapParameterInfo soapParamInfo = outParameters[i];
-                        XmlReflectionMember member = new XmlReflectionMember();
+                    for (var i = 0; i < outParameters.Length; i++) {
+                        var soapParamInfo = outParameters[i];
+                        var member = new XmlReflectionMember();
                         member.MemberName = soapParamInfo.parameterInfo.Name;
                         member.MemberType = soapParamInfo.parameterInfo.ParameterType;
                         if (member.MemberType.IsByRef)
@@ -417,7 +417,7 @@ namespace System.Web.Services.Protocols {
                             identifiers.Add(member.MemberName, null);
                     }
                     if (methodInfo.ReturnType != typeof(void)) {
-                        XmlReflectionMember member = new XmlReflectionMember();
+                        var member = new XmlReflectionMember();
                         member.MemberName = identifiers.MakeUnique(soapMethod.name + "Result");
                         member.MemberType = methodInfo.ReturnType;
                         member.IsReturnValue = true;
@@ -432,24 +432,24 @@ namespace System.Web.Services.Protocols {
 
                 }
 
-                SoapExtensionAttribute[] extensionAttributes = (SoapExtensionAttribute[])methodInfo.GetCustomAttributes(typeof(SoapExtensionAttribute));
+                var extensionAttributes = (SoapExtensionAttribute[])methodInfo.GetCustomAttributes(typeof(SoapExtensionAttribute));
                 soapMethod.extensions = new SoapReflectedExtension[extensionAttributes.Length];
-                for (int i = 0; i < extensionAttributes.Length; i++)
+                for (var i = 0; i < extensionAttributes.Length; i++)
                     soapMethod.extensions[i] = new SoapReflectedExtension(extensionAttributes[i].ExtensionType, extensionAttributes[i]);
                 Array.Sort(soapMethod.extensions);
 
-                SoapHeaderAttribute[] headerAttributes = (SoapHeaderAttribute[])methodInfo.GetCustomAttributes(typeof(SoapHeaderAttribute));
+                var headerAttributes = (SoapHeaderAttribute[])methodInfo.GetCustomAttributes(typeof(SoapHeaderAttribute));
                 Array.Sort(headerAttributes, new SoapHeaderAttributeComparer());
-                Hashtable headerTypes = new Hashtable();
+                var headerTypes = new Hashtable();
                 soapMethod.headers = new SoapReflectedHeader[headerAttributes.Length];
-                int front = 0;
-                int back = soapMethod.headers.Length;
-                ArrayList inHeaders = new ArrayList();
-                ArrayList outHeaders = new ArrayList();
-                for (int i = 0; i < soapMethod.headers.Length; i++) {
-                    SoapHeaderAttribute headerAttribute = headerAttributes[i];
-                    SoapReflectedHeader soapHeader = new SoapReflectedHeader();
-                    Type declaringType = methodInfo.DeclaringType;
+                var front = 0;
+                var back = soapMethod.headers.Length;
+                var inHeaders = new ArrayList();
+                var outHeaders = new ArrayList();
+                for (var i = 0; i < soapMethod.headers.Length; i++) {
+                    var headerAttribute = headerAttributes[i];
+                    var soapHeader = new SoapReflectedHeader();
+                    var declaringType = methodInfo.DeclaringType;
                     if ((soapHeader.memberInfo = declaringType.GetField(headerAttribute.MemberName)) != null) {
                         soapHeader.headerType = ((FieldInfo)soapHeader.memberInfo).FieldType;
                     }
@@ -470,10 +470,10 @@ namespace System.Web.Services.Protocols {
                     if (!MemberHelper.CanWrite(soapHeader.memberInfo)) throw HeaderException(headerAttribute.MemberName, methodInfo.DeclaringType, Res.WebHeaderWrite);
                     if (!typeof(SoapHeader).IsAssignableFrom(soapHeader.headerType)) throw HeaderException(headerAttribute.MemberName, methodInfo.DeclaringType, Res.WebHeaderType);
                     
-                    SoapHeaderDirection direction = headerAttribute.Direction;
+                    var direction = headerAttribute.Direction;
                     if (soapMethod.oneWay && (direction & (SoapHeaderDirection.Out | SoapHeaderDirection.Fault)) != 0) throw HeaderException(headerAttribute.MemberName, methodInfo.DeclaringType, Res.WebHeaderOneWayOut);
                     if (headerTypes.Contains(soapHeader.headerType)) {
-                        SoapHeaderDirection prevDirection = (SoapHeaderDirection) headerTypes[soapHeader.headerType];
+                        var prevDirection = (SoapHeaderDirection) headerTypes[soapHeader.headerType];
                         if ((prevDirection & direction) != 0)
                             throw HeaderException(headerAttribute.MemberName, methodInfo.DeclaringType, Res.WebMultiplyDeclaredHeaderTypes);
                         headerTypes[soapHeader.headerType] = direction | prevDirection;
@@ -482,14 +482,14 @@ namespace System.Web.Services.Protocols {
                         headerTypes[soapHeader.headerType] = direction;
                     
                     if (soapHeader.headerType != typeof(SoapHeader) && soapHeader.headerType != typeof(SoapUnknownHeader)) {
-                        XmlReflectionMember member = new XmlReflectionMember();
+                        var member = new XmlReflectionMember();
                         member.MemberName = soapHeader.headerType.Name;
                         member.MemberType = soapHeader.headerType;
 
-                        XmlAttributes a = new XmlAttributes(soapHeader.headerType);
+                        var a = new XmlAttributes(soapHeader.headerType);
                         if (a.XmlRoot != null) {
                             member.XmlAttributes = new XmlAttributes();
-                            XmlElementAttribute attr = new XmlElementAttribute();
+                            var attr = new XmlElementAttribute();
                             attr.ElementName = a.XmlRoot.ElementName;
                             attr.Namespace = a.XmlRoot.Namespace;
                             member.XmlAttributes.XmlElements.Add(attr);
@@ -530,11 +530,11 @@ namespace System.Web.Services.Protocols {
             string elementName, string elementNamespace, bool nsIsDefault, XmlReflectionMember[] members, bool validate, bool openModel, string key, bool writeAccess) {
             XmlMembersMapping mapping = null;
             if (use == SoapBindingUse.Encoded) {
-                string ns = (!rpc && paramStyle != SoapParameterStyle.Bare && nsIsDefault) ? GetEncodedNamespace(elementNamespace, serviceDefaultIsEncoded) : elementNamespace;
+                var ns = (!rpc && paramStyle != SoapParameterStyle.Bare && nsIsDefault) ? GetEncodedNamespace(elementNamespace, serviceDefaultIsEncoded) : elementNamespace;
                 mapping = soapImporter.ImportMembersMapping(elementName, ns, members, rpc || paramStyle != SoapParameterStyle.Bare, rpc, validate, writeAccess ? XmlMappingAccess.Write : XmlMappingAccess.Read);
             }
             else {
-                string ns = nsIsDefault ? GetLiteralNamespace(elementNamespace, serviceDefaultIsEncoded) : elementNamespace;
+                var ns = nsIsDefault ? GetLiteralNamespace(elementNamespace, serviceDefaultIsEncoded) : elementNamespace;
                 mapping = xmlImporter.ImportMembersMapping(elementName, ns, members, paramStyle != SoapParameterStyle.Bare, rpc, openModel, writeAccess ? XmlMappingAccess.Write : XmlMappingAccess.Read);
             }
             if (mapping != null) {
@@ -548,11 +548,11 @@ namespace System.Web.Services.Protocols {
         }
 
         static SoapParameterInfo[] ReflectParameters(ParameterInfo[] paramInfos, string ns) {
-            SoapParameterInfo[] soapParamInfos = new SoapParameterInfo[paramInfos.Length];
-            for (int i = 0; i < paramInfos.Length; i++) {
-                SoapParameterInfo soapParamInfo = new SoapParameterInfo();
+            var soapParamInfos = new SoapParameterInfo[paramInfos.Length];
+            for (var i = 0; i < paramInfos.Length; i++) {
+                var soapParamInfo = new SoapParameterInfo();
                 
-                ParameterInfo paramInfo = paramInfos[i];
+                var paramInfo = paramInfos[i];
 
                 if (paramInfo.ParameterType.IsArray && paramInfo.ParameterType.GetArrayRank() > 1)
                     throw new InvalidOperationException(Res.GetString(Res.WebMultiDimArray));
@@ -566,8 +566,8 @@ namespace System.Web.Services.Protocols {
         } 
 
         static string GetDefaultAction(string defaultNs, LogicalMethodInfo methodInfo) {
-            WebMethodAttribute methodAttribute = methodInfo.MethodAttribute;
-            string messageName = methodAttribute.MessageName;
+            var methodAttribute = methodInfo.MethodAttribute;
+            var messageName = methodAttribute.MessageName;
             if (messageName.Length == 0) messageName = methodInfo.Name;
             if (defaultNs.EndsWith("/", StringComparison.Ordinal))
                 return defaultNs + messageName;

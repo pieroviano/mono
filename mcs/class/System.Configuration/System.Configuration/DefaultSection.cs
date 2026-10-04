@@ -61,7 +61,7 @@ namespace System.Configuration {
 		}
 
 		[MonoTODO]
-		protected internal override void Reset (ConfigurationElement parentSection)
+		protected internal override void Reset (ConfigurationElement? parentSection)
 		{
 			base.Reset (parentSection);
 		}
@@ -73,7 +73,7 @@ namespace System.Configuration {
 		}
 
 		[MonoTODO]
-		protected internal override string SerializeSection (ConfigurationElement parentSection, string name, ConfigurationSaveMode saveMode)
+		protected internal override string SerializeSection (ConfigurationElement? parentSection, string name, ConfigurationSaveMode saveMode)
 		{
 			return base.SerializeSection (parentSection, name, saveMode);
 		}

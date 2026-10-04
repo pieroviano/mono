@@ -42,7 +42,7 @@ namespace System.Web
 	HostProtection (SecurityAction.LinkDemand, Synchronization = true)]
 	public class WebPageTraceListener : TraceListener
 	{
-		public override void TraceEvent (TraceEventCache eventCache, string source, TraceEventType severity, int id, string message)
+		public override void TraceEvent (TraceEventCache eventCache, string source, TraceEventType severity, int id, string? message)
 		{
 			if (HttpContext.Current == null || HttpContext.Current.Trace == null)
 				return;
@@ -55,7 +55,7 @@ namespace System.Web
 			TraceEvent (eventCache, source, severity, id, string.Format (Helpers.InvariantCulture, format, args));
 		}
 
-		public override void Write (string message)
+		public override void Write (string? message)
 		{
 			if (HttpContext.Current == null || HttpContext.Current.Trace == null)
 				return;
@@ -63,7 +63,7 @@ namespace System.Web
 			HttpContext.Current.Trace.Write (message);
 		}
 
-		public override void Write (string message, string category)
+		public override void Write (string? message, string category)
 		{
 			if (HttpContext.Current == null || HttpContext.Current.Trace == null)
 				return;
@@ -71,7 +71,7 @@ namespace System.Web
 			HttpContext.Current.Trace.Write (category, message);
 		}
 
-		public override void WriteLine (string message)
+		public override void WriteLine (string? message)
 		{
 			if (HttpContext.Current == null || HttpContext.Current.Trace == null)
 				return;
@@ -79,7 +79,7 @@ namespace System.Web
 			HttpContext.Current.Trace.Write (message);
 		}
 
-		public override void WriteLine (string message, string category)
+		public override void WriteLine (string? message, string category)
 		{
 			if (HttpContext.Current == null || HttpContext.Current.Trace == null)
 				return;

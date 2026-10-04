@@ -46,7 +46,7 @@ namespace System.Web.UI.WebControls
 		[FilterableAttribute (false)]
 		public virtual bool AllowReturn {
 			get {
-				object v = ViewState ["AllowReturn"];
+				var v = ViewState ["AllowReturn"];
 				return v != null ? (bool)v : true;
 			}
 			set {
@@ -80,7 +80,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValueAttribute (WizardStepType.Auto)]
 		public virtual WizardStepType StepType {
 			get {
-				object v = ViewState ["StepType"];
+				var v = ViewState ["StepType"];
 				return v != null ? (WizardStepType)v : WizardStepType.Auto;
 			}
 			set {
@@ -92,7 +92,7 @@ namespace System.Web.UI.WebControls
 		[LocalizableAttribute (true)]
 		public virtual string Title {
 			get {
-				object v = ViewState ["Title"];
+				var v = ViewState ["Title"];
 				return v != null ? (string)v : string.Empty;
 			}
 			set {
@@ -106,7 +106,7 @@ namespace System.Web.UI.WebControls
 			get { return wizard; }
 		}
 		
-		protected override void LoadViewState (object savedState)
+		protected override void LoadViewState (object? savedState)
 		{
 			// why override?
 			base.LoadViewState (savedState);

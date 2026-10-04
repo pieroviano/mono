@@ -104,7 +104,7 @@ namespace System.Web.Util
 				encodedHeaderValue = EncodeHeaderString (headerValue);
 		}
 
-		static void StringBuilderAppend (string s, ref StringBuilder sb)
+		static void StringBuilderAppend (string s, ref StringBuilder? sb)
 		{
 			if (sb == null)
 				sb = new StringBuilder (s);
@@ -116,8 +116,8 @@ namespace System.Web.Util
 		{
 			StringBuilder sb = null;
 			
-			for (int i = 0; i < input.Length; i++) {
-				char ch = input [i];
+			for (var i = 0; i < input.Length; i++) {
+				var ch = input [i];
 
 				if ((ch < 32 && ch != 9) || ch == 127)
 					StringBuilderAppend (String.Format ("%{0:x2}", (int)ch), ref sb);
@@ -140,7 +140,7 @@ namespace System.Web.Util
 			output.Write (HtmlAttributeEncode (value));
 		}
 
-		protected internal virtual void HtmlDecode (string value, TextWriter output)
+		protected internal virtual void HtmlDecode (string? value, TextWriter output)
 		{
 			if (output == null)
 				throw new ArgumentNullException ("output");
@@ -148,7 +148,7 @@ namespace System.Web.Util
 			output.Write (HtmlDecode (value));
 		}
 
-		protected internal virtual void HtmlEncode (string value, TextWriter output)
+		protected internal virtual void HtmlEncode (string? value, TextWriter output)
 		{
 			if (output == null)
 				throw new ArgumentNullException ("output");
@@ -167,7 +167,7 @@ namespace System.Web.Util
 			return defaultEncoder.Value;
 #else
 			var cfg = HttpRuntime.Section;
-			string typeName = cfg.EncoderType;
+			var typeName = cfg.EncoderType;
 
 			if (String.Compare (typeName, "System.Web.Util.HttpEncoder", StringComparison.OrdinalIgnoreCase) == 0)
 				return Default;
@@ -190,9 +190,9 @@ namespace System.Web.Util
 			if (String.IsNullOrEmpty (value))
 				return value;
 
-			MemoryStream result = new MemoryStream ();
-			int length = value.Length;
-			for (int i = 0; i < length; i++)
+			var result = new MemoryStream ();
+			var length = value.Length;
+			for (var i = 0; i < length; i++)
 				UrlPathEncodeChar (value [i], result);
 			
 			return Encoding.ASCII.GetString (result.ToArray ());
@@ -203,7 +203,7 @@ namespace System.Web.Util
 			if (bytes == null)
 				throw new ArgumentNullException ("bytes");
 			
-			int blen = bytes.Length;
+			var blen = bytes.Length;
 			if (blen == 0)
 				return new byte [0];
 			
@@ -213,15 +213,15 @@ namespace System.Web.Util
 			if (count < 0 || count > blen - offset)
 				throw new ArgumentOutOfRangeException("count");
 
-			MemoryStream result = new MemoryStream (count);
-			int end = offset + count;
-			for (int i = offset; i < end; i++)
+			var result = new MemoryStream (count);
+			var end = offset + count;
+			for (var i = offset; i < end; i++)
 				UrlEncodeChar ((char)bytes [i], result, false);
 
 			return result.ToArray();
 		}
 		
-		internal static string HtmlEncode (string s) 
+		internal static string HtmlEncode (string? s) 
 		{
 			if (s == null)
 				return null;
@@ -229,9 +229,9 @@ namespace System.Web.Util
 			if (s.Length == 0)
 				return String.Empty;
 			
-			bool needEncode = false;
-			for (int i = 0; i < s.Length; i++) {
-				char c = s [i];
+			var needEncode = false;
+			for (var i = 0; i < s.Length; i++) {
+				var c = s [i];
 				if (c == '&' || c == '"' || c == '<' || c == '>' || c > 159
 				    || c == '\''
 				) {
@@ -243,11 +243,11 @@ namespace System.Web.Util
 			if (!needEncode)
 				return s;
 
-			StringBuilder output = new StringBuilder ();
-			int len = s.Length;
+			var output = new StringBuilder ();
+			var len = s.Length;
 			
-			for (int i = 0; i < len; i++) {
-				char ch = s [i];
+			for (var i = 0; i < len; i++) {
+				var ch = s [i];
 				switch (ch) {
 					case '&' :
 						output.Append ("&amp;");
@@ -290,9 +290,9 @@ namespace System.Web.Util
 		{
 			if (String.IsNullOrEmpty (s))
 				return String.Empty;
-			bool needEncode = false;
-			for (int i = 0; i < s.Length; i++) {
-				char c = s [i];
+			var needEncode = false;
+			for (var i = 0; i < s.Length; i++) {
+				var c = s [i];
 				if (c == '&' || c == '"' || c == '<'
 				    || c == '\''
 				) {
@@ -304,11 +304,11 @@ namespace System.Web.Util
 			if (!needEncode)
 				return s;
 
-			StringBuilder output = new StringBuilder ();
-			int len = s.Length;
+			var output = new StringBuilder ();
+			var len = s.Length;
 
-			for (int i = 0; i < len; i++) {
-				char ch = s [i];
+			for (var i = 0; i < len; i++) {
+				var ch = s [i];
 				switch (ch) {
 					case '&' : 
 						output.Append ("&amp;");
@@ -331,7 +331,7 @@ namespace System.Web.Util
 			return output.ToString();
 		}
 		
-		internal static string HtmlDecode (string s)
+		internal static string HtmlDecode (string? s)
 		{
 			if (s == null)
 				return null;
@@ -341,21 +341,21 @@ namespace System.Web.Util
 			
 			if (s.IndexOf ('&') == -1)
 				return s;
-			StringBuilder rawEntity = new StringBuilder ();
-			StringBuilder entity = new StringBuilder ();
-			StringBuilder output = new StringBuilder ();
-			int len = s.Length;
+			var rawEntity = new StringBuilder ();
+			var entity = new StringBuilder ();
+			var output = new StringBuilder ();
+			var len = s.Length;
 			// 0 -> nothing,
 			// 1 -> right after '&'
 			// 2 -> between '&' and ';' but no '#'
 			// 3 -> '#' found after '&' and getting numbers
-			int state = 0;
-			int number = 0;
-			bool is_hex_value = false;
-			bool have_trailing_digits = false;
+			var state = 0;
+			var number = 0;
+			var is_hex_value = false;
+			var have_trailing_digits = false;
 	
-			for (int i = 0; i < len; i++) {
-				char c = s [i];
+			for (var i = 0; i < len; i++) {
+				var c = s [i];
 				if (state == 0) {
 					if (c == '&') {
 						entity.Append (c);
@@ -400,7 +400,7 @@ namespace System.Web.Util
 				} else if (state == 2) {
 					entity.Append (c);
 					if (c == ';') {
-						string key = entity.ToString ();
+						var key = entity.ToString ();
 						if (key.Length > 1 && Entities.ContainsKey (key.Substring (1, key.Length - 2)))
 							key = Entities [key.Substring (1, key.Length - 2)].ToString ();
 
@@ -467,7 +467,7 @@ namespace System.Web.Util
 				//if (!isUnicode)
 				//	throw new ArgumentOutOfRangeException ("c", c, "c must be less than 256");
 				int idx;
-				int i = (int) c;
+				var i = (int) c;
 
 				result.WriteByte ((byte)'%');
 				result.WriteByte ((byte)'u');
@@ -503,7 +503,7 @@ namespace System.Web.Util
 				else
 					result.WriteByte ((byte)'%');
 				
-				int idx = ((int) c) >> 4;
+				var idx = ((int) c) >> 4;
 				result.WriteByte ((byte)hexChars [idx]);
 				idx = ((int) c) & 0x0F;
 				result.WriteByte ((byte)hexChars [idx]);
@@ -515,10 +515,10 @@ namespace System.Web.Util
 		internal static void UrlPathEncodeChar (char c, Stream result)
 		{
 			if (c < 33 || c > 126) {
-				byte [] bIn = Encoding.UTF8.GetBytes (c.ToString ());
-				for (int i = 0; i < bIn.Length; i++) {
+				var bIn = Encoding.UTF8.GetBytes (c.ToString ());
+				for (var i = 0; i < bIn.Length; i++) {
 					result.WriteByte ((byte) '%');
-					int idx = ((int) bIn [i]) >> 4;
+					var idx = ((int) bIn [i]) >> 4;
 					result.WriteByte ((byte) hexChars [idx]);
 					idx = ((int) bIn [i]) & 0x0F;
 					result.WriteByte ((byte) hexChars [idx]);

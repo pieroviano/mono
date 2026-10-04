@@ -16,13 +16,13 @@ namespace System.Web.Util {
             }
 
             isTopLevelMethodCall = false;
-            Expression result = base.VisitMethodCall(node);
+            var result = base.VisitMethodCall(node);
             isTopLevelMethodCall = true;
             return result;
         }
 
         internal static bool OrderMethodExists(Expression expression) {
-            OrderingMethodFinder obj = new OrderingMethodFinder();
+            var obj = new OrderingMethodFinder();
             obj.OrderingMethodFound = false;
             obj.Visit(expression);
             return obj.OrderingMethodFound;

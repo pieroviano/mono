@@ -243,7 +243,7 @@ namespace System.Web.UI.WebControls {
 				}
 			}
 
-			XslTransform t = xsl_transform;
+			var t = xsl_transform;
 			if (transform_file != null){
 				t = new XslTransform ();
 				t.Load (MapPathSecure (transform_file));
@@ -259,7 +259,7 @@ namespace System.Web.UI.WebControls {
 				return;
 			}
 				
-			XmlTextWriter xmlwriter = new XmlTextWriter (output);
+			var xmlwriter = new XmlTextWriter (output);
 			xmlwriter.Formatting = Formatting.None;
 			if (xpath_navigator != null) {
 				xmlwriter.WriteStartDocument ();

@@ -69,7 +69,7 @@ namespace Newtonsoft.Json.Utilities
 			return false;
 		}
 
-        public static bool IsSubClass(Type type, Type check)
+        public static bool IsSubClass(Type? type, Type? check)
         {
             if (type == null || check == null)
                 return false;
@@ -79,7 +79,7 @@ namespace Newtonsoft.Json.Utilities
 
             if (check.IsInterface)
             {
-                foreach (Type t in type.GetInterfaces())
+                foreach (var t in type.GetInterfaces())
                 {
                     if (IsSubClass(t, check)) return true;
                 }
@@ -115,7 +115,7 @@ namespace Newtonsoft.Json.Utilities
             if (type == null)
                 throw new ArgumentNullException("type");
 
-			Type genDictType = GetGenericDictionary(type);
+			var genDictType = GetGenericDictionary(type);
 
 			if (genDictType != null)
 				return genDictType.GetGenericArguments () [1];
@@ -130,10 +130,10 @@ namespace Newtonsoft.Json.Utilities
 			if (type.IsGenericType && GenericDictionaryType.IsAssignableFrom (type.GetGenericTypeDefinition ()))
 				return type;
 
-			Type[] ifaces = type.GetInterfaces();
+			var ifaces = type.GetInterfaces();
 			if (ifaces != null)
-				for (int i = 0; i < ifaces.Length; i++) {
-					Type current = GetGenericDictionary (ifaces [i]);
+				for (var i = 0; i < ifaces.Length; i++) {
+					var current = GetGenericDictionary (ifaces [i]);
 					if (current != null)
 						return current;
 				}
@@ -281,10 +281,10 @@ namespace Newtonsoft.Json.Utilities
 		public static IEnumerable<MemberInfo> GetFieldsAndProperties (Type type, BindingFlags bindingAttr) {
 
 			MemberInfo [] members = type.GetFields (bindingAttr);
-			for (int i = 0; i < members.Length; i++)
+			for (var i = 0; i < members.Length; i++)
 				yield return members [i];
 			members = type.GetProperties (bindingAttr);
-			for (int i = 0; i < members.Length; i++)
+			for (var i = 0; i < members.Length; i++)
 				yield return members [i];
 		}
     }

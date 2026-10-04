@@ -17,7 +17,7 @@
             Exception = exception;
         }
 
-        public ModelError(string errorMessage) {
+        public ModelError(string? errorMessage) {
             ErrorMessage = errorMessage ?? String.Empty;
         }
 

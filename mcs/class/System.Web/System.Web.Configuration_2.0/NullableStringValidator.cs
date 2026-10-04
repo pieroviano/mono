@@ -51,7 +51,7 @@ namespace System.Configuration
 			this.maxLength = maxLength;
 		}
 		
-		public NullableStringValidator (int minLength, int maxLength, string invalidCharacters)
+		public NullableStringValidator (int minLength, int maxLength, string? invalidCharacters)
 		{
 			this.minLength = minLength;
 			this.maxLength = maxLength;
@@ -64,20 +64,20 @@ namespace System.Configuration
 			return type == typeof(string);
 		}
 
-		public override void Validate (object value)
+		public override void Validate (object? value)
 		{
 			// This is the only difference from StringValidator:
 			// null value is always allowed.
 			if (value == null)
 				return;
 
-			string s = (string) value;
+			var s = (string) value;
 			if (s == null || s.Length < minLength)
 				throw new ArgumentException ("The string must be at least " + minLength + " characters long.");
 			if (s.Length > maxLength)
 				throw new ArgumentException ("The string must be no more than " + maxLength + " characters long.");
 			if (invalidCharacters != null) {
-				int i = s.IndexOfAny (invalidCharacters);
+				var i = s.IndexOfAny (invalidCharacters);
 				if (i != -1)
 					throw new ArgumentException (String.Format ("The string cannot contain any of the following characters: '{0}'.", invalidCharacters));
 			}

@@ -48,7 +48,7 @@ namespace System.Web.UI
 		{
 		}
 
-		void IStateManager.LoadViewState (object savedState)
+		void IStateManager.LoadViewState (object? savedState)
 		{
 			LoadViewState (savedState);
 		}
@@ -77,7 +77,7 @@ namespace System.Web.UI
 		}	
 
 		
-		internal void LoadViewState (object savedState)
+		internal void LoadViewState (object? savedState)
 		{
 			if (savedState == null)
 				return;
@@ -120,31 +120,31 @@ namespace System.Web.UI
 
 		internal string GetString (string key, string def)
 		{
-			string s = (string) this [key];
+			var s = (string) this [key];
 			return s == null ? def : s;
 		}
 		
 		internal bool GetBool (string key, bool def)
 		{
-			object o = this [key];
+			var o = this [key];
 			return o == null ? def : (bool) o;
 		}
 
 		internal char GetChar (string key, char def)
 		{
-			object o = this [key];
+			var o = this [key];
 			return o == null ? def : (char) o;
 		}
 
 		internal int GetInt (string key, int def)
 		{
-			object o = this [key];
+			var o = this [key];
 			return o == null ? def : (int) o;
 		}
 
 		internal short GetShort (string key, short def)
 		{
-			object o = this [key];
+			var o = this [key];
 			return o == null ? def : (short) o;
 		}
 		

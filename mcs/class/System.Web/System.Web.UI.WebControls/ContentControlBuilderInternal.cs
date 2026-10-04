@@ -38,7 +38,7 @@ namespace System.Web.UI.WebControls
 	{
 		string placeHolderID;
 		
-		public override void Init (TemplateParser parser, ControlBuilder parentBuilder, Type type,
+		public override void Init (TemplateParser? parser, ControlBuilder parentBuilder, Type? type,
 					   string tagName, string ID, IDictionary attribs)
 		{
 			base.Init (parser, parentBuilder, type, tagName, ID, attribs);

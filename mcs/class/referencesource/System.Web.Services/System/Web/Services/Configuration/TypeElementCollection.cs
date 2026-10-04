@@ -60,7 +60,7 @@ namespace System.Web.Services.Configuration
                 throw new ArgumentNullException("element");
             }
 
-            TypeElement configElementKey = (TypeElement)element;
+            var configElementKey = (TypeElement)element;
             return configElementKey.Type;
         }
 
@@ -107,7 +107,7 @@ namespace System.Web.Services.Configuration
                 {
                     throw new ArgumentNullException("key");
                 }
-                TypeElement retval = (TypeElement)this.BaseGet(key);
+                var retval = (TypeElement)this.BaseGet(key);
                 if (retval == null)
                 {
                     throw new System.Collections.Generic.KeyNotFoundException(

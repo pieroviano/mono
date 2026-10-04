@@ -12,7 +12,7 @@
             }
 
             foreach (var entry in dictionary) {
-                string key = entry.Key;
+                var key = entry.Key;
 
                 if (key.Length <= prefix.Length) {
                     continue;
@@ -22,7 +22,7 @@
                     continue;
                 }
 
-                char charAfterPrefix = key[prefix.Length];
+                var charAfterPrefix = key[prefix.Length];
                 switch (charAfterPrefix) {
                     case '[':
                     case '.':

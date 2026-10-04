@@ -59,7 +59,7 @@ namespace System.Web
 		
 		public void Add (string name, object value)
 		{
-			bool acquired = false;
+			var acquired = false;
 			try {
 				if (!IsLockHeld) {
 					_Lock.EnterWriteLock ();
@@ -74,7 +74,7 @@ namespace System.Web
 
 		public void Clear ()
 		{
-			bool acquired = false;
+			var acquired = false;
 			try {
 				if (!IsLockHeld) {
 					_Lock.EnterWriteLock ();
@@ -90,7 +90,7 @@ namespace System.Web
 		public object Get (string name)
 		{
 			object ret = null;
-			bool acquired = false;
+			var acquired = false;
 			try {
 				if (!IsLockHeld) {
 					_Lock.EnterReadLock ();
@@ -107,7 +107,7 @@ namespace System.Web
 
 		public object Get (int index)
 		{
-			bool acquired = false;
+			var acquired = false;
 			try {
 				if (!IsLockHeld) {
 					_Lock.EnterReadLock ();
@@ -122,7 +122,7 @@ namespace System.Web
 
 		public string GetKey (int index)
 		{
-			bool acquired = false;
+			var acquired = false;
 			try {
 				if (!IsLockHeld) {
 					_Lock.EnterReadLock ();
@@ -143,7 +143,7 @@ namespace System.Web
 
 		public void Remove (string name)
 		{
-			bool acquired = false;
+			var acquired = false;
 			try {
 				if (!IsLockHeld) {
 					_Lock.EnterWriteLock ();
@@ -163,7 +163,7 @@ namespace System.Web
 
 		public void RemoveAt (int index)
 		{
-			bool acquired = false;
+			var acquired = false;
 			try {
 				if (!IsLockHeld) {
 					_Lock.EnterWriteLock ();
@@ -178,7 +178,7 @@ namespace System.Web
 
 		public void Set (string name, object value)
 		{
-			bool acquired = false;
+			var acquired = false;
 			try {
 				if (!IsLockHeld) {
 					_Lock.EnterWriteLock ();
@@ -199,7 +199,7 @@ namespace System.Web
 
 		public string [] AllKeys {
 			get {
-				bool acquired = false;
+				var acquired = false;
 				try {
 					if (!IsLockHeld) {
 						_Lock.EnterReadLock ();
@@ -219,7 +219,7 @@ namespace System.Web
 
 		public override int Count {
 			get {
-				bool acquired = false;
+				var acquired = false;
 				try {
 					if (!IsLockHeld) {
 						_Lock.EnterReadLock ();

@@ -89,7 +89,7 @@ namespace System.Web.Services.Configuration {
 
         public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType) {
             if (destinationType == typeof(string)) {
-                TypeAndName castedValue = (TypeAndName) value;
+                var castedValue = (TypeAndName) value;
                 return castedValue.name == null ? castedValue.type.AssemblyQualifiedName : castedValue.name;
             }
 

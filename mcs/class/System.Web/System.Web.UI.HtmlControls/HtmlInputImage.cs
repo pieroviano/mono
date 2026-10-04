@@ -103,7 +103,7 @@ namespace System.Web.UI.HtmlControls
 		[WebCategory("Appearance")]
 		public int Border {
 			get {
-				string border = Attributes ["border"];
+				var border = Attributes ["border"];
 				if (border == null)
 					return -1;
 				return Int32.Parse (border, Helpers.InvariantCulture);
@@ -193,7 +193,7 @@ namespace System.Web.UI.HtmlControls
 		{
 			base.OnPreRender (e);
 
-			Page page = Page;
+			var page = Page;
 			if (page != null && !Disabled) {
 				page.RegisterRequiresPostBack (this);
 				page.RegisterEnabledControl (this);
@@ -209,12 +209,12 @@ namespace System.Web.UI.HtmlControls
 
 		protected override void RenderAttributes (HtmlTextWriter writer)
 		{
-			Page page = Page;
+			var page = Page;
 			if (page != null)
 				page.ClientScript.RegisterForEventValidation (UniqueID);
 			
 			if (CausesValidation && page != null && page.AreValidatorsUplevel (ValidationGroup)) {
-				ClientScriptManager csm = page.ClientScript;
+				var csm = page.ClientScript;
 				Attributes ["onclick"] += csm.GetClientValidationEvent (ValidationGroup);
 			}
 
@@ -222,7 +222,7 @@ namespace System.Web.UI.HtmlControls
 			base.RenderAttributes (writer);
 		}
 
-		void SetAtt (string name, string value)
+		void SetAtt (string name, string? value)
 		{
 			if ((value == null) || (value.Length == 0))
 				Attributes.Remove (name);
@@ -232,7 +232,7 @@ namespace System.Web.UI.HtmlControls
 
 		string GetAtt (string name)
 		{
-			string res = Attributes [name];
+			var res = Attributes [name];
 			if (res == null)
 				return String.Empty;
 			return res;

@@ -71,7 +71,7 @@ namespace System.Configuration {
 
 			if (File != "") {
 				try {
-					string filePath = File;
+					var filePath = File;
 					if (!Path.IsPathRooted (filePath))
 						filePath = Path.Combine (Path.GetDirectoryName (Configuration.FilePath), filePath);
 
@@ -95,7 +95,7 @@ namespace System.Configuration {
 
 		[MonoTODO]
 		protected internal override string SerializeSection (
-			ConfigurationElement parentElement, string name, ConfigurationSaveMode saveMode)
+			ConfigurationElement? parentElement, string name, ConfigurationSaveMode saveMode)
 		{
 			if (File == "") {
 				return base.SerializeSection (parentElement, name, saveMode);
@@ -124,10 +124,10 @@ namespace System.Configuration {
 
 		protected internal override object GetRuntimeObject ()
 		{
-			KeyValueInternalCollection col = new KeyValueInternalCollection ();
+			var col = new KeyValueInternalCollection ();
 				
-			foreach (string key in Settings.AllKeys) {
-				KeyValueConfigurationElement ele = Settings[key];
+			foreach (var key in Settings.AllKeys) {
+				var ele = Settings[key];
 				col.Add (ele.Key, ele.Value);
 			}
 				

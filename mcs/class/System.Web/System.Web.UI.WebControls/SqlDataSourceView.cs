@@ -61,12 +61,12 @@ namespace System.Web.UI.WebControls {
 			}
 		}
 
-		public int Delete (IDictionary keys, IDictionary oldValues)
+		public int Delete (IDictionary? keys, IDictionary? oldValues)
 		{
 			return ExecuteDelete (keys, oldValues);
 		}
 		
-		protected override int ExecuteDelete (IDictionary keys, IDictionary oldValues)
+		protected override int ExecuteDelete (IDictionary? keys, IDictionary? oldValues)
 		{
 			if (!CanDelete)
 				throw new NotSupportedException("Delete operation is not supported");
@@ -100,17 +100,17 @@ namespace System.Web.UI.WebControls {
 			
 			InitializeParameters (command, DeleteParameters, null, oldDataValues, true);
 
-			SqlDataSourceCommandEventArgs args = new SqlDataSourceCommandEventArgs (command);
+			var args = new SqlDataSourceCommandEventArgs (command);
 			OnDeleting (args);
 			if (args.Cancel)
 				return -1; 
 
-			bool closed = connection.State == ConnectionState.Closed;
+			var closed = connection.State == ConnectionState.Closed;
 
 			if (closed)
 				connection.Open();
 			Exception exception = null; 
-			int result = -1;;
+			var result = -1;;
 			try {
 				result = command.ExecuteNonQuery();
 			} catch (Exception e) {
@@ -122,7 +122,7 @@ namespace System.Web.UI.WebControls {
 
 			OnDataSourceViewChanged (EventArgs.Empty);
 
-			SqlDataSourceStatusEventArgs deletedArgs =
+			var deletedArgs =
 				new SqlDataSourceStatusEventArgs (command, result, exception);
 			OnDeleted (deletedArgs);
 
@@ -132,12 +132,12 @@ namespace System.Web.UI.WebControls {
 			return result;
 		}
 		
-		public int Insert (IDictionary values)
+		public int Insert (IDictionary? values)
 		{
 			return ExecuteInsert (values);
 		}
 
-		protected override int ExecuteInsert (IDictionary values)
+		protected override int ExecuteInsert (IDictionary? values)
 		{
 			if (!CanInsert)
 				throw new NotSupportedException ("Insert operation is not supported");
@@ -154,16 +154,16 @@ namespace System.Web.UI.WebControls {
 
 			InitializeParameters (command, InsertParameters, values, null, false);
 
-			SqlDataSourceCommandEventArgs args = new SqlDataSourceCommandEventArgs (command);
+			var args = new SqlDataSourceCommandEventArgs (command);
 			OnInserting (args);
 			if (args.Cancel)
 				return -1;
 
-			bool closed = connection.State == ConnectionState.Closed;
+			var closed = connection.State == ConnectionState.Closed;
 			if (closed)
 				connection.Open ();
 			Exception exception = null;
-			int result = -1;
+			var result = -1;
 			try {
 				result = command.ExecuteNonQuery ();
 			}
@@ -226,14 +226,14 @@ namespace System.Web.UI.WebControls {
 					dataView = (DataView) owner.Cache.GetCachedObject (SelectCommand, SelectParameters);
 
 				if (dataView == null) {
-					SqlDataSourceSelectingEventArgs selectingArgs = new SqlDataSourceSelectingEventArgs (command, arguments);
+					var selectingArgs = new SqlDataSourceSelectingEventArgs (command, arguments);
 					OnSelecting (selectingArgs);
 					if (selectingArgs.Cancel || !PrepareNullParameters (command, CancelSelectOnNullParameter)) {
 						return null;
 					}
 					try {
 						DbDataAdapter adapter = factory.CreateDataAdapter ();
-						DataSet dataset = new DataSet ();
+						var dataset = new DataSet ();
 
 						adapter.SelectCommand = command;
 						adapter.Fill (dataset, name);
@@ -245,8 +245,8 @@ namespace System.Web.UI.WebControls {
 					catch (Exception e) {
 						exception = e;
 					}
-					int rowsAffected = (dataView == null) ? 0 : dataView.Count;
-					SqlDataSourceStatusEventArgs selectedArgs = new SqlDataSourceStatusEventArgs (command, rowsAffected, exception);
+					var rowsAffected = (dataView == null) ? 0 : dataView.Count;
+					var selectedArgs = new SqlDataSourceStatusEventArgs (command, rowsAffected, exception);
 					OnSelected (selectedArgs);
 
 					if (exception != null && !selectedArgs.ExceptionHandled)
@@ -260,12 +260,12 @@ namespace System.Web.UI.WebControls {
 					dataView.Sort = arguments.SortExpression;
 
 				if (FilterExpression.Length > 0) {
-					IOrderedDictionary fparams = FilterParameters.GetValues (context, owner);
-					SqlDataSourceFilteringEventArgs fargs = new SqlDataSourceFilteringEventArgs (fparams);
+					var fparams = FilterParameters.GetValues (context, owner);
+					var fargs = new SqlDataSourceFilteringEventArgs (fparams);
 					OnFiltering (fargs);
 					if (!fargs.Cancel) {
-						object [] formatValues = new object [fparams.Count];
-						for (int n = 0; n < formatValues.Length; n++) {
+						var formatValues = new object [fparams.Count];
+						for (var n = 0; n < formatValues.Length; n++) {
 							formatValues [n] = fparams [n];
 							if (formatValues [n] == null) return dataView;
 						}
@@ -276,14 +276,14 @@ namespace System.Web.UI.WebControls {
 				return dataView;
 			}
 			else {
-				SqlDataSourceSelectingEventArgs selectingArgs = new SqlDataSourceSelectingEventArgs (command, arguments);
+				var selectingArgs = new SqlDataSourceSelectingEventArgs (command, arguments);
 				OnSelecting (selectingArgs);
 				if (selectingArgs.Cancel || !PrepareNullParameters (command, CancelSelectOnNullParameter)) {
 					return null;
 				}
 
 				DbDataReader reader = null;
-				bool closed = connection.State == ConnectionState.Closed;
+				var closed = connection.State == ConnectionState.Closed;
 
 				if (closed)
 					connection.Open ();
@@ -293,8 +293,8 @@ namespace System.Web.UI.WebControls {
 				catch (Exception e) {
 					exception = e;
 				}
-				int rows = reader == null ? 0 : reader.RecordsAffected;
-				SqlDataSourceStatusEventArgs selectedArgs = new SqlDataSourceStatusEventArgs (command, rows, exception);
+				var rows = reader == null ? 0 : reader.RecordsAffected;
+				var selectedArgs = new SqlDataSourceStatusEventArgs (command, rows, exception);
 				OnSelected (selectedArgs);
 				if (exception != null && !selectedArgs.ExceptionHandled)
 					throw exception;
@@ -305,8 +305,8 @@ namespace System.Web.UI.WebControls {
 
 		static bool PrepareNullParameters (DbCommand command, bool cancelIfHas)
 		{
-			for (int i = 0; i < command.Parameters.Count; i++) {
-				DbParameter param = command.Parameters [i];
+			for (var i = 0; i < command.Parameters.Count; i++) {
+				var param = command.Parameters [i];
 				if (param.Value == null && ((param.Direction & ParameterDirection.Input) != 0)) {
 					if (cancelIfHas)
 						return false;
@@ -317,12 +317,12 @@ namespace System.Web.UI.WebControls {
 			return true;
 		}
 
-		public int Update (IDictionary keys, IDictionary values, IDictionary oldValues)
+		public int Update (IDictionary? keys, IDictionary values, IDictionary? oldValues)
 		{
 			return ExecuteUpdate (keys, values, oldValues);
 		}
 
-		protected override int ExecuteUpdate (IDictionary keys, IDictionary values, IDictionary oldValues)
+		protected override int ExecuteUpdate (IDictionary? keys, IDictionary values, IDictionary? oldValues)
 		{
 			if (!CanUpdate)
 				throw new NotSupportedException ("Update operation is not supported");
@@ -355,20 +355,20 @@ namespace System.Web.UI.WebControls {
 				oldDataValues = keys;
 			}
 
-			IDictionary dataValues = values;
+			var dataValues = values;
 
 			InitializeParameters (command, UpdateParameters, dataValues, oldDataValues, ConflictDetection == ConflictOptions.OverwriteChanges);
 
-			SqlDataSourceCommandEventArgs args = new SqlDataSourceCommandEventArgs (command);
+			var args = new SqlDataSourceCommandEventArgs (command);
 			OnUpdating (args);
 			if (args.Cancel)
 				return -1;
 
-			bool closed = connection.State == ConnectionState.Closed;
+			var closed = connection.State == ConnectionState.Closed;
 			if (closed)
 				connection.Open ();
 			Exception exception = null;
-			int result = -1;
+			var result = -1;
 			try {
 				result = command.ExecuteNonQuery ();
 			}
@@ -381,7 +381,7 @@ namespace System.Web.UI.WebControls {
 
 			OnDataSourceViewChanged (EventArgs.Empty);
 
-			SqlDataSourceStatusEventArgs updatedArgs =
+			var updatedArgs =
 				new SqlDataSourceStatusEventArgs (command, result, exception);
 			OnUpdated (updatedArgs);
 
@@ -393,14 +393,14 @@ namespace System.Web.UI.WebControls {
 
 		string FormatOldParameter (string name)
 		{
-			string f = OldValuesParameterFormatString;
+			var f = OldValuesParameterFormatString;
 			if (f.Length > 0)
 				return String.Format (f, name);
 			else
 				return name;
 		}
 
-		object FindValueByName (string parameterName, IDictionary values, bool format)
+		object FindValueByName (string parameterName, IDictionary? values, bool format)
 		{
 			if (values == null)
 				return null;
@@ -413,14 +413,14 @@ namespace System.Web.UI.WebControls {
 			return null;
 		}
 
-		void InitializeParameters (DbCommand command, ParameterCollection parameters, IDictionary values, IDictionary oldValues, bool parametersMayMatchOldValues)
+		void InitializeParameters (DbCommand command, ParameterCollection parameters, IDictionary? values, IDictionary? oldValues, bool parametersMayMatchOldValues)
 		{
-			IOrderedDictionary parameterValues = parameters.GetValues (context, owner);
+			var parameterValues = parameters.GetValues (context, owner);
 
 			foreach (string parameterName in parameterValues.Keys) {
-				Parameter p = parameters [parameterName];
-				object value = FindValueByName (parameterName, values, false);
-				string valueName = parameterName;
+				var p = parameters [parameterName];
+				var value = FindValueByName (parameterName, values, false);
+				var valueName = parameterName;
 				if (value == null)
 					value = FindValueByName (parameterName, oldValues, true);
 
@@ -430,8 +430,8 @@ namespace System.Web.UI.WebControls {
 				}
 
 				if (value != null) {
-					object dbValue = p.ConvertValue (value);
-					DbParameter newParameter = CreateDbParameter (valueName, dbValue, p.Direction, p.Size);
+					var dbValue = p.ConvertValue (value);
+					var newParameter = CreateDbParameter (valueName, dbValue, p.Direction, p.Size);
 					if (!command.Parameters.Contains (newParameter.ParameterName)) {
 						command.Parameters.Add (newParameter);
 					}
@@ -518,7 +518,7 @@ namespace System.Web.UI.WebControls {
 
 		protected virtual object SaveViewState ()
 		{
-			object [] vs = new object [5];
+			var vs = new object [5];
 			
 			if (deleteParameters != null) vs [0] = ((IStateManager) deleteParameters).SaveViewState ();
 			if (filterParameters != null) vs [1] = ((IStateManager) filterParameters).SaveViewState ();
@@ -526,7 +526,7 @@ namespace System.Web.UI.WebControls {
 			if (selectParameters != null) vs [3] = ((IStateManager) selectParameters).SaveViewState ();
 			if (updateParameters != null) vs [4] = ((IStateManager) updateParameters).SaveViewState ();
 				
-			foreach (object o in vs)
+			foreach (var o in vs)
 				if (o != null) return vs;
 			return null;
 		}
@@ -738,7 +738,7 @@ namespace System.Web.UI.WebControls {
 			OnDataSourceViewChanged (EventArgs.Empty);
 		}
 		
-		ParameterCollection GetParameterCollection (ref ParameterCollection output, bool propagateTrackViewState, bool subscribeChanged)
+		ParameterCollection GetParameterCollection (ref ParameterCollection? output, bool propagateTrackViewState, bool subscribeChanged)
 		{
 			if (output != null)
 				return output;

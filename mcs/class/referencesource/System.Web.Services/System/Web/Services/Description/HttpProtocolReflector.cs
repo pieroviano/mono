@@ -20,9 +20,9 @@ namespace System.Web.Services.Description {
         MimeReflector[] reflectors;
 
         protected HttpProtocolReflector() {
-            Type[] reflectorTypes = WebServicesSection.Current.MimeReflectorTypes;
+            var reflectorTypes = WebServicesSection.Current.MimeReflectorTypes;
             reflectors = new MimeReflector[reflectorTypes.Length];
-            for (int i = 0; i < reflectors.Length; i++) {
+            for (var i = 0; i < reflectors.Length; i++) {
                 MimeReflector reflector = (MimeReflector)Activator.CreateInstance(reflectorTypes[i]);
                 reflector.ReflectionContext = this;
                 reflectors[i] = reflector;
@@ -30,8 +30,8 @@ namespace System.Web.Services.Description {
         }
 
         protected bool ReflectMimeParameters() {
-            bool handled = false;
-            for (int i = 0; i < reflectors.Length; i++) {
+            var handled = false;
+            for (var i = 0; i < reflectors.Length; i++) {
                 if (reflectors[i].ReflectParameters())
                     handled = true;
             }
@@ -40,11 +40,11 @@ namespace System.Web.Services.Description {
 
         protected bool ReflectMimeReturn() {
             if (Method.ReturnType == typeof(void)) {
-                Message outputMessage = OutputMessage;
+                var outputMessage = OutputMessage;
                 return true;
             }
-            bool handled = false;
-            for (int i = 0; i < reflectors.Length; i++) {
+            var handled = false;
+            for (var i = 0; i < reflectors.Length; i++) {
                 if (reflectors[i].ReflectReturn()) {
                     handled = true;
                     break;
@@ -62,41 +62,41 @@ namespace System.Web.Services.Description {
         }
 
         internal void ReflectStringParametersMessage() {
-            Message inputMessage = InputMessage;
-            foreach (ParameterInfo parameterInfo in Method.InParameters) {
-                MessagePart part = new MessagePart();
+            var inputMessage = InputMessage;
+            foreach (var parameterInfo in Method.InParameters) {
+                var part = new MessagePart();
                 part.Name = XmlConvert.EncodeLocalName(parameterInfo.Name);
                 if (parameterInfo.ParameterType.IsArray) {
-                    string typeNs = DefaultNamespace;
+                    var typeNs = DefaultNamespace;
                     if (typeNs.EndsWith("/", StringComparison.Ordinal))
                         typeNs += "AbstractTypes";
                     else
                         typeNs += "/AbstractTypes";
-                    string typeName = "StringArray";
+                    var typeName = "StringArray";
                     if (!ServiceDescription.Types.Schemas.Contains(typeNs)) {
-                        XmlSchema schema = new XmlSchema();
+                        var schema = new XmlSchema();
                         schema.TargetNamespace = typeNs;
                         ServiceDescription.Types.Schemas.Add(schema);
                        
-                        XmlSchemaElement element = new XmlSchemaElement();
+                        var element = new XmlSchemaElement();
                         element.Name = "String";
                         element.SchemaTypeName = new XmlQualifiedName("string", XmlSchema.Namespace);
                         element.MinOccurs = decimal.Zero;
                         element.MaxOccurs = decimal.MaxValue;
-                        XmlSchemaSequence all = new XmlSchemaSequence();
+                        var all = new XmlSchemaSequence();
                         all.Items.Add(element);
 
-                        XmlSchemaComplexContentRestriction restriction = new XmlSchemaComplexContentRestriction();
+                        var restriction = new XmlSchemaComplexContentRestriction();
                         restriction.BaseTypeName = new XmlQualifiedName(Soap.ArrayType, Soap.Encoding);
                         restriction.Particle = all;
 
-                        XmlSchemaImport import = new XmlSchemaImport();
+                        var import = new XmlSchemaImport();
                         import.Namespace = restriction.BaseTypeName.Namespace;
                         
-                        XmlSchemaComplexContent model = new XmlSchemaComplexContent();
+                        var model = new XmlSchemaComplexContent();
                         model.Content = restriction;
 
-                        XmlSchemaComplexType type = new XmlSchemaComplexType();
+                        var type = new XmlSchemaComplexType();
                         type.Name = typeName;
                         type.ContentModel = model;
 
@@ -114,8 +114,8 @@ namespace System.Web.Services.Description {
 
         internal string MethodUrl {
             get {
-                WebMethodAttribute methodAttribute = Method.MethodAttribute;
-                string name = methodAttribute.MessageName;
+                var methodAttribute = Method.MethodAttribute;
+                var name = methodAttribute.MessageName;
                 if (name.Length == 0) name = Method.Name;
                 return "/" + name;
             }

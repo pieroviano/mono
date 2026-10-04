@@ -70,7 +70,7 @@ namespace System.Configuration
 
 		public object Clone ()
 		{
-			SettingsPropertyCollection col = new SettingsPropertyCollection ();
+			var col = new SettingsPropertyCollection ();
 			col.items = (Hashtable)items.Clone ();
 
 			return col;

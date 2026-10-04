@@ -68,12 +68,12 @@ namespace System.Web.UI.WebControls
 			return new CookieParameter (this);
 		}
 		protected internal
-		override object Evaluate (HttpContext context, Control control)
+		override object Evaluate (HttpContext? context, Control control)
 		{
 			if (context == null || context.Request == null)
 				return null;
 			
-			HttpCookie c = context.Request.Cookies [CookieName];
+			var c = context.Request.Cookies [CookieName];
 			if (c == null)
 				return null;
 			

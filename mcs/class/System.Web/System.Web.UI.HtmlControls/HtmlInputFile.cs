@@ -50,7 +50,7 @@ namespace System.Web.UI.HtmlControls
 		[WebSysDescription("")]
 		public string Accept {
 			get {
-				string acc = Attributes["accept"];
+				var acc = Attributes["accept"];
 
 				if (acc == null) {
 					return (String.Empty);
@@ -72,7 +72,7 @@ namespace System.Web.UI.HtmlControls
 		[WebSysDescription("")]
 		public int MaxLength {
 			get {
-				string maxlen = Attributes["maxlength"];
+				var maxlen = Attributes["maxlength"];
 				
 				if (maxlen == null) {
 					return (-1);
@@ -105,7 +105,7 @@ namespace System.Web.UI.HtmlControls
 		[WebCategory("Appearance")]
 		public int Size {
 			get {
-				string size = Attributes["size"];
+				var size = Attributes["size"];
 				
 				if (size == null) {
 					return (-1);
@@ -125,7 +125,7 @@ namespace System.Web.UI.HtmlControls
 		[Browsable (false)]
 		public override string Value {
 			get {
-				HttpPostedFile file = PostedFile;
+				var file = PostedFile;
 				if (file == null)
 					return string.Empty;
 
@@ -140,20 +140,20 @@ namespace System.Web.UI.HtmlControls
 		{
 			base.OnPreRender (e);
 
-			Page page = Page;
+			var page = Page;
 			if (page != null && !Disabled) {
 				page.RegisterRequiresPostBack (this);
 				page.RegisterEnabledControl (this);
 			}
 			
-			HtmlForm form = (HtmlForm) SearchParentByType (typeof (HtmlForm));
+			var form = (HtmlForm) SearchParentByType (typeof (HtmlForm));
 			if (form != null && form.Enctype == String.Empty)
 				form.Enctype = "multipart/form-data";
 		}
 
 		Control SearchParentByType (Type type)
 		{
-			Control ctrl = Parent;
+			var ctrl = Parent;
 			while (ctrl != null) {
 				if (type.IsAssignableFrom (ctrl.GetType ())) {
 					return ctrl;
@@ -166,7 +166,7 @@ namespace System.Web.UI.HtmlControls
 
 		bool LoadPostDataInternal (string postDataKey, NameValueCollection postCollection)
 		{
-			Page page = Page;
+			var page = Page;
 			if (page != null)
 				posted_file = page.Request.Files [postDataKey];
 			

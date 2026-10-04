@@ -53,11 +53,11 @@ namespace System.Web.Services.Protocols {
             this.asyncCallbackCalls = 0;
             if (protocol.IsOneWay)
                 return;
-            HttpContext context = protocol.Context;
+            var context = protocol.Context;
             if (context == null) return; // context is null in non-network case
 
             // we want the default to be no caching on the client
-            int cacheDuration = protocol.MethodAttribute.CacheDuration;
+            var cacheDuration = protocol.MethodAttribute.CacheDuration;
             if (cacheDuration > 0) {
                 context.Response.Cache.SetCacheability(HttpCacheability.Server);
                 context.Response.Cache.SetExpires(DateTime.Now.AddSeconds(cacheDuration));
@@ -106,7 +106,7 @@ namespace System.Web.Services.Protocols {
                 TraceMethod caller = Tracing.On ? new TraceMethod(this, "Invoke") : null;
                 TraceMethod userMethod = Tracing.On ? new TraceMethod(protocol.Target, protocol.MethodInfo.Name, this.parameters) : null;
                 if (Tracing.On) Tracing.Enter(protocol.MethodInfo.ToString(), caller, userMethod);
-                object[] returnValues = protocol.MethodInfo.Invoke(protocol.Target, this.parameters);
+                var returnValues = protocol.MethodInfo.Invoke(protocol.Target, this.parameters);
                 if (Tracing.On) Tracing.Exit(protocol.MethodInfo.ToString(), caller);
                 WriteReturns(returnValues);
             }
@@ -146,7 +146,7 @@ namespace System.Web.Services.Protocols {
 
         protected void CoreProcessRequest() {
             try {
-                bool transacted = protocol.MethodAttribute.TransactionEnabled;
+                var transacted = protocol.MethodAttribute.TransactionEnabled;
                 if (protocol.IsOneWay) {
                     WorkItemCallback callback = null;
                     TraceMethod callbackMethod = null;
@@ -189,7 +189,7 @@ namespace System.Web.Services.Protocols {
 
         private HttpContext SwitchContext(HttpContext context) {
             PartialTrustHelpers.FailIfInPartialTrustOutsideAspNet();
-            HttpContext oldContext = HttpContext.Current;
+            var oldContext = HttpContext.Current;
             HttpContext.Current = context;
             return oldContext;
         }
@@ -242,7 +242,7 @@ namespace System.Web.Services.Protocols {
             }
         }
 
-        protected IAsyncResult BeginCoreProcessRequest(AsyncCallback callback, object asyncState) {
+        protected IAsyncResult BeginCoreProcessRequest(AsyncCallback? callback, object asyncState) {
             IAsyncResult asyncResult;
 
             if (protocol.MethodAttribute.TransactionEnabled)
@@ -321,7 +321,7 @@ namespace System.Web.Services.Protocols {
             EndInvoke(asyncResult);
         }
 
-        protected void EndCoreProcessRequest(IAsyncResult asyncResult) {
+        protected void EndCoreProcessRequest(IAsyncResult? asyncResult) {
             if (asyncResult == null) return;
 
             if (protocol.IsOneWay)
@@ -334,7 +334,7 @@ namespace System.Web.Services.Protocols {
             try {
                 if (exception != null)
                     throw (exception);
-                object[] returnValues = protocol.MethodInfo.EndInvoke(protocol.Target, asyncResult);
+                var returnValues = protocol.MethodInfo.EndInvoke(protocol.Target, asyncResult);
                 WriteReturns(returnValues);
             }
             catch (Exception e) {
@@ -357,8 +357,8 @@ namespace System.Web.Services.Protocols {
             // By default ASP.NET will fully buffer the response. If BufferResponse=false
             // then we still want to do partial buffering since each write is a named
             // pipe call over to inetinfo.
-            bool fullyBuffered = protocol.MethodAttribute.BufferResponse;
-            Stream outputStream = protocol.Response.OutputStream;
+            var fullyBuffered = protocol.MethodAttribute.BufferResponse;
+            var outputStream = protocol.Response.OutputStream;
             if (!fullyBuffered) {
                 outputStream = new BufferedResponseStream(outputStream, 16 * 1024);
                 //#if DEBUG
@@ -405,18 +405,18 @@ namespace System.Web.Services.Protocols {
 
         internal AsyncSessionlessHandler(ServerProtocol protocol) : base(protocol) { }
 
-        public IAsyncResult BeginProcessRequest(HttpContext context, AsyncCallback callback, object asyncState) {
+        public IAsyncResult BeginProcessRequest(HttpContext context, AsyncCallback? callback, object asyncState) {
             TraceMethod method = Tracing.On ? new TraceMethod(this, "BeginProcessRequest") : null;
             if (Tracing.On) Tracing.Enter("IHttpAsyncHandler.BeginProcessRequest", method, Tracing.Details(context.Request));
 
-            IAsyncResult result = BeginCoreProcessRequest(callback, asyncState);
+            var result = BeginCoreProcessRequest(callback, asyncState);
 
             if (Tracing.On) Tracing.Exit("IHttpAsyncHandler.BeginProcessRequest", method);
 
             return result;
         }
 
-        public void EndProcessRequest(IAsyncResult asyncResult) {
+        public void EndProcessRequest(IAsyncResult? asyncResult) {
             TraceMethod method = Tracing.On ? new TraceMethod(this, "EndProcessRequest") : null;
             if (Tracing.On) Tracing.Enter("IHttpAsyncHandler.EndProcessRequest", method);
 

@@ -45,7 +45,7 @@ namespace System.Web.UI.HtmlControls{
 		{
 		}
 		
-		public HtmlGenericControl (string tag) :
+		public HtmlGenericControl (string? tag) :
 			base ()
 		{
 			if (tag == null)

@@ -96,7 +96,7 @@ namespace System.Web.Caching
 #if DEBUG
 		CacheItem CopyItem (CacheItem item)
 		{
-			CacheItem newItem = new CacheItem ();
+			var newItem = new CacheItem ();
 
 			// if (items.TryGetValue (item.Guid, out newItem)) {
 			// 	newItem.PriorityQueueIndex = item.PriorityQueueIndex
@@ -155,7 +155,7 @@ namespace System.Web.Caching
 			}
 
 			try {
-				string filePath = Path.Combine (HttpRuntime.AppDomainAppPath, String.Format ("cache_pq_sequence_{0}_{1:x}.seq",
+				var filePath = Path.Combine (HttpRuntime.AppDomainAppPath, String.Format ("cache_pq_sequence_{0}_{1:x}.seq",
 													     DateTime.UtcNow.ToString ("yyyy-MM-dd_hh-mm-ss"),
 													     GetHashCode ()));
 				var settings = new XmlWriterSettings ();
@@ -165,10 +165,10 @@ namespace System.Web.Caching
 				settings.Encoding = Encoding.UTF8;
 
 				Console.Error.WriteLine ("Saving sequence in file {0}", filePath);
-				using (XmlWriter writer = XmlWriter.Create (filePath, settings)) {
+				using (var writer = XmlWriter.Create (filePath, settings)) {
 					writer.WriteStartDocument (true);
 					writer.WriteStartElement ("sequence");
-					foreach (EDSequenceEntry entry in EDSequence) {
+					foreach (var entry in EDSequence) {
 						writer.WriteStartElement ("entry");
 						writer.WriteAttributeString ("type", entry.Type.ToString ());
 						if (entry.Item == null)

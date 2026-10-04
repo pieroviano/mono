@@ -61,7 +61,7 @@ namespace System.Web.UI.HtmlControls
 		[WebCategory("Behavior")]
 		public int MaxLength {
 			get {
-				string s = Attributes ["maxlength"];
+				var s = Attributes ["maxlength"];
 				return (s == null) ? -1 : Convert.ToInt32 (s);
 			}
 			set {
@@ -78,7 +78,7 @@ namespace System.Web.UI.HtmlControls
 		[WebCategory("Appearance")]
 		public int Size {
 			get {
-				string s = Attributes ["size"];
+				var s = Attributes ["size"];
 				return (s == null) ? -1 : Convert.ToInt32 (s);
 			}
 			set {
@@ -91,7 +91,7 @@ namespace System.Web.UI.HtmlControls
 
 		public override string Value {
 			get {
-				string s = Attributes ["value"];
+				var s = Attributes ["value"];
 				return (s == null) ? String.Empty : s;
 			}
 			set {
@@ -104,7 +104,7 @@ namespace System.Web.UI.HtmlControls
 
 		protected internal override void Render (HtmlTextWriter writer)
 		{
-			Page page = Page;
+			var page = Page;
 			if (page != null)
 				page.ClientScript.RegisterForEventValidation (UniqueID);
 			base.Render (writer);
@@ -114,7 +114,7 @@ namespace System.Web.UI.HtmlControls
 		{
 			base.OnPreRender (e);
 
-			Page page = Page;
+			var page = Page;
 			if (page != null && !Disabled) {
 				page.RegisterRequiresPostBack (this);
 				page.RegisterEnabledControl (this);

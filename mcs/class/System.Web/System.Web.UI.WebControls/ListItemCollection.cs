@@ -103,7 +103,7 @@ namespace System.Web.UI.WebControls {
 		}
 
 		public void Add(string item) {
-			ListItem listItem = new ListItem (item);
+			var listItem = new ListItem (item);
 			items.Add (listItem);
 
 			if (tracking) {
@@ -113,7 +113,7 @@ namespace System.Web.UI.WebControls {
 		}
 
 		public void AddRange(ListItem[] items) {
-			for (int i = 0; i < items.Length; i++) {
+			for (var i = 0; i < items.Length; i++) {
 				Add(items[i]);
 
 				if (tracking) {
@@ -140,7 +140,7 @@ namespace System.Web.UI.WebControls {
 
 		public ListItem FindByText (string text)
 		{
-			for (int i = 0; i < items.Count; i++)
+			for (var i = 0; i < items.Count; i++)
 				if (text == this [i].Text)
 					return this [i];
 			
@@ -149,7 +149,7 @@ namespace System.Web.UI.WebControls {
 
 		public ListItem FindByValue (string value)
 		{
-			for (int i = 0; i < items.Count; i++)
+			for (var i = 0; i < items.Count; i++)
 				if (value == this [i].Value)
 					return this [i];
 			
@@ -165,7 +165,7 @@ namespace System.Web.UI.WebControls {
 		}
 
 		internal int IndexOf(string value) {
-			for (int i = 0; i < items.Count; i++)
+			for (var i = 0; i < items.Count; i++)
 				if (value == this [i].Value)
 					return i;
 			return -1;
@@ -182,7 +182,7 @@ namespace System.Web.UI.WebControls {
 		}
 
 		public void Insert(int index, string item) {
-			ListItem listItem = new ListItem(item);
+			var listItem = new ListItem(item);
 			items.Insert (index, listItem);
 
 			if (tracking) {
@@ -201,7 +201,7 @@ namespace System.Web.UI.WebControls {
 
 		public void Remove (string item)
 		{
-			for (int i = 0; i < items.Count; i++)
+			for (var i = 0; i < items.Count; i++)
 				if (item == this [i].Value) {
 					items.RemoveAt (i);
 
@@ -241,7 +241,7 @@ namespace System.Web.UI.WebControls {
 		}
 
 		int IList.Add(object value) {
-			int i = items.Add ((ListItem) value);
+			var i = items.Add ((ListItem) value);
 
 			if (tracking) {
 				((IStateManager) value).TrackViewState ();
@@ -278,9 +278,9 @@ namespace System.Web.UI.WebControls {
 			if (pair == null)
 				return;
 
-			bool newCollection = (bool) pair.First;
-			object [] itemsArray = (object []) pair.Second;
-			int count = itemsArray==null ? 0 : itemsArray.Length;
+			var newCollection = (bool) pair.First;
+			var itemsArray = (object []) pair.Second;
+			var count = itemsArray==null ? 0 : itemsArray.Length;
 
 			if (newCollection)
 				if (count > 0)
@@ -288,8 +288,8 @@ namespace System.Web.UI.WebControls {
 				else
 					items = new ArrayList();
 
-			for (int i = 0; i < count; i++) {
-				ListItem item = new ListItem ();
+			for (var i = 0; i < count; i++) {
+				var item = new ListItem ();
 				
 				if (newCollection) {
 					item.LoadViewState (itemsArray [i]);
@@ -308,7 +308,7 @@ namespace System.Web.UI.WebControls {
 
 		object IStateManager.SaveViewState() {
 			int count;
-			bool itemsDirty = false;
+			var itemsDirty = false;
 
 			count = items.Count;
 			if (count == 0 && !dirty)
@@ -318,7 +318,7 @@ namespace System.Web.UI.WebControls {
 			if (count > 0)
 				itemsState = new object [count];
 
-			for (int i = 0; i < count; i++) {
+			for (var i = 0; i < count; i++) {
 				itemsState [i] = ((IStateManager) items [i]).SaveViewState ();
 				if (itemsState [i] != null)
 					itemsDirty = true;
@@ -333,7 +333,7 @@ namespace System.Web.UI.WebControls {
 		void IStateManager.TrackViewState() {
 			tracking = true;
 
-			for (int i = 0; i < items.Count; i++) {
+			for (var i = 0; i < items.Count; i++) {
 				((ListItem)items[i]).TrackViewState();
 			}
 		}
@@ -342,7 +342,7 @@ namespace System.Web.UI.WebControls {
 		void SetDirty ()
 		{
 			dirty = true;
-			for (int i = lastDirty; i < items.Count; i++)
+			for (var i = lastDirty; i < items.Count; i++)
 				((ListItem) items [i]).SetDirty ();
 			
 			lastDirty = items.Count - 1;

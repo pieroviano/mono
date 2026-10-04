@@ -44,7 +44,7 @@ namespace System.Web.UI.WebControls {
 
 		#region Public Instance Methods
 		// We need to return all controls that have a validation property
-		public override TypeConverter.StandardValuesCollection GetStandardValues(ITypeDescriptorContext context) 
+		public override TypeConverter.StandardValuesCollection GetStandardValues(ITypeDescriptorContext? context) 
 		{
 			if ((context != null) && (context.Container != null) && (context.Container.Components != null)) {
 				ArrayList		values;
@@ -56,7 +56,7 @@ namespace System.Web.UI.WebControls {
 				components = context.Container.Components;
 				count = components.Count;
 
-				for (int i = 0; i < count; i++) {
+				for (var i = 0; i < count; i++) {
 					if (FilterControl((Control)components[i])) {	// We have a ValidationProperty
 						id = ((Control)components[i]).ID;
 						if ((id != null) && (id.Length > 0)) {

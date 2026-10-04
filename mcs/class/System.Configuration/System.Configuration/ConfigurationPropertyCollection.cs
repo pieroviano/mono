@@ -47,7 +47,7 @@ namespace System.Configuration
 
 		public ConfigurationProperty this [string name] {
 			get {
-				foreach (ConfigurationProperty cp in collection)
+				foreach (var cp in collection)
 					if (cp.Name == name)
 							return cp;
 
@@ -72,7 +72,7 @@ namespace System.Configuration
 
 		public bool Contains (string name)
 		{
-			ConfigurationProperty property = this [name];
+			var property = this [name];
 
 			if (property == null)
 				return false;

@@ -139,7 +139,7 @@ namespace System.Configuration
 		//
 		// Methods
 		//
-		public static string GetFilename (XmlReader reader)
+		public static string GetFilename (XmlReader? reader)
 		{
 			// FIXME: eliminate this silly compatibility.
 			if (reader is IConfigErrorInfo)

@@ -100,13 +100,13 @@ namespace System.Web.Compilation
 
 			ControlBuilder builder = parser.RootBuilder;
 			if (builder.Children != null) {
-				foreach (object o in builder.Children) {
+				foreach (var o in builder.Children) {
 					if (! (o is ControlBuilder))
 						continue;
 					if (o is CodeRenderBuilder)
 						continue;
 					
-					ControlBuilder b = (ControlBuilder) o;
+					var b = (ControlBuilder) o;
 					CreateControlSkinMethod (b);
 				}
 			}
@@ -114,12 +114,12 @@ namespace System.Web.Compilation
 
 		CodeExpression CreateLinkedStyleSheets ()
 		{
-			string [] lss = parser.LinkedStyleSheets;
+			var lss = parser.LinkedStyleSheets;
 			if (lss == null)
 				return new CodePrimitiveExpression (null);
 			
-			CodeExpression [] initializers = new CodeExpression [lss.Length];
-			for (int i = 0; i < lss.Length; i++)
+			var initializers = new CodeExpression [lss.Length];
+			for (var i = 0; i < lss.Length; i++)
 				initializers[i] = new CodePrimitiveExpression (lss[i]);
 
 			return new CodeArrayCreateExpression (typeof (string), initializers);
@@ -141,7 +141,7 @@ namespace System.Web.Compilation
 			
 			EnsureID (builder);
 
-			CodeMemberMethod method = new CodeMemberMethod ();
+			var method = new CodeMemberMethod ();
 			method.Name = "__BuildControl_" + builder.ID;
 			method.Parameters.Add (new CodeParameterDeclarationExpression (typeof (Control), "ctrl"));
 
@@ -154,10 +154,10 @@ namespace System.Web.Compilation
 
 			// _ctrl = ($controlType)(ctrl);
 			//
-			CodeCastExpression castExpr = new CodeCastExpression (builder.ControlType, new CodeVariableReferenceExpression ("ctrl"));
+			var castExpr = new CodeCastExpression (builder.ControlType, new CodeVariableReferenceExpression ("ctrl"));
 			
 			method.Statements.Add (new CodeVariableDeclarationStatement (builder.ControlType, "__ctrl"));
-			CodeAssignStatement assign = new CodeAssignStatement ();
+			var assign = new CodeAssignStatement ();
 			assign.Left = ctrlVar;
 			assign.Right = castExpr;
 			method.Statements.Add (assign);
@@ -165,11 +165,11 @@ namespace System.Web.Compilation
 			CreateAssignStatementsFromAttributes (builder);
 
 			if (builder.Children != null) {
-				foreach (object o in builder.Children) {
+				foreach (var o in builder.Children) {
 					if (! (o is ControlBuilder))
 						continue;
 
-					ControlBuilder b = (ControlBuilder) o;
+					var b = (ControlBuilder) o;
 					if (b.ControlType == null)
 						continue;
 					
@@ -182,9 +182,9 @@ namespace System.Web.Compilation
 						
 						if (itemsProp != null) {
 							/* emit a prop.Clear call before populating the collection */;
-							CodePropertyReferenceExpression prop = new CodePropertyReferenceExpression (ctrlVar,
+							var prop = new CodePropertyReferenceExpression (ctrlVar,
 																																													b.TagName);
-							CodePropertyReferenceExpression items = new CodePropertyReferenceExpression (prop,
+							var items = new CodePropertyReferenceExpression (prop,
 																																													 "Items");
 							method.Statements.Add (new CodeMethodInvokeExpression (items, "Clear"));
 						}
@@ -209,26 +209,26 @@ namespace System.Web.Compilation
 			ControlBuilder builder = parser.RootBuilder;
 
 			if (builder.Children != null) {
-				foreach (object o in builder.Children) {
+				foreach (var o in builder.Children) {
 					if (o is string) /* literal stuff gets ignored */
 						continue;
 					if (o is CodeRenderBuilder)
 						continue;
-					ControlBuilder b = (ControlBuilder) o;
+					var b = (ControlBuilder) o;
 
 					EnsureID (b);
-					Type controlType = b.ControlType;
+					var controlType = b.ControlType;
 					if (controlType == null)
 						continue;
 					
-					string id = b.ID;
+					var id = b.ID;
 					string skinId = b.Attributes != null ? b.Attributes["skinid"] as string : null;
 					if (skinId == null)
 						skinId = "";
 
 					// private static object __BuildControl__$id_skinKey = System.Web.UI.PageTheme.CreateSkinKey(typeof($controlType), "$skinID")
 					//
-					CodeMemberField fld = new CodeMemberField (typeof (object), "__BuildControl_" + id + "_skinKey");
+					var fld = new CodeMemberField (typeof (object), "__BuildControl_" + id + "_skinKey");
 					fld.Attributes = MemberAttributes.Private | MemberAttributes.Static;
 					fld.InitExpression = new CodeMethodInvokeExpression (
 						new CodeTypeReferenceExpression (typeof (PageTheme)),
@@ -241,24 +241,24 @@ namespace System.Web.Compilation
 			}
 		}
 
-		protected override void CreateConstructor (CodeStatementCollection localVars,
-							   CodeStatementCollection trueStmt)
+		protected override void CreateConstructor (CodeStatementCollection? localVars,
+							   CodeStatementCollection? trueStmt)
 		{
 			ControlBuilder builder = parser.RootBuilder;
 
 			if (builder.Children != null) {
-				foreach (object o in builder.Children) {
+				foreach (var o in builder.Children) {
 					if (o is string) /* literal stuff gets ignored */
 						continue;
 					if (o is CodeRenderBuilder)
 						continue;
 					
-					ControlBuilder b = (ControlBuilder) o;
-					Type controlType = b.ControlType;
+					var b = (ControlBuilder) o;
+					var controlType = b.ControlType;
 					if (controlType == null)
 						continue;
 
-					string id = b.ID;
+					var id = b.ID;
 					
 					if (localVars == null)
 						localVars = new CodeStatementCollection ();

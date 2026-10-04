@@ -32,11 +32,11 @@ namespace System.Web
 {
 	class HttpForbiddenHandler : IHttpHandler
 	{
-		public void ProcessRequest (HttpContext context)
+		public void ProcessRequest (HttpContext? context)
 		{
 			HttpRequest req = context != null ? context.Request : null;
 			string path = req != null ? req.Path : null;
-			string description = "The type of page you have requested is not served because it has been explicitly forbidden. The extension '" +
+			var description = "The type of page you have requested is not served because it has been explicitly forbidden. The extension '" +
 				(path == null ? String.Empty : VirtualPathUtility.GetExtension (path)) +
 				"' may be incorrect. Please review the URL below and make sure that it is spelled correctly.";
 				

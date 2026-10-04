@@ -39,7 +39,7 @@ namespace Microsoft.Web.Infrastructure.DynamicValidationHelper
 		private const string UNVALIDATED_DATA_KEY = "__MWI_UNVALIDATED_DATA_KEY";
 
 		[SecuritySafeCritical]
-		public static void EnableDynamicValidation (HttpContext context)
+		public static void EnableDynamicValidation (HttpContext? context)
 		{
 			HttpRequest req = context != null ? context.Request : null;
 			if (req == null)
@@ -59,7 +59,7 @@ namespace Microsoft.Web.Infrastructure.DynamicValidationHelper
 		}
 
 		[SecuritySafeCritical]
-		public static bool? IsValidationEnabled (HttpContext context)
+		public static bool? IsValidationEnabled (HttpContext? context)
 		{
 			HttpRequest req = context != null ? context.Request : null;
 			if (req == null)
@@ -69,7 +69,7 @@ namespace Microsoft.Web.Infrastructure.DynamicValidationHelper
 		}
 
 		[SecuritySafeCritical]
-		public static void GetUnvalidatedCollections (HttpContext context, out Func <NameValueCollection> formGetter, out Func <NameValueCollection> queryStringGetter)
+		public static void GetUnvalidatedCollections (HttpContext? context, out Func <NameValueCollection> formGetter, out Func <NameValueCollection> queryStringGetter)
 		{
 			if (context == null)
 				throw new ArgumentNullException ("context");

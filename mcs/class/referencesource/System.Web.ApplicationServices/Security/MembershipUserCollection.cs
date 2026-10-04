@@ -31,7 +31,7 @@ namespace System.Web.Security {
             if (_ReadOnly)
                 throw new NotSupportedException();
 
-            int pos = _Values.Add(user);
+            var pos = _Values.Add(user);
             try {
                 _Indices.Add(user.UserName, pos);
             }
@@ -48,12 +48,12 @@ namespace System.Web.Security {
             object pos = _Indices[name];
             if (pos == null || !(pos is int))
                 return;
-            int ipos = (int)pos;
+            var ipos = (int)pos;
             if (ipos >= _Values.Count)
                 return;
             _Values.RemoveAt(ipos);
             _Indices.Remove(name);
-            ArrayList al = new ArrayList();
+            var al = new ArrayList();
             foreach (DictionaryEntry de in _Indices)
                 if ((int)de.Value > ipos)
                     al.Add(de.Key);
@@ -66,7 +66,7 @@ namespace System.Web.Security {
                 object pos = _Indices[name];
                 if (pos == null || !(pos is int))
                     return null;
-                int ipos = (int)pos;
+                var ipos = (int)pos;
                 if (ipos >= _Values.Count)
                     return null;
                 return (MembershipUser)_Values[ipos];

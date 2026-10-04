@@ -103,7 +103,7 @@ namespace System.Web.UI
 		
 		UpdatePanel ParentPanel {
 			get {
-				Control parent = Parent;
+				var parent = Parent;
 				if (cachedParent == parent && parentPanelChecked)
 					return parentPanel;
 
@@ -201,7 +201,7 @@ namespace System.Web.UI
 			if (_triggers == null || _triggers.Count == 0)
 				return false;
 
-			foreach (UpdatePanelTrigger trigger in _triggers)
+			foreach (var trigger in _triggers)
 				if (trigger.HasTriggered ())
 					return true;
 
@@ -278,7 +278,7 @@ namespace System.Web.UI
 			writer.RenderEndTag ();
 		}
 
-		UpdatePanel FindParentPanel (Control parent)
+		UpdatePanel FindParentPanel (Control? parent)
 		{
 			parentPanelChecked = true;
 			while (parent != null) {
@@ -302,7 +302,7 @@ namespace System.Web.UI
 					altWriter = writer.InnerWriter as ScriptManager.AlternativeHtmlTextWriter;
 				
 				if (altWriter == null) {
-					UpdatePanel parentPanel = ParentPanel;
+					var parentPanel = ParentPanel;
 					if (parentPanel != null)
 						altWriter = parentPanel.RenderChildrenWriter;
 				}
@@ -313,12 +313,12 @@ namespace System.Web.UI
 				// Used by nested panels (see bug #542441)
 				RenderChildrenWriter = altWriter;
 				try {
-					HtmlTextWriter responseOutput = altWriter.ResponseOutput;
-					StringBuilder sb = new StringBuilder ();
-					HtmlTextWriter w = new HtmlTextWriter (new StringWriter (sb));
+					var responseOutput = altWriter.ResponseOutput;
+					var sb = new StringBuilder ();
+					var w = new HtmlTextWriter (new StringWriter (sb));
 					base.RenderChildren (w);
 					w.Flush ();
-					UpdatePanel parent = ParentPanel;
+					var parent = ParentPanel;
 					if (parent != null && parent.ChildrenAsTriggers)
 						writer.Write (sb.ToString ());
 					else

@@ -73,7 +73,7 @@ namespace System.Web.UI.WebControls
 			if (base.OnBubbleEvent (source, e)) return true;
 			
 			if (e is CommandEventArgs) {
-				DetailsViewCommandEventArgs args = new DetailsViewCommandEventArgs (source, (CommandEventArgs)e);
+				var args = new DetailsViewCommandEventArgs (source, (CommandEventArgs)e);
 				RaiseBubbleEvent (source, args);
 				return true;
 			}

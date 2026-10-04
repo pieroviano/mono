@@ -70,7 +70,7 @@ namespace System.Web.UI.WebControls
 			if (base.OnBubbleEvent (source, e)) return true;
 			
 			if (e is CommandEventArgs) {
-				FormViewCommandEventArgs args = new FormViewCommandEventArgs (source, (CommandEventArgs)e);
+				var args = new FormViewCommandEventArgs (source, (CommandEventArgs)e);
 				RaiseBubbleEvent (source, args);
 				return true;
 			}

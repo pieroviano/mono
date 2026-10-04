@@ -100,17 +100,17 @@ namespace System.Web.UI.WebControls {
 			Text = lc.Text;
 		}
 	
-		void IStateManager.LoadViewState (object state)
+		void IStateManager.LoadViewState (object? state)
 		{
 			LoadViewState (state);
 		}
 		
-		internal void LoadViewState (object state)
+		internal void LoadViewState (object? state)
 		{
 			if (state == null)
 				return;
 
-			object [] states = (object []) state;
+			var states = (object []) state;
 
 			if (states [0] != null) {
 				sb = new StateBag (true);
@@ -138,7 +138,7 @@ namespace System.Web.UI.WebControls {
 			if (!dirty)
 				return null;
 
-			object [] state = new object [5];
+			var state = new object [5];
 			state [0] = sb != null ? sb.SaveViewState () : null;
 			state [1] = (object) text;
 			state [2] = (object) value;
@@ -203,7 +203,7 @@ namespace System.Web.UI.WebControls {
 		[PersistenceMode(PersistenceMode.EncodedInnerDefaultProperty)]
 		public string Text {
 			get {
-				string r = text;
+				var r = text;
 				if (r == null)
 					r = value;
 				if (r == null)
@@ -222,7 +222,7 @@ namespace System.Web.UI.WebControls {
 		[DefaultValue("")]
 		public string Value {
 			get {
-				string r = value;
+				var r = value;
 				if (r == null)
 					r = text;
 				if (r == null)

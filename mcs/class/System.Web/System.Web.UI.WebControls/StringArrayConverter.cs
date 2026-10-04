@@ -42,7 +42,7 @@ namespace System.Web.UI.WebControls
 			return base.CanConvertFrom (context, sourceType);
 		}
 
-		public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
+		public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object? value)
 		{
 			if (value == null)
 				return null;

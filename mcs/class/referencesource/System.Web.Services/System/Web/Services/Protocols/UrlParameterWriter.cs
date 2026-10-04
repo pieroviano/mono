@@ -26,7 +26,7 @@ namespace System.Web.Services.Protocols {
         /// </devdoc>
         public override string GetRequestUrl(string url, object[] parameters) {
             if (parameters.Length == 0) return url;
-            StringBuilder builder = new StringBuilder(url);
+            var builder = new StringBuilder(url);
             builder.Append('?');
             TextWriter writer = new StringWriter(builder, CultureInfo.InvariantCulture);
             Encode(writer, parameters);

@@ -68,15 +68,15 @@ namespace System.Web
 		
 		bool IsEventHandler (MethodInfo m)
 		{
-			int pos = m.Name.IndexOf ('_');
+			var pos = m.Name.IndexOf ('_');
 			if (pos == -1 || (m.Name.Length - 1) <= pos)
 				return false;
 
 			if (m.ReturnType != typeof (void))
 				return false;
 
-			ParameterInfo [] pi = m.GetParameters ();
-			int length = pi.Length;
+			var pi = m.GetParameters ();
+			var length = pi.Length;
 			if (length == 0)
 				return true;
 
@@ -92,7 +92,7 @@ namespace System.Web
 
 		void AddEvent (MethodInfo method, Hashtable appTypeEventHandlers)
 		{
-			string name = method.Name.Replace ("_On", "_");
+			var name = method.Name.Replace ("_On", "_");
 			if (appTypeEventHandlers [name] == null) {
 				appTypeEventHandlers [name] = method;
 				return;
@@ -112,8 +112,8 @@ namespace System.Web
 
 		ArrayList GetMethodsDeep (Type type)
 		{
-			ArrayList al = new ArrayList ();
-			MethodInfo[] methods = type.GetMethods (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance  | BindingFlags.Static | BindingFlags.FlattenHierarchy);
+			var al = new ArrayList ();
+			var methods = type.GetMethods (BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance  | BindingFlags.Static | BindingFlags.FlattenHierarchy);
 			al.AddRange (methods);
 
 			Type t = type.BaseType;
@@ -136,12 +136,12 @@ namespace System.Web
 					return app_event_handlers;
 
 				app_event_handlers = new Hashtable ();
-				ArrayList methods = GetMethodsDeep (type);
+				var methods = GetMethodsDeep (type);
 				Hashtable used = null;
 				MethodInfo m;
 				string mname;
 				
-				foreach (object o in methods) {
+				foreach (var o in methods) {
 					m = o as MethodInfo;
 					if (m.DeclaringType != typeof (HttpApplication) && IsEventHandler (m)) {
 						mname = m.ToString ();
@@ -170,7 +170,7 @@ namespace System.Web
 
 		bool FireEvent (string method_name, object target, object [] args)
 		{
-			Hashtable possibleEvents = GetApplicationTypeEvents ((HttpApplication) target);
+			var possibleEvents = GetApplicationTypeEvents ((HttpApplication) target);
 			MethodInfo method = possibleEvents [method_name] as MethodInfo;
 			if (method == null)
 				return false;
@@ -188,7 +188,7 @@ namespace System.Web
 			HttpApplication app = (HttpApplication) Activator.CreateInstance (app_type, true);
 			context.ApplicationInstance = app;
 			app.SetContext (context);
-			object [] args = new object [] {app, EventArgs.Empty};
+			var args = new object [] {app, EventArgs.Empty};
 			app.InApplicationStart = true;
 			FireEvent ("Application_Start", app, args);
 			app.InApplicationStart = false;
@@ -217,7 +217,7 @@ namespace System.Web
 
 		static FileSystemWatcher CreateWatcher (string file, FileSystemEventHandler hnd, RenamedEventHandler reh)
 		{
-			FileSystemWatcher watcher = new FileSystemWatcher ();
+			var watcher = new FileSystemWatcher ();
 
 			watcher.Path = Path.GetFullPath (Path.GetDirectoryName (file));
 			watcher.Filter = Path.GetFileName (file);
@@ -237,11 +237,11 @@ namespace System.Web
 
 		internal static void AttachEvents (HttpApplication app)
 		{
-			HttpApplicationFactory factory = theFactory;
-			Hashtable possibleEvents = factory.GetApplicationTypeEvents (app);
+			var factory = theFactory;
+			var possibleEvents = factory.GetApplicationTypeEvents (app);
 			foreach (string key in possibleEvents.Keys) {
-				int pos = key.IndexOf ('_');
-				string moduleName = key.Substring (0, pos);
+				var pos = key.IndexOf ('_');
+				var moduleName = key.Substring (0, pos);
 				object target;
 				if (moduleName == "Application") {
 					target = app;
@@ -251,12 +251,12 @@ namespace System.Web
 						continue;
 				}
 
-				string eventName = key.Substring (pos + 1);
+				var eventName = key.Substring (pos + 1);
 				EventInfo evt = target.GetType ().GetEvent (eventName);
 				if (evt == null)
 					continue;
 
-				string usualName = moduleName + "_" + eventName;
+				var usualName = moduleName + "_" + eventName;
 				object methodData = possibleEvents [usualName];
 				if (methodData == null)
 					continue;
@@ -271,7 +271,7 @@ namespace System.Web
 					continue;
 				}
 
-				ArrayList list = (ArrayList) methodData;
+				var list = (ArrayList) methodData;
 				foreach (MethodInfo method in list)
 					factory.AddHandler (evt, target, app, method);
 			}
@@ -279,10 +279,10 @@ namespace System.Web
 
 		void AddHandler (EventInfo evt, object target, HttpApplication app, MethodInfo method)
 		{
-			int length = method.GetParameters ().Length;
+			var length = method.GetParameters ().Length;
 
 			if (length == 0) {
-				NoParamsInvoker npi = new NoParamsInvoker (app, method);
+				var npi = new NoParamsInvoker (app, method);
 				evt.AddEventHandler (target, npi.FakeDelegate);
 			} else {
 				if (method.IsStatic) {
@@ -302,9 +302,9 @@ namespace System.Web
 			InvokeSessionEnd (state, null, EventArgs.Empty);
 		}
 		
-		internal static void InvokeSessionEnd (object state, object source, EventArgs e)
+		internal static void InvokeSessionEnd (object state, object? source, EventArgs e)
 		{
-			HttpApplicationFactory factory = theFactory;
+			var factory = theFactory;
 			MethodInfo method = null;
 			HttpApplication app = null;
 			lock (factory.available_for_end) {
@@ -324,12 +324,12 @@ namespace System.Web
 			RecycleForSessionEnd (app);
 		}
 
-		static HttpStaticObjectsCollection MakeStaticCollection (ArrayList list)
+		static HttpStaticObjectsCollection MakeStaticCollection (ArrayList? list)
 		{
 			if (list == null || list.Count == 0)
 				return null;
 
-			HttpStaticObjectsCollection coll = new HttpStaticObjectsCollection ();
+			var coll = new HttpStaticObjectsCollection ();
 			foreach (ObjectTagBuilder tag in list) {
 				coll.Add (tag);
 			}
@@ -340,8 +340,8 @@ namespace System.Web
 		internal static HttpApplicationState ApplicationState {
 			get {
 				if (theFactory.app_state == null) {
-					HttpStaticObjectsCollection app = MakeStaticCollection (GlobalAsaxCompiler.ApplicationObjects);
-					HttpStaticObjectsCollection ses = MakeStaticCollection (GlobalAsaxCompiler.SessionObjects);
+					var app = MakeStaticCollection (GlobalAsaxCompiler.ApplicationObjects);
+					var ses = MakeStaticCollection (GlobalAsaxCompiler.SessionObjects);
 
 					theFactory.app_state = new HttpApplicationState (app, ses);
 				}
@@ -362,7 +362,7 @@ namespace System.Web
 					return;
 
 				try {
-					string physical_app_path = HttpRuntime.AppDomainAppPath;
+					var physical_app_path = HttpRuntime.AppDomainAppPath;
 					string app_file = null;
 					
 					app_file = Path.Combine (physical_app_path, "Global.asax");
@@ -373,7 +373,7 @@ namespace System.Web
 					}
 					BuildManager.CallPreStartMethods ();
 					BuildManager.CompilingTopLevelAssemblies = true;
-					AppResourcesCompiler ac = new AppResourcesCompiler (context);
+					var ac = new AppResourcesCompiler (context);
 					ac.Compile ();
 
 #if WEBSERVICES_DEP
@@ -382,13 +382,13 @@ namespace System.Web
 #endif
 					// Todo: Generate profile properties assembly from Web.config here
 				
-					AppCodeCompiler acc = new AppCodeCompiler ();
+					var acc = new AppCodeCompiler ();
 					acc.Compile ();
 
 					BuildManager.AllowReferencedAssembliesCaching = true;
 
 					// Get the default machine *.browser files.
-					string default_machine_browsers_path = Path.Combine (HttpRuntime.MachineConfigurationDirectory, "Browsers");
+					var default_machine_browsers_path = Path.Combine (HttpRuntime.MachineConfigurationDirectory, "Browsers");
 					default_machine_browsers_files = new string[0];
 					if (Directory.Exists (default_machine_browsers_path)) {
 						default_machine_browsers_files 
@@ -397,7 +397,7 @@ namespace System.Web
 					
 					// Note whether there are any App_Data/Mono_Machine_Browsers/*.browser files.  If there
 					// are we will be using them instead of the default machine *.browser files.
-					string app_mono_machine_browsers_path = Path.Combine (Path.Combine (physical_app_path, "App_Data"), "Mono_Machine_Browsers");
+					var app_mono_machine_browsers_path = Path.Combine (Path.Combine (physical_app_path, "App_Data"), "Mono_Machine_Browsers");
 					app_mono_machine_browsers_files = new string[0];
 					if (Directory.Exists (app_mono_machine_browsers_path)) {
 						app_mono_machine_browsers_files 
@@ -406,7 +406,7 @@ namespace System.Web
 						
 					// Note whether there are any App_Browsers/*.browser files.  If there
 					// are we will be using *.browser files for sniffing in addition to browscap.ini
-					string app_browsers_path = Path.Combine (physical_app_path, "App_Browsers");
+					var app_browsers_path = Path.Combine (physical_app_path, "App_Browsers");
 					app_browsers_files = new string[0];
 					if (Directory.Exists (app_browsers_path)) {
 						app_browsers_files = Directory.GetFiles (app_browsers_path, "*.browser");
@@ -416,7 +416,7 @@ namespace System.Web
 					if (app_type == null && app_file != null) {
 						app_type = BuildManager.GetCompiledType ("~/" + Path.GetFileName (app_file));
 						if (app_type == null) {
-							string msg = String.Format ("Error compiling application file ({0}).", app_file);
+							var msg = String.Format ("Error compiling application file ({0}).", app_file);
 							throw new ApplicationException (msg);
 						}
 					} else if (app_type == null) {
@@ -461,9 +461,9 @@ namespace System.Web
 		// Multiple-threads might hit this one on startup, and we have
 		// to delay-initialize until we have the HttpContext
 		//
-		internal static HttpApplication GetApplication (HttpContext context)
+		internal static HttpApplication GetApplication (HttpContext? context)
 		{
-			HttpApplicationFactory factory = theFactory;
+			var factory = theFactory;
 			HttpApplication app = null;
 			if (factory.app_start_needed){
 				if (context == null)
@@ -472,7 +472,7 @@ namespace System.Web
 				factory.InitType (context);
 				lock (factory) {
 					if (factory.app_start_needed) {
-						foreach (string dir in HttpApplication.BinDirs)
+						foreach (var dir in HttpApplication.BinDirs)
 							WatchLocationForRestart (dir, "*.dll");
 						// Restart if the App_* directories are created...
 			                        WatchLocationForRestart (".", "App_Code");
@@ -509,7 +509,7 @@ namespace System.Web
 		// The lock is in InvokeSessionEnd
 		static HttpApplication GetApplicationForSessionEnd ()
 		{
-			HttpApplicationFactory factory = theFactory;
+			var factory = theFactory;
 			if (factory.available_for_end.Count > 0)
 				return (HttpApplication) factory.available_for_end.Pop ();
 
@@ -521,8 +521,8 @@ namespace System.Web
 
 		internal static void RecycleForSessionEnd (HttpApplication app)
 		{
-			bool dispose = false;
-			HttpApplicationFactory factory = theFactory;
+			var dispose = false;
+			var factory = theFactory;
 			lock (factory.available_for_end) {
 				if (factory.available_for_end.Count < 64)
 					factory.available_for_end.Push (app);
@@ -535,8 +535,8 @@ namespace System.Web
 
 		internal static void Recycle (HttpApplication app)
 		{
-			bool dispose = false;
-			HttpApplicationFactory factory = theFactory;
+			var dispose = false;
+			var factory = theFactory;
 			if (Interlocked.CompareExchange (ref factory.next_free, app, null) == null)
 				return;
 
@@ -568,16 +568,16 @@ namespace System.Web
                 internal static bool WatchLocationForRestart(string virtualPath, string filter, bool watchSubdirs)
 		{
 			// map the path to the physical one
-			string physicalPath = HttpRuntime.AppDomainAppPath;
+			var physicalPath = HttpRuntime.AppDomainAppPath;
 			physicalPath = Path.Combine(physicalPath, virtualPath);
-			bool isDir = Directory.Exists(physicalPath);
-			bool isFile = isDir ? false : File.Exists(physicalPath);
+			var isDir = Directory.Exists(physicalPath);
+			var isFile = isDir ? false : File.Exists(physicalPath);
 
 			if (isDir || isFile) {
 				// create the watcher
-				FileSystemEventHandler fseh = new FileSystemEventHandler(OnFileChanged);
-				RenamedEventHandler reh = new RenamedEventHandler(OnFileRenamed);
-				FileSystemWatcher watcher = CreateWatcher(Path.Combine(physicalPath, filter), fseh, reh);
+				var fseh = new FileSystemEventHandler(OnFileChanged);
+				var reh = new RenamedEventHandler(OnFileRenamed);
+				var watcher = CreateWatcher(Path.Combine(physicalPath, filter), fseh, reh);
 				if (isDir)
 					watcher.IncludeSubdirectories = watchSubdirs;
 				
@@ -606,14 +606,14 @@ namespace System.Web
 				lock (capabilities_processor_lock) {
 					if (capabilities_processor == null) {
 						capabilities_processor = new System.Web.Configuration.nBrowser.Build();
-						string[] machine_browsers_files = app_mono_machine_browsers_files;
+						var machine_browsers_files = app_mono_machine_browsers_files;
 						if (machine_browsers_files.Length == 0)	{
 							machine_browsers_files = default_machine_browsers_files;
 						}
-						foreach (string f in machine_browsers_files) {
+						foreach (var f in machine_browsers_files) {
 							capabilities_processor.AddBrowserFile(f);
 						}
-						foreach (string f in app_browsers_files) {
+						foreach (var f in app_browsers_files) {
 							capabilities_processor.AddBrowserFile(f);
 						}
 					}
@@ -670,7 +670,7 @@ namespace System.Web
 			if (HttpRuntime.DomainUnloading)
 				return;
 			string name = args.Name;
-			bool isConfig = false;
+			var isConfig = false;
 
 			if (StrUtils.EndsWith (name, "onfig", true)) {
 				if (String.Compare (Path.GetFileName (name), "web.config", true, Helpers.InvariantCulture) != 0)

@@ -95,7 +95,7 @@ namespace System.Configuration
 		
 		public void CopyTo (ConfigurationSection [] array, int index)
 		{
-			for (int n=0; n<group.Sections.Count; n++)
+			for (var n=0; n<group.Sections.Count; n++)
 				array [n + index] = this [n];
 		}
 		

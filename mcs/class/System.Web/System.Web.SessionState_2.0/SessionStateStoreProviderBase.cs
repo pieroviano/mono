@@ -42,17 +42,17 @@ namespace System.Web.SessionState
 		public abstract void CreateUninitializedItem (HttpContext context, string id, int timeout);
 		public abstract void Dispose ();
 		public abstract void EndRequest (HttpContext context);
-		public abstract SessionStateStoreData GetItem (HttpContext context,
+		public abstract SessionStateStoreData? GetItem (HttpContext context,
 							       string id,
 							       out bool locked,
 							       out TimeSpan lockAge,
-							       out Object lockId,
+							       out Object? lockId,
 							       out SessionStateActions actions);
-		public abstract SessionStateStoreData GetItemExclusive (HttpContext context,
+		public abstract SessionStateStoreData? GetItemExclusive (HttpContext context,
 									string id,
 									out bool locked,
 									out TimeSpan lockAge,
-									out Object lockId,
+									out Object? lockId,
 									out SessionStateActions actions);
 		public abstract void InitializeRequest (HttpContext context);
 		public abstract void ReleaseItemExclusive (HttpContext context,

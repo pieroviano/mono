@@ -39,7 +39,7 @@ namespace System.Web
 {
 	class StaticFileHandler : IHttpHandler
 	{
-		static bool ValidFileName (string fileName)
+		static bool ValidFileName (string? fileName)
 		{
 			if (!RuntimeHelpers.RunningOnWindows)
 				return true;
@@ -52,13 +52,13 @@ namespace System.Web
 		
 		public void ProcessRequest (HttpContext context)
 		{
-			HttpRequest request = context.Request;
-			HttpResponse response = context.Response;
+			var request = context.Request;
+			var response = context.Response;
 
 			if (HostingEnvironment.HaveCustomVPP) {
 				VirtualFile vf = null;
-				VirtualPathProvider vpp = HostingEnvironment.VirtualPathProvider;
-				string vpath = request.FilePath;
+				var vpp = HostingEnvironment.VirtualPathProvider;
+				var vpath = request.FilePath;
 				
 				if (vpp.FileExists (vpath))
 					vf = vpp.GetFile (vpath);
@@ -71,8 +71,8 @@ namespace System.Web
 				return;
 			}
 			
-			string fileName = request.PhysicalPath;
-			FileInfo fi = new FileInfo (fileName);
+			var fileName = request.PhysicalPath;
+			var fi = new FileInfo (fileName);
 			if (!fi.Exists || !ValidFileName (fileName))
 				throw new HttpException (404, "Path '" + request.FilePath + "' was not found.", request.FilePath);
 
@@ -84,7 +84,7 @@ namespace System.Web
 			string strHeader = request.Headers ["If-Modified-Since"];
 			try {
 				if (strHeader != null) {
-					DateTime dtIfModifiedSince = DateTime.ParseExact (strHeader, "r", null);
+					var dtIfModifiedSince = DateTime.ParseExact (strHeader, "r", null);
 					DateTime ftime;
 					ftime = fi.LastWriteTime.ToUniversalTime ();
 					if (ftime <= dtIfModifiedSince) {
@@ -96,7 +96,7 @@ namespace System.Web
 			} catch { } 
 
 			try {
-				DateTime lastWT = fi.LastWriteTime.ToUniversalTime ();
+				var lastWT = fi.LastWriteTime.ToUniversalTime ();
 				response.AddHeader ("Last-Modified", lastWT.ToString ("r"));
 				response.ContentType = MimeTypes.GetMimeType (fileName);
 				response.TransmitFile (fileName, true);

@@ -21,10 +21,10 @@ namespace System.Web.Services.Description {
         protected override void BeginClass() {
             if (IsEmptyBinding)
                 return;
-            HttpBinding httpBinding = new HttpBinding();
+            var httpBinding = new HttpBinding();
             httpBinding.Verb = "GET";
             Binding.Extensions.Add(httpBinding);
-            HttpAddressBinding httpAddressBinding = new HttpAddressBinding();
+            var httpAddressBinding = new HttpAddressBinding();
             httpAddressBinding.Location = ServiceUrl;
             if (this.UriFixups != null)
             {
@@ -39,7 +39,7 @@ namespace System.Web.Services.Description {
         protected override bool ReflectMethod() {
             if (!ReflectUrlParameters()) return false;
             if (!ReflectMimeReturn()) return false;
-            HttpOperationBinding httpOperationBinding = new HttpOperationBinding();
+            var httpOperationBinding = new HttpOperationBinding();
             httpOperationBinding.Location = MethodUrl;
             OperationBinding.Extensions.Add(httpOperationBinding);
             return true;

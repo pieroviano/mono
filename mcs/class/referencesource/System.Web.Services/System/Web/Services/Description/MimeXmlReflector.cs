@@ -21,23 +21,23 @@ namespace System.Web.Services.Description {
         }
 
         internal override bool ReflectReturn() {
-            MessagePart part = new MessagePart();
+            var part = new MessagePart();
             part.Name = "Body";
             ReflectionContext.OutputMessage.Parts.Add(part);
 
             if (typeof(XmlNode).IsAssignableFrom(ReflectionContext.Method.ReturnType)) {
-                MimeContentBinding mimeContentBinding = new MimeContentBinding();
+                var mimeContentBinding = new MimeContentBinding();
                 mimeContentBinding.Type = "text/xml";
                 mimeContentBinding.Part = part.Name;
                 ReflectionContext.OperationBinding.Output.Extensions.Add(mimeContentBinding);
             }
             else {
-                MimeXmlBinding mimeXmlBinding = new MimeXmlBinding();
+                var mimeXmlBinding = new MimeXmlBinding();
                 mimeXmlBinding.Part = part.Name;
 
-                LogicalMethodInfo methodInfo = ReflectionContext.Method;
-                XmlAttributes a = new XmlAttributes(methodInfo.ReturnTypeCustomAttributeProvider);
-                XmlTypeMapping xmlTypeMapping = ReflectionContext.ReflectionImporter.ImportTypeMapping(methodInfo.ReturnType, a.XmlRoot);
+                var methodInfo = ReflectionContext.Method;
+                var a = new XmlAttributes(methodInfo.ReturnTypeCustomAttributeProvider);
+                var xmlTypeMapping = ReflectionContext.ReflectionImporter.ImportTypeMapping(methodInfo.ReturnType, a.XmlRoot);
                 xmlTypeMapping.SetKey(methodInfo.GetKey() + ":Return");
                 ReflectionContext.SchemaExporter.ExportTypeMapping(xmlTypeMapping);
                 part.Element = new XmlQualifiedName(xmlTypeMapping.XsdElementName, xmlTypeMapping.Namespace);

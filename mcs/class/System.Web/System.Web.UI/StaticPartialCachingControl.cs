@@ -69,24 +69,24 @@ namespace System.Web.UI {
 			ProviderName = providerName;
 		}
 		[MonoTODO("Consider sqlDependency parameter")]
-		public static void BuildCachedControl (Control parent, string ctrlID, string guid,
+		public static void BuildCachedControl (Control? parent, string ctrlID, string guid,
 						       int duration, string varyByParams, string varyByControls, string varyByCustom,
 						       string sqlDependency, BuildMethod buildMethod)
 		{
-			StaticPartialCachingControl NewControl = new StaticPartialCachingControl (ctrlID, guid, duration,
+			var NewControl = new StaticPartialCachingControl (ctrlID, guid, duration,
 												  varyByParams, varyByControls, varyByCustom,
 												  sqlDependency, buildMethod);
 			if (parent != null)
 				parent.Controls.Add (NewControl);
 		}
 
-		public static void BuildCachedControl (Control parent, string ctrlID, string guid, int duration,
+		public static void BuildCachedControl (Control? parent, string ctrlID, string guid, int duration,
 						       string varyByParams, string varyByControls, string varyByCustom,
 						       BuildMethod buildMethod)
 		{
 			BuildCachedControl (parent, ctrlID, guid, duration, varyByParams, varyByControls, varyByCustom, null, buildMethod);
 		}
-		public static void BuildCachedControl (Control parent, string ctrlID, string guid, int duration,
+		public static void BuildCachedControl (Control? parent, string ctrlID, string guid, int duration,
 						       string varyByParams, string varyByControls, string varyByCustom,
 						       string sqlDependency, BuildMethod buildMethod, string providerName)
 		{

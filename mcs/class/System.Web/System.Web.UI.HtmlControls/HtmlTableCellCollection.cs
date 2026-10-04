@@ -90,7 +90,7 @@ namespace System.Web.UI.HtmlControls {
 			cc.AddAt (index, cell);
 		}
 
-		public void Remove (HtmlTableCell cell)
+		public void Remove (HtmlTableCell? cell)
 		{
 			cc.Remove (cell);
 		}

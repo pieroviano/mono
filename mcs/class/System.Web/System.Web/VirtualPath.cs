@@ -76,7 +76,7 @@ namespace System.Web
 					return Original;
 
 				if (_absolute == null) {
-					string original = Original;
+					var original = Original;
 					
 					if (!VirtualPathUtility.IsRooted (original))
 						_absolute = MakeRooted (original);
@@ -97,7 +97,7 @@ namespace System.Web
 					return Original;
 
 				if (_appRelative == null) {
-					string original = Original;
+					var original = Original;
 					
 					if (!VirtualPathUtility.IsRooted (original))
 						_appRelative = MakeRooted (original);
@@ -153,7 +153,7 @@ namespace System.Web
 				if (_currentRequestDirectory != null)
 					return _currentRequestDirectory;
 
-				HttpContext ctx = HttpContext.Current;
+				var ctx = HttpContext.Current;
 				HttpRequest req = ctx != null ? ctx.Request : null;
 				if (req != null)
 					return VirtualPathUtility.GetDirectory (req.CurrentExecutionFilePath);
@@ -169,7 +169,7 @@ namespace System.Web
 				if (_physicalPath != null)
 					return _physicalPath;
 
-				HttpContext ctx = HttpContext.Current;
+				var ctx = HttpContext.Current;
 				HttpRequest req = ctx != null ? ctx.Request : null;
 				if (req != null)
 					_physicalPath = req.MapPath (Absolute);
@@ -218,7 +218,7 @@ namespace System.Web
 		// Assumes 'original' is NOT rooted
 		string MakeRooted (string original)
 		{
-			string reqdir = CurrentRequestDirectory;
+			var reqdir = CurrentRequestDirectory;
 			
 			if (!String.IsNullOrEmpty (reqdir))
 				return VirtualPathUtility.Combine (reqdir, original);
@@ -237,7 +237,7 @@ namespace System.Web
 		
 		public override string ToString ()
 		{
-			string ret = Original;
+			var ret = Original;
 
 			if (String.IsNullOrEmpty (ret))
 				return GetType ().ToString ();
@@ -253,11 +253,11 @@ namespace System.Web
 			if (String.IsNullOrEmpty (physical_path))
 				return null;
 			
-			string appPhysicalPath = HttpRuntime.AppDomainAppPath;
+			var appPhysicalPath = HttpRuntime.AppDomainAppPath;
 			if (!StrUtils.StartsWith (physical_path, appPhysicalPath))
 				return null;
 
-			string vp = physical_path.Substring (appPhysicalPath.Length - 1);
+			var vp = physical_path.Substring (appPhysicalPath.Length - 1);
 			if (vp [0] != '/')
 				return null;
 			

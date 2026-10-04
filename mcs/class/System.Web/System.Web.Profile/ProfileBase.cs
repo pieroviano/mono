@@ -50,36 +50,36 @@ namespace System.Web.Profile
 
 		static void InitProperties ()
 		{
-			SettingsPropertyCollection properties = new SettingsPropertyCollection ();
+			var properties = new SettingsPropertyCollection ();
 
-			ProfileSection config = (ProfileSection) WebConfigurationManager.GetSection ("system.web/profile");
-			RootProfilePropertySettingsCollection ps = config.PropertySettings;
+			var config = (ProfileSection) WebConfigurationManager.GetSection ("system.web/profile");
+			var ps = config.PropertySettings;
 
-			for (int i = 0; i < ps.GroupSettings.Count; i++) {
-				ProfileGroupSettings pgs = ps.GroupSettings [i];
-				ProfilePropertySettingsCollection ppsc = pgs.PropertySettings;
+			for (var i = 0; i < ps.GroupSettings.Count; i++) {
+				var pgs = ps.GroupSettings [i];
+				var ppsc = pgs.PropertySettings;
 
-				for (int s = 0; s < ppsc.Count; s++) {
-					SettingsProperty settingsProperty = CreateSettingsProperty (pgs, ppsc [s]);
+				for (var s = 0; s < ppsc.Count; s++) {
+					var settingsProperty = CreateSettingsProperty (pgs, ppsc [s]);
 					ValidateProperty (settingsProperty, ppsc [s].ElementInformation);
 					properties.Add (settingsProperty);
 				}
 			}
 
-			for (int s = 0; s < ps.Count; s++) {
-				SettingsProperty settingsProperty = CreateSettingsProperty (null, ps [s]);
+			for (var s = 0; s < ps.Count; s++) {
+				var settingsProperty = CreateSettingsProperty (null, ps [s]);
 				ValidateProperty (settingsProperty, ps [s].ElementInformation);
 				properties.Add (settingsProperty);
 			}
 
 			if (config.Inherits.Length > 0) {
-				Type profileType = ProfileParser.GetProfileCommonType (HttpContext.Current);
+				var profileType = ProfileParser.GetProfileCommonType (HttpContext.Current);
 				if (profileType != null) {
 					Type properiesType = profileType.BaseType;
 					for (; ; ) {
-						PropertyInfo [] pi = properiesType.GetProperties (BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
+						var pi = properiesType.GetProperties (BindingFlags.Instance | BindingFlags.Public | BindingFlags.DeclaredOnly);
 						if (pi.Length > 0)
-							for (int i = 0; i < pi.Length; i++)
+							for (var i = 0; i < pi.Length; i++)
 								properties.Add (CreateSettingsProperty (pi [i]));
 
 						if (properiesType.BaseType == null || 
@@ -110,7 +110,7 @@ namespace System.Web.Profile
 		public static ProfileBase Create (string username, bool isAuthenticated)
 		{
 			ProfileBase profile = null;
-			Type profileType = ProfileParser.GetProfileCommonType (HttpContext.Current);
+			var profileType = ProfileParser.GetProfileCommonType (HttpContext.Current);
 			if (profileType != null)
 				profile = (ProfileBase) Activator.CreateInstance (profileType);
 			else
@@ -123,7 +123,7 @@ namespace System.Web.Profile
 		public ProfileGroupBase GetProfileGroup (string groupName)
 		{
 			ProfileGroupBase group = null;
-			Type groupType = ProfileParser.GetProfileGroupType (HttpContext.Current, groupName);
+			var groupType = ProfileParser.GetProfileGroupType (HttpContext.Current, groupName);
 			if (groupType != null)
 				group = (ProfileGroupBase) Activator.CreateInstance (groupType);
 			else
@@ -181,9 +181,9 @@ namespace System.Web.Profile
 			}
 		}
 
-		static Type GetPropertyType (ProfileGroupSettings pgs, ProfilePropertySettings pps)
+		static Type GetPropertyType (ProfileGroupSettings? pgs, ProfilePropertySettings pps)
 		{
-			Type type = HttpApplication.LoadType (pps.Type);
+			var type = HttpApplication.LoadType (pps.Type);
 			if (type != null)
 				return type;
 
@@ -205,7 +205,7 @@ namespace System.Web.Profile
 
 		static void ValidateProperty (SettingsProperty settingsProperty, ElementInformation elementInfo)
 		{
-			string exceptionMessage = string.Empty;
+			var exceptionMessage = string.Empty;
 			if (!AnonymousIdentificationModule.Enabled && 
 				(bool) settingsProperty.Attributes ["AllowAnonymous"])
 				exceptionMessage = "Profile property '{0}' allows anonymous users to store data. " +
@@ -226,10 +226,10 @@ namespace System.Web.Profile
 
 		static SettingsProperty CreateSettingsProperty (PropertyInfo property)
 		{
-			SettingsProperty sp = new SettingsProperty (property.Name);
-			Attribute [] attributes = (Attribute [])property.GetCustomAttributes (false);
-			SettingsAttributeDictionary attDict = new SettingsAttributeDictionary();
-			bool defaultAssigned = false;
+			var sp = new SettingsProperty (property.Name);
+			var attributes = (Attribute [])property.GetCustomAttributes (false);
+			var attDict = new SettingsAttributeDictionary();
+			var defaultAssigned = false;
 			
 			sp.SerializeAs = SettingsSerializeAs.ProviderSpecific;
 			sp.PropertyType = property.PropertyType;
@@ -237,12 +237,12 @@ namespace System.Web.Profile
 			sp.ThrowOnErrorDeserializing = false;
 			sp.ThrowOnErrorSerializing = true;
 
-			for (int i = 0; i < attributes.Length; i++) {
+			for (var i = 0; i < attributes.Length; i++) {
 				if (attributes [i] is DefaultSettingValueAttribute) {
 					sp.DefaultValue = ((DefaultSettingValueAttribute) attributes [i]).Value;
 					defaultAssigned = true;
 				} else if (attributes [i] is SettingsProviderAttribute) {
-					Type providerType = HttpApplication.LoadType (((SettingsProviderAttribute) attributes [i]).ProviderTypeName);
+					var providerType = HttpApplication.LoadType (((SettingsProviderAttribute) attributes [i]).ProviderTypeName);
 					sp.Provider = (SettingsProvider) Activator.CreateInstance (providerType);
 					sp.Provider.Initialize (null, null);
 				} else if (attributes [i] is SettingsSerializeAsAttribute) {
@@ -270,10 +270,10 @@ namespace System.Web.Profile
 			return sp;
 		}
 		
-		static SettingsProperty CreateSettingsProperty (ProfileGroupSettings pgs, ProfilePropertySettings pps)
+		static SettingsProperty CreateSettingsProperty (ProfileGroupSettings? pgs, ProfilePropertySettings pps)
 		{
-			string name = ((pgs == null) ? String.Empty : pgs.Name + ".") + pps.Name;
-			SettingsProperty sp = new SettingsProperty (name);
+			var name = ((pgs == null) ? String.Empty : pgs.Name + ".") + pps.Name;
+			var sp = new SettingsProperty (name);
 
 			sp.Attributes.Add ("AllowAnonymous", pps.AllowAnonymous);
 			sp.DefaultValue = pps.DefaultValue;
@@ -311,7 +311,7 @@ namespace System.Web.Profile
 			_settingsContext = new SettingsContext ();
 			_settingsContext.Add ("UserName", username);
 			_settingsContext.Add ("IsAuthenticated", isAuthenticated);
-			SettingsProviderCollection spc = new SettingsProviderCollection();
+			var spc = new SettingsProviderCollection();
 			spc.Add (ProfileManager.Provider);
 			base.Initialize (Context, ProfileBase.Properties, spc);
 		}

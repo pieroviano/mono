@@ -53,7 +53,7 @@ namespace System.Web.UI.HtmlControls
 		[TypeConverter (typeof(MinimizableAttributeTypeConverter))]
 		public bool Checked {
 			get {
-				string check = Attributes["checked"];
+				var check = Attributes["checked"];
 
 				if (check == null) {
 					return (false);
@@ -83,7 +83,7 @@ namespace System.Web.UI.HtmlControls
 
 		protected override void RenderAttributes (HtmlTextWriter writer)
 		{
-			Page page = Page;
+			var page = Page;
 			if (page != null)
 				page.ClientScript.RegisterForEventValidation (UniqueID);
 			base.RenderAttributes (writer);
@@ -93,7 +93,7 @@ namespace System.Web.UI.HtmlControls
 		{
 			base.OnPreRender (e);
 
-			Page page = Page;
+			var page = Page;
 			if (page != null && !Disabled) {
 				page.RegisterRequiresPostBack (this);
 				page.RegisterEnabledControl (this);
@@ -111,7 +111,7 @@ namespace System.Web.UI.HtmlControls
 		bool LoadPostDataInternal (string postDataKey, NameValueCollection postCollection)
 		{
 			string postedValue = postCollection[postDataKey];
-			bool postedBool = ((postedValue != null) &&
+			var postedBool = ((postedValue != null) &&
 					   (postedValue.Length > 0));
 
 			if (Checked != postedBool) {

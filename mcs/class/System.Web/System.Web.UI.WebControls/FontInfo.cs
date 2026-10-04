@@ -96,7 +96,7 @@ namespace System.Web.UI.WebControls
 		[WebCategory ("Font")]
 		public string Name {
 			get {
-				string [] names = Names;
+				var names = Names;
 
 				if (names.Length == 0)
 					return string.Empty;
@@ -228,7 +228,7 @@ namespace System.Web.UI.WebControls
 		#endregion	// Public Instance Properties
 
 		#region Public Instance Methods
-		public void CopyFrom (FontInfo f) 
+		public void CopyFrom (FontInfo? f) 
 		{
 			if (f == null || f.IsEmpty)
 				return;
@@ -341,7 +341,7 @@ namespace System.Web.UI.WebControls
 
 			// These styles are munged into a attribute decoration
 			s = String.Empty;
-			bool hasTextDecoration = false;
+			var hasTextDecoration = false;
 
 			if (_owner.CheckBit ((int) Style.Styles.FontOverline)) {
 				if (Overline)

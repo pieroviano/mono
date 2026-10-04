@@ -46,12 +46,12 @@ namespace System.Web.Compilation
 		{
 		}
 
-		protected override void OverrideAssemblyPrefix (TemplateParser parser, AssemblyBuilder assemblyBuilder)
+		protected override void OverrideAssemblyPrefix (TemplateParser? parser, AssemblyBuilder? assemblyBuilder)
 		{
 			if (parser == null || assemblyBuilder == null)
 				return;
 
-			string newPrefix = assemblyBuilder.OutputFilesPrefix + parser.ClassName + ".";
+			var newPrefix = assemblyBuilder.OutputFilesPrefix + parser.ClassName + ".";
 			assemblyBuilder.OutputFilesPrefix = newPrefix;
 		}
 		
@@ -67,45 +67,45 @@ namespace System.Web.Compilation
 
 		protected override TemplateParser CreateParser (VirtualPath virtualPath, string inputFile, HttpContext context)
 		{
-			string vp = VirtualPathUtility.AppendTrailingSlash (virtualPath.Original);
-			string physicalPath = virtualPath.PhysicalPath;
+			var vp = VirtualPathUtility.AppendTrailingSlash (virtualPath.Original);
+			var physicalPath = virtualPath.PhysicalPath;
 			if (!Directory.Exists (physicalPath))
 				throw new HttpException (String.Concat ("Theme '", virtualPath.Original ,"' cannot be found in the application or global theme directories."));
 
-			PageThemeParser ptp = new PageThemeParser (virtualPath, context);
+			var ptp = new PageThemeParser (virtualPath, context);
 			
-			string[] css_files = Directory.GetFiles (physicalPath, "*.css");
-			string[] css_urls = new string [css_files.Length];
-			for (int i = 0; i < css_files.Length; i++) {
+			var css_files = Directory.GetFiles (physicalPath, "*.css");
+			var css_urls = new string [css_files.Length];
+			for (var i = 0; i < css_files.Length; i++) {
 				css_urls [i] = VirtualPathUtility.Combine (vp, Path.GetFileName (css_files [i]));
 				ptp.AddDependency (css_urls [i]);
 			}
 			Array.Sort (css_urls, StringComparer.OrdinalIgnoreCase);
 			ptp.LinkedStyleSheets = css_urls;
 			
-			AspComponentFoundry shared_foundry = new AspComponentFoundry ();
+			var shared_foundry = new AspComponentFoundry ();
 			ptp.RootBuilder = new RootBuilder ();
 
-			string [] skin_files = Directory.GetFiles (physicalPath, "*.skin");
+			var skin_files = Directory.GetFiles (physicalPath, "*.skin");
 			string skin_file_url;
 			AspGenerator generator;
 			
-			foreach (string skin_file in skin_files) {
+			foreach (var skin_file in skin_files) {
 				skin_file_url = VirtualPathUtility.Combine (vp, Path.GetFileName (skin_file));
-				PageThemeFileParser ptfp = new PageThemeFileParser (new VirtualPath (skin_file_url), skin_file, context);
+				var ptfp = new PageThemeFileParser (new VirtualPath (skin_file_url), skin_file, context);
 
 				ptp.AddDependency (skin_file_url);
 				generator = new AspGenerator (ptfp, shared_foundry);
 				generator.Parse ();
 
 				if (ptfp.RootBuilder.Children != null)
-					foreach (object o in ptfp.RootBuilder.Children) {
+					foreach (var o in ptfp.RootBuilder.Children) {
 						if (!(o is ControlBuilder))
 							continue;
 						ptp.RootBuilder.AppendSubBuilder ((ControlBuilder)o);
 					}
 
-				foreach (string ass in ptfp.Assemblies)
+				foreach (var ass in ptfp.Assemblies)
 					if (!ptp.Assemblies.Contains (ass))
 						ptp.AddAssemblyByFileName (ass);
 			}

@@ -93,15 +93,15 @@ namespace System.Web.Caching
 		{
 		}
 		
-		public CacheDependency (string[] filenames, string[] cachekeys, CacheDependency dependency, DateTime start)
+		public CacheDependency (string[]? filenames, string[] cachekeys, CacheDependency? dependency, DateTime start)
 		{
-			int flen = filenames != null ? filenames.Length : 0;
+			var flen = filenames != null ? filenames.Length : 0;
 			
 			if (flen > 0) {
 				watchers = new FileSystemWatcher [flen];
 				string filename;
 				
-				for (int n = 0; n < flen; n++) {
+				for (var n = 0; n < flen; n++) {
 					filename = filenames [n];
 					if (String.IsNullOrEmpty (filename))
 						continue;
@@ -172,13 +172,13 @@ namespace System.Web.Caching
 				}
 
 				if (watcherList != null)
-					foreach (FileSystemWatcher fsw in watcherList)
+					foreach (var fsw in watcherList)
 						if (fsw != null && fsw.Path != null && fsw.Path.Length != 0)
 							sb.Append ("_" + fsw.Path);
 			}
 
 			if (cachekeys != null)
-				foreach (string key in cachekeys)
+				foreach (var key in cachekeys)
 					sb.AppendFormat ("_" + key);
 			return sb.ToString ();
 		}
@@ -190,7 +190,7 @@ namespace System.Web.Caching
 
 		bool DoOnChanged ()
 		{
-			DateTime now = DateTime.Now;
+			var now = DateTime.Now;
 			
 			if (now < start)
 				return false;
@@ -210,7 +210,7 @@ namespace System.Web.Caching
 
 			lock (locker) {
 				if (watchers != null) {
-					foreach (FileSystemWatcher w in watchers)
+					foreach (var w in watchers)
 						if (w != null)
 							w.Dispose ();
 				}
@@ -239,7 +239,7 @@ namespace System.Web.Caching
 			cache = null;
 		}
 		
-		internal void SetCache (Cache c)
+		internal void SetCache (Cache? c)
 		{
 			cache = c;
 			used = c != null;
@@ -279,7 +279,7 @@ namespace System.Web.Caching
 					return false;
 
 				if (cache != null && cachekeys != null) {
-					foreach (string key in cachekeys) {
+					foreach (var key in cachekeys) {
 						if (cache.GetKeyLastChange (key) > start) {
 							hasChanged = true;
 							break;

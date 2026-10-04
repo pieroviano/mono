@@ -39,7 +39,7 @@ namespace System.Configuration.Provider {
 			values = new ArrayList ();
 		}
 	
-		public virtual void Add (ProviderBase provider)
+		public virtual void Add (ProviderBase? provider)
 		{
 			if (readOnly)
 				throw new NotSupportedException ();
@@ -47,7 +47,7 @@ namespace System.Configuration.Provider {
 			if (provider == null || provider.Name == null)
 				throw new ArgumentNullException ();
 			
-			int pos = values.Add (provider);
+			var pos = values.Add (provider);
 			try {
 				lookup.Add (provider.Name, pos);
 			} catch {
@@ -89,14 +89,14 @@ namespace System.Configuration.Provider {
 			if (position == null || !(position is int))
 				throw new ArgumentException ();
 			
-			int pos = (int) position;
+			var pos = (int) position;
 			if (pos >= values.Count)
 				throw new ArgumentException ();
 			
 			values.RemoveAt (pos);
 			lookup.Remove (name);
 			
-			ArrayList changed = new ArrayList ();
+			var changed = new ArrayList ();
 			foreach (DictionaryEntry de in lookup) {
 					if ((int) de.Value <= pos)
 						continue;

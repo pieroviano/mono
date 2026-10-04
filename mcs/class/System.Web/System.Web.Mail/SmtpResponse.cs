@@ -60,7 +60,7 @@ namespace System.Web.Mail {
 
 	/// parses a new response object from a response string
 	public static SmtpResponse Parse( string line ) {
-	    SmtpResponse response = new SmtpResponse();
+	    var response = new SmtpResponse();
 	    
 	    if( line.Length < 4 ) 
 		throw new SmtpException( "Response is to short " + 

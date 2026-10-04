@@ -332,7 +332,7 @@ namespace System.Web.UI.WebControls {
 				return row;
 			}
 
-			TableRow CreateRow (Control c0, Control c1, Control c2, Style s)
+			TableRow CreateRow (Control? c0, Control? c1, Control? c2, Style? s)
 			{
 				TableRow row = new TableRow ();
 				TableCell cell0 = new TableCell ();
@@ -355,14 +355,14 @@ namespace System.Web.UI.WebControls {
 				return row;
 			}
 			
-			TableCell CreateCell (Control c0, Control c1, Style s, HorizontalAlign align)
+			TableCell CreateCell (Control c0, Control? c1, Style? s, HorizontalAlign align)
 			{
 				TableCell cell = CreateCell (c0, c1, s);
 				cell.HorizontalAlign = align;
 				return cell;
 			}
 
-			TableCell CreateCell (Control c0, Control c1, Style s)
+			TableCell CreateCell (Control c0, Control? c1, Style? s)
 			{
 				TableCell cell = new TableCell ();
 				if (s != null)
@@ -1087,7 +1087,7 @@ namespace System.Web.UI.WebControls {
 				checkBox.CheckedChanged += new EventHandler (RememberMe_CheckedChanged);
 		}
 
-		protected override void LoadViewState (object savedState)
+		protected override void LoadViewState (object? savedState)
 		{
 			if (savedState == null) {
 				base.LoadViewState (null);

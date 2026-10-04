@@ -100,7 +100,7 @@ namespace System.Web.UI {
 
 		public void Remove (DataBinding binding)
 		{
-			string key = binding.PropertyName;
+			var key = binding.PropertyName;
 			Remove (key);
 		}
 

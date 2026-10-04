@@ -57,7 +57,7 @@ namespace System.Web.UI.HtmlControls
 		protected internal override void OnInit (EventArgs e)
 		{
 			base.OnInit (e);
-			Page page = Page;
+			var page = Page;
 			
 			if (page == null)
 				throw new HttpException ("The <head runat=\"server\"> control requires a page.");
@@ -195,7 +195,7 @@ namespace System.Web.UI.HtmlControls
 		
 		public void CreateStyleRule (Style style, IUrlResolutionService urlResolver, string selection)
 		{
-			StyleEntry entry = new StyleEntry ();
+			var entry = new StyleEntry ();
 			entry.Style = style;
 			entry.UrlResolver = urlResolver;
 			entry.Selection = selection;
@@ -204,12 +204,12 @@ namespace System.Web.UI.HtmlControls
 		
 		public void RegisterStyle (Style style, IUrlResolutionService urlResolver)
 		{
-			for (int n=0; n<entries.Count; n++) {
+			for (var n=0; n<entries.Count; n++) {
 				if (((StyleEntry)entries[n]).Style == style)
 					return;
 			}
 			
-			string name = "aspnet_" + entries.Count;
+			var name = "aspnet_" + entries.Count;
 			style.SetRegisteredCssClass (name);
 			CreateStyleRule (style, urlResolver, "." + name);
 		}
@@ -220,7 +220,7 @@ namespace System.Web.UI.HtmlControls
 			writer.RenderBeginTag (HtmlTextWriterTag.Style);
 
 			foreach (StyleEntry entry in entries) {
-				CssStyleCollection sts = entry.Style.GetStyleAttributes (entry.UrlResolver);
+				var sts = entry.Style.GetStyleAttributes (entry.UrlResolver);
 				writer.Write ("\n" + entry.Selection + " {" + sts.Value + "}");
 			}
 

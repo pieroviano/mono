@@ -35,7 +35,7 @@ namespace System.Web
 	{
 		public override void Init ()
 		{
-			List <ExceptionPageTemplateFragment> fragments = Fragments;
+			var fragments = Fragments;
 			
 			fragments.Add (new ExceptionPageTemplateFragment {
 					Name = Template_PageTopName,

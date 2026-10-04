@@ -17,7 +17,7 @@ namespace System.Web.Services.Protocols {
     internal class ScalarFormatter {
         private ScalarFormatter() { }
 
-        internal static string ToString(object value) {
+        internal static string ToString(object? value) {
             if (value == null) 
                 return string.Empty;
             else if (value is string)
@@ -80,22 +80,22 @@ namespace System.Web.Services.Protocols {
 
         private const int Max16BitUtf8SequenceLength = 4;
 
-        internal static string EscapeString(string s, Encoding e) {
+        internal static string EscapeString(string? s, Encoding? e) {
             return EscapeStringInternal(s, e == null ? new ASCIIEncoding() : e, false);
         }
 
-        internal static string UrlEscapeString(string s, Encoding e) {
+        internal static string UrlEscapeString(string? s, Encoding? e) {
             return EscapeStringInternal(s, e == null ? new ASCIIEncoding() : e, true);
         }
 
-        private static string EscapeStringInternal(string s, Encoding e, bool escapeUriStuff) {
+        private static string EscapeStringInternal(string? s, Encoding e, bool escapeUriStuff) {
             if (s == null) return null;
             
-            byte[] bytes = e.GetBytes(s);
-            StringBuilder sb = new StringBuilder(bytes.Length);
-            for (int i = 0; i < bytes.Length; i++) {
-                byte b = bytes[i];
-                char c = (char)b;
+            var bytes = e.GetBytes(s);
+            var sb = new StringBuilder(bytes.Length);
+            for (var i = 0; i < bytes.Length; i++) {
+                var b = bytes[i];
+                var c = (char)b;
                 if (b > 0x7f || b < 0x20 || c == '%' || (escapeUriStuff && !IsSafe(c))) {
                     HexEscape8(sb, c);
                 }
@@ -128,11 +128,11 @@ namespace System.Web.Services.Protocols {
 
         // Microsoft: copied from System.Web.HttpUtility
         internal static string UrlEscapeStringUnicode(string s) {
-            int l = s.Length;
-            StringBuilder sb = new StringBuilder(l);
+            var l = s.Length;
+            var sb = new StringBuilder(l);
 
-            for (int i = 0; i < l; i++) {
-                char ch = s[i];
+            for (var i = 0; i < l; i++) {
+                var ch = s[i];
 
                 if (IsSafe(ch)) {
                     sb.Append(ch);
@@ -206,15 +206,15 @@ namespace System.Web.Services.Protocols {
         // this returns the "base" part of the contentType/mimeType, e.g. the "text/xml" part w/o
         // the ; CharSet=isoxxx part that sometimes follows.
         internal static string GetBase(string contentType) {
-            int semi = contentType.IndexOf(';');
+            var semi = contentType.IndexOf(';');
             if (semi >= 0) return contentType.Substring(0, semi);
             return contentType;
         }
 
         // this returns the "type" part of the contentType/mimeType without subtyape
         internal static string GetMediaType(string contentType) {
-            string baseCT = GetBase(contentType);
-            int tmp = baseCT.IndexOf('/');
+            var baseCT = GetBase(contentType);
+            var tmp = baseCT.IndexOf('/');
             if (tmp >= 0) return baseCT.Substring(0, tmp);
             return baseCT;
         }
@@ -229,11 +229,11 @@ namespace System.Web.Services.Protocols {
         }
 
         private static string GetParameter(string contentType, string paramName) {
-            string[] paramDecls = contentType.Split(new char[] { ';' });
-            for (int i = 1; i < paramDecls.Length; i++) {
-                string paramDecl = paramDecls[i].TrimStart(null);
+            var paramDecls = contentType.Split(new char[] { ';' });
+            for (var i = 1; i < paramDecls.Length; i++) {
+                var paramDecl = paramDecls[i].TrimStart(null);
                 if (String.Compare(paramDecl, 0, paramName, 0, paramName.Length, StringComparison.OrdinalIgnoreCase) == 0) {
-                    int equals = paramDecl.IndexOf('=', paramName.Length);
+                    var equals = paramDecl.IndexOf('=', paramName.Length);
                     if (equals >= 0) 
                         return paramDecl.Substring(equals + 1).Trim(new char[] { ' ', '\'', '\"', '\t' });
                 }
@@ -250,30 +250,30 @@ namespace System.Web.Services.Protocols {
         }
 
         internal static bool IsSoap(string contentType) {
-            string type = GetBase(contentType);
+            var type = GetBase(contentType);
             return (String.Compare(type, ContentType.TextXml, StringComparison.OrdinalIgnoreCase) == 0) ||
                    (String.Compare(type, ContentType.ApplicationSoap, StringComparison.OrdinalIgnoreCase) == 0);
         }
         
         internal static bool IsXml(string contentType) {
-            string type = GetBase(contentType);
+            var type = GetBase(contentType);
             return (String.Compare(type, ContentType.TextXml, StringComparison.OrdinalIgnoreCase) == 0) ||
                    (String.Compare(type, ContentType.ApplicationXml, StringComparison.OrdinalIgnoreCase) == 0);
         }
 
         internal static bool IsHtml(string contentType) {
-            string type = GetBase(contentType);
+            var type = GetBase(contentType);
             return String.Compare(type, ContentType.TextHtml, StringComparison.OrdinalIgnoreCase) == 0;
         }
 
-        internal static string Compose(string contentType, Encoding encoding) {
+        internal static string Compose(string contentType, Encoding? encoding) {
             return Compose(contentType, encoding, null);
         }
 
-        internal static string Compose(string contentType, Encoding encoding, string action) {
+        internal static string Compose(string contentType, Encoding? encoding, string? action) {
             if (encoding == null && action == null) return contentType;
 
-            StringBuilder sb = new StringBuilder(contentType);
+            var sb = new StringBuilder(contentType);
             if (encoding != null) {
                 sb.Append("; charset=");
                 sb.Append(encoding.WebName);

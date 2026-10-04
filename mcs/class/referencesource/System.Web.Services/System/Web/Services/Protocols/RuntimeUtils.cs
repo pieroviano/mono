@@ -20,7 +20,7 @@ namespace System.Web.Services.Protocols {
         private RuntimeUtils() { }
 
         internal static XmlDeserializationEvents GetDeserializationEvents() {
-            XmlDeserializationEvents events = new XmlDeserializationEvents();
+            var events = new XmlDeserializationEvents();
             events.OnUnknownElement = new XmlElementEventHandler(OnUnknownElement);
             events.OnUnknownAttribute = new XmlAttributeEventHandler(OnUnknownAttribute);
             return events;
@@ -42,7 +42,7 @@ namespace System.Web.Services.Protocols {
         }
 
         internal static string ElementString(XmlElement element) {
-            StringWriter xml = new StringWriter(CultureInfo.InvariantCulture);
+            var xml = new StringWriter(CultureInfo.InvariantCulture);
             xml.Write("<");
             xml.Write(element.Name);
             if (element.NamespaceURI != null && element.NamespaceURI.Length > 0) {
@@ -65,7 +65,7 @@ namespace System.Web.Services.Protocols {
         internal static void OnUnknownElement(object sender, XmlElementEventArgs e) {
             if (e.Element == null)
                 return;
-            string xml = RuntimeUtils.ElementString(e.Element);
+            var xml = RuntimeUtils.ElementString(e.Element);
             Tracing.OnUnknownElement(sender, e);
             if (e.ExpectedElements == null)
                 throw new InvalidOperationException(Res.GetString(Res.WebUnknownElement, xml));

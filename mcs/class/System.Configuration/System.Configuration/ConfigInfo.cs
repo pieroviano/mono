@@ -53,8 +53,8 @@ namespace System.Configuration {
 		
 		public string XPath {
 			get {
-				StringBuilder path = new StringBuilder (Name);
-				ConfigInfo cinfo = Parent;
+				var path = new StringBuilder (Name);
+				var cinfo = Parent;
 				while (cinfo != null) {
 					path.Insert (0, cinfo.Name + "/");
 					cinfo = cinfo.Parent;

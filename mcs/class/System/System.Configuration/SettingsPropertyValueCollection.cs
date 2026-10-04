@@ -68,7 +68,7 @@ namespace System.Configuration
 
 		public object Clone ()
 		{
-			SettingsPropertyValueCollection col = new SettingsPropertyValueCollection ();
+			var col = new SettingsPropertyValueCollection ();
 			col.items = (Hashtable)items.Clone ();
 
 			return col;

@@ -72,8 +72,8 @@ namespace System.Web
 
 			/* special handling for Cookies since
 			 * it isn't a NameValueCollection. */
-			for (int i = 0; i < _cookies.Count; i++) {
-				HttpCookie cookie = _cookies [i];
+			for (var i = 0; i < _cookies.Count; i++) {
+				var cookie = _cookies [i];
 				Add (cookie.Name, cookie.Value);
 			}
 

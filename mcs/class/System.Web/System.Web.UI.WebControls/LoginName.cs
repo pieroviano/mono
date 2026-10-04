@@ -49,7 +49,7 @@ namespace System.Web.UI.WebControls {
 		[Localizable (true)]
 		public virtual string FormatString {
 			get {
-				object o = ViewState ["FormatString"];
+				var o = ViewState ["FormatString"];
 				return (o == null) ? "{0}" : (string)o;
 			}
 			set {
@@ -80,7 +80,7 @@ namespace System.Web.UI.WebControls {
 		protected internal override void RenderContents (HtmlTextWriter writer)
 		{
 			if (!Anonymous) {
-				string format = (string) ViewState ["FormatString"];
+				var format = (string) ViewState ["FormatString"];
 				if ((format == null) || (format.Length == 0))
 					writer.Write (User);
 				else

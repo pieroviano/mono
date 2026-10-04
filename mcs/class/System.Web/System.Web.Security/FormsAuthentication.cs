@@ -77,7 +77,7 @@ namespace System.Web.Security
 			get { return initialized; }
 		}
 
-		public static void EnableFormsAuthentication (NameValueCollection configurationData)
+		public static void EnableFormsAuthentication (NameValueCollection? configurationData)
 		{
 			BuildManager.AssertPreStartMethodsRunning ();
 			if (configurationData == null || configurationData.Count == 0)
@@ -95,21 +95,21 @@ namespace System.Web.Security
 		{
 		}
 
-		public static bool Authenticate (string name, string password)
+		public static bool Authenticate (string? name, string? password)
 		{
 			if (name == null || password == null)
 				return false;
 
 			Initialize ();
-			HttpContext context = HttpContext.Current;
+			var context = HttpContext.Current;
 			if (context == null)
 				throw new HttpException ("Context is null!");
 
 			name = name.ToLower (Helpers.InvariantCulture);
 
-			AuthenticationSection section = (AuthenticationSection) WebConfigurationManager.GetSection (authConfigPath);
-			FormsAuthenticationCredentials config = section.Forms.Credentials;
-			FormsAuthenticationUser user = config.Users[name];
+			var section = (AuthenticationSection) WebConfigurationManager.GetSection (authConfigPath);
+			var config = section.Forms.Credentials;
+			var user = config.Users[name];
 			string stored = null;
 
 			if (user != null)
@@ -118,7 +118,7 @@ namespace System.Web.Security
 			if (stored == null)
 				return false;
 
-			bool caseInsensitive = true;
+			var caseInsensitive = true;
 			switch (config.PasswordFormat) {
 				case FormsAuthPasswordFormat.Clear:
 					caseInsensitive = false;
@@ -140,7 +140,7 @@ namespace System.Web.Security
 			if (protection == FormsProtectionEnum.None)
 				return FormsAuthenticationTicket.FromByteArray (bytes);
 
-			MachineKeySection config = (MachineKeySection) WebConfigurationManager.GetWebApplicationSection (machineKeyConfigPath);
+			var config = (MachineKeySection) WebConfigurationManager.GetWebApplicationSection (machineKeyConfigPath);
 			byte [] result = null;
 			if (protection == FormsProtectionEnum.All) {
 				result = MachineKeySectionUtils.VerifyDecrypt (config, bytes);
@@ -161,7 +161,7 @@ namespace System.Web.Security
 			Initialize ();
 
 			FormsAuthenticationTicket ticket;
-			byte [] bytes = Convert.FromBase64String (encryptedTicket);
+			var bytes = Convert.FromBase64String (encryptedTicket);
 
 			try {
 				ticket = Decrypt2 (bytes);
@@ -178,12 +178,12 @@ namespace System.Web.Security
 				throw new ArgumentNullException ("ticket");
 
 			Initialize ();
-			byte [] ticket_bytes = ticket.ToByteArray ();
+			var ticket_bytes = ticket.ToByteArray ();
 			if (protection == FormsProtectionEnum.None)
 				return Convert.ToBase64String (ticket_bytes);
 
 			byte [] result = null;
-			MachineKeySection config = (MachineKeySection) WebConfigurationManager.GetWebApplicationSection (machineKeyConfigPath);
+			var config = (MachineKeySection) WebConfigurationManager.GetWebApplicationSection (machineKeyConfigPath);
 
 			if (protection == FormsProtectionEnum.All) {
 				result = MachineKeySectionUtils.EncryptSign (config, ticket_bytes);
@@ -196,12 +196,12 @@ namespace System.Web.Security
 			return Convert.ToBase64String (result);
 		}
 
-		public static HttpCookie GetAuthCookie (string userName, bool createPersistentCookie)
+		public static HttpCookie GetAuthCookie (string? userName, bool createPersistentCookie)
 		{
 			return GetAuthCookie (userName, createPersistentCookie, null);
 		}
 
-		public static HttpCookie GetAuthCookie (string userName, bool createPersistentCookie, string strCookiePath)
+		public static HttpCookie GetAuthCookie (string? userName, bool createPersistentCookie, string? strCookiePath)
 		{
 			Initialize ();
 
@@ -211,11 +211,11 @@ namespace System.Web.Security
 			if (strCookiePath == null || strCookiePath.Length == 0)
 				strCookiePath = cookiePath;
 
-			DateTime now = DateTime.Now;
-			DateTime ticketExpiry = now.AddMinutes(timeout);
-	            	DateTime cookieExpiry = createPersistentCookie ? ticketExpiry : DateTime.MinValue;
+			var now = DateTime.Now;
+			var ticketExpiry = now.AddMinutes(timeout);
+	            	var cookieExpiry = createPersistentCookie ? ticketExpiry : DateTime.MinValue;
 
-			FormsAuthenticationTicket ticket = new FormsAuthenticationTicket (1,
+			var ticket = new FormsAuthenticationTicket (1,
 											  userName,
 											  now,
 											  ticketExpiry,
@@ -223,7 +223,7 @@ namespace System.Web.Security
 											  String.Empty,
 											  cookiePath);
 
-			HttpCookie cookie = new HttpCookie (cookieName, Encrypt (ticket), strCookiePath, cookieExpiry);
+			var cookie = new HttpCookie (cookieName, Encrypt (ticket), strCookiePath, cookieExpiry);
 			if (requireSSL)
 				cookie.Secure = true;
 			if (!String.IsNullOrEmpty (cookie_domain))
@@ -236,23 +236,23 @@ namespace System.Web.Security
 			get { return HttpContext.Current.Request ["RETURNURL"]; }
 		}
 
-		public static string GetRedirectUrl (string userName, bool createPersistentCookie)
+		public static string GetRedirectUrl (string? userName, bool createPersistentCookie)
 		{
 			if (userName == null)
 				return null;
 
 			Initialize ();
-			HttpRequest request = HttpContext.Current.Request;
-			string returnUrl = ReturnUrl;
+			var request = HttpContext.Current.Request;
+			var returnUrl = ReturnUrl;
 			if (returnUrl != null)
 				return returnUrl;
 
 			returnUrl = request.ApplicationPath;
-			string apppath = request.PhysicalApplicationPath;
-			bool found = false;
+			var apppath = request.PhysicalApplicationPath;
+			var found = false;
 
-			foreach (string indexFile in indexFiles) {
-				string filePath = Path.Combine (apppath, indexFile);
+			foreach (var indexFile in indexFiles) {
+				var filePath = Path.Combine (apppath, indexFile);
 				if (File.Exists (filePath)) {
 					returnUrl = UrlUtils.Combine (returnUrl, indexFile);
 					found = true;
@@ -314,8 +314,8 @@ namespace System.Web.Security
 				if (initialized)
 					return;
 
-				AuthenticationSection section = (AuthenticationSection)WebConfigurationManager.GetSection (authConfigPath);
-				FormsAuthenticationConfiguration config = section.Forms;
+				var section = (AuthenticationSection)WebConfigurationManager.GetSection (authConfigPath);
+				var config = section.Forms;
 
 				cookieName = config.Name;
 				Timeout = config.Timeout;
@@ -348,12 +348,12 @@ namespace System.Web.Security
 				return UrlUtils.ResolveVirtualPathFromAppAbsolute (url);
 		}
 
-		public static void RedirectFromLoginPage (string userName, bool createPersistentCookie)
+		public static void RedirectFromLoginPage (string? userName, bool createPersistentCookie)
 		{
 			RedirectFromLoginPage (userName, createPersistentCookie, null);
 		}
 
-		public static void RedirectFromLoginPage (string userName, bool createPersistentCookie, string strCookiePath)
+		public static void RedirectFromLoginPage (string? userName, bool createPersistentCookie, string? strCookiePath)
 		{
 			if (userName == null)
 				return;
@@ -363,35 +363,35 @@ namespace System.Web.Security
 			Redirect (GetRedirectUrl (userName, createPersistentCookie), false);
 		}
 
-		public static FormsAuthenticationTicket RenewTicketIfOld (FormsAuthenticationTicket tOld)
+		public static FormsAuthenticationTicket RenewTicketIfOld (FormsAuthenticationTicket? tOld)
 		{
 			if (tOld == null)
 				return null;
 
-			DateTime now = DateTime.Now;
-			TimeSpan toIssue = now - tOld.IssueDate;
-			TimeSpan toExpiration = tOld.Expiration - now;
+			var now = DateTime.Now;
+			var toIssue = now - tOld.IssueDate;
+			var toExpiration = tOld.Expiration - now;
 			if (toExpiration > toIssue)
 				return tOld;
 
-			FormsAuthenticationTicket tNew = tOld.Clone ();
+			var tNew = tOld.Clone ();
 			tNew.SetDates (now, now + (tOld.Expiration - tOld.IssueDate));
 			return tNew;
 		}
 
-		public static void SetAuthCookie (string userName, bool createPersistentCookie)
+		public static void SetAuthCookie (string? userName, bool createPersistentCookie)
 		{
 			Initialize ();
 			SetAuthCookie (userName, createPersistentCookie, cookiePath);
 		}
 
-		public static void SetAuthCookie (string userName, bool createPersistentCookie, string strCookiePath)
+		public static void SetAuthCookie (string? userName, bool createPersistentCookie, string? strCookiePath)
 		{
-			HttpContext context = HttpContext.Current;
+			var context = HttpContext.Current;
 			if (context == null)
 				throw new HttpException ("Context is null!");
 
-			HttpResponse response = context.Response;
+			var response = context.Response;
 			if (response == null)
 				throw new HttpException ("Response is null!");
 
@@ -402,17 +402,17 @@ namespace System.Web.Security
 		{
 			Initialize ();
 
-			HttpContext context = HttpContext.Current;
+			var context = HttpContext.Current;
 			if (context == null)
 				throw new HttpException ("Context is null!");
 
-			HttpResponse response = context.Response;
+			var response = context.Response;
 			if (response == null)
 				throw new HttpException ("Response is null!");
 
-			HttpCookieCollection cc = response.Cookies;
+			var cc = response.Cookies;
 			cc.Remove (cookieName);
-			HttpCookie expiration_cookie = new HttpCookie (cookieName, String.Empty);
+			var expiration_cookie = new HttpCookie (cookieName, String.Empty);
 			expiration_cookie.Expires = new DateTime (1999, 10, 12);
 			expiration_cookie.Path = cookiePath;
 			if (!String.IsNullOrEmpty (cookie_domain))

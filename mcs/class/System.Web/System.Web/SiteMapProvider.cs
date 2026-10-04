@@ -71,16 +71,16 @@ namespace System.Web
 			throw new NotImplementedException ();
 		}
 
-		public virtual SiteMapNode FindSiteMapNode (HttpContext context)
+		public virtual SiteMapNode FindSiteMapNode (HttpContext? context)
 		{
 			if (context == null)
 				return null;
 
-			HttpRequest req = context.Request;
+			var req = context.Request;
 			if (req == null)
 				return null;
 			
-			SiteMapNode ret = this.FindSiteMapNode (req.RawUrl);
+			var ret = this.FindSiteMapNode (req.RawUrl);
 			if (ret == null)
 				ret = this.FindSiteMapNode (req.Path);
 			return ret;
@@ -120,8 +120,8 @@ namespace System.Web
 			if (walkupLevels < 0) throw new ArgumentOutOfRangeException ("walkupLevels");
 			if (relativeDepthFromWalkup < 0) throw new ArgumentOutOfRangeException ("relativeDepthFromWalkup");
 			
-			SiteMapNode node = GetCurrentNodeAndHintAncestorNodes (walkupLevels);
-			for (int n=0; n<walkupLevels && node != null; n++)
+			var node = GetCurrentNodeAndHintAncestorNodes (walkupLevels);
+			for (var n=0; n<walkupLevels && node != null; n++)
 				node = GetParentNode (node);
 				
 			if (node == null) return null;
@@ -130,14 +130,14 @@ namespace System.Web
 			return node;
 		}
 		
-		public virtual SiteMapNode GetParentNodeRelativeToNodeAndHintDownFromParent (SiteMapNode node, int walkupLevels, int relativeDepthFromWalkup)
+		public virtual SiteMapNode GetParentNodeRelativeToNodeAndHintDownFromParent (SiteMapNode? node, int walkupLevels, int relativeDepthFromWalkup)
 		{
 			if (walkupLevels < 0) throw new ArgumentOutOfRangeException ("walkupLevels");
 			if (relativeDepthFromWalkup < 0) throw new ArgumentOutOfRangeException ("relativeDepthFromWalkup");
 			if (node == null) throw new ArgumentNullException ("node");
 			
 			HintAncestorNodes (node, walkupLevels);
-			for (int n=0; n<walkupLevels && node != null; n++)
+			for (var n=0; n<walkupLevels && node != null; n++)
 				node = GetParentNode (node);
 				
 			if (node == null) return null;
@@ -199,7 +199,7 @@ namespace System.Web
 			*/
 
 			/* 1. */
-			IList roles = node.Roles;
+			var roles = node.Roles;
 			if (roles != null && roles.Count > 0) {
 				foreach (string rolename in roles)
 					if (rolename == "*" || context.User.IsInRole (rolename))
@@ -210,14 +210,14 @@ namespace System.Web
 			/* XXX */
 
 			/* 3. */
-			string url = node.Url;
+			var url = node.Url;
 			if(!String.IsNullOrEmpty(url)) {
 				// TODO check url is located within the current application
 
 				if (VirtualPathUtility.IsAppRelative (url) || !VirtualPathUtility.IsAbsolute (url))
 					url = VirtualPathUtility.Combine (VirtualPathUtility.AppendTrailingSlash (HttpRuntime.AppDomainAppVirtualPath), url);
 
-				AuthorizationSection config = (AuthorizationSection) WebConfigurationManager.GetSection (
+				var config = (AuthorizationSection) WebConfigurationManager.GetSection (
 					"system.web/authorization",
 					url);
 				if (config != null)
@@ -230,7 +230,7 @@ namespace System.Web
 		public virtual SiteMapNode CurrentNode {
 			get {
 				if (HttpContext.Current != null) {
-					SiteMapNode ret = ResolveSiteMapNode (HttpContext.Current);
+					var ret = ResolveSiteMapNode (HttpContext.Current);
 					if (ret != null) return ret;
 					return FindSiteMapNode (HttpContext.Current);
 				} else
@@ -247,7 +247,7 @@ namespace System.Web
 			get {
 				lock (this_lock) {
 					if (rootProviderCache == null) {
-						SiteMapProvider current = this;
+						var current = this;
 						while (current.ParentProvider != null)
 							current = current.ParentProvider;
 						
@@ -267,8 +267,8 @@ namespace System.Web
 					if (resolving)
 						return null;
 					resolving = true;
-					SiteMapResolveEventArgs args = new SiteMapResolveEventArgs (context, this);
-					SiteMapNode r = eh (this, args);
+					var args = new SiteMapResolveEventArgs (context, this);
+					var r = eh (this, args);
 					resolving = false;
 					return r;
 				}
@@ -293,7 +293,7 @@ namespace System.Web
 
 		public virtual SiteMapNode RootNode {
 			get {
-				SiteMapNode node = GetRootNodeCore ();
+				var node = GetRootNodeCore ();
 				return ReturnNodeIfAccessible (node);
 			}
 		}

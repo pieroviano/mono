@@ -56,7 +56,7 @@ namespace System.Web.UI.HtmlControls
 		[WebCategory("Appearance")]
 		public int Cols {
 			get {
-				string s = Attributes ["cols"];
+				var s = Attributes ["cols"];
 				return (s == null) ? -1 : Convert.ToInt32 (s);
 			}
 			set {
@@ -82,7 +82,7 @@ namespace System.Web.UI.HtmlControls
 		[WebCategory("Appearance")]
 		public int Rows {
 			get {
-				string s = Attributes ["rows"];
+				var s = Attributes ["rows"];
 				return (s == null) ? -1 : Convert.ToInt32 (s);
 			}
 			set {
@@ -115,7 +115,7 @@ namespace System.Web.UI.HtmlControls
 		{
 			base.OnPreRender (e);
 
-			Page page = Page;
+			var page = Page;
 			if (page != null && !Disabled) {
 				page.RegisterRequiresPostBack (this);
 				page.RegisterEnabledControl (this);
@@ -131,7 +131,7 @@ namespace System.Web.UI.HtmlControls
 
 		protected override void RenderAttributes (HtmlTextWriter writer)
 		{
-			Page page = Page;
+			var page = Page;
 			if (page != null)
 				page.ClientScript.RegisterForEventValidation (UniqueID);
 			

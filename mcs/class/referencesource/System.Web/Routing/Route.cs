@@ -91,16 +91,16 @@
 
         public override RouteData GetRouteData(HttpContextBase httpContext) {
             // Parse incoming URL (we trim off the first two chars since they're always "~/")
-            string requestPath = httpContext.Request.AppRelativeCurrentExecutionFilePath.Substring(2) + httpContext.Request.PathInfo;
+            var requestPath = httpContext.Request.AppRelativeCurrentExecutionFilePath.Substring(2) + httpContext.Request.PathInfo;
 
-            RouteValueDictionary values = _parsedRoute.Match(requestPath, Defaults);
+            var values = _parsedRoute.Match(requestPath, Defaults);
 
             if (values == null) {
                 // If we got back a null value set, that means the URL did not match
                 return null;
             }
 
-            RouteData routeData = new RouteData(this, RouteHandler);
+            var routeData = new RouteData(this, RouteHandler);
 
             // Validate the values
             if (!ProcessConstraints(httpContext, values, RouteDirection.IncomingRequest)) {
@@ -122,11 +122,11 @@
             return routeData;
         }
 
-        public override VirtualPathData GetVirtualPath(RequestContext requestContext, RouteValueDictionary values) {
+        public override VirtualPathData? GetVirtualPath(RequestContext requestContext, RouteValueDictionary? values) {
             // Try to generate a URL that represents the values passed in based on current
             // values from the RouteData and new values using the specified Route.
 
-            BoundUrl result = _parsedRoute.Bind(requestContext.RouteData.Values, values, Defaults, Constraints);
+            var result = _parsedRoute.Bind(requestContext.RouteData.Values, values, Defaults, Constraints);
 
             if (result == null) {
                 return null;
@@ -137,7 +137,7 @@
                 return null;
             }
 
-            VirtualPathData vpd = new VirtualPathData(this, result.Url);
+            var vpd = new VirtualPathData(this, result.Url);
 
             // Add the DataTokens from the Route to the VirtualPathData
             if (DataTokens != null) {
@@ -167,7 +167,7 @@
             object parameterValue;
             values.TryGetValue(parameterName, out parameterValue);
             string parameterValueString = Convert.ToString(parameterValue, CultureInfo.InvariantCulture);
-            string constraintsRegEx = "^(" + constraintsRule + ")$";
+            var constraintsRegEx = "^(" + constraintsRule + ")$";
             return Regex.IsMatch(parameterValueString, constraintsRegEx,
                 RegexOptions.CultureInvariant | RegexOptions.IgnoreCase);
         }

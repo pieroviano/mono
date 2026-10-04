@@ -19,7 +19,7 @@ namespace System.Web.Services.Description {
             if (!HtmlFormParameterReader.IsSupported(ReflectionContext.Method))
                 return false;
             ReflectionContext.ReflectStringParametersMessage();
-            MimeContentBinding mimeContentBinding = new MimeContentBinding();
+            var mimeContentBinding = new MimeContentBinding();
             mimeContentBinding.Type = HtmlFormParameterReader.MimeType;
             ReflectionContext.OperationBinding.Input.Extensions.Add(mimeContentBinding);
             return true;

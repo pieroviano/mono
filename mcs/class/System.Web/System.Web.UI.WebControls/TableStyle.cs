@@ -156,14 +156,14 @@ namespace System.Web.UI.WebControls {
 			}
 		}
 		[MonoTODO ("collapse style should be rendered only for browsers which support that.")]
-		public override void AddAttributesToRender (HtmlTextWriter writer, WebControl owner)
+		public override void AddAttributesToRender (HtmlTextWriter? writer, WebControl owner)
 		{
 			base.AddAttributesToRender (writer, owner);
 			if (writer == null)
 				return;
 
 			// note: avoid calling properties multiple times
-			int i = CellSpacing;
+			var i = CellSpacing;
 			if (i != -1) {
 				writer.AddAttribute (HtmlTextWriterAttribute.Cellspacing, i.ToString (Helpers.InvariantCulture), false);
 				if (i == 0)
@@ -174,7 +174,7 @@ namespace System.Web.UI.WebControls {
 			if (i != -1)
 				writer.AddAttribute (HtmlTextWriterAttribute.Cellpadding, i.ToString (Helpers.InvariantCulture), false);
 			
-			GridLines g = GridLines;
+			var g = GridLines;
 			switch (g) {
 			case GridLines.Horizontal:
 				writer.AddAttribute (HtmlTextWriterAttribute.Rules, "rows", false);
@@ -209,7 +209,7 @@ namespace System.Web.UI.WebControls {
 		void Copy (string name, TableStyles s, Style source)
 		{
 			if (source.CheckBit ((int) s)) {
-				object o = source.ViewState [name];
+				var o = source.ViewState [name];
 				if (o != null) {
 					ViewState [name] = o;
 					SetBit ((int) s);
@@ -217,7 +217,7 @@ namespace System.Web.UI.WebControls {
 			}
 		}
 
-		public override void CopyFrom (Style s)
+		public override void CopyFrom (Style? s)
 		{
 			// note: styles is copied in base
 			base.CopyFrom (s);
@@ -233,7 +233,7 @@ namespace System.Web.UI.WebControls {
 		void Merge (string name, TableStyles s, Style source)
 		{
 			if ((!CheckBit ((int) s)) && (source.CheckBit ((int) s))) {
-				object o = source.ViewState [name];
+				var o = source.ViewState [name];
 				if (o != null) {
 					ViewState [name] = o;
 					SetBit ((int) s);
@@ -241,7 +241,7 @@ namespace System.Web.UI.WebControls {
 			}
 		}
 
-		public override void MergeWith (Style s)
+		public override void MergeWith (Style? s)
 		{
 			// if we're empty then it's like a copy
 			if (IsEmpty) {
@@ -273,10 +273,10 @@ namespace System.Web.UI.WebControls {
 			// call base at the end because "styles" will reset there
 			base.Reset ();
 		}
-		protected override void FillStyleAttributes (CssStyleCollection attributes, IUrlResolutionService urlResolver)
+		protected override void FillStyleAttributes (CssStyleCollection? attributes, IUrlResolutionService? urlResolver)
 		{
 			if (attributes != null) {
-				string url = BackImageUrl;
+				var url = BackImageUrl;
 				if (url.Length > 0) {
 					if (urlResolver != null)
 						url = urlResolver.ResolveClientUrl (url);

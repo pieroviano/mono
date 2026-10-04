@@ -41,7 +41,7 @@ namespace System.Web.UI.WebControls
 		[IDReferencePropertyAttribute (typeof(HierarchicalDataSourceControl))]
 		public override string DataSourceID {
 			get {
-				object o = ViewState ["DataSourceID"];
+				var o = ViewState ["DataSourceID"];
 				if (o != null)
 					return (string)o;
 				
@@ -59,7 +59,7 @@ namespace System.Web.UI.WebControls
 		{
 			if (DataSource != null && !String.IsNullOrEmpty (DataSourceID))
 				throw new HttpException ();	
-			IHierarchicalDataSource ds = GetDataSource ();
+			var ds = GetDataSource ();
 			if (ds != null)
 				return ds.GetHierarchicalView (viewPath);
 			
@@ -72,7 +72,7 @@ namespace System.Web.UI.WebControls
 		protected virtual IHierarchicalDataSource GetDataSource ()
 		{
 			if (IsBoundUsingDataSourceID) {
-				Control ctrl = FindDataSource ();
+				var ctrl = FindDataSource ();
 
 				if (ctrl == null)
 					throw new HttpException (string.Format ("A control with ID '{0}' could not be found.", DataSourceID));
@@ -119,7 +119,7 @@ namespace System.Web.UI.WebControls
 			if (!Page.IsPostBack || (IsViewStateEnabled && !IsDataBound))
 				RequiresDataBinding = true;
 
-			IHierarchicalDataSource ds = GetDataSource ();
+			var ds = GetDataSource ();
 			if (ds != null && DataSourceID != "")
 				ds.DataSourceChanged += new EventHandler (OnDataSourceChanged);
 		}
@@ -155,7 +155,7 @@ namespace System.Web.UI.WebControls
 			OnDataBound (EventArgs.Empty);
 		}
 		
-		protected override void ValidateDataSource (object dataSource)
+		protected override void ValidateDataSource (object? dataSource)
 		{
 			if (dataSource == null || dataSource is IHierarchicalDataSource || dataSource is IHierarchicalEnumerable)
 				return;

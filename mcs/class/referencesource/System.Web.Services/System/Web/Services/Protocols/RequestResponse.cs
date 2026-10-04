@@ -40,7 +40,7 @@ namespace System.Web.Services.Protocols
 
         internal static Encoding GetEncoding(string contentType)
         {
-            string charset = ContentType.GetCharset(contentType);
+            var charset = ContentType.GetCharset(contentType);
             Encoding e = null;
             try
             {
@@ -65,7 +65,7 @@ namespace System.Web.Services.Protocols
             if (!ContentType.IsApplication(contentType))
                 return GetEncoding(contentType);
 
-            string charset = ContentType.GetCharset(contentType);
+            var charset = ContentType.GetCharset(contentType);
             Encoding e = null;
             try
             {
@@ -91,9 +91,9 @@ namespace System.Web.Services.Protocols
 
         internal static string ReadResponse(WebResponse response, Stream stream)
         {
-            Encoding e = GetEncoding(response.ContentType);
+            var e = GetEncoding(response.ContentType);
             if (e == null) e = Encoding.Default;
-            StreamReader reader = new StreamReader(stream, e, true);
+            var reader = new StreamReader(stream, e, true);
             try
             {
                 return reader.ReadToEnd();
@@ -107,8 +107,8 @@ namespace System.Web.Services.Protocols
         // used to copy an unbuffered stream to a buffered stream.
         internal static Stream StreamToMemoryStream(Stream stream)
         {
-            MemoryStream memoryStream = new MemoryStream(1024);
-            byte[] buffer = new byte[1024];
+            var memoryStream = new MemoryStream(1024);
+            var buffer = new byte[1024];
             int count;
             while ((count = stream.Read(buffer, 0, buffer.Length)) != 0)
             {
@@ -123,23 +123,23 @@ namespace System.Web.Services.Protocols
             return CreateResponseExceptionString(response, response.GetResponseStream());
         }
 
-        internal static string CreateResponseExceptionString(WebResponse response, Stream stream)
+        internal static string CreateResponseExceptionString(WebResponse response, Stream? stream)
         {
             if (response is HttpWebResponse)
             {
-                HttpWebResponse httpResponse = (HttpWebResponse)response;
-                int statusCode = (int)httpResponse.StatusCode;
+                var httpResponse = (HttpWebResponse)response;
+                var statusCode = (int)httpResponse.StatusCode;
                 if (statusCode >= 400 && statusCode != 500)
                     return Res.GetString(Res.WebResponseKnownError, statusCode, httpResponse.StatusDescription);
             }
 
             // 
-            string content = (stream != null) ? ReadResponse(response, stream) : string.Empty;
+            var content = (stream != null) ? ReadResponse(response, stream) : string.Empty;
 
             if (content.Length > 0)
             {
                 content = HttpUtility.HtmlDecode(content);
-                StringBuilder sb = new StringBuilder();
+                var sb = new StringBuilder();
                 sb.Append(Res.GetString(Res.WebResponseUnknownError));
                 sb.Append(Environment.NewLine);
                 sb.Append("--");
@@ -169,7 +169,7 @@ namespace System.Web.Services.Protocols
 
         static class HttpUtility
         {
-            internal static string HtmlDecode(string s)
+            internal static string HtmlDecode(string? s)
             {
                 if (s == null)
                     return null;
@@ -180,8 +180,8 @@ namespace System.Web.Services.Protocols
                 if (s.IndexOf('&') < 0)
                     return s;
 
-                StringBuilder builder = new StringBuilder();
-                StringWriter writer = new StringWriter(builder, CultureInfo.InvariantCulture);
+                var builder = new StringBuilder();
+                var writer = new StringWriter(builder, CultureInfo.InvariantCulture);
 
                 HtmlDecode(s, writer);
 
@@ -189,7 +189,7 @@ namespace System.Web.Services.Protocols
             }
 
             private static char[] s_entityEndingChars = new char[] { ';', '&' };
-            public static void HtmlDecode(string s, TextWriter output)
+            public static void HtmlDecode(string? s, TextWriter output)
             {
                 if (s == null)
                     return;
@@ -200,20 +200,20 @@ namespace System.Web.Services.Protocols
                     return;
                 }
 
-                int l = s.Length;
-                for (int i = 0; i < l; i++)
+                var l = s.Length;
+                for (var i = 0; i < l; i++)
                 {
-                    char ch = s[i];
+                    var ch = s[i];
 
                     if (ch == '&')
                     {
                         // We found a '&'. Now look for the next ';' or '&'. The idea is that
                         // if we find another '&' before finding a ';', then this is not an entity,
                         // and the next '&' might start a real entity (VSWhidbey 275184)
-                        int index = s.IndexOfAny(s_entityEndingChars, i + 1);
+                        var index = s.IndexOfAny(s_entityEndingChars, i + 1);
                         if (index > 0 && s[index] == ';')
                         {
-                            string entity = s.Substring(i + 1, index - i - 1);
+                            var entity = s.Substring(i + 1, index - i - 1);
 
                             if (entity.Length > 1 && entity[0] == '#')
                             {
@@ -244,7 +244,7 @@ namespace System.Web.Services.Protocols
                             {
                                 i = index; // already looked at everything until semicolon
 
-                                char entityChar = HtmlEntities.Lookup(entity);
+                                var entityChar = HtmlEntities.Lookup(entity);
                                 if (entityChar != (char)0)
                                 {
                                     ch = entityChar;
@@ -539,9 +539,9 @@ namespace System.Web.Services.Protocols
                         {
                             if (_entitiesLookupTable == null)
                             {
-                                Hashtable t = new Hashtable();
+                                var t = new Hashtable();
 
-                                foreach (String s in _entitiesList)
+                                foreach (var s in _entitiesList)
                                     t[s.Substring(2)] = s[0];  // 1st char is the code, 2nd '-'
 
                                 _entitiesLookupTable = t;

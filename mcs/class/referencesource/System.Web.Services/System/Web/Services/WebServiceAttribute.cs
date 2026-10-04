@@ -80,22 +80,22 @@ namespace System.Web.Services {
     internal class WebServiceReflector {
         private WebServiceReflector() { }
         internal static WebServiceAttribute GetAttribute(Type type) {
-            object[] attrs = type.GetCustomAttributes(typeof(WebServiceAttribute), false);
+            var attrs = type.GetCustomAttributes(typeof(WebServiceAttribute), false);
             if (attrs.Length == 0) return new WebServiceAttribute();
             return (WebServiceAttribute)attrs[0];
         }
 
         internal static WebServiceAttribute GetAttribute(LogicalMethodInfo[] methodInfos) {
             if (methodInfos.Length == 0) return new WebServiceAttribute();
-            Type mostDerived = GetMostDerivedType(methodInfos);
+            var mostDerived = GetMostDerivedType(methodInfos);
             return GetAttribute(mostDerived);
         }
 
         internal static Type GetMostDerivedType(LogicalMethodInfo[] methodInfos) {
             if (methodInfos.Length == 0) return null;
-            Type mostDerived = methodInfos[0].DeclaringType;
-            for (int i = 1; i < methodInfos.Length; i++) {
-                Type derived = methodInfos[i].DeclaringType;
+            var mostDerived = methodInfos[0].DeclaringType;
+            for (var i = 1; i < methodInfos.Length; i++) {
+                var derived = methodInfos[i].DeclaringType;
                 if (derived.IsSubclassOf(mostDerived)) {
                     mostDerived = derived;
                 }

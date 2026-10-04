@@ -44,7 +44,7 @@ namespace System.Web.UI.WebControls {
 		[DefaultValue ("")]
 		public virtual string AbbreviatedText {
 			get {
-				object o = ViewState ["AbbreviatedText"];
+				var o = ViewState ["AbbreviatedText"];
 				return (o == null) ? String.Empty : (string) o;
 			}
 			set {
@@ -59,7 +59,7 @@ namespace System.Web.UI.WebControls {
 		[TypeConverter (typeof (StringArrayConverter))]
 		public virtual string[] CategoryText {
 			get {
-				object o = ViewState ["CategoryText"];
+				var o = ViewState ["CategoryText"];
 				return (o == null) ? new string [0] : (string[]) o;
 			}
 			set {
@@ -70,7 +70,7 @@ namespace System.Web.UI.WebControls {
 		[DefaultValue (TableHeaderScope.NotSet)]
 		public virtual TableHeaderScope Scope {
 			get {
-				object o = ViewState ["Scope"];
+				var o = ViewState ["Scope"];
 				return (o == null) ? TableHeaderScope.NotSet : (TableHeaderScope) o;
 			}
 			set {
@@ -78,11 +78,11 @@ namespace System.Web.UI.WebControls {
 			}
 		}
 
-		protected override void AddAttributesToRender (HtmlTextWriter writer)
+		protected override void AddAttributesToRender (HtmlTextWriter? writer)
 		{
 			base.AddAttributesToRender (writer);
 			if (writer != null) {
-				object o = ViewState ["AbbreviatedText"];
+				var o = ViewState ["AbbreviatedText"];
 				if (o != null)
 					writer.AddAttribute (HtmlTextWriterAttribute.Abbr, (string) o);
 
@@ -95,12 +95,12 @@ namespace System.Web.UI.WebControls {
 					break;
 				}
 
-				string[] cats = CategoryText;
+				var cats = CategoryText;
 				if (cats.Length == 1) {
 					writer.AddAttribute (HtmlTextWriterAttribute.Axis, cats [0]);
 				} else if (cats.Length > 1) {
-					StringBuilder sb = new StringBuilder ();
-					for (int i=0; i < cats.Length - 1; i++) {
+					var sb = new StringBuilder ();
+					for (var i=0; i < cats.Length - 1; i++) {
 						sb.Append (cats [i]);
 						sb.Append (",");
 					}

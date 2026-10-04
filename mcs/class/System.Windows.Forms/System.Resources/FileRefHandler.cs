@@ -53,10 +53,10 @@ namespace System.Resources {
 			return GetValue ();
 		}
 
-		public override string GetValueTypeName (ITypeResolutionService typeResolver)
+		public override string GetValueTypeName (ITypeResolutionService? typeResolver)
 		{
 			// although params ignored by GetValue. .NET resolves the type for GetValueTypeName
-			Type type = ResolveType (resXFileRef.TypeName, typeResolver);
+			var type = ResolveType (resXFileRef.TypeName, typeResolver);
 
 			if (type == null)
 				return resXFileRef.TypeName;
@@ -64,9 +64,9 @@ namespace System.Resources {
 				return type.AssemblyQualifiedName;
 		}
 
-		public override string GetValueTypeName (AssemblyName [] assemblyNames)
+		public override string GetValueTypeName (AssemblyName []? assemblyNames)
 		{
-			Type type = ResolveType (resXFileRef.TypeName, assemblyNames);
+			var type = ResolveType (resXFileRef.TypeName, assemblyNames);
 
 			if (type == null)
 				return resXFileRef.TypeName;
@@ -77,7 +77,7 @@ namespace System.Resources {
 
 		private object GetValue ()
 		{
-			TypeConverter c = TypeDescriptor.GetConverter (typeof (ResXFileRef));
+			var c = TypeDescriptor.GetConverter (typeof (ResXFileRef));
 
 			try {
 				return c.ConvertFromInvariantString (resXFileRef.ToString ());

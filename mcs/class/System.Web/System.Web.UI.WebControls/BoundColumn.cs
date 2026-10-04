@@ -93,7 +93,7 @@ namespace System.Web.UI.WebControls {
 		{
 			base.InitializeCell (cell, columnIndex, itemType);
 
-			string df = DataField;
+			var df = DataField;
 
 			switch (itemType) {
 			case ListItemType.Item:
@@ -107,7 +107,7 @@ namespace System.Web.UI.WebControls {
 					cell.DataBinding += new EventHandler (ItemDataBinding);
 					break;
 				}
-				TextBox tb = new TextBox ();
+				var tb = new TextBox ();
 				if (df != null && df.Length != 0)
 					tb.DataBinding += new EventHandler (ItemDataBinding);
 				cell.Controls.Add (tb);
@@ -115,7 +115,7 @@ namespace System.Web.UI.WebControls {
 			}
 		}
 
-		protected virtual string FormatDataValue (object dataValue)
+		protected virtual string FormatDataValue (object? dataValue)
 		{
 			if (dataValue == null)
 				return "";
@@ -135,18 +135,18 @@ namespace System.Web.UI.WebControls {
 				val = item.DataItem;
 			}
 
-			string text = FormatDataValue (val);
+			var text = FormatDataValue (val);
 			return (text != "" ?  text : "&nbsp;");
 		}
 
 		void ItemDataBinding (object sender, EventArgs e)
 		{
-			Control ctrl = (Control) sender;
-			string text = GetValueFromItem ((DataGridItem) ctrl.NamingContainer);
+			var ctrl = (Control) sender;
+			var text = GetValueFromItem ((DataGridItem) ctrl.NamingContainer);
 
 			TableCell cell = sender as TableCell;
 			if (cell == null) {
-				TextBox tb = (TextBox) sender;
+				var tb = (TextBox) sender;
 				tb.Text = text;
 			} else {
 				cell.Text = text;

@@ -66,7 +66,7 @@ namespace System.Web.Security {
 			this._expireDate = _issueDate.Add (RoleManagerConfig.CookieTimeout);
 		}
 
-		public RolePrincipal (IIdentity identity, string encryptedTicket)
+		public RolePrincipal (IIdentity identity, string? encryptedTicket)
 			: this (identity)
 		{
 			DecryptTicket (encryptedTicket);
@@ -81,7 +81,7 @@ namespace System.Web.Security {
 			this._providerName = providerName;
 		}
 
-		public RolePrincipal (string providerName, IIdentity identity, string encryptedTicket)
+		public RolePrincipal (string providerName, IIdentity identity, string? encryptedTicket)
 			: this (providerName, identity)
 		{
 			DecryptTicket (encryptedTicket);
@@ -96,7 +96,7 @@ namespace System.Web.Security {
 				_cachedArray = Provider.GetRolesForUser (_identity.Name);
 				_cachedRoles = new HybridDictionary (true);
 
-				foreach (string r in _cachedArray)
+				foreach (var r in _cachedArray)
 					_cachedRoles.Add(r, r);
 
 				_listChanged = true;
@@ -117,21 +117,21 @@ namespace System.Web.Security {
 		
 		public string ToEncryptedTicket ()
 		{
-			string roles = string.Join (",", GetRoles ());
-			string cookiePath = RoleManagerConfig.CookiePath;
-			int approxTicketLen = roles.Length + cookiePath.Length + 64;
+			var roles = string.Join (",", GetRoles ());
+			var cookiePath = RoleManagerConfig.CookiePath;
+			var approxTicketLen = roles.Length + cookiePath.Length + 64;
 
 			if (_cachedArray.Length > Roles.MaxCachedResults)
 			       return null;
 
-			MemoryStream ticket = new MemoryStream (approxTicketLen);
-			BinaryWriter writer = new BinaryWriter (ticket);
+			var ticket = new MemoryStream (approxTicketLen);
+			var writer = new BinaryWriter (ticket);
 
 			// version
 			writer.Write (Version);
 		
 			// issue datetime
-			DateTime issueDate = DateTime.Now;
+			var issueDate = DateTime.Now;
 			writer.Write (issueDate.Ticks);
 
 			// expiration datetime
@@ -140,9 +140,9 @@ namespace System.Web.Security {
 			writer.Write (cookiePath);
 			writer.Write (roles);
 
-			CookieProtection cookieProtection = RoleManagerConfig.CookieProtection;
+			var cookieProtection = RoleManagerConfig.CookieProtection;
 
-			byte[] ticket_data = ticket.GetBuffer ();
+			var ticket_data = ticket.GetBuffer ();
 			if (cookieProtection == CookieProtection.All) {
 				ticket_data = MachineKeySectionUtils.EncryptSign (MachineConfig, ticket_data);
 			} else if (cookieProtection == CookieProtection.Encryption) {
@@ -154,15 +154,15 @@ namespace System.Web.Security {
 			return GetBase64FromBytes (ticket_data, 0, ticket_data.Length);
 		}
 
-		void DecryptTicket (string encryptedTicket)
+		void DecryptTicket (string? encryptedTicket)
 		{
 			if (encryptedTicket == null || encryptedTicket == String.Empty)
 				throw new ArgumentException ("Invalid encrypted ticket", "encryptedTicket");
 
-			byte [] ticketBytes = GetBytesFromBase64 (encryptedTicket);
+			var ticketBytes = GetBytesFromBase64 (encryptedTicket);
 			byte [] decryptedTicketBytes = null;
 
-			CookieProtection cookieProtection = RoleManagerConfig.CookieProtection;
+			var cookieProtection = RoleManagerConfig.CookieProtection;
 
 			if (cookieProtection == CookieProtection.All) {
 				decryptedTicketBytes = MachineKeySectionUtils.VerifyDecrypt (MachineConfig, ticketBytes);
@@ -175,8 +175,8 @@ namespace System.Web.Security {
 			if (decryptedTicketBytes == null)
 				throw new HttpException ("ticket validation failed");
 
-			MemoryStream ticket = new MemoryStream (decryptedTicketBytes);
-			BinaryReader reader = new BinaryReader (ticket);
+			var ticket = new MemoryStream (decryptedTicketBytes);
+			var reader = new BinaryReader (ticket);
 
 			// version
 			_version = reader.ReadInt32 ();
@@ -191,7 +191,7 @@ namespace System.Web.Security {
 			_cookiePath = reader.ReadString ();
 			
 			// roles
-			string roles = reader.ReadString ();
+			var roles = reader.ReadString ();
 
 			if (!Expired) {
 				InitializeRoles (roles);
@@ -215,7 +215,7 @@ namespace System.Web.Security {
 			_cachedArray = decryptedRoles.Split (',');
 			_cachedRoles = new HybridDictionary (true);
 
-			foreach (string r in _cachedArray)
+			foreach (var r in _cachedArray)
 				_cachedRoles.Add (r, r);
 		}
 

@@ -101,7 +101,7 @@ namespace System.Configuration
 
 		private static UserConfigLocationOption userConfig = UserConfigLocationOption.Company_Product;
 
-		public override void Initialize (string name, NameValueCollection config)
+		public override void Initialize (string name, NameValueCollection? config)
 		{
 			base.Initialize (name, config);
 		}
@@ -249,7 +249,7 @@ namespace System.Configuration
 			if (assembly == null)
 				assembly = Assembly.GetCallingAssembly ();
 
-			AssemblyCompanyAttribute [] attrs = (AssemblyCompanyAttribute []) assembly.GetCustomAttributes (typeof (AssemblyCompanyAttribute), true);
+			var attrs = (AssemblyCompanyAttribute []) assembly.GetCustomAttributes (typeof (AssemblyCompanyAttribute), true);
 		
 			if ((attrs != null) && attrs.Length > 0) {
 				return attrs [0].Company;
@@ -258,7 +258,7 @@ namespace System.Configuration
 			MethodInfo entryPoint = assembly.EntryPoint;
 			Type entryType = entryPoint != null ? entryPoint.DeclaringType : null;
 			if (entryType != null && !String.IsNullOrEmpty (entryType.Namespace)) {
-				int end = entryType.Namespace.IndexOf ('.');
+				var end = entryType.Namespace.IndexOf ('.');
 				return end < 0 ? entryType.Namespace : entryType.Namespace.Substring (0, end);
 			}
 			return "Program";
@@ -288,9 +288,9 @@ namespace System.Configuration
 				assembly = Assembly.GetCallingAssembly ();
 
 			byte [] pkt = assembly.GetName ().GetPublicKeyToken ();
-			byte [] hash = SHA1.Create ().ComputeHash (pkt != null && pkt.Length >0 ? pkt : Encoding.UTF8.GetBytes (assembly.EscapedCodeBase));
-			System.Text.StringBuilder evidence_string = new System.Text.StringBuilder();
-			foreach (byte b in hash)
+			var hash = SHA1.Create ().ComputeHash (pkt != null && pkt.Length >0 ? pkt : Encoding.UTF8.GetBytes (assembly.EscapedCodeBase));
+			var evidence_string = new System.Text.StringBuilder();
+			foreach (var b in hash)
 				evidence_string.AppendFormat("{0:x2}",b);
 			return evidence_string.ToString ();
 		}
@@ -368,8 +368,8 @@ namespace System.Configuration
 			else
 				versionName = ForceVersion;
 
-			string prevVersionRoaming = PrevVersionPath (userRoamingPath, versionName);
-			string prevVersionLocal = PrevVersionPath (userLocalPath, versionName);
+			var prevVersionRoaming = PrevVersionPath (userRoamingPath, versionName);
+			var prevVersionLocal = PrevVersionPath (userLocalPath, versionName);
 			
 			userRoamingPath = Path.Combine (userRoamingPath, versionName);
 			userLocalPath = Path.Combine (userLocalPath, versionName);
@@ -382,12 +382,12 @@ namespace System.Configuration
 		// string for the previous version. It ignores newer ones.
 		private static string PrevVersionPath (string dirName, string currentVersion)
 		{
-			string prevVersionString = "";
+			var prevVersionString = "";
 
 			if (!Directory.Exists(dirName))
 				return prevVersionString;
-			DirectoryInfo currentDir = new DirectoryInfo (dirName);
-			foreach (DirectoryInfo dirInfo in currentDir.GetDirectories ())
+			var currentDir = new DirectoryInfo (dirName);
+			foreach (var dirInfo in currentDir.GetDirectories ())
 				if (String.Compare (currentVersion, dirInfo.Name, StringComparison.Ordinal) > 0)
 					if (String.Compare (prevVersionString, dirInfo.Name, StringComparison.Ordinal) < 0)
 						prevVersionString = dirInfo.Name;
@@ -532,7 +532,7 @@ namespace System.Configuration
 
 		private static bool CheckPath (string configPath)
 		{
-			char[] invalidPathChars = Path.GetInvalidPathChars ();
+			var invalidPathChars = Path.GetInvalidPathChars ();
 
 			/*
 			foreach (char invalidChar in invalidPathChars)
@@ -546,7 +546,7 @@ namespace System.Configuration
 			if (configPath.IndexOfAny (invalidPathChars) >= 0)
 				return false;
 
-			string folder = configPath;
+			var folder = configPath;
 			string fileName;
 			while ((fileName = Path.GetFileName (folder)) != "")
 			{
@@ -580,15 +580,15 @@ namespace System.Configuration
 		/// <br />
 		/// see <a href="https://github.com/mono/mono/pull/2273">Issue 2273</a> for details
 		/// </remarks>
-		private string StripXmlHeader (string serializedValue)
+		private string StripXmlHeader (string? serializedValue)
 		{
 			if (serializedValue == null)
 			{
 				return string.Empty;
 			}
 
-			XmlDocument doc = new XmlDocument ();
-			XmlElement valueXml = doc.CreateElement ("value");
+			var doc = new XmlDocument ();
+			var valueXml = doc.CreateElement ("value");
 			valueXml.InnerXml = serializedValue;
 
 			foreach (XmlNode child in valueXml.ChildNodes) {
@@ -605,26 +605,26 @@ namespace System.Configuration
 
 		private void SaveProperties (ExeConfigurationFileMap exeMap, SettingsPropertyValueCollection collection, ConfigurationUserLevel level, SettingsContext context, bool checkUserLevel)
 		{
-			Configuration config = ConfigurationManager.OpenMappedExeConfiguration (exeMap, level);
+			var config = ConfigurationManager.OpenMappedExeConfiguration (exeMap, level);
 			
 			UserSettingsGroup userGroup = config.GetSectionGroup ("userSettings") as UserSettingsGroup;
-			bool isRoaming = (level == ConfigurationUserLevel.PerUserRoaming);
+			var isRoaming = (level == ConfigurationUserLevel.PerUserRoaming);
 
 			if (userGroup == null) {
 				userGroup = new UserSettingsGroup ();
 				config.SectionGroups.Add ("userSettings", userGroup);
 			}
-			ApplicationSettingsBase asb = context.CurrentSettings;
-			string class_name = NormalizeInvalidXmlChars ((asb != null ? asb.GetType () : typeof (ApplicationSettingsBase)).FullName);
+			var asb = context.CurrentSettings;
+			var class_name = NormalizeInvalidXmlChars ((asb != null ? asb.GetType () : typeof (ApplicationSettingsBase)).FullName);
 			ClientSettingsSection userSection = null;
-			ConfigurationSection cnf = userGroup.Sections.Get (class_name);
+			var cnf = userGroup.Sections.Get (class_name);
 			userSection = cnf as ClientSettingsSection;
 			if (userSection == null) {
 				userSection = new ClientSettingsSection ();
 				userGroup.Sections.Add (class_name, userSection);
 			}
 
-			bool hasChanges = false;
+			var hasChanges = false;
 
 			if (userSection == null)
 				return;
@@ -637,7 +637,7 @@ namespace System.Configuration
 					continue;
 
 				hasChanges = true;
-				SettingElement element = userSection.Settings.Get (value.Name);
+				var element = userSection.Settings.Get (value.Name);
 				if (element == null) {
 					element = new SettingElement (value.Name, value.Property.SerializeAs);
 					userSection.Settings.Add (element);
@@ -664,9 +664,9 @@ namespace System.Configuration
 
 		// NOTE: We should add here all the chars that are valid in a name of a class (Ecma-wise),
 		// but invalid in an xml element name, and provide a better impl if we get too many of them.
-		string NormalizeInvalidXmlChars (string str)
+		string NormalizeInvalidXmlChars (string? str)
 		{
-			char [] invalid_chars = new char [] { '+' };
+			var invalid_chars = new char [] { '+' };
 
 			if (str == null || str.IndexOfAny (invalid_chars) == -1)
 				return str;
@@ -678,13 +678,13 @@ namespace System.Configuration
 
 		private void LoadPropertyValue (SettingsPropertyCollection collection, SettingElement element, bool allowOverwrite)
 		{
-			SettingsProperty prop = collection [element.Name];
+			var prop = collection [element.Name];
 			if (prop == null) { // see bug #343459
 				prop = new SettingsProperty (element.Name);
 				collection.Add (prop);
 			}
 
-			SettingsPropertyValue value = new SettingsPropertyValue (prop);
+			var value = new SettingsPropertyValue (prop);
 			value.IsDirty = false;
 			if (element.Value.ValueXml != null) {
 				switch (value.Property.SerializeAs) {
@@ -716,9 +716,9 @@ namespace System.Configuration
 
 		private void LoadProperties (ExeConfigurationFileMap exeMap, SettingsPropertyCollection collection, ConfigurationUserLevel level, string sectionGroupName, bool allowOverwrite, string groupName)
 		{
-			Configuration config = ConfigurationManager.OpenMappedExeConfiguration (exeMap,level);
+			var config = ConfigurationManager.OpenMappedExeConfiguration (exeMap,level);
 			
-			ConfigurationSectionGroup sectionGroup = config.GetSectionGroup (sectionGroupName);
+			var sectionGroup = config.GetSectionGroup (sectionGroupName);
 			if (sectionGroup != null) {
 				foreach (ConfigurationSection configSection in sectionGroup.Sections) {
 					if (configSection.SectionInformation.Name != groupName)
@@ -781,7 +781,7 @@ namespace System.Configuration
 				exeMapCurrent = new ExeConfigurationFileMap ();
 				
 				// exeMapCurrent.ExeConfigFilename = System.Windows.Forms.Application.ExecutablePath + ".config";
-				Assembly entry = Assembly.GetEntryAssembly () ?? Assembly.GetExecutingAssembly ();
+				var entry = Assembly.GetEntryAssembly () ?? Assembly.GetExecutingAssembly ();
 				exeMapCurrent.ExeConfigFilename = entry.Location + ".config";
 				exeMapCurrent.LocalUserConfigFilename = UserLocalFullPath;
 				exeMapCurrent.RoamingUserConfigFilename = UserRoamingFullPath;
@@ -790,7 +790,7 @@ namespace System.Configuration
 					try {
 						ConfigurationFileMap cfgFileMap = Activator.CreateInstance (webConfigurationFileMapType) as ConfigurationFileMap;
 						if (cfgFileMap != null) {
-							string fpath = cfgFileMap.MachineConfigFilename;
+							var fpath = cfgFileMap.MachineConfigFilename;
 							if (!String.IsNullOrEmpty (fpath))
 								exeMapCurrent.ExeConfigFilename = fpath;
 						}
@@ -820,7 +820,7 @@ namespace System.Configuration
 		public void Reset (SettingsContext context)
 		{
 			if (values == null) {
-				SettingsPropertyCollection coll = new SettingsPropertyCollection ();
+				var coll = new SettingsPropertyCollection ();
 				GetPropertyValues (context, coll);
 			}
 

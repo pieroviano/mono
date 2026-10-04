@@ -57,8 +57,8 @@ namespace System.Configuration
 		
 		public string[] AllKeys {
 			get {
-				string[] keys = new string [Count];
-				int n=0;
+				var keys = new string [Count];
+				var n=0;
 				foreach (KeyValueConfigurationElement kv in this)
 					keys [n++] = kv.Key;
 				return keys;

@@ -128,7 +128,7 @@ namespace System.Web.Compilation
 			if (filePath == null)
 				throw new ArgumentNullException ("File path is required", "filePath");
 			
-			XmlDocument doc = new XmlDocument ();
+			var doc = new XmlDocument ();
 			doc.Load (filePath);
 			
 			XmlNode root = doc.DocumentElement;
@@ -188,12 +188,12 @@ namespace System.Web.Compilation
 			if (filePath == null)
 				throw new ArgumentNullException ("File path is required", "filePath");
 
-			XmlWriterSettings xmlSettings = new XmlWriterSettings ();
+			var xmlSettings = new XmlWriterSettings ();
 			xmlSettings.Indent = false;
 			xmlSettings.OmitXmlDeclaration = false;
 			xmlSettings.NewLineOnAttributes = false;
 			
-			using (XmlWriter xml = XmlWriter.Create (filePath, xmlSettings)) {
+			using (var xml = XmlWriter.Create (filePath, xmlSettings)) {
 				xml.WriteStartElement ("preserve");
 				xml.WriteAttributeString ("assembly", _assembly);
 				if (!String.IsNullOrEmpty (_virtualPath))
@@ -208,7 +208,7 @@ namespace System.Web.Compilation
 					xml.WriteAttributeString ("resultType", ((int)_resultType).ToString ());
 				if (_filedeps != null && _filedeps.Count > 0) {
 					xml.WriteStartElement ("filedeps");
-					foreach (string s in _filedeps) {
+					foreach (var s in _filedeps) {
 						xml.WriteStartElement ("filedep");
 						xml.WriteAttributeString ("name", s);
 						xml.WriteEndElement ();
@@ -226,7 +226,7 @@ namespace System.Web.Compilation
                 
 		Int32 GetNonEmptyOptionalAttributeInt32 (XmlNode n, string name)
 		{
-			string tmp = GetNonEmptyOptionalAttribute (n, name);
+			var tmp = GetNonEmptyOptionalAttribute (n, name);
 			if (tmp != null)
 				return Int32.Parse (tmp);
 			return 0;

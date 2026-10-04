@@ -165,7 +165,7 @@ namespace System.Resources
 
 				xmlReader.WhitespaceHandling = WhitespaceHandling.None;
 
-				ResXHeader header = new ResXHeader ();
+				var header = new ResXHeader ();
 				try {
 					while (xmlReader.Read ()) {
 						if (xmlReader.NodeType != XmlNodeType.Element)
@@ -190,7 +190,7 @@ namespace System.Resources
 				} catch (TargetInvocationException ex) {
 					throw ex;
 				} catch (Exception ex) {
-					XmlException xex = new XmlException (ex.Message, ex, 
+					var xex = new XmlException (ex.Message, ex, 
 						xmlReader.LineNumber, xmlReader.LinePosition);
 					throw new ArgumentException ("Invalid ResX input.", xex);
 				}
@@ -206,7 +206,7 @@ namespace System.Resources
 
 		private void ParseHeaderNode (ResXHeader header)
 		{
-			string v = GetAttribute ("name");
+			var v = GetAttribute ("name");
 			if (v == null)
 				return;
 
@@ -237,10 +237,10 @@ namespace System.Resources
 		{
 			if (!xmlReader.HasAttributes)
 				return null;
-			for (int i = 0; i < xmlReader.AttributeCount; i++) {
+			for (var i = 0; i < xmlReader.AttributeCount; i++) {
 				xmlReader.MoveToAttribute (i);
 				if (String.Compare (xmlReader.Name, name, true) == 0) {
-					string v = xmlReader.Value;
+					var v = xmlReader.Value;
 					xmlReader.MoveToElement ();
 					return v;
 				}
@@ -278,17 +278,17 @@ namespace System.Resources
 
 		private void ParseDataNode (bool meta)
 		{
-			OrderedDictionary hashtable = ((meta && ! useResXDataNodes) ? hashtm : hasht);
-			Point pos = new Point (xmlReader.LineNumber, xmlReader.LinePosition);
-			string name = GetAttribute ("name");
-			string type_name = GetAttribute ("type");
-			string mime_type = GetAttribute ("mimetype");
+			var hashtable = ((meta && ! useResXDataNodes) ? hashtm : hasht);
+			var pos = new Point (xmlReader.LineNumber, xmlReader.LinePosition);
+			var name = GetAttribute ("name");
+			var type_name = GetAttribute ("type");
+			var mime_type = GetAttribute ("mimetype");
 
 
 			string comment = null;
-			string value = GetDataValue (meta, out comment);
+			var value = GetDataValue (meta, out comment);
 
-			ResXDataNode node = new ResXDataNode (name, mime_type, type_name, value, comment, pos, BasePath);
+			var node = new ResXDataNode (name, mime_type, type_name, value, comment, pos, BasePath);
 
 			if (useResXDataNodes) {
 				hashtable [name] = node;
@@ -428,10 +428,10 @@ namespace System.Resources
 						return false;
 					if (Reader == null || Writer == null)
 						return false;
-					string readerType = Reader.Split (',') [0].Trim ();
+					var readerType = Reader.Split (',') [0].Trim ();
 					if (readerType != typeof (ResXResourceReader).FullName)
 						return false;
-					string writerType = Writer.Split (',') [0].Trim ();
+					var writerType = Writer.Split (',') [0].Trim ();
 					if (writerType != typeof (ResXResourceWriter).FullName)
 						return false;
 					return true;

@@ -64,7 +64,7 @@ namespace System.Web.Configuration
 		
 		public override HttpBrowserCapabilities GetBrowserCapabilities(HttpRequest request)
 		{
-			HttpBrowserCapabilities bcap = new HttpBrowserCapabilities();
+			var bcap = new HttpBrowserCapabilities();
 			bcap.capabilities = HttpCapabilitiesBase.GetConfigCapabilities(null, request).Capabilities;
 
 			return bcap;

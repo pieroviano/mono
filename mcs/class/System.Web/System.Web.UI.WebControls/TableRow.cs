@@ -111,7 +111,7 @@ namespace System.Web.UI.WebControls {
 		[DefaultValue (TableRowSection.TableBody)]
 		public virtual TableRowSection TableSection {
 			get {
-				object o = ViewState ["TableSection"];
+				var o = ViewState ["TableSection"];
 				return (o == null) ? TableRowSection.TableBody : (TableRowSection) o;
 			}
 			set {
@@ -119,7 +119,7 @@ namespace System.Web.UI.WebControls {
 					throw new ArgumentOutOfRangeException ("TableSection");
 				ViewState ["TableSection"] = (int) value;
 				tableRowSectionSet = true;
-				TableRowCollection container = Container;
+				var container = Container;
 				if (container != null)
 					container.RowTableSectionSet ();
 			}

@@ -63,7 +63,7 @@ namespace System.Web.Compilation
 			ret.Method = new CodeMethodReferenceExpression (new CodeTypeReferenceExpression (typeof (RouteValueExpressionBuilder)), "GetRouteValue");
 
 			var thisref = new CodeThisReferenceExpression ();
-			CodeExpressionCollection parameters = ret.Parameters;
+			var parameters = ret.Parameters;
 			parameters.Add (new CodePropertyReferenceExpression (thisref, "Page"));
 			parameters.Add (new CodePrimitiveExpression (entry.Expression));
 			parameters.Add (new CodeTypeOfExpression (new CodeTypeReference (entry.DeclaringType)));
@@ -72,20 +72,20 @@ namespace System.Web.Compilation
 			return ret;
 		}
 
-		public static object GetRouteValue (Page page, string key, Type controlType, string propertyName)
+		public static object GetRouteValue (Page? page, string key, Type? controlType, string propertyName)
 		{
 			RouteData rd = page != null ? page.RouteData : null;
 			if (rd == null || String.IsNullOrEmpty (key))
 				return null;
 			
-			object value = rd.Values [key];
+			var value = rd.Values [key];
 			if (value == null)
 				return null;
 
 			if (controlType == null || String.IsNullOrEmpty (propertyName) || !(value is string))
 				return value;
 
-			PropertyDescriptorCollection pcoll = TypeDescriptor.GetProperties (controlType);
+			var pcoll = TypeDescriptor.GetProperties (controlType);
 			if (pcoll == null || pcoll.Count == 0)
 				return value;
 
@@ -93,7 +93,7 @@ namespace System.Web.Compilation
 			if (pdesc == null)
 				return value;
 
-			TypeConverter cvt = pdesc.Converter;
+			var cvt = pdesc.Converter;
 			if (cvt == null || !cvt.CanConvertFrom (typeof (string)))
 				return value;
 

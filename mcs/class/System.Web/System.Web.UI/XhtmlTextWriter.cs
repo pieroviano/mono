@@ -54,7 +54,7 @@ namespace System.Web.UI
 
 		static void SetupHash (Hashtable hash, string [] values)
 		{
-			foreach (string str in values)
+			foreach (var str in values)
 				hash.Add (str, true);
 		}
 
@@ -169,7 +169,7 @@ namespace System.Web.UI
 		
 		static void SetupElementSpecificAttributes (string elementName, string [] attributesNames)
 		{
-			Hashtable attrs = new Hashtable (attributesNames.Length);
+			var attrs = new Hashtable (attributesNames.Length);
 			SetupHash (attrs, attributesNames);
 			default_element_specific_attrs.Add (elementName, attrs);
 		}
@@ -213,7 +213,7 @@ namespace System.Web.UI
 			Hashtable elem_attrs = (Hashtable) ElementSpecificAttributes [elementName];
 
 			if (elem_attrs == null) {
-				Hashtable attrs = new Hashtable ();
+				var attrs = new Hashtable ();
 				attrs.Add (attributeName, true);
 				ElementSpecificAttributes.Add (elementName, attrs);
 			} else
@@ -241,7 +241,7 @@ namespace System.Web.UI
 		// writes <br/>
 		public override void WriteBreak ()
 		{
-			string tag = GetTagName (HtmlTextWriterTag.Br);
+			var tag = GetTagName (HtmlTextWriterTag.Br);
 			WriteBeginTag (tag);
 			Write (SlashChar);
 			Write (TagRightChar);

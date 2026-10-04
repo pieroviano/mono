@@ -104,16 +104,16 @@ namespace System.Web.Services.Discovery {
             LoadExternals(GetSchema(), Url, ClientProtocol, loadedExternals);
         }
 
-        internal static void LoadExternals(XmlSchema schema, string url, DiscoveryClientProtocol client, Hashtable loadedExternals) {
+        internal static void LoadExternals(XmlSchema? schema, string url, DiscoveryClientProtocol client, Hashtable loadedExternals) {
             if (schema == null)
                 return;
             foreach (XmlSchemaExternal external in schema.Includes) {
                 if (external.SchemaLocation == null || external.SchemaLocation.Length == 0 || external.Schema != null)
                     continue;
                 if (external is XmlSchemaInclude || external is XmlSchemaRedefine) {
-                    string location = UriToString(url, external.SchemaLocation);
+                    var location = UriToString(url, external.SchemaLocation);
                     if (client.References[location] is SchemaReference) {
-                        SchemaReference externalRef = (SchemaReference)client.References[location];
+                        var externalRef = (SchemaReference)client.References[location];
                         external.Schema = externalRef.GetSchema();
                         if (external.Schema != null)
                             loadedExternals[location] = external.Schema;
@@ -136,7 +136,7 @@ namespace System.Web.Services.Discovery {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public override object ReadDocument(Stream stream) {
-            XmlTextReader reader = new XmlTextReader(this.Url, stream);
+            var reader = new XmlTextReader(this.Url, stream);
             reader.XmlResolver = null;
             return XmlSchema.Read(reader, null);
         }
@@ -148,7 +148,7 @@ namespace System.Web.Services.Discovery {
         [XmlIgnore]
         public override string DefaultFilename {
             get {
-                string fileName = MakeValidFilename(Schema.Id);
+                var fileName = MakeValidFilename(Schema.Id);
                 if (fileName == null || fileName.Length == 0) {
                     fileName = FilenameFromUrl(Url);
                 }
@@ -207,7 +207,7 @@ namespace System.Web.Services.Discovery {
                 try {
                     if (external.SchemaLocation != null && external.SchemaLocation.Length > 0) {
                         location = UriToString(Url, external.SchemaLocation);
-                        SchemaReference externalRef = new SchemaReference(location);
+                        var externalRef = new SchemaReference(location);
                         externalRef.ClientProtocol = ClientProtocol;
                         ClientProtocol.References[location] = externalRef;
                         externalRef.Resolve();

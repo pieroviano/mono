@@ -49,7 +49,7 @@ namespace System.Web.UI
 				if (length == -1)
 					return base.Text;
 
-				byte [] bytes = new byte [length];
+				var bytes = new byte [length];
 				Marshal.Copy (ptr, bytes, 0, length);
 				return Encoding.UTF8.GetString (bytes);
 			}
@@ -66,9 +66,9 @@ namespace System.Web.UI
 				return;
 			}
 
-			HttpWriter hw = writer.GetHttpWriter ();
+			var hw = writer.GetHttpWriter ();
 			if (hw == null || hw.Response.ContentEncoding.CodePage != 65001) {
-				byte [] bytes = new byte [length];
+				var bytes = new byte [length];
 				Marshal.Copy (ptr, bytes, 0, length);
 				writer.Write (Encoding.UTF8.GetString (bytes));
 				bytes = null;

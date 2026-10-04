@@ -227,7 +227,7 @@ namespace System.Web.Services.Description {
             public override bool CanDeserialize(System.Xml.XmlReader xmlReader) {
                 return xmlReader.IsStartElement("definitions", ServiceDescription.Namespace);
             }
-            protected override void Serialize(Object objectToSerialize, XmlSerializationWriter writer) {
+            protected override void Serialize(Object? objectToSerialize, XmlSerializationWriter writer) {
                 ((ServiceDescriptionSerializationWriter)writer).Write125_definitions(objectToSerialize);
             }
             protected override object Deserialize(XmlSerializationReader reader) {
@@ -245,9 +245,9 @@ namespace System.Web.Services.Description {
         public static XmlSerializer Serializer {
             get { 
                 if (serializer == null) {
-                    WebServicesSection config = WebServicesSection.Current;
-                    XmlAttributeOverrides overrides = new XmlAttributeOverrides();
-                    XmlSerializerNamespaces ns = new XmlSerializerNamespaces();
+                    var config = WebServicesSection.Current;
+                    var overrides = new XmlAttributeOverrides();
+                    var ns = new XmlSerializerNamespaces();
                     ns.Add("s", XmlSchema.Namespace);
                     WebServicesSection.LoadXmlFormatExtensions(config.GetAllFormatExtensionTypes(), overrides, ns);
                     namespaces = ns;
@@ -313,7 +313,7 @@ namespace System.Web.Services.Description {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public static ServiceDescription Read(TextReader textReader, bool validate) {
-            XmlTextReader reader = new XmlTextReader(textReader);
+            var reader = new XmlTextReader(textReader);
             reader.WhitespaceHandling = WhitespaceHandling.Significant;
             reader.XmlResolver = null;
             reader.DtdProcessing = DtdProcessing.Prohibit;
@@ -325,7 +325,7 @@ namespace System.Web.Services.Description {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public static ServiceDescription Read(Stream stream, bool validate) {
-            XmlTextReader reader = new XmlTextReader(stream);
+            var reader = new XmlTextReader(stream);
             reader.WhitespaceHandling = WhitespaceHandling.Significant;
             reader.XmlResolver = null;
             reader.DtdProcessing = DtdProcessing.Prohibit;
@@ -337,7 +337,7 @@ namespace System.Web.Services.Description {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public static ServiceDescription Read(string fileName, bool validate) {
-            StreamReader reader = new StreamReader(fileName, Encoding.Default, true);
+            var reader = new StreamReader(fileName, Encoding.Default, true);
             try {
                 return Read(reader, validate);
             }
@@ -352,7 +352,7 @@ namespace System.Web.Services.Description {
         /// </devdoc>
         public static ServiceDescription Read(XmlReader reader, bool validate) {
             if (validate) {
-                XmlReaderSettings readerSettings = new XmlReaderSettings();
+                var readerSettings = new XmlReaderSettings();
 
                 readerSettings.ValidationType = ValidationType.Schema;
                 readerSettings.ValidationFlags = XmlSchemaValidationFlags.ProcessIdentityConstraints;
@@ -361,7 +361,7 @@ namespace System.Web.Services.Description {
                 readerSettings.Schemas.Add(SoapBinding.Schema);
                 readerSettings.ValidationEventHandler += new ValidationEventHandler(InstanceValidation);
                 warnings.Clear();
-                XmlReader validatingReader = XmlReader.Create(reader, readerSettings);
+                var validatingReader = XmlReader.Create(reader, readerSettings);
                 if (reader.ReadState != ReadState.Initial) {
                     //underlying reader has moved, so move validatingreader as well
                     validatingReader.Read();
@@ -388,7 +388,7 @@ namespace System.Web.Services.Description {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public void Write(string fileName) {
-            StreamWriter writer = new StreamWriter(fileName);
+            var writer = new StreamWriter(fileName);
             try {
                 Write(writer);
             }
@@ -402,7 +402,7 @@ namespace System.Web.Services.Description {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public void Write(TextWriter writer) {
-            XmlTextWriter xmlWriter = new XmlTextWriter(writer);
+            var xmlWriter = new XmlTextWriter(writer);
             xmlWriter.Formatting = Formatting.Indented;
             xmlWriter.Indentation = 2;
             Write(xmlWriter);
@@ -424,7 +424,7 @@ namespace System.Web.Services.Description {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public void Write(XmlWriter writer) {
-            XmlSerializer serializer = Serializer;
+            var serializer = Serializer;
             XmlSerializerNamespaces ns;
             if (Namespaces == null || Namespaces.Count == 0) {
                 ns = new XmlSerializerNamespaces(namespaces);
@@ -432,14 +432,14 @@ namespace System.Web.Services.Description {
                 if (this.TargetNamespace != null && this.TargetNamespace.Length != 0) {
                     ns.Add("tns", this.TargetNamespace);
                 }
-                for (int i = 0; i < Types.Schemas.Count; i++) {
+                for (var i = 0; i < Types.Schemas.Count; i++) {
                     string tns = Types.Schemas[i].TargetNamespace;
                     if (tns != null && tns.Length > 0 && tns != this.TargetNamespace && tns != ServiceDescription.Namespace) {
                         ns.Add("s" + i.ToString(CultureInfo.InvariantCulture), tns);
                     }
                 }
-                for (int i = 0; i < Imports.Count; i++) {
-                    Import import = Imports[i];
+                for (var i = 0; i < Imports.Count; i++) {
+                    var import = Imports[i];
                     if (import.Namespace.Length > 0) {
                         ns.Add("i" + i.ToString(CultureInfo.InvariantCulture), import.Namespace);
                     }
@@ -451,17 +451,17 @@ namespace System.Web.Services.Description {
             serializer.Serialize(writer, this, ns);
         }
 
-        internal static WsiProfiles GetConformanceClaims(XmlElement documentation) {
+        internal static WsiProfiles GetConformanceClaims(XmlElement? documentation) {
             if (documentation == null)
                 return WsiProfiles.None;
 
-            WsiProfiles existingClaims = WsiProfiles.None;
+            var existingClaims = WsiProfiles.None;
 
             XmlNode child = documentation.FirstChild;
             while (child != null) {
                 XmlNode sibling = child.NextSibling;
                 if (child is XmlElement) {
-                    XmlElement element = (XmlElement)child;
+                    var element = (XmlElement)child;
                     if (element.LocalName == Soap.Element.Claim && element.NamespaceURI == Soap.ConformanceClaim) {
                         if (Soap.BasicProfile1_1 == element.GetAttribute(Soap.Attribute.ConformsTo)) {
                             existingClaims |= WsiProfiles.BasicProfile1_1;
@@ -480,14 +480,14 @@ namespace System.Web.Services.Description {
                 return;
 
             // check already presend claims
-            WsiProfiles existingClaims = GetConformanceClaims(documentation);
+            var existingClaims = GetConformanceClaims(documentation);
             claims &= ~existingClaims;
             if (claims == WsiProfiles.None)
                 return;
 
-            XmlDocument d = documentation.OwnerDocument;
+            var d = documentation.OwnerDocument;
             if ((claims & WsiProfiles.BasicProfile1_1) != 0) {
-                XmlElement claim = d.CreateElement(Soap.ClaimPrefix, Soap.Element.Claim, Soap.ConformanceClaim);
+                var claim = d.CreateElement(Soap.ClaimPrefix, Soap.Element.Claim, Soap.ConformanceClaim);
                 claim.SetAttribute(Soap.Attribute.ConformsTo, Soap.BasicProfile1_1);
                 documentation.InsertBefore(claim, null);
             }
@@ -575,8 +575,8 @@ namespace System.Web.Services.Description {
             }
             set {
                 documentation = value;
-                StringWriter writer = new StringWriter(CultureInfo.InvariantCulture);
-                XmlTextWriter xmlWriter = new XmlTextWriter(writer);
+                var writer = new StringWriter(CultureInfo.InvariantCulture);
+                var xmlWriter = new XmlTextWriter(writer);
                 xmlWriter.WriteElementString(ServiceDescription.Prefix, "documentation", ServiceDescription.Namespace, value);
                 Parent.LoadXml(writer.ToString());
                 documentationElement = parent.DocumentElement;
@@ -1081,8 +1081,8 @@ namespace System.Web.Services.Description {
         public string ParameterOrderString {
             get { 
                 if (parameters == null) return string.Empty;
-                StringBuilder builder = new StringBuilder();
-                for (int i = 0; i < parameters.Length; i++) {
+                var builder = new StringBuilder();
+                for (var i = 0; i < parameters.Length; i++) {
                     if (i > 0) builder.Append(' ');
                     builder.Append(parameters[i]);
                 }
@@ -1136,8 +1136,8 @@ namespace System.Web.Services.Description {
             if (input != null) {
                 if (operationBinding.Input == null) return false;
 
-                string portTypeInputName = GetMessageName(Name, input.Name, true);
-                string bindingInputName = GetMessageName(operationBinding.Name, operationBinding.Input.Name, true);
+                var portTypeInputName = GetMessageName(Name, input.Name, true);
+                var bindingInputName = GetMessageName(operationBinding.Name, operationBinding.Input.Name, true);
                 if (bindingInputName != portTypeInputName) return false;
             }
             else if (operationBinding.Input != null)
@@ -1147,8 +1147,8 @@ namespace System.Web.Services.Description {
             if (output != null) {
                 if (operationBinding.Output == null) return false;
 
-                string portTypeOutputName = GetMessageName(Name, output.Name, false);
-                string bindingOutputName = GetMessageName(operationBinding.Name, operationBinding.Output.Name, false);
+                var portTypeOutputName = GetMessageName(Name, output.Name, false);
+                var bindingOutputName = GetMessageName(operationBinding.Name, operationBinding.Output.Name, false);
                 if (bindingOutputName != portTypeOutputName) return false;
             }
             else if (operationBinding.Output != null)
@@ -1156,7 +1156,7 @@ namespace System.Web.Services.Description {
             return true;
         }
 
-        private string GetMessageName(string operationName, string messageName, bool isInput) {
+        private string GetMessageName(string operationName, string? messageName, bool isInput) {
             if (messageName != null && messageName.Length > 0)
                 return messageName;
             
@@ -1267,8 +1267,8 @@ namespace System.Web.Services.Description {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public MessagePart[] FindPartsByName(string[] partNames) {
-            MessagePart[] partArray = new MessagePart[partNames.Length];
-            for (int i = 0; i < partNames.Length; i++) {
+            var partArray = new MessagePart[partNames.Length];
+            for (var i = 0; i < partNames.Length; i++) {
                 partArray[i] = FindPartByName(partNames[i]);
             }
             return partArray;
@@ -1279,8 +1279,8 @@ namespace System.Web.Services.Description {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public MessagePart FindPartByName(string partName) {
-            for (int i = 0; i < parts.Count; i++) {
-                MessagePart part = parts[i];
+            for (var i = 0; i < parts.Count; i++) {
+                var part = parts[i];
                 if (part.Name == partName) return part;
             }
             throw new ArgumentException(Res.GetString(Res.MissingMessagePartForMessageFromNamespace3, partName, Name, ServiceDescription.TargetNamespace), "partName");
@@ -1451,7 +1451,7 @@ namespace System.Web.Services.Description {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public object Find(Type type) {
-            for (int i = 0; i < List.Count; i++) {
+            for (var i = 0; i < List.Count; i++) {
                 object item = List[i];
                 if (type.IsAssignableFrom(item.GetType())) {
                     ((ServiceDescriptionFormatExtension)item).Handled = true;
@@ -1466,8 +1466,8 @@ namespace System.Web.Services.Description {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public object[] FindAll(Type type) {
-            ArrayList list = new ArrayList();
-            for (int i = 0; i < List.Count; i++) {
+            var list = new ArrayList();
+            for (var i = 0; i < List.Count; i++) {
                 object item = List[i];
                 if (type.IsAssignableFrom(item.GetType())) {
                     ((ServiceDescriptionFormatExtension)item).Handled = true;
@@ -1482,7 +1482,7 @@ namespace System.Web.Services.Description {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public XmlElement Find(string name, string ns) {
-            for (int i = 0; i < List.Count; i++) {
+            for (var i = 0; i < List.Count; i++) {
                 XmlElement element = List[i] as XmlElement;
                 if (element != null && element.LocalName == name && element.NamespaceURI == ns) {
                     SetHandled(element);
@@ -1497,8 +1497,8 @@ namespace System.Web.Services.Description {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public XmlElement[] FindAll(string name, string ns) {
-            ArrayList list = new ArrayList();
-            for (int i = 0; i < List.Count; i++) {
+            var list = new ArrayList();
+            for (var i = 0; i < List.Count; i++) {
                 XmlElement element = List[i] as XmlElement;
                 if (element != null && element.LocalName == name && element.NamespaceURI == ns) {
                     SetHandled(element);
@@ -1714,7 +1714,7 @@ namespace System.Web.Services.Description {
         /// </devdoc>
         public OperationInput Input {
             get { 
-                for (int i = 0; i < List.Count; i++) {
+                for (var i = 0; i < List.Count; i++) {
                     OperationInput input = List[i] as OperationInput;
                     if (input != null) {
                         return input;
@@ -1730,7 +1730,7 @@ namespace System.Web.Services.Description {
         /// </devdoc>
         public OperationOutput Output {
             get {
-                for (int i = 0; i < List.Count; i++) {
+                for (var i = 0; i < List.Count; i++) {
                     OperationOutput output = List[i] as OperationOutput;
                     if (output != null) {
                         return output;
@@ -2795,7 +2795,7 @@ namespace System.Web.Services.Description {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         protected override void OnClear() {
-            for (int i = 0; i < List.Count; i++) {
+            for (var i = 0; i < List.Count; i++) {
                 RemoveValue(List[i]);
             }
         }
@@ -2810,7 +2810,7 @@ namespace System.Web.Services.Description {
         }
        
         void AddValue(object value) {
-            string key = GetKey(value);
+            var key = GetKey(value);
             if (key != null) {
                 try {
                     Table.Add(key, value);
@@ -2831,7 +2831,7 @@ namespace System.Web.Services.Description {
         }
 
         void RemoveValue(object value) {
-            string key = GetKey(value);
+            var key = GetKey(value);
             if (key != null) Table.Remove(key);
             SetParent(value, null);
         }

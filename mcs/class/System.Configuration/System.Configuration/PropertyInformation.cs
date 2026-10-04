@@ -128,7 +128,7 @@ namespace System.Configuration
 			}
 		}
 		
-		internal void Reset (PropertyInformation parentProperty)
+		internal void Reset (PropertyInformation? parentProperty)
 		{
 			if (parentProperty != null) {
 				if (property.IsElement) {

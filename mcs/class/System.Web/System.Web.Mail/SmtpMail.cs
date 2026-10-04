@@ -64,9 +64,9 @@ namespace System.Web.Mail
 			
 			// wrap the MailMessage in a MailMessage wrapper for easier
 			// access to properties and to add some functionality
-			MailMessageWrapper messageWrapper = new MailMessageWrapper( message );
+			var messageWrapper = new MailMessageWrapper( message );
 			
-			SmtpClient smtp = new SmtpClient (smtpServer);
+			var smtp = new SmtpClient (smtpServer);
 			
 			smtp.Send (messageWrapper);
 		       
@@ -97,7 +97,7 @@ namespace System.Web.Mail
 		
 		public static void Send (string from, string to, string subject, string messageText) 
 		{
-			MailMessage message = new MailMessage ();
+			var message = new MailMessage ();
 			message.From = from;
 			message.To = to;
 			message.Subject = subject;

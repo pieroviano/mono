@@ -12,7 +12,7 @@ namespace System.Web.Util {
         private const string _emptyFileVersion = "0.0.0.0";
 
         public static string GetAssemblyFileVersion(Assembly assembly) {
-            AssemblyFileVersionAttribute[] attributes =
+            var attributes =
                 (AssemblyFileVersionAttribute[])assembly.GetCustomAttributes(typeof(AssemblyFileVersionAttribute), false);
 
             string version;

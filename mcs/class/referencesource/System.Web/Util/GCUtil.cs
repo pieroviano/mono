@@ -16,7 +16,7 @@ namespace System.Web.Util {
     [SecurityPermission(SecurityAction.LinkDemand, UnmanagedCode = true)]
     internal static class GCUtil {
 
-        public static IntPtr RootObject(object obj) {
+        public static IntPtr RootObject(object? obj) {
             return (obj != null)
                 ? (IntPtr)GCHandle.Alloc(obj)
                 : IntPtr.Zero;
@@ -24,7 +24,7 @@ namespace System.Web.Util {
 
         public static object UnrootObject(IntPtr pointer) {
             if (pointer != IntPtr.Zero) {
-                GCHandle gcHandle = (GCHandle)pointer;
+                var gcHandle = (GCHandle)pointer;
                 if (gcHandle.IsAllocated) {
                     object target = gcHandle.Target;
                     gcHandle.Free();
@@ -43,7 +43,7 @@ namespace System.Web.Util {
     where T : class, IDisposable {
         GCHandle _handle;
         [PermissionSet(SecurityAction.Assert, Unrestricted = true)]
-        public DisposableGCHandleRef(T t) {
+        public DisposableGCHandleRef(T? t) {
             Debug.Assert(t != null);
             _handle = GCHandle.Alloc(t);
         }

@@ -98,7 +98,7 @@ namespace System.Web.Compilation
 			return BuildManager.GetDefaultCompilerTypeForLanguage (CompilationConfig.DefaultLanguage, CompilationConfig);
 		}
 		
-		protected CompilerType GetDefaultCompilerTypeForLanguage (string language)
+		protected CompilerType GetDefaultCompilerTypeForLanguage (string? language)
 		{
 			return BuildManager.GetDefaultCompilerTypeForLanguage (language, null);
 		}
@@ -120,7 +120,7 @@ namespace System.Web.Compilation
 
 		protected TextReader OpenReader (string virtualPath)
 		{
-			Stream st = OpenStream (virtualPath);
+			var st = OpenStream (virtualPath);
 			return new StreamReader (st, WebEncoding.FileEncoding);
 		}
 
@@ -172,7 +172,7 @@ namespace System.Web.Compilation
 		
 		internal static BuildProvider GetProviderInstanceForExtension (string extension)
 		{
-			Type type = GetProviderTypeForExtension (extension);
+			var type = GetProviderTypeForExtension (extension);
 			if (type == null)
 				return null;
 			
@@ -232,7 +232,7 @@ namespace System.Web.Compilation
 			if (array.Rank > 1)
 				throw new ArgumentException ();
 
-			int length = array.Length;
+			var length = array.Length;
 			if (index >= length || index > length - 1)
 				throw new ArgumentException ();
 

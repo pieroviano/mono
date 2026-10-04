@@ -16,8 +16,8 @@ namespace System.Web.Services.Discovery {
         private LinkGrep() { }
 
         private static string ReadEntireStream(TextReader input) {
-            char[] buffer = new char[4096];
-            int bufferpos = 0;
+            var buffer = new char[4096];
+            var bufferpos = 0;
             int delta;
     
             // 
@@ -30,7 +30,7 @@ namespace System.Web.Services.Discovery {
                 bufferpos += delta;
     
                 if (bufferpos == buffer.Length) {
-                    char[] newbuf = new char[buffer.Length * 2];
+                    var newbuf = new char[buffer.Length * 2];
                     System.Array.Copy(buffer, 0, newbuf, 0, buffer.Length);
                     buffer = newbuf;
                 }
@@ -43,7 +43,7 @@ namespace System.Web.Services.Discovery {
             string text = null;
             text = ReadEntireStream(new StreamReader(stream));
 
-            int textpos = 0;
+            var textpos = 0;
 
             Match match;
 
@@ -84,19 +84,19 @@ namespace System.Web.Services.Discovery {
                 if ((match = tagRegex.Match(text, textpos)).Success)
                 {
                     oneMatch = true;
-                    string tag = match.Groups["tagname"].Value;
+                    var tag = match.Groups["tagname"].Value;
 
                     if (String.Compare(tag, "link", StringComparison.OrdinalIgnoreCase) == 0) {
-                        CaptureCollection attrnames = match.Groups["attrname"].Captures;
-                        CaptureCollection attrvalues = match.Groups["attrval"].Captures;
+                        var attrnames = match.Groups["attrname"].Captures;
+                        var attrvalues = match.Groups["attrval"].Captures;
 
-                        int count = attrnames.Count;
-                        bool rightType = false;
-                        bool rightRel = false;
+                        var count = attrnames.Count;
+                        var rightType = false;
+                        var rightRel = false;
                         string href = null;
-                        for (int i = 0; i < count; i++) {
-                            string attrName = attrnames[i].ToString();
-                            string attrValue = attrvalues[i].ToString();
+                        for (var i = 0; i < count; i++) {
+                            var attrName = attrnames[i].ToString();
+                            var attrValue = attrvalues[i].ToString();
                             if (String.Compare(attrName, "type", StringComparison.OrdinalIgnoreCase) == 0 &&
                                 ContentType.MatchesBase(attrValue, ContentType.TextXml)) {
                                 rightType = true;

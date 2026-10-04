@@ -60,7 +60,7 @@ namespace System.Web.UI {
 				return value;
 
 			// Is there a less kludgy way to get the converter?
-			PropertyDescriptorCollection col = TypeDescriptor.GetProperties (
+			var col = TypeDescriptor.GetProperties (
 				propertyInfo.ReflectedType);
 			PropertyDescriptor pd = col.Find (propertyInfo.Name, false);
 			if (pd.Converter == null || !pd.Converter.CanConvertFrom (typeof (string))) {

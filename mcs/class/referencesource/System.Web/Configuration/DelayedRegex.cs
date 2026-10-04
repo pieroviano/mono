@@ -39,7 +39,7 @@ namespace System.Web.Configuration {
         } 
 
         internal void EnsureRegex() {
-            string regstring = _regstring;
+            var regstring = _regstring;
             if(_regex == null) {
                 _regex = new Regex(regstring);
                 //free original

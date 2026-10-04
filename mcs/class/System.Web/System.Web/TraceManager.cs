@@ -100,7 +100,7 @@ namespace System.Web
 			set {
 				if (request_limit == value)
 					return;
-				TraceData[] swap = new TraceData [value];
+				var swap = new TraceData [value];
 				Array.Copy (data, swap, (cur_item > value ? value : cur_item));
 				if (cur_item > value)
 					cur_item = value;

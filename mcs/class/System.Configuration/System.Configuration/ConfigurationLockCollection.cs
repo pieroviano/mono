@@ -59,7 +59,7 @@ namespace System.Configuration
 
 		void CheckName (string name)
 		{
-			bool isAttribute = (lockType & ConfigurationLockType.Attribute) == ConfigurationLockType.Attribute;
+			var isAttribute = (lockType & ConfigurationLockType.Attribute) == ConfigurationLockType.Attribute;
 
 			if (valid_name_hash == null) {
 				valid_name_hash = new Hashtable ();
@@ -72,13 +72,13 @@ namespace System.Configuration
 				/* add the add/remove/clear names of the
 				 * default collection if there is one */
 				if (!isAttribute) {
-					ConfigurationElementCollection c = element.GetDefaultCollection ();
+					var c = element.GetDefaultCollection ();
 					valid_name_hash.Add (c.AddElementName, true);
 					valid_name_hash.Add (c.ClearElementName, true);
 					valid_name_hash.Add (c.RemoveElementName, true);
 				}
 
-				string[] valid_name_array = new string[valid_name_hash.Keys.Count];
+				var valid_name_array = new string[valid_name_hash.Keys.Count];
 				valid_name_hash.Keys.CopyTo (valid_name_array, 0);
 				
 				valid_names = String.Join (",", valid_name_array);
@@ -123,7 +123,7 @@ namespace System.Configuration
 		[MonoInternalNote ("we can't possibly *always* return false here...")]
 		public bool IsReadOnly (string name)
 		{
-			for (int i = 0; i < names.Count; i ++) {
+			for (var i = 0; i < names.Count; i ++) {
 				if ((string)names[i] == name) {
 					/* this test used to switch off whether the collection was 'Exclude' or not
 					 * (the LockAll*Except collections), but that doesn't seem to be the crux of
@@ -147,8 +147,8 @@ namespace System.Configuration
 			Clear ();
 
 			char [] split = {','};
-			string [] attrs = attributeList.Split (split);
-			foreach (string a in attrs) {
+			var attrs = attributeList.Split (split);
+			foreach (var a in attrs) {
 				Add (a.Trim ());
 			}
 		}
@@ -160,7 +160,7 @@ namespace System.Configuration
 
 		public string AttributeList {
 			get {
-				string[] name_arr = new string[names.Count];
+				var name_arr = new string[names.Count];
 				names.CopyTo (name_arr, 0);
 				return String.Join (",", name_arr);
 			}

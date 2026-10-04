@@ -200,13 +200,13 @@ namespace System.Web.UI.WebControls
 		}
 		public override string ToString ()
 		{
-			string dm = DataMember;
+			var dm = DataMember;
 			if (String.IsNullOrEmpty (dm))
 				return "(Empty)";
 
 			return dm;
 		}
-		void IStateManager.LoadViewState (object savedState)
+		void IStateManager.LoadViewState (object? savedState)
 		{
 			ViewState.LoadViewState (savedState);
 		}
@@ -233,7 +233,7 @@ namespace System.Web.UI.WebControls
 		
 		object ICloneable.Clone ()
 		{
-			MenuItemBinding bin = new MenuItemBinding ();
+			var bin = new MenuItemBinding ();
 			foreach (DictionaryEntry e in ViewState)
 				bin.ViewState [(string)e.Key] = e.Value;
 			return bin;
@@ -241,7 +241,7 @@ namespace System.Web.UI.WebControls
 
 		internal void SetDirty ()
 		{
-			StateBag vs = ViewState;
+			var vs = ViewState;
 			foreach (string key in vs.Keys)
 				vs.SetItemDirty (key, true);
 		}

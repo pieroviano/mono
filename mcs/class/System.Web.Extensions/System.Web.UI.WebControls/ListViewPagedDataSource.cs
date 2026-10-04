@@ -98,7 +98,7 @@ namespace System.Web.UI.WebControls
 			{
 				if (enumerator == null) {
 					enumerator = collection.GetEnumerator ();
-					for (int i = 0; i < startIndex; i++)
+					for (var i = 0; i < startIndex; i++)
 						enumerator.MoveNext ();
 				}
 				
@@ -131,7 +131,7 @@ namespace System.Web.UI.WebControls
 		
 		public IEnumerator GetEnumerator ()
 		{
-			IEnumerable ds = DataSource;
+			var ds = DataSource;
 
 			if (ds == null)
 				return null;
@@ -149,7 +149,7 @@ namespace System.Web.UI.WebControls
 		
 		public PropertyDescriptorCollection GetItemProperties (PropertyDescriptor [] listAccessors)
 		{
-			IEnumerable ds = DataSource;
+			var ds = DataSource;
 
 			if (ds == null || !(ds is ITypedList))
 				return null;
@@ -169,12 +169,12 @@ namespace System.Web.UI.WebControls
 		
 		public int Count {
 			get {
-				IEnumerable ds = DataSource;
+				var ds = DataSource;
 				if (ds == null)
 					return 0;
 
-				bool onLastPage = OnLastPage;
-				int maxRows = MaximumRows;
+				var onLastPage = OnLastPage;
+				var maxRows = MaximumRows;
 				if (!onLastPage && maxRows >= 0)
 					return maxRows;
 
@@ -191,7 +191,7 @@ namespace System.Web.UI.WebControls
 		
 		public int DataSourceCount {
 			get {
-				IEnumerable ds = DataSource;
+				var ds = DataSource;
 				if (ds == null)
 					return 0;
 

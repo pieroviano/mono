@@ -184,7 +184,7 @@ namespace System.Web.UI.WebControls
 			if (items_list == null)
 				return; // nothing to select
 
-			int count = items_list.Count;
+			var count = items_list.Count;
 			if (count == 0)
 				return; // nothing to select
 
@@ -219,7 +219,7 @@ namespace System.Web.UI.WebControls
 				if (value < -1)
 					throw new ArgumentOutOfRangeException ("value");
 
-				int selected_index = ViewState.GetInt ("SelectedIndex", -1);
+				var selected_index = ViewState.GetInt ("SelectedIndex", -1);
 				AdjustItemTypes (selected_index, value);
 				ViewState ["SelectedIndex"] = value;
 			}
@@ -367,7 +367,7 @@ namespace System.Web.UI.WebControls
 					columns_list = new ArrayList ();
 					columns = new DataGridColumnCollection (this, columns_list);
 					if (IsTrackingViewState) {
-						IStateManager manager = (IStateManager) columns;
+						var manager = (IStateManager) columns;
 						manager.TrackViewState ();
 					}
 				}
@@ -381,7 +381,7 @@ namespace System.Web.UI.WebControls
 					data_source_columns_list = new ArrayList ();
 					data_source_columns = new DataGridColumnCollection (this, data_source_columns_list);
 					if (IsTrackingViewState) {
-						IStateManager manager = (IStateManager) data_source_columns;
+						var manager = (IStateManager) data_source_columns;
 						manager.TrackViewState ();
 					}
 				}
@@ -453,17 +453,17 @@ namespace System.Web.UI.WebControls
 		{
 			PropertyDescriptorCollection props = null;
 			Type ptype = null;
-			bool no_items = false;
+			var no_items = false;
 
 			// Use plain reflection for the Item property.
 			// If we use TypeDescriptor, props will hold
 			// all of the Type properties, which will be listed as columns
-			Type ds_type = data_source.GetType ();
+			var ds_type = data_source.GetType ();
 			PropertyInfo pinfo = ds_type.GetProperty ("Item", item_args);
 			if (pinfo == null) {
 				IEnumerator items = (data_source.DataSource != null) ? data_source.GetEnumerator () : null;
 				if (items != null && items.MoveNext ()) {
-					object data = items.Current;
+					var data = items.Current;
 					if ((data is ICustomTypeDescriptor) || (!IsBindableType(data.GetType())))
 						props = TypeDescriptor.GetProperties (data);
 					else if (data != null)
@@ -482,7 +482,7 @@ namespace System.Web.UI.WebControls
 					AddPropertyToColumns (pd, false);
 			} else if (!no_items) {
 				// This is not thrown for an empty ArrayList.
-				string msg = String.Format ("DataGrid '{0}' cannot autogenerate " +
+				var msg = String.Format ("DataGrid '{0}' cannot autogenerate " +
 							"columns from the given datasource. {1}", ID, ptype);
 				throw new HttpException (msg);
 			}
@@ -490,14 +490,14 @@ namespace System.Web.UI.WebControls
 
 		protected virtual ArrayList CreateColumnSet (PagedDataSource dataSource, bool useDataSource)
 		{
-			ArrayList res = new ArrayList ();
+			var res = new ArrayList ();
 			if (columns_list != null)
 				res.AddRange (columns_list);
 
 			if (AutoGenerateColumns) {
 				if (useDataSource) {
 					data_enumerator = null;
-					PropertyDescriptorCollection props = dataSource.GetItemProperties (null);
+					var props = dataSource.GetItemProperties (null);
 					DataSourceColumns.Clear ();
 					if (props != null) {
 						foreach (PropertyDescriptor d in props)
@@ -516,9 +516,9 @@ namespace System.Web.UI.WebControls
 
 		void AddPropertyToColumns ()
 		{
-			BoundColumn b = new BoundColumn ();
+			var b = new BoundColumn ();
 			if (IsTrackingViewState) {
-				IStateManager m = (IStateManager) b;
+				var m = (IStateManager) b;
 				m.TrackViewState ();
 			}
 			b.Set_Owner (this);
@@ -530,10 +530,10 @@ namespace System.Web.UI.WebControls
 
 		void AddPropertyToColumns (PropertyDescriptor prop, bool tothis)
 		{
-			BoundColumn b = new BoundColumn ();
+			var b = new BoundColumn ();
 			b.Set_Owner (this);
 			if (IsTrackingViewState) {
-				IStateManager m = (IStateManager) b;
+				var m = (IStateManager) b;
 				m.TrackViewState ();
 			}
 			b.HeaderText = prop.Name;
@@ -566,17 +566,17 @@ namespace System.Web.UI.WebControls
 				edit_item_style.TrackViewState ();
 			if (ControlStyleCreated)
 				ControlStyle.TrackViewState ();
-			IStateManager manager = (IStateManager) columns;
+			var manager = (IStateManager) columns;
 			if (manager != null)
 				manager.TrackViewState ();
 		}
 
 		protected override object SaveViewState ()
 		{
-			object [] res = new object [11];
+			var res = new object [11];
 			res [0] = base.SaveViewState ();
 			if (columns != null) {
-				IStateManager cm = (IStateManager) columns;
+				var cm = (IStateManager) columns;
 				res [1] = cm.SaveViewState ();
 			}
 			if (pager_style != null)
@@ -597,7 +597,7 @@ namespace System.Web.UI.WebControls
 				res [9] = ControlStyle.SaveViewState ();
 			
 			if (data_source_columns != null) {
-				IStateManager m = (IStateManager) data_source_columns;
+				var m = (IStateManager) data_source_columns;
 				res [10] = m.SaveViewState ();
 			}
 
@@ -613,7 +613,7 @@ namespace System.Web.UI.WebControls
 
 			base.LoadViewState (pieces [0]);
 			if (columns != null) {
-				IStateManager cm = (IStateManager) columns;
+				var cm = (IStateManager) columns;
 				cm.LoadViewState (pieces [1]);
 			}
 			if (pieces [2] != null)
@@ -637,9 +637,9 @@ namespace System.Web.UI.WebControls
 			if (pieces [10] != null) {
 				// IStateManager manager = (IStateManager) DataSourceColumns;
 				// manager.LoadViewState (pieces [10]);
-				object [] cols = (object []) pieces [10];
-				foreach (object o in cols) {
-					BoundColumn c = new BoundColumn ();
+				var cols = (object []) pieces [10];
+				foreach (var o in cols) {
+					var c = new BoundColumn ();
 					((IStateManager) c).TrackViewState ();
 					c.Set_Owner (this);
 					((IStateManager) c).LoadViewState (o);
@@ -650,9 +650,9 @@ namespace System.Web.UI.WebControls
 			if (pieces [9] != null) {
 				// IStateManager manager = (IStateManager) DataSourceColumns;
 				// manager.LoadViewState (pieces [9]);
-				object [] cols = (object []) pieces [9];
-				foreach (object o in cols) {
-					BoundColumn c = new BoundColumn ();
+				var cols = (object []) pieces [9];
+				foreach (var o in cols) {
+					var c = new BoundColumn ();
 					c.Set_Owner (this);
 					((IStateManager) c).LoadViewState (o);
 					DataSourceColumns.Add (c);
@@ -662,7 +662,7 @@ namespace System.Web.UI.WebControls
 
 		protected override Style CreateControlStyle ()
 		{
-			TableStyle res = new TableStyle ();
+			var res = new TableStyle ();
 
 			res.GridLines = GridLines.Both;
 			res.CellSpacing = 0;
@@ -671,8 +671,8 @@ namespace System.Web.UI.WebControls
 
 		protected virtual void InitializeItem (DataGridItem item, DataGridColumn [] columns)
 		{
-			bool th = UseAccessibleHeader && item.ItemType == ListItemType.Header;
-			for (int i = 0; i < columns.Length; i++) {
+			var th = UseAccessibleHeader && item.ItemType == ListItemType.Header;
+			for (var i = 0; i < columns.Length; i++) {
 				TableCell cell = null;
 				if (th) {
 					cell = new TableHeaderCell ();
@@ -697,19 +697,19 @@ namespace System.Web.UI.WebControls
 
 		TableCell InitializeNumericPager (DataGridItem item, int columnSpan, PagedDataSource paged)
 		{
-			TableCell res = new TableCell ();
+			var res = new TableCell ();
 			res.ColumnSpan = columnSpan;
 
-			int button_count = PagerStyle.PageButtonCount;
-			int current = paged.CurrentPageIndex;
-			int start = current - (current % button_count);
-			int end = start + button_count;
+			var button_count = PagerStyle.PageButtonCount;
+			var current = paged.CurrentPageIndex;
+			var start = current - (current % button_count);
+			var end = start + button_count;
 
 			if (end > paged.PageCount)
 				end = paged.PageCount;
 
 			if (start > 0) {
-				LinkButton link = new LinkButton ();
+				var link = new LinkButton ();
 				link.Text = "...";
 				link.CommandName = PageCommandName;
 				link.CommandArgument = start.ToString (Helpers.InvariantCulture);
@@ -718,18 +718,18 @@ namespace System.Web.UI.WebControls
 				res.Controls.Add (new LiteralControl ("&nbsp;"));
 			}
 
-			for (int i = start; i < end; i++) {
+			for (var i = start; i < end; i++) {
 				Control number = null;
-				string page = (i + 1).ToString (Helpers.InvariantCulture);
+				var page = (i + 1).ToString (Helpers.InvariantCulture);
 				if (i != paged.CurrentPageIndex) {
-					LinkButton link = new LinkButton ();
+					var link = new LinkButton ();
 					link.Text = page;
 					link.CommandName = PageCommandName;
 					link.CommandArgument = page;
 					link.CausesValidation = false;
 					number = link;
 				} else {
-					Label pageLabel = new Label();
+					var pageLabel = new Label();
 					pageLabel.Text = page;
 					number = pageLabel;
 				}
@@ -741,7 +741,7 @@ namespace System.Web.UI.WebControls
 
 			if (end < paged.PageCount) {
 				res.Controls.Add (new LiteralControl ("&nbsp;"));
-				LinkButton link = new LinkButton ();
+				var link = new LinkButton ();
 				link.Text = "...";
 				link.CommandName = PageCommandName;
 				link.CommandArgument = (end + 1).ToString (Helpers.InvariantCulture);
@@ -754,14 +754,14 @@ namespace System.Web.UI.WebControls
 
 		TableCell InitializeNextPrevPager (DataGridItem item, int columnSpan, PagedDataSource paged)
 		{
-			TableCell res = new TableCell ();
+			var res = new TableCell ();
 			res.ColumnSpan = columnSpan;
 
 			Control prev;
 			Control next;
 
 			if (paged.IsFirstPage) {
-				Label l = new Label ();
+				var l = new Label ();
 				l.Text = PagerStyle.PrevPageText;
 				prev = l;
 			} else {
@@ -783,7 +783,7 @@ namespace System.Web.UI.WebControls
 				l.CausesValidation = false;
 				next = l;
 			} else {
-				Label l = new Label ();
+				var l = new Label ();
 				l.Text = PagerStyle.NextPageText;
 				next = l;
 			}
@@ -797,15 +797,15 @@ namespace System.Web.UI.WebControls
 				
 		protected virtual DataGridItem CreateItem (int itemIndex, int dataSourceIndex, ListItemType itemType)
 		{
-			DataGridItem res = new DataGridItem (itemIndex, dataSourceIndex, itemType);
+			var res = new DataGridItem (itemIndex, dataSourceIndex, itemType);
 			return res;
 		}
 
 		DataGridItem CreateItem (int item_index, int data_source_index, ListItemType type, bool data_bind, object data_item, PagedDataSource paged)
 		{
-			DataGridItem res = CreateItem (item_index, data_source_index, type);
-			DataGridItemEventArgs args = new DataGridItemEventArgs (res);
-			bool no_pager = (type != ListItemType.Pager);
+			var res = CreateItem (item_index, data_source_index, type);
+			var args = new DataGridItemEventArgs (res);
+			var no_pager = (type != ListItemType.Pager);
 
 			if (no_pager) {
 				InitializeItem (res, render_columns);
@@ -842,7 +842,7 @@ namespace System.Web.UI.WebControls
 
 			public IEnumerator GetEnumerator ()
 			{
-				for (int i = 0; i < n; i++)
+				for (var i = 0; i < n; i++)
 					yield return i;
 			}
 
@@ -886,12 +886,12 @@ namespace System.Web.UI.WebControls
 				keys = DataKeysArray;
 				keys.Clear ();
 			} else {
-				int nitems = ViewState.GetInt ("Items", 0);
+				var nitems = ViewState.GetInt ("Items", 0);
 				data_source = new NCollection (nitems);
 			}
 
 			paged_data_source = new PagedDataSource ();
-			PagedDataSource pds = paged_data_source;
+			var pds = paged_data_source;
 			pds.AllowPaging = AllowPaging;
 			pds.AllowCustomPaging = AllowCustomPaging;
 			pds.DataSource = data_source;
@@ -904,18 +904,18 @@ namespace System.Web.UI.WebControls
 				throw new HttpException ("Invalid DataGrid PageIndex");
 			}
 			
-			ArrayList cList = CreateColumnSet (paged_data_source, useDataSource);
+			var cList = CreateColumnSet (paged_data_source, useDataSource);
 			if (cList.Count == 0) {
 				Controls.Clear ();
 				return;
 			}
 			
-			Page page = this.Page;
+			var page = this.Page;
 			if (page != null)
 				page.RequiresPostBackScript ();
 			
 			render_columns = new DataGridColumn [cList.Count];
-			for (int c = 0; c < cList.Count; c++) {
+			for (var c = 0; c < cList.Count; c++) {
 				DataGridColumn col = (DataGridColumn) cList [c];
 				col.Set_Owner (this);
 				col.Initialize ();
@@ -934,7 +934,7 @@ namespace System.Web.UI.WebControls
 			else
 				items_list.Clear();
 
-			bool skip_first = false;
+			var skip_first = false;
 			IEnumerator enumerator = null;
 			if (data_enumerator != null) {
 				// replaced when creating bound columns
@@ -945,12 +945,12 @@ namespace System.Web.UI.WebControls
 			else
 				enumerator = null;
 
-			int index = 0;
-			bool first = true;
+			var index = 0;
+			var first = true;
 			string key = null;
-			int dataset_index = pds.FirstIndexInPage;
-			int selected_index = SelectedIndex;
-			int edit_item_index = EditItemIndex;
+			var dataset_index = pds.FirstIndexInPage;
+			var selected_index = SelectedIndex;
+			var edit_item_index = EditItemIndex;
 			while (enumerator != null && (skip_first || enumerator.MoveNext ())) {
 				// MS does not render <table blah></table> on empty datasource.
 				if (first) {
@@ -958,7 +958,7 @@ namespace System.Web.UI.WebControls
 					key = DataKeyField;
 					skip_first = false;
 				}
-				object data = enumerator.Current;
+				var data = enumerator.Current;
 				// This will throw if the DataKeyField is not there. As on MS, this
 				// will not be hit on an empty datasource.
 				// The values stored here can be used in events so that you can
@@ -968,7 +968,7 @@ namespace System.Web.UI.WebControls
 				if (useDataSource && key != "")
 					keys.Add (DataBinder.GetPropertyValue (data, key));
 
-				ListItemType type = ListItemType.Item;
+				var type = ListItemType.Item;
 				if (index == edit_item_index) 
 					type = ListItemType.EditItem;
 				else if (index == selected_index) 
@@ -993,14 +993,14 @@ namespace System.Web.UI.WebControls
 
 		void ApplyColumnStyle (TableCellCollection cells, ListItemType type)
 		{
-			int ncells = Math.Min (cells.Count, render_columns.Length);
+			var ncells = Math.Min (cells.Count, render_columns.Length);
 			if (ncells <= 0)
 				return;
 
-			for (int i = 0; i < ncells; i++) {
+			for (var i = 0; i < ncells; i++) {
 				Style style = null;
-				TableCell cell = cells [i];
-				DataGridColumn column = render_columns [i];
+				var cell = cells [i];
+				var column = render_columns [i];
 				if (!column.Visible) {
 					cell.Visible = false;
 					continue;
@@ -1017,7 +1017,7 @@ namespace System.Web.UI.WebControls
 			if (!HasControls () || Controls.Count == 0)
 				return; // No one called CreateControlHierarchy() with DataSource != null
 
-			Table rt = render_table;
+			var rt = render_table;
 			rt.CopyBaseAttributes (this);
 			rt.ApplyStyle (ControlStyle);
 
@@ -1025,7 +1025,7 @@ namespace System.Web.UI.WebControls
 			rt.CaptionAlign = CaptionAlign;
 			rt.Enabled = IsEnabled;
 
-			bool top_pager = true;
+			var top_pager = true;
 			foreach (DataGridItem item in rt.Rows) {
 				switch (item.ItemType) {
 					case ListItemType.Item:
@@ -1066,7 +1066,7 @@ namespace System.Web.UI.WebControls
 						ApplyColumnStyle (item.Cells, ListItemType.Separator);
 						break;
 					case ListItemType.Pager:
-						DataGridPagerStyle ps = PagerStyle;
+						var ps = PagerStyle;
 						if (ps.Visible == false || !paged_data_source.IsPagingEnabled)
 							item.Visible = false;
 						else {
@@ -1100,8 +1100,8 @@ namespace System.Web.UI.WebControls
 			if (de == null)
 				return false;
 
-			string cn = de.CommandName;
-			CultureInfo inv = Helpers.InvariantCulture;
+			var cn = de.CommandName;
+			var inv = Helpers.InvariantCulture;
 
 			OnItemCommand (de);
 			if (String.Compare (cn, CancelCommandName, true, inv) == 0)
@@ -1114,7 +1114,7 @@ namespace System.Web.UI.WebControls
 				SelectedIndex = de.Item.ItemIndex;
 				OnSelectedIndexChanged (de);
 			} else if (String.Compare (cn, SortCommandName, true, inv) == 0) {
-				DataGridSortCommandEventArgs se = new DataGridSortCommandEventArgs (de.CommandSource, de);
+				var se = new DataGridSortCommandEventArgs (de.CommandSource, de);
 				OnSortCommand (se);
 			} else if (String.Compare (cn, UpdateCommandName, true, inv) == 0)
 				OnUpdateCommand (de);
@@ -1132,7 +1132,7 @@ namespace System.Web.UI.WebControls
 					// why that is.
 					new_index = Int32.Parse ((string) de.CommandArgument, inv) - 1;
 				}
-				DataGridPageChangedEventArgs pc = new DataGridPageChangedEventArgs (de.CommandSource, new_index);
+				var pc = new DataGridPageChangedEventArgs (de.CommandSource, new_index);
 				OnPageIndexChanged (pc);
 			}
 

@@ -56,7 +56,7 @@ namespace System.Web.UI.WebControls
 		
 		public Type Type {
 			get {
-				object ob = ViewState ["Type"];
+				var ob = ViewState ["Type"];
 				if (ob != null) return (Type) ob;
 				return null;
 			}
@@ -65,7 +65,7 @@ namespace System.Web.UI.WebControls
 			}
 		}
 		
-		void IStateManager.LoadViewState (object state)
+		void IStateManager.LoadViewState (object? state)
 		{
 			ViewState.LoadViewState (state);
 		}

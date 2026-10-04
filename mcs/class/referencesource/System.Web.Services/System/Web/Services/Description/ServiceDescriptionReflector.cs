@@ -113,17 +113,17 @@ namespace System.Web.Services.Description {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public ServiceDescriptionReflector() {
-            Type[] reflectorTypes = WebServicesSection.Current.ProtocolReflectorTypes;
+            var reflectorTypes = WebServicesSection.Current.ProtocolReflectorTypes;
             reflectors = new ProtocolReflector[reflectorTypes.Length];
-            for (int i = 0; i < reflectors.Length; i++) {
+            for (var i = 0; i < reflectors.Length; i++) {
                 ProtocolReflector reflector = (ProtocolReflector)Activator.CreateInstance(reflectorTypes[i]);
                 reflector.Initialize(this);
                 reflectors[i] = reflector;
             }
-            WebServiceProtocols enabledProtocols = WebServicesSection.Current.EnabledProtocols;
+            var enabledProtocols = WebServicesSection.Current.EnabledProtocols;
             if ((enabledProtocols & WebServiceProtocols.HttpPost) == 0 && (enabledProtocols & WebServiceProtocols.HttpPostLocalhost) != 0) {
                 reflectorsWithPost = new ProtocolReflector[reflectors.Length + 1];
-                for (int i = 0; i < reflectorsWithPost.Length - 1; i++) {
+                for (var i = 0; i < reflectorsWithPost.Length - 1; i++) {
                     ProtocolReflector reflector = (ProtocolReflector) Activator.CreateInstance(reflectorTypes[i]);
                     reflector.Initialize(this);
                     reflectorsWithPost[i] = reflector;
@@ -146,7 +146,7 @@ namespace System.Web.Services.Description {
             ServiceDescriptions.Add(description);
 
             service = new Service();
-            string name = serviceAttr.Name;
+            var name = serviceAttr.Name;
             if (name == null || name.Length == 0)
                 name = serviceType.Name;
             service.Name = XmlConvert.EncodeLocalName(name);
@@ -160,7 +160,7 @@ namespace System.Web.Services.Description {
             importer = SoapReflector.CreateXmlImporter(serviceAttr.Namespace, SoapReflector.ServiceDefaultIsEncoded(serviceType));
             WebMethodReflector.IncludeTypes(methods, importer);
 
-            for (int i = 0; i < reflectors.Length; i++) {
+            for (var i = 0; i < reflectors.Length; i++) {
                 reflectors[i].Reflect();
             }
         }
@@ -203,9 +203,9 @@ namespace System.Web.Services.Description {
                 ServiceDescription.Types.Schemas.Clear();
             }
             else if (ServiceDescription.Types.Schemas.Count > 0) {
-                XmlSchema[] descriptionSchemas = new XmlSchema[ServiceDescription.Types.Schemas.Count];
+                var descriptionSchemas = new XmlSchema[ServiceDescription.Types.Schemas.Count];
                 ServiceDescription.Types.Schemas.CopyTo(descriptionSchemas, 0);
-                foreach (XmlSchema schema in descriptionSchemas) {
+                foreach (var schema in descriptionSchemas) {
                     // we always move dataset schemas to the external schema's collection.
                     if (XmlSchemas.IsDataSet(schema)) {
                         ServiceDescription.Types.Schemas.Remove(schema);
@@ -216,12 +216,12 @@ namespace System.Web.Services.Description {
         }
 
         void CheckForDuplicateMethods(LogicalMethodInfo[] methods) {
-            Hashtable messageNames = new Hashtable();
-            foreach (LogicalMethodInfo method in methods) {
-                WebMethodAttribute attribute = method.MethodAttribute;
-                string messageName = attribute.MessageName;
+            var messageNames = new Hashtable();
+            foreach (var method in methods) {
+                var attribute = method.MethodAttribute;
+                var messageName = attribute.MessageName;
                 if (messageName.Length == 0) messageName = method.Name;
-                string key = method.Binding == null ? messageName : method.Binding.Name + "." + messageName;
+                var key = method.Binding == null ? messageName : method.Binding.Name + "." + messageName;
                 LogicalMethodInfo existingMethod = (LogicalMethodInfo)messageNames[key];
                 if (existingMethod != null) {
                     throw new InvalidOperationException(Res.GetString(Res.BothAndUseTheMessageNameUseTheMessageName3, method, existingMethod, XmlConvert.EncodeLocalName(messageName)));

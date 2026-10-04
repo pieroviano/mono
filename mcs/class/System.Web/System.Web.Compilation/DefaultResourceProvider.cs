@@ -53,7 +53,7 @@ namespace System.Web.Compilation
 			{
 				if (!(obj is ResourceManagerCacheKey))
 					return false;
-				ResourceManagerCacheKey key = (ResourceManagerCacheKey) obj;
+				var key = (ResourceManagerCacheKey) obj;
 				return key._asm == _asm && _name.Equals (key._name, StringComparison.Ordinal);
 			}
 
@@ -112,7 +112,7 @@ namespace System.Web.Compilation
  			if (String.IsNullOrEmpty (resourceKey))
 				return null;
 			
-			ResourceManager rm = GetResourceManager ();
+			var rm = GetResourceManager ();
 			if (rm == null)
 				return null;
 
@@ -127,7 +127,7 @@ namespace System.Web.Compilation
 			path = VirtualPathUtility.GetDirectory (resource);
 			asm = AppResourcesCompiler.GetCachedLocalResourcesAssembly (path);
 			if (asm == null) {
-				AppResourcesCompiler ac = new AppResourcesCompiler (path);
+				var ac = new AppResourcesCompiler (path);
 				asm = ac.Compile ();
 				if (asm == null)
 					throw new MissingManifestResourceException ("A resource object was not found at the specified virtualPath.");
@@ -160,7 +160,7 @@ namespace System.Web.Compilation
 				if (resourceManagerCache == null)
 					resourceManagerCache = new Dictionary <ResourceManagerCacheKey, ResourceManager> ();
 				
-				ResourceManagerCacheKey key = new ResourceManagerCacheKey (path, asm);
+				var key = new ResourceManagerCacheKey (path, asm);
 				if (!resourceManagerCache.TryGetValue (key, out rm)) {
 					rm = new ResourceManager (path, asm);
 					rm.IgnoreCase = true;

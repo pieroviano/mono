@@ -52,7 +52,7 @@ namespace System.Web.UI.WebControls
 		
 		public DataControlFieldCollection CloneFields ()
 		{
-			DataControlFieldCollection col = new DataControlFieldCollection ();
+			var col = new DataControlFieldCollection ();
 			foreach (DataControlField field in this)
 				col.Add (field.CloneField ());
 			return col;
@@ -100,14 +100,14 @@ namespace System.Web.UI.WebControls
 
 		protected override void OnInsertComplete (int index, object value)
 		{
-			DataControlField field = (DataControlField) value;
+			var field = (DataControlField) value;
 			field.FieldChanged += new EventHandler (OnFieldChanged);
 			OnFieldsChanged ();
 		}
 
 		protected override void OnRemoveComplete (int index, object value)
 		{
-			DataControlField field = (DataControlField) value;
+			var field = (DataControlField) value;
 			field.FieldChanged -= new EventHandler (OnFieldChanged);
 			OnFieldsChanged ();
 		}

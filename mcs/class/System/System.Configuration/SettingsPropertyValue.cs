@@ -119,8 +119,8 @@ namespace System.Configuration
 #if (XML_DEP)
 					case SettingsSerializeAs.Xml:
 						if (propertyValue != null) {
-							XmlSerializer serializer = new XmlSerializer (propertyValue.GetType ());
-							StringWriter w = new StringWriter(CultureInfo.InvariantCulture);
+							var serializer = new XmlSerializer (propertyValue.GetType ());
+							var w = new StringWriter(CultureInfo.InvariantCulture);
 	
 							serializer.Serialize (w, propertyValue);
 							serializedValue = w.ToString();
@@ -131,8 +131,8 @@ namespace System.Configuration
 #endif
 					case SettingsSerializeAs.Binary:
 						if (propertyValue != null) {
-							BinaryFormatter bf = new BinaryFormatter ();
-							MemoryStream ms = new MemoryStream ();
+							var bf = new BinaryFormatter ();
+							var ms = new MemoryStream ();
 							bf.Serialize (ms, propertyValue);
 							serializedValue = ms.ToArray();
 						}
@@ -191,13 +191,13 @@ namespace System.Configuration
 				return GetDeserializedValue (property.DefaultValue);
 
 			if (!property.PropertyType.IsAssignableFrom (property.DefaultValue.GetType ())) {
-				TypeConverter converter = TypeDescriptor.GetConverter (property.PropertyType);
+				var converter = TypeDescriptor.GetConverter (property.PropertyType);
 				return converter.ConvertFrom (null, CultureInfo.InvariantCulture, property.DefaultValue);
 			}
 			return property.DefaultValue;
 		}
 
-		private object GetDeserializedValue (object serializedValue)
+		private object GetDeserializedValue (object? serializedValue)
 		{
 			if (serializedValue == null)
 				return null;
@@ -212,13 +212,13 @@ namespace System.Configuration
 						break;
 #if (XML_DEP)
 					case SettingsSerializeAs.Xml:
-						XmlSerializer serializer = new XmlSerializer (property.PropertyType);
-						StringReader str = new StringReader ((string) serializedValue);
+						var serializer = new XmlSerializer (property.PropertyType);
+						var str = new StringReader ((string) serializedValue);
 						deserializedObject = serializer.Deserialize (XmlReader.Create (str));
 						break;
 #endif
 					case SettingsSerializeAs.Binary:
-						BinaryFormatter bf = new BinaryFormatter ();
+						var bf = new BinaryFormatter ();
 						MemoryStream ms;
 						if (serializedValue is string)
 							ms = new MemoryStream (Convert.FromBase64String ((string) serializedValue));

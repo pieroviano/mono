@@ -97,11 +97,11 @@ namespace System.Web.UI.WebControls
 
 		public IOrderedDictionary GetValues (HttpContext context, Control control)
 		{
-			OrderedDictionary values = new OrderedDictionary ();
+			var values = new OrderedDictionary ();
 			foreach (Parameter param in this)
 			{
-				string name = param.Name;
-				for (int i = 1; values.Contains (name); i++)
+				var name = param.Name;
+				for (var i = 1; values.Contains (name); i++)
 					name = param.Name + i.ToString ();
 				values.Add (name, param.GetValue (context, control));
 			}
@@ -173,7 +173,7 @@ namespace System.Web.UI.WebControls
 
 		int IndexOfString (string name)
 		{
-			for (int i = 0; i < Count; i++)
+			for (var i = 0; i < Count; i++)
 			{
 				if (string.Compare (((Parameter) ((IList) this) [i]).Name, name, StringComparison.OrdinalIgnoreCase) == 0)
 					return i;
@@ -192,13 +192,13 @@ namespace System.Web.UI.WebControls
 
 		public Parameter this[string name] {
 			get {
-				int idx = IndexOfString (name);
+				var idx = IndexOfString (name);
 				if (idx == -1)
 					return null;
 				return ((Parameter) ((IList)this)[idx]);
 			}
 			set {
-				int idx = IndexOfString (name);
+				var idx = IndexOfString (name);
 				if (idx == -1) {
 					Add (value);
 					return;

@@ -42,7 +42,7 @@ namespace System.Web.Util
 
 		public static void InvokeTransacted (TransactedCallback callback, TransactionOption mode)
 		{
-			bool abortedTransaction = false;
+			var abortedTransaction = false;
 			InvokeTransacted (callback, mode, ref abortedTransaction);
 		}
 

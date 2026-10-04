@@ -181,7 +181,7 @@ internal class ObjectSet: ICollection {
     }
 
     public void AddCollection(ICollection c) {
-        foreach (object o in c) {
+        foreach (var o in c) {
             Add(o);
         }
     }
@@ -253,7 +253,7 @@ internal class AssemblySet : ObjectSet {
     internal AssemblySet() { }
 
     internal static AssemblySet Create(ICollection c) {
-        AssemblySet objectSet = new AssemblySet();
+        var objectSet = new AssemblySet();
         objectSet.AddCollection(c);
         return objectSet;
     }

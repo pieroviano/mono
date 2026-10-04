@@ -47,7 +47,7 @@ namespace System.Web.UI {
 			if (dataSource.GetViewNames ().Count == 0)
 				return null;
 
-			ListSourceList list = new ListSourceList ();
+			var list = new ListSourceList ();
 			list.Add (dataSource);
 			return list;
 		}
@@ -57,9 +57,9 @@ namespace System.Web.UI {
 			#region ITypedList Members
 
 			PropertyDescriptorCollection ITypedList.GetItemProperties (PropertyDescriptor [] listAccessors) {
-				ICollection viewNames = this [0].GetViewNames ();
-				PropertyDescriptor [] a = new PropertyDescriptor [viewNames.Count];
-				int i = 0;
+				var viewNames = this [0].GetViewNames ();
+				var a = new PropertyDescriptor [viewNames.Count];
+				var i = 0;
 				foreach (string viewName in viewNames) {
 					a[i++] = new ListSourcePropertyDescriptor (viewName, null);
 				}
@@ -100,7 +100,7 @@ namespace System.Web.UI {
 				if (dataSource == null)
 					return null;
 
-				DataSourceView view = dataSource.GetView (Name);
+				var view = dataSource.GetView (Name);
 				return view.ExecuteSelect (DataSourceSelectArguments.Empty);
 			}
 

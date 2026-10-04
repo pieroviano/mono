@@ -56,7 +56,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValueAttribute (null)]
 		public virtual string[] DataNavigateUrlFields {
 			get {
-				object ob = ViewState ["DataNavigateUrlFields"];
+				var ob = ViewState ["DataNavigateUrlFields"];
 				if (ob != null)
 					return (string[]) ob;
 				if (emptyFields == null)
@@ -73,7 +73,7 @@ namespace System.Web.UI.WebControls
 		[WebCategoryAttribute ("Data")]
 		public virtual string DataNavigateUrlFormatString {
 			get {
-				object ob = ViewState ["DataNavigateUrlFormatString"];
+				var ob = ViewState ["DataNavigateUrlFormatString"];
 				if (ob != null)
 					return (string) ob;
 				return String.Empty;
@@ -89,7 +89,7 @@ namespace System.Web.UI.WebControls
 		[TypeConverterAttribute ("System.Web.UI.Design.DataSourceViewSchemaConverter, " + Consts.AssemblySystem_Design)]
 		public virtual string DataTextField {
 			get {
-				object ob = ViewState ["DataTextField"];
+				var ob = ViewState ["DataTextField"];
 				if (ob != null)
 					return (string) ob;
 				return String.Empty;
@@ -104,7 +104,7 @@ namespace System.Web.UI.WebControls
 		[WebCategoryAttribute ("Data")]
 		public virtual string DataTextFormatString {
 			get {
-				object ob = ViewState ["DataTextFormatString"];
+				var ob = ViewState ["DataTextFormatString"];
 				if (ob != null)
 					return (string) ob;
 				return String.Empty;
@@ -121,7 +121,7 @@ namespace System.Web.UI.WebControls
 		[WebCategoryAttribute ("Behavior")]
 		public virtual string NavigateUrl {
 			get {
-				object ob = ViewState ["NavigateUrl"];
+				var ob = ViewState ["NavigateUrl"];
 				if (ob != null)
 					return (string) ob;
 				return String.Empty;
@@ -137,7 +137,7 @@ namespace System.Web.UI.WebControls
 		[TypeConverterAttribute (typeof(TargetConverter))]
 		public virtual string Target {
 			get {
-				object ob = ViewState ["Target"];
+				var ob = ViewState ["Target"];
 				if (ob != null)
 					return (string) ob;
 				return String.Empty;
@@ -153,7 +153,7 @@ namespace System.Web.UI.WebControls
 		[WebCategoryAttribute ("Appearance")]
 		public virtual string Text {
 			get {
-				object ob = ViewState ["Text"];
+				var ob = ViewState ["Text"];
 				if (ob != null)
 					return (string) ob;
 				return String.Empty;
@@ -168,8 +168,8 @@ namespace System.Web.UI.WebControls
 		{
 			base.InitializeCell (cell, cellType, rowState, rowIndex);
 			if (cellType == DataControlCellType.DataCell) {
-				HyperLink link = new HyperLink ();
-				bool bind = false;
+				var link = new HyperLink ();
+				var bind = false;
 
 				if (Target.Length > 0)
 					link.Target = Target;
@@ -179,7 +179,7 @@ namespace System.Web.UI.WebControls
 				else
 					link.Text = Text;
 
-				string [] fields = DataNavigateUrlFields;
+				var fields = DataNavigateUrlFields;
 				if (fields.Length > 0)
 					bind = true;
 				else
@@ -194,7 +194,7 @@ namespace System.Web.UI.WebControls
 			}
 		}
 		
-		protected virtual string FormatDataNavigateUrlValue (object[] dataUrlValues)
+		protected virtual string FormatDataNavigateUrlValue (object[]? dataUrlValues)
 		{
 			if (dataUrlValues == null || dataUrlValues.Length == 0)
 				return String.Empty;
@@ -204,7 +204,7 @@ namespace System.Web.UI.WebControls
 				return dataUrlValues[0].ToString ();
 		}
 		
-		protected virtual string FormatDataTextValue (object dataTextValue)
+		protected virtual string FormatDataTextValue (object? dataTextValue)
 		{
 			if (DataTextFormatString.Length > 0)
 				return string.Format (DataTextFormatString, dataTextValue);
@@ -216,30 +216,30 @@ namespace System.Web.UI.WebControls
 		
 		void OnDataBindField (object sender, EventArgs e)
 		{
-			DataControlFieldCell cell = (DataControlFieldCell) sender;
-			HyperLink link = (HyperLink) cell.Controls [0];
+			var cell = (DataControlFieldCell) sender;
+			var link = (HyperLink) cell.Controls [0];
 			object controlContainer = cell.BindingContainer;
-			object item = DataBinder.GetDataItem (controlContainer);
+			var item = DataBinder.GetDataItem (controlContainer);
 			
 			if (DataTextField.Length > 0) {
 				if (textProperty == null) SetupProperties (controlContainer);
 				link.Text = FormatDataTextValue (textProperty.GetValue (item));
 			}
 			
-			string[] urlFields = DataNavigateUrlFields;
+			var urlFields = DataNavigateUrlFields;
 			if (urlFields.Length > 0) {
 				if (urlProperties == null) SetupProperties (controlContainer);
-				object[] dataUrlValues = new object [urlFields.Length];
-				for (int n=0; n<dataUrlValues.Length; n++)
+				var dataUrlValues = new object [urlFields.Length];
+				for (var n=0; n<dataUrlValues.Length; n++)
 					dataUrlValues [n] = urlProperties [n].GetValue (item);
 				link.NavigateUrl = FormatDataNavigateUrlValue (dataUrlValues);
 			}
 		}
 		
-		void SetupProperties (object controlContainer)
+		void SetupProperties (object? controlContainer)
 		{
-			object item = DataBinder.GetDataItem (controlContainer);
-			PropertyDescriptorCollection props = TypeDescriptor.GetProperties (item); 
+			var item = DataBinder.GetDataItem (controlContainer);
+			var props = TypeDescriptor.GetProperties (item); 
 			
 			if (DataTextField.Length > 0) {
 				textProperty = props.Find (DataTextField, true);
@@ -247,10 +247,10 @@ namespace System.Web.UI.WebControls
 					throw new InvalidOperationException ("Property '" + DataTextField + "' not found in object of type " + item.GetType());
 			}
 			
-			string[] urlFields = DataNavigateUrlFields;
+			var urlFields = DataNavigateUrlFields;
 			if (urlFields.Length > 0) {
 				urlProperties = new PropertyDescriptor [urlFields.Length];
-				for (int n=0; n<urlFields.Length; n++) {
+				for (var n=0; n<urlFields.Length; n++) {
 					PropertyDescriptor prop = props.Find (urlFields [n], true);
 					if (prop == null)
 						throw new InvalidOperationException ("Property '" + urlFields [n] + "' not found in object of type " + item.GetType());
@@ -267,7 +267,7 @@ namespace System.Web.UI.WebControls
 		protected override void CopyProperties (DataControlField newField)
 		{
 			base.CopyProperties (newField);
-			HyperLinkField field = (HyperLinkField) newField;
+			var field = (HyperLinkField) newField;
 			field.DataNavigateUrlFields = DataNavigateUrlFields;
 			field.DataNavigateUrlFormatString = DataNavigateUrlFormatString;
 			field.DataTextField = DataTextField;

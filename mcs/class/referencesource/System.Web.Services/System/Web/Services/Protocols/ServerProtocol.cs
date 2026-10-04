@@ -34,7 +34,7 @@ namespace System.Web.Services.Protocols {
         internal static Object InternalSyncObject {
             get {
                 if (s_InternalSyncObject == null) {
-                    Object o = new Object();
+                    var o = new Object();
                     Interlocked.CompareExchange(ref s_InternalSyncObject, o, null);
                 }
                 return s_InternalSyncObject;
@@ -119,20 +119,20 @@ namespace System.Web.Services.Protocols {
         // 
 
         internal string GenerateFaultString(Exception e, bool htmlEscapeMessage) {
-            bool isDevelopmentServer = Context != null && !Context.IsCustomErrorEnabled;
+            var isDevelopmentServer = Context != null && !Context.IsCustomErrorEnabled;
             if (isDevelopmentServer && !htmlEscapeMessage) {
                 //If the user has specified it's a development server (versus a production server) in ASP.NET config,
                 //then we should just return e.ToString instead of extracting the list of messages.            
                 return e.ToString();
             }
-            StringBuilder builder = new StringBuilder();
+            var builder = new StringBuilder();
             if (isDevelopmentServer) {
                 //  we are dumping the ecseption directly to IE, need to encode
                 GenerateFaultString(e, builder);
             }
             else {
-                for (Exception inner = e; inner != null; inner = inner.InnerException) {
-                    string text = htmlEscapeMessage ? HttpUtility.HtmlEncode(inner.Message) : inner.Message;
+                for (var inner = e; inner != null; inner = inner.InnerException) {
+                    var text = htmlEscapeMessage ? HttpUtility.HtmlEncode(inner.Message) : inner.Message;
                     if (text.Length == 0) text = e.GetType().Name;
                     builder.Append(text);
                     if (inner.InnerException != null) builder.Append(" ---> ");
@@ -173,8 +173,8 @@ namespace System.Web.Services.Protocols {
 
         static CreateCustomKeyForAspNetWebServiceMetadataCache GetCreateCustomKeyForAspNetWebServiceMetadataCacheDelegate(Type serverType) {
             PartialTrustHelpers.FailIfInPartialTrustOutsideAspNet();
-            string key = "CreateCustomKeyForAspNetWebServiceMetadataCache-" + serverType.FullName;
-            CreateCustomKeyForAspNetWebServiceMetadataCache result = (CreateCustomKeyForAspNetWebServiceMetadataCache)HttpRuntime.Cache.Get(key);
+            var key = "CreateCustomKeyForAspNetWebServiceMetadataCache-" + serverType.FullName;
+            var result = (CreateCustomKeyForAspNetWebServiceMetadataCache)HttpRuntime.Cache.Get(key);
             if (result == null) {
                 MethodInfo createKeyMethod = serverType.GetMethod(
                     "CreateCustomKeyForAspNetWebServiceMetadataCache",
@@ -199,17 +199,17 @@ namespace System.Web.Services.Protocols {
             return result;
         }
 
-        string CreateKey(Type protocolType, Type serverType, bool excludeSchemeHostPort = false, string keySuffix = null) {
+        string CreateKey(Type protocolType, Type serverType, bool excludeSchemeHostPort = false, string? keySuffix = null) {
             //
             // we want to use the hostname to cache since for documentation, WSDL
             // contains the cache hostname, but we definitely don't want to cache the query string!
             //            
             string protocolTypeName = protocolType.FullName;
             string serverTypeName = serverType.FullName;
-            string typeHandleString = serverType.TypeHandle.Value.ToString();
-            string url = excludeSchemeHostPort ? Request.Url.AbsolutePath : Request.Url.GetLeftPart(UriPartial.Path);
-            int length = protocolTypeName.Length + url.Length + serverTypeName.Length + typeHandleString.Length;
-            StringBuilder sb = new StringBuilder(length);
+            var typeHandleString = serverType.TypeHandle.Value.ToString();
+            var url = excludeSchemeHostPort ? Request.Url.AbsolutePath : Request.Url.GetLeftPart(UriPartial.Path);
+            var length = protocolTypeName.Length + url.Length + serverTypeName.Length + typeHandleString.Length;
+            var sb = new StringBuilder(length);
             sb.Append(protocolTypeName);
             sb.Append(url);
             sb.Append(serverTypeName);
@@ -218,7 +218,7 @@ namespace System.Web.Services.Protocols {
                 sb.Append(keySuffix);
             }
             
-            CreateCustomKeyForAspNetWebServiceMetadataCache createKey = ServerProtocol.GetCreateCustomKeyForAspNetWebServiceMetadataCacheDelegate(serverType);
+            var createKey = ServerProtocol.GetCreateCustomKeyForAspNetWebServiceMetadataCacheDelegate(serverType);
 
             return createKey(protocolType, serverType, sb.ToString());
         }
@@ -258,7 +258,7 @@ namespace System.Web.Services.Protocols {
         //    since the DOS attack cannot be generically fixed without breaking behavioral changes. The value of 10 is baked in, 
         //    and we consider it a reasonable default based on the assumption that ASMX services in most circumstances cannot be 
         //    reached using more than 10 different values of the scheme/host/port. 
-        // 2. For any requests for WSDL going beyond the 10 limit of scheme/host/port combination, we go into a ìDOS mitigation modeî. 
+        // 2. For any requests for WSDL going beyond the 10 limit of scheme/host/port combination, we go into a ‚ÄúDOS mitigation mode‚Äù. 
         //    The mode prevents the eventual process crash while introducing marginal breaking behavioral changes:
         //    a. We create a single service description and cache it using the AbsolutePath of the request URI alone 
         //       (as opposed to scheme/host/port + AbsolutePath).
@@ -270,8 +270,8 @@ namespace System.Web.Services.Protocols {
             PartialTrustHelpers.FailIfInPartialTrustOutsideAspNet();
 
             const int threshold = 10;
-            string key = this.CreateKey(protocolType, serverType, true, "CachePressure");
-            ServerProtocolCachePressure item = (ServerProtocolCachePressure)HttpRuntime.Cache.Get(key);
+            var key = this.CreateKey(protocolType, serverType, true, "CachePressure");
+            var item = (ServerProtocolCachePressure)HttpRuntime.Cache.Get(key);
 
             // There is a potential race condition in creating a new entry or increasing the value of an existing entry, 
             // but it is acceptable since DOS threshold enforcement need not be exact.

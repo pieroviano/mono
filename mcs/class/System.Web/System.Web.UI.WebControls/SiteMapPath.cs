@@ -281,7 +281,7 @@ namespace System.Web.UI.WebControls
 			 * base.DataBind */
 			foreach (Control c in Controls) {
 				if (c is SiteMapNodeItem) {
-					SiteMapNodeItem it = (SiteMapNodeItem)c;
+					var it = (SiteMapNodeItem)c;
 					OnItemDataBound (new SiteMapNodeItemEventArgs (it));
 				}
 			}
@@ -296,17 +296,17 @@ namespace System.Web.UI.WebControls
 
 		protected virtual void CreateControlHierarchy ()
 		{
-			ArrayList nodes = new ArrayList ();
-			SiteMapNode node = Provider.CurrentNode;
+			var nodes = new ArrayList ();
+			var node = Provider.CurrentNode;
 			if (node == null) return;
 			
-			int levels = ParentLevelsDisplayed != -1 ? ParentLevelsDisplayed + 1 : int.MaxValue;
+			var levels = ParentLevelsDisplayed != -1 ? ParentLevelsDisplayed + 1 : int.MaxValue;
 			
 			while (node != null && levels > 0) {
 				if (nodes.Count > 0) {
-					SiteMapNodeItem sep = new SiteMapNodeItem (nodes.Count, SiteMapNodeItemType.PathSeparator);
+					var sep = new SiteMapNodeItem (nodes.Count, SiteMapNodeItemType.PathSeparator);
 					InitializeItem (sep);
-					SiteMapNodeItemEventArgs sargs = new SiteMapNodeItemEventArgs (sep);
+					var sargs = new SiteMapNodeItemEventArgs (sep);
 					OnItemCreated (sargs);
 					nodes.Add (sep);
 				}
@@ -319,11 +319,11 @@ namespace System.Web.UI.WebControls
 				else
 					nt = SiteMapNodeItemType.Parent;
 					
-				SiteMapNodeItem it = new SiteMapNodeItem (nodes.Count, nt);
+				var it = new SiteMapNodeItem (nodes.Count, nt);
 				it.SiteMapNode = node;
 				InitializeItem (it);
 				
-				SiteMapNodeItemEventArgs args = new SiteMapNodeItemEventArgs (it);
+				var args = new SiteMapNodeItemEventArgs (it);
 				OnItemCreated (args);
 				
 				nodes.Add (it);
@@ -332,10 +332,10 @@ namespace System.Web.UI.WebControls
 			}
 			
 			if (PathDirection == PathDirection.RootToCurrent) {
-				for (int n=nodes.Count - 1; n>=0; n--)
+				for (var n=nodes.Count - 1; n>=0; n--)
 					Controls.Add ((Control)nodes[n]);
 			} else {
-				for (int n=0; n<nodes.Count; n++)
+				for (var n=0; n<nodes.Count; n++)
 					Controls.Add ((Control)nodes[n]);
 			}
 		}
@@ -373,12 +373,12 @@ namespace System.Web.UI.WebControls
 						item.ApplyStyle (CurrentNodeStyle);
 						NodeTemplate.InstantiateIn (item);
 					} else if (RenderCurrentNodeAsLink) {
-						HyperLink c = CreateHyperLink (item);
+						var c = CreateHyperLink (item);
 						c.ApplyStyle (NodeStyle);
 						c.ApplyStyle (CurrentNodeStyle);
 						item.Controls.Add (c);
 					} else {
-						Literal c = CreateLiteral (item);
+						var c = CreateLiteral (item);
 						item.ApplyStyle (NodeStyle);
 						item.ApplyStyle (CurrentNodeStyle);
 						item.Controls.Add (c);
@@ -402,7 +402,7 @@ namespace System.Web.UI.WebControls
 						item.ApplyStyle (PathSeparatorStyle);
 						PathSeparatorTemplate.InstantiateIn (item);
 					} else {
-						Literal h = new Literal ();
+						var h = new Literal ();
 						h.Text = HttpUtility.HtmlEncode (PathSeparator);
 						item.ApplyStyle (PathSeparatorStyle);
 						item.Controls.Add (h);
@@ -413,7 +413,7 @@ namespace System.Web.UI.WebControls
 		
 		HyperLink CreateHyperLink (SiteMapNodeItem item)
 		{
-			HyperLink h = new HyperLink ();
+			var h = new HyperLink ();
 			h.Text = item.SiteMapNode.Title;
 			h.NavigateUrl = item.SiteMapNode.Url;
 			if (ShowToolTips)
@@ -423,19 +423,19 @@ namespace System.Web.UI.WebControls
 
 		Literal CreateLiteral (SiteMapNodeItem item)
 		{
-			Literal h = new Literal ();
+			var h = new Literal ();
 			h.Text = item.SiteMapNode.Title;
 			return h;
 		}
 		
-		protected override void LoadViewState (object savedState)
+		protected override void LoadViewState (object? savedState)
 		{
 			if (savedState == null) {
 				base.LoadViewState (null);
 				return;
 			}
 			
-			object[] states = (object[]) savedState;
+			var states = (object[]) savedState;
 			base.LoadViewState (states [0]);
 			
 			if (states[1] != null) ((IStateManager)CurrentNodeStyle).LoadViewState (states[1]);
@@ -458,9 +458,9 @@ namespace System.Web.UI.WebControls
 
 		protected internal override void RenderContents (HtmlTextWriter writer)
 		{
-			string skip_id = ClientID + "_SkipLink";
-			string altText = SkipLinkText;
-			bool needAnchor = !String.IsNullOrEmpty (altText);
+			var skip_id = ClientID + "_SkipLink";
+			var altText = SkipLinkText;
+			var needAnchor = !String.IsNullOrEmpty (altText);
 			
 			if (needAnchor) {
 				// Anchor start
@@ -490,7 +490,7 @@ namespace System.Web.UI.WebControls
 		
 		protected override object SaveViewState ()
 		{
-			object[] state = new object [5];
+			var state = new object [5];
 			state [0] = base.SaveViewState ();
 			
 			if (currentNodeStyle != null) state [1] = ((IStateManager)currentNodeStyle).SaveViewState ();
@@ -498,7 +498,7 @@ namespace System.Web.UI.WebControls
 			if (pathSeparatorStyle != null) state [3] = ((IStateManager)pathSeparatorStyle).SaveViewState ();
 			if (rootNodeStyle != null) state [4] = ((IStateManager)rootNodeStyle).SaveViewState ();
 			
-			for (int n=0; n<state.Length; n++)
+			for (var n=0; n<state.Length; n++)
 				if (state [n] != null) return state;
 			return null;
 		}

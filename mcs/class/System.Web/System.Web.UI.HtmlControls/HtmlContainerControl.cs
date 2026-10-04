@@ -73,7 +73,7 @@ namespace System.Web.UI.HtmlControls
 					return String.Empty;
 				
 				if (Controls.Count == 1) {
-					Control ctrl = Controls [0];
+					var ctrl = Controls [0];
 					LiteralControl lc = ctrl as LiteralControl;
 					if (lc != null)
 						return lc.Text;
@@ -136,7 +136,7 @@ namespace System.Web.UI.HtmlControls
 			return new ControlCollection (this);
 		}
 
-		protected override void LoadViewState (object savedState)
+		protected override void LoadViewState (object? savedState)
 		{
 			if (savedState != null) {
 				base.LoadViewState (savedState);

@@ -79,9 +79,9 @@ namespace System.Web.UI
 
 		internal static Type GetCompiledApplicationType (string inputFile, HttpContext context)
 		{
-			ApplicationFileParser parser = new ApplicationFileParser (inputFile, context);
-			AspGenerator generator = new AspGenerator (parser);
-			Type type = generator.GetCompiledType ();
+			var parser = new ApplicationFileParser (inputFile, context);
+			var generator = new AspGenerator (parser);
+			var type = generator.GetCompiledType ();
 			dependencies = parser.Dependencies;
 			return type;
 		}
@@ -101,7 +101,7 @@ namespace System.Web.UI
 		}		
 		internal override Type DefaultBaseType {
 			get {
-				Type ret = PageParser.DefaultApplicationBaseType;
+				var ret = PageParser.DefaultApplicationBaseType;
 				if (ret == null)
 					return base.DefaultBaseType;
 

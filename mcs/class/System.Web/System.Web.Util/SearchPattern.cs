@@ -74,7 +74,7 @@ namespace System.Web.Util {
 
 			ops = null;
 
-			int ptr = 0;
+			var ptr = 0;
 			Op last_op = null;
 			while (ptr < pattern.Length) {
 				Op op;
@@ -92,7 +92,7 @@ namespace System.Web.Util {
 					
 				default:
 					op = new Op (OpCode.ExactString);
-					int end = pattern.IndexOfAny (WildcardChars, ptr);
+					var end = pattern.IndexOfAny (WildcardChars, ptr);
 					if (end < 0)
 						end = pattern.Length;
 
@@ -118,7 +118,7 @@ namespace System.Web.Util {
 				last_op.Next = new Op (OpCode.End);
 		}
 
-		private bool Match (Op op, string text, int ptr)
+		private bool Match (Op? op, string text, int ptr)
 		{
 			while (op != null) {
 				switch (op.Code) {
@@ -132,11 +132,11 @@ namespace System.Web.Util {
 					return false;
 				
 				case OpCode.ExactString:
-					int length = op.Argument.Length;
+					var length = op.Argument.Length;
 					if (ptr + length > text.Length)
 						return false;
 
-					string str = text.Substring (ptr, length);
+					var str = text.Substring (ptr, length);
 					if (ignore)
 						str = str.ToLower ();
 

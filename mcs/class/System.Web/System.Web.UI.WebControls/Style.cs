@@ -373,7 +373,7 @@ namespace System.Web.UI.WebControls {
 		public virtual void AddAttributesToRender(System.Web.UI.HtmlTextWriter writer, WebControl owner)
 		{
 			if (RegisteredCssClass.Length > 0) {
-				string cssclass = CssClass;
+				var cssclass = CssClass;
 				if (!String.IsNullOrEmpty (cssclass))
 					writer.AddAttribute (HtmlTextWriterAttribute.Class, cssclass + " " + RegisteredCssClass);
 				else
@@ -381,10 +381,10 @@ namespace System.Web.UI.WebControls {
 			}
 			else 
 			{
-				string cssclass = CssClass;
+				var cssclass = CssClass;
 				if (cssclass != null && cssclass.Length > 0)
 					writer.AddAttribute (HtmlTextWriterAttribute.Class, cssclass);
-				CssStyleCollection col = new CssStyleCollection ();
+				var col = new CssStyleCollection ();
 				FillStyleAttributes (col, owner);
 				foreach (string key in col.Keys) {
 					writer.AddStyleAttribute (key, col [key]);
@@ -411,7 +411,7 @@ namespace System.Web.UI.WebControls {
 					attributes.Add (HtmlTextWriterStyle.BorderColor, ColorTranslator.ToHtml(color));
 			}
 
-			bool have_width = false;
+			var have_width = false;
 			if (CheckBit ((int) Styles.BorderWidth)) {
 				u = (Unit) viewstate ["BorderWidth"];
 				if (!u.IsEmpty) {
@@ -456,7 +456,7 @@ namespace System.Web.UI.WebControls {
 			Font.FillStyleAttributes (attributes, AlwaysRenderTextDecoration);
 		}
 
-		public virtual void CopyFrom(Style s) 
+		public virtual void CopyFrom(Style? s) 
 		{
 			if ((s == null) || s.IsEmpty) 
 			{
@@ -502,7 +502,7 @@ namespace System.Web.UI.WebControls {
 			}
 		}
 
-		public virtual void MergeWith(Style s) 
+		public virtual void MergeWith(Style? s) 
 		{
 			if ((s == null) || (s.IsEmpty))
 			{
@@ -583,7 +583,7 @@ namespace System.Web.UI.WebControls {
 		#endregion	// Public Instance Methods
 
 		#region Protected Instance Methods
-		protected internal void LoadViewState(object state) 
+		protected internal void LoadViewState(object? state) 
 		{
 			viewstate.LoadViewState(state);
 
@@ -611,7 +611,7 @@ namespace System.Web.UI.WebControls {
 			if (viewstate [BitStateKey] == null)
 				return;
 
-			int bit = (int) viewstate [BitStateKey];
+			var bit = (int) viewstate [BitStateKey];
 			styles |= bit;
 			stylesTraked |= bit;
 		}
@@ -644,7 +644,7 @@ namespace System.Web.UI.WebControls {
 		#endregion	// Protected Instance Methods
 
 		#region IStateManager Properties & Methods
-		void IStateManager.LoadViewState(object state) 
+		void IStateManager.LoadViewState(object? state) 
 		{
 			LoadViewState(state);
 		}
@@ -675,7 +675,7 @@ namespace System.Web.UI.WebControls {
 
 		public CssStyleCollection GetStyleAttributes (IUrlResolutionService urlResolver)
 		{
-			CssStyleCollection col = new CssStyleCollection ();
+			var col = new CssStyleCollection ();
 			FillStyleAttributes (col, urlResolver);
 			return col;
 		}
@@ -711,7 +711,7 @@ namespace System.Web.UI.WebControls {
 			if (String.IsNullOrEmpty (cssClass))
 				return;
 
-			string newClass = CssClass;
+			var newClass = CssClass;
 			if (newClass.Length > 0)
 				newClass += " ";
 			newClass += cssClass;
@@ -722,7 +722,7 @@ namespace System.Web.UI.WebControls {
 			if (String.IsNullOrEmpty (cssClass))
 				return;
 
-			string oldClass = CssClass;
+			var oldClass = CssClass;
 			if (oldClass.Length > 0)
 				cssClass += " ";
 			CssClass = cssClass + oldClass;

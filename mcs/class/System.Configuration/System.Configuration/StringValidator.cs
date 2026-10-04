@@ -46,7 +46,7 @@ namespace System.Configuration
 			this.maxLength = maxLength;
 		}
 		
-		public StringValidator (int minLength, int maxLength, string invalidCharacters)
+		public StringValidator (int minLength, int maxLength, string? invalidCharacters)
 		{
 			this.minLength = minLength;
 			this.maxLength = maxLength;
@@ -59,7 +59,7 @@ namespace System.Configuration
 			return type == typeof(string);
 		}
 
-		public override void Validate (object value)
+		public override void Validate (object? value)
 		{
 			if (value == null && minLength <= 0)
 				return;
@@ -70,7 +70,7 @@ namespace System.Configuration
 			if (s.Length > maxLength)
 				throw new ArgumentException ("The string must be no more than " + maxLength + " characters long.");
 			if (invalidCharacters != null) {
-				int i = s.IndexOfAny (invalidCharacters);
+				var i = s.IndexOfAny (invalidCharacters);
 				if (i != -1)
 					throw new ArgumentException (String.Format ("The string cannot contain any of the following characters: '{0}'.", invalidCharacters));
 			}

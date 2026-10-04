@@ -48,7 +48,7 @@ namespace Newtonsoft.Json
 				writer.Write (delimiter);
 
 			if (!string.IsNullOrEmpty (value))
-				for (int i = 0; i < value.Length; i++)
+				for (var i = 0; i < value.Length; i++)
 					WriteJavaScriptChar (value [i], delimiter, writer);
 
 			// trailing delimiter
@@ -109,7 +109,7 @@ namespace Newtonsoft.Json
 					writer.Write (value);
 				else {
 					writer.Write("\\u00");
-					int intVal = (int) value;
+					var intVal = (int) value;
 					writer.Write ((char) ('0' + (intVal >> 4)));
 					intVal &= 0xf;
 					writer.Write ((char) (intVal < 10 ? '0' + intVal : 'a' + (intVal - 10)));

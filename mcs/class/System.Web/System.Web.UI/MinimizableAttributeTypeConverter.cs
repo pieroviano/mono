@@ -46,7 +46,7 @@ namespace System.Web.UI
 			return base.CanConvertFrom (context, sourceType);
 		}
 
-		public override object ConvertTo (ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType)
+		public override object ConvertTo (ITypeDescriptorContext context, CultureInfo culture, object? value, Type destinationType)
 		{
 			if (value is string && destinationType == typeof (bool)) {
 				return value != null;
@@ -57,12 +57,12 @@ namespace System.Web.UI
 			return base.ConvertTo (context, culture, value, destinationType);
 		}
 		
-		public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
+		public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object? value)
 		{
 			string typeName;
 			
 			if (value != null) {
-				Type t = value.GetType ();
+				var t = value.GetType ();
 				if (t == typeof (string)) {
 					string s = value as string;
 					if (String.IsNullOrEmpty (s) || String.Compare (s, "false", StringComparison.OrdinalIgnoreCase) == 0)

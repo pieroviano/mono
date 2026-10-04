@@ -113,18 +113,18 @@ namespace System.Web.UI.WebControls {
 			set { ViewState ["Text"] = value; }
 		}
 
-		protected virtual string FormatDataNavigateUrlValue (object dataUrlValue)
+		protected virtual string FormatDataNavigateUrlValue (object? dataUrlValue)
 		{
-			string format = DataNavigateUrlFormatString;
+			var format = DataNavigateUrlFormatString;
 			if (format == "")
 				format = null;
 
 			return DataBinder.FormatResult (dataUrlValue, format);
 		}
 
-		protected virtual string FormatDataTextValue (object dataTextValue)
+		protected virtual string FormatDataTextValue (object? dataTextValue)
 		{
-			string format = DataTextFormatString;
+			var format = DataTextFormatString;
 			if (format == "")
 				format = null;
 
@@ -138,9 +138,9 @@ namespace System.Web.UI.WebControls {
 
 		void ItemDataBinding (object sender, EventArgs args)
 		{
-			TableCell cell = (TableCell)sender;
-			HyperLink ctrl = (HyperLink)cell.Controls[0];
-			DataGridItem item = (DataGridItem)cell.NamingContainer;
+			var cell = (TableCell)sender;
+			var ctrl = (HyperLink)cell.Controls[0];
+			var item = (DataGridItem)cell.NamingContainer;
 
 			if (DataNavigateUrlField != "")
 				ctrl.NavigateUrl = FormatDataNavigateUrlValue (DataBinder.Eval (item.DataItem, DataNavigateUrlField));

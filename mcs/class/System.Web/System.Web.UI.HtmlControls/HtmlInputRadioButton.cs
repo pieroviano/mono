@@ -63,7 +63,7 @@ namespace System.Web.UI.HtmlControls
 
 		public override string Name {
 			get {
-				string s = Attributes ["name"];
+				var s = Attributes ["name"];
 				return (s == null) ? String.Empty : s;
 			}
 			set {
@@ -76,7 +76,7 @@ namespace System.Web.UI.HtmlControls
 
 		public override string Value {
 			get {
-				string s = Attributes ["value"];
+				var s = Attributes ["value"];
 				if (s == null || s.Length == 0) {
 					s = ID;
 					if ((s != null) && (s.Length == 0))
@@ -96,7 +96,7 @@ namespace System.Web.UI.HtmlControls
 		{
 			base.OnPreRender (e);
 
-			Page page = Page;
+			var page = Page;
 			if (page != null && !Disabled) {
 				page.RegisterRequiresPostBack (this);
 				page.RegisterEnabledControl (this);
@@ -112,7 +112,7 @@ namespace System.Web.UI.HtmlControls
 
 		protected override void RenderAttributes (HtmlTextWriter writer)
 		{
-			Page page = Page;
+			var page = Page;
 			if (page != null)
 				page.ClientScript.RegisterForEventValidation (this.UniqueID, Value);
 			writer.WriteAttribute ("value", Value, true);
@@ -122,7 +122,7 @@ namespace System.Web.UI.HtmlControls
 		
 		protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
 		{
-			bool checkedOnClient = postCollection [Name] == Value;
+			var checkedOnClient = postCollection [Name] == Value;
 			if (Checked == checkedOnClient)
 				return false;
 

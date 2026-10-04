@@ -37,7 +37,7 @@ namespace System.Web.Configuration
 	{
 		public ApplicationSettingsConfigurationFileMap ()
 		{
-			HttpContext ctx = HttpContext.Current;
+			var ctx = HttpContext.Current;
 			HttpRequest req = ctx != null ? ctx.Request : null;
 			
 			if (req != null) {

@@ -89,7 +89,7 @@ namespace System.Configuration {
 
 		protected override object GetElementKey (ConfigurationElement element)
 		{
-			NameValueConfigurationElement e = (NameValueConfigurationElement)element;
+			var e = (NameValueConfigurationElement)element;
 			return e.Name;
 		}
 

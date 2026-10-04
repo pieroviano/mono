@@ -49,7 +49,7 @@ namespace System.Web.Security
 
 		public static bool CheckMembershipSchemaVersion (DbProviderFactory factory, string connStr, string feature, string compatibleVersion)
 		{
-			using (DbConnection connection = CreateConnection (factory, connStr)) {
+			using (var connection = CreateConnection (factory, connStr)) {
 				DbCommand command = factory.CreateCommand ();
 				command.Connection = connection;
 				command.CommandText = @"aspnet_CheckSchemaVersion";
@@ -57,7 +57,7 @@ namespace System.Web.Security
 
 				AddParameter (factory, command, "@Feature", ParameterDirection.Input, feature);
 				AddParameter (factory, command, "@CompatibleSchemaVersion", ParameterDirection.Input, compatibleVersion);
-				DbParameter returnValue = AddParameter (factory, command, "@ReturnVal", ParameterDirection.ReturnValue, null);
+				var returnValue = AddParameter (factory, command, "@ReturnVal", ParameterDirection.ReturnValue, null);
 
 				try {
 					command.ExecuteNonQuery ();
@@ -75,7 +75,7 @@ namespace System.Web.Security
 
 		static DbParameter AddParameter (DbProviderFactory factory, DbCommand command, string parameterName, ParameterDirection direction, object parameterValue)
 		{
-			DbParameter dbp = command.CreateParameter ();
+			var dbp = command.CreateParameter ();
 			dbp.ParameterName = parameterName;
 			dbp.Value = parameterValue;
 			dbp.Direction = direction;

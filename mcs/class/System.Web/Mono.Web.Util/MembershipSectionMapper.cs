@@ -44,12 +44,12 @@ namespace Mono.Web.Util
 			
 			List <SettingsMappingWhatContents> contents;
 
-			foreach (SettingsMappingWhat what in whats) {
+			foreach (var what in whats) {
 				contents = what.Contents;
 				if (contents == null || contents.Count == 0)
 					continue;
 
-				foreach (SettingsMappingWhatContents item in contents) {
+				foreach (var item in contents) {
 					switch (item.Operation) {
 						case SettingsMappingWhatOperation.Add:
 							ProcessAdd (section, item);
@@ -77,7 +77,7 @@ namespace Mono.Web.Util
 		{
 			name = type = null;
 			
-			Dictionary <string, string> attrs = how.Attributes;
+			var attrs = how.Attributes;
 			
 			if (attrs == null || attrs.Count == 0)
 				return false;
@@ -95,12 +95,12 @@ namespace Mono.Web.Util
 
 		void SetProviderProperties (SettingsMappingWhatContents how, ProviderSettings prov)
 		{
-			Dictionary <string, string> attrs = how.Attributes;
+			var attrs = how.Attributes;
 			if (attrs == null || attrs.Count == 0)
 				return;
 
 			string key;
-			foreach (KeyValuePair <string, string> kvp in attrs) {
+			foreach (var kvp in attrs) {
 				key = kvp.Key;
 				if (key == "name")
 					continue;
@@ -118,12 +118,12 @@ namespace Mono.Web.Util
 			if (!GetCommonAttributes (how, out name, out type))
 				return;
 
-			ProviderSettingsCollection providers = section.Providers;
-			ProviderSettings provider = providers [name];
+			var providers = section.Providers;
+			var provider = providers [name];
 			if (provider != null)
 				return;
 
-			ProviderSettings prov = new ProviderSettings (name, type);
+			var prov = new ProviderSettings (name, type);
 			SetProviderProperties (how, prov);
 			
 			providers.Add (prov);
@@ -135,8 +135,8 @@ namespace Mono.Web.Util
 			if (!GetCommonAttributes (how, out name, out type))
 				return;
 
-			ProviderSettingsCollection providers = section.Providers;
-			ProviderSettings provider = providers [name];
+			var providers = section.Providers;
+			var provider = providers [name];
 			if (provider != null) {
 				if (provider.Type != type)
 					return;
@@ -155,7 +155,7 @@ namespace Mono.Web.Util
 			if (!GetCommonAttributes (how, out name, out type))
 				return;
 
-			ProviderSettings provider = section.Providers [name];
+			var provider = section.Providers [name];
 			if (provider != null)
 				SetProviderProperties (how, provider);
 		}

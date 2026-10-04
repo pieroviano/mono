@@ -92,13 +92,13 @@ namespace System.Web.UI
 			List <CompositeEntry> entries = null;
 			WebResourceAttribute wra;
 			
-			foreach (ScriptReference sr in Scripts) {
+			foreach (var sr in Scripts) {
 				if (sr == null)
 					continue;
 
 				name = sr.Name;
 				if (!String.IsNullOrEmpty (name)) {
-					Assembly assembly = sr.ResolvedAssembly;
+					var assembly = sr.ResolvedAssembly;
 					name = GetScriptName (name, sr.IsDebugMode (scriptManager), null, assembly, out wra);
 					path = scriptManager.ScriptPath;
 					if (sr.IgnoreScriptPath || String.IsNullOrEmpty (path)) {
@@ -108,14 +108,14 @@ namespace System.Web.UI
 							Attribute = wra
 						};
 					} else {
-						AssemblyName an = assembly.GetName ();
+						var an = assembly.GetName ();
 						entry = new CompositeEntry {
 							NameOrPath = String.Concat (VirtualPathUtility.AppendTrailingSlash (path), an.Name, '/', an.Version, '/', name),
 							Attribute = wra
 						};
 					}
 				} else if (!String.IsNullOrEmpty ((path = sr.Path))) {
-					bool notFound = false;
+					var notFound = false;
 					name = GetScriptName (path, sr.IsDebugMode (scriptManager), scriptManager.EnableScriptLocalization ? ResourceUICultures : null, null, out wra);
 					if (!HostingEnvironment.HaveCustomVPP)
 						notFound = !File.Exists (HostingEnvironment.MapPath (name));
@@ -143,7 +143,7 @@ namespace System.Web.UI
 			if (entries == null || entries.Count == 0)
 				return String.Empty;
 
-			string ret = ScriptResourceHandler.GetResourceUrl (ThisAssembly, url.ToString (), NotifyScriptLoaded);
+			var ret = ScriptResourceHandler.GetResourceUrl (ThisAssembly, url.ToString (), NotifyScriptLoaded);
 			entriesCache.InsertOrUpdate ((uint)ret.GetHashCode (), ret, entries, entries);
 			return ret;
 		}
@@ -158,8 +158,8 @@ namespace System.Web.UI
 			if (scripts == null || scripts.Count == 0)
 				return false;
 
-			Assembly myAssembly = ThisAssembly;
-			foreach (ScriptReference sr in scripts)
+			var myAssembly = ThisAssembly;
+			foreach (var sr in scripts)
 				if (sr.ResolvedAssembly == myAssembly)
 					return true;
 

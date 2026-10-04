@@ -66,7 +66,7 @@ namespace System.Web.UI.WebControls
 				if (PostedFile == null)
 					return Stream.Null;
 				else {
-					Stream ret = PostedFile.InputStream;
+					var ret = PostedFile.InputStream;
 					if (ret != null)
 						ret.Position = 0;
 					
@@ -90,7 +90,7 @@ namespace System.Web.UI.WebControls
 		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public bool HasFile {
 			get {
-				HttpPostedFile pf = PostedFile;
+				var pf = PostedFile;
 				return (pf != null && !String.IsNullOrEmpty (pf.FileName));
 			}
 		}
@@ -99,7 +99,7 @@ namespace System.Web.UI.WebControls
 		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public HttpPostedFile PostedFile {
 			get {
-				Page page = Page;
+				var page = Page;
 				if (page == null || !page.IsPostBack)
 					return null;
 				if (Context == null || Context.Request == null)
@@ -119,14 +119,14 @@ namespace System.Web.UI.WebControls
 		protected internal override void OnPreRender (System.EventArgs e)
 		{
 			base.OnPreRender (e);
-			Page page = Page;
+			var page = Page;
 			if (page != null)
 				page.Form.Enctype = "multipart/form-data";
 		}
 
 		protected internal override void Render (HtmlTextWriter writer)
 		{
-			Page page = Page;
+			var page = Page;
 			if (page != null)
 				page.VerifyRenderingInServerForm (this);
 			base.Render (writer);
@@ -134,7 +134,7 @@ namespace System.Web.UI.WebControls
 
 		public void SaveAs (string filename)
 		{
-			HttpPostedFile file = PostedFile;
+			var file = PostedFile;
 			if (file != null)
 				file.SaveAs (filename);
 		}

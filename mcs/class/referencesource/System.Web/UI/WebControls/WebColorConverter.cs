@@ -28,8 +28,8 @@ namespace System.Web.UI.WebControls {
         /// </devdoc>
         public override object ConvertFrom(ITypeDescriptorContext context, CultureInfo culture, object value) {
             if (value is string) {
-                string colorText = ((string)value).Trim();
-                Color c = Color.Empty;
+                var colorText = ((string)value).Trim();
+                var c = Color.Empty;
 
                 // empty color
                 if (String.IsNullOrEmpty(colorText))
@@ -63,14 +63,14 @@ namespace System.Web.UI.WebControls {
         /// <internalonly/>
         /// <devdoc>
         /// </devdoc>
-        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object value, Type destinationType) {
+        public override object ConvertTo(ITypeDescriptorContext context, CultureInfo culture, object? value, Type destinationType) {
             if (destinationType == null) {
                 throw new ArgumentNullException("destinationType");
             }
 
             if (destinationType == typeof(string)) {
                 if (value != null) {
-                    Color c = (Color)value;
+                    var c = (Color)value;
 
                     if (c == Color.Empty) {
                         return String.Empty;
@@ -120,7 +120,7 @@ namespace System.Web.UI.WebControls {
 
                     if (c.IsKnownColor == false) {
                         // in the Web scenario, colors should be formatted in #RRGGBB notation
-                        StringBuilder sb = new StringBuilder("#", 7);
+                        var sb = new StringBuilder("#", 7);
                         sb.Append((c.R).ToString("X2", CultureInfo.InvariantCulture));
                         sb.Append((c.G).ToString("X2", CultureInfo.InvariantCulture));
                         sb.Append((c.B).ToString("X2", CultureInfo.InvariantCulture));
@@ -133,7 +133,7 @@ namespace System.Web.UI.WebControls {
         }
 
         private static void InitializeHTMLSysColorTable() {
-            Hashtable t = new Hashtable(StringComparer.OrdinalIgnoreCase);
+            var t = new Hashtable(StringComparer.OrdinalIgnoreCase);
             t["activeborder"] = Color.FromKnownColor(KnownColor.ActiveBorder);
             t["activecaption"] = Color.FromKnownColor(KnownColor.ActiveCaption);
             t["appworkspace"] = Color.FromKnownColor(KnownColor.AppWorkspace);

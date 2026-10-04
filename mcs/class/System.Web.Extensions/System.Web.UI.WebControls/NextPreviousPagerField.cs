@@ -80,17 +80,17 @@ namespace System.Web.UI.WebControls
 			_totalRowCount = totalRowCount;
 			_fieldIndex = fieldIndex;
 
-			bool setPagePropertiesNeeded = false;
-			bool queryMode = GetQueryModeStartRowIndex (_totalRowCount, _maximumRows, ref _startRowIndex, ref setPagePropertiesNeeded);
-			bool enablePrevFirst = _startRowIndex >= _maximumRows;
-			bool enableNextLast = (_startRowIndex + _maximumRows) < _totalRowCount;
-			bool addNonBreakingSpace = RenderNonBreakingSpacesBetweenControls;
+			var setPagePropertiesNeeded = false;
+			var queryMode = GetQueryModeStartRowIndex (_totalRowCount, _maximumRows, ref _startRowIndex, ref setPagePropertiesNeeded);
+			var enablePrevFirst = _startRowIndex >= _maximumRows;
+			var enableNextLast = (_startRowIndex + _maximumRows) < _totalRowCount;
+			var addNonBreakingSpace = RenderNonBreakingSpacesBetweenControls;
 
 			if (ShowFirstPageButton)
 				CreateButton (container, DataControlCommands.FirstPageCommandArgument, FirstPageText, FirstPageImageUrl, 0,
 					      queryMode, enablePrevFirst, addNonBreakingSpace);
 			
-			int newPageNum = -1;
+			var newPageNum = -1;
 			if (ShowPreviousPageButton) {
 				if (queryMode)
 					newPageNum = (_startRowIndex / _maximumRows) - 1;
@@ -129,7 +129,7 @@ namespace System.Web.UI.WebControls
 			
 			if (queryMode) {
 				pageNum++;
-				HyperLink h = new HyperLink ();
+				var h = new HyperLink ();
 				h.Text = text;
 				h.ImageUrl = imageUrl;
 				h.Enabled = enabled;
@@ -138,27 +138,27 @@ namespace System.Web.UI.WebControls
 				ctl = h;
 			} else {
 				if (!enabled && RenderDisabledButtonsAsLabels) {
-					Label l = new Label ();
+					var l = new Label ();
 					l.Text = text;
 					ctl = l;
 				} else {
 					switch (ButtonType) {
 						case ButtonType.Button:
-							Button btn = new Button ();
+							var btn = new Button ();
 							btn.CommandName = commandName;
 							btn.Text = text;
 							ctl = btn;
 							break;
 
 						case ButtonType.Link:
-							LinkButton lbtn = new LinkButton ();
+							var lbtn = new LinkButton ();
 							lbtn.CommandName = commandName;
 							lbtn.Text = text;
 							ctl = lbtn;
 							break;
 
 						case ButtonType.Image:
-							ImageButton ibtn = new ImageButton ();
+							var ibtn = new ImageButton ();
 							ibtn.CommandName = commandName;
 							ibtn.ImageUrl = imageUrl;
 							ibtn.AlternateText = text;
@@ -239,7 +239,7 @@ namespace System.Web.UI.WebControls
 
 		public override int GetHashCode ()
 		{
-			int ret = 0;
+			var ret = 0;
 
 			// Base the calculation on the properties that are copied in CopyProperties
 			ret |= ButtonCssClass.GetHashCode ();
@@ -262,14 +262,14 @@ namespace System.Web.UI.WebControls
 
 		public override void HandleEvent (CommandEventArgs e)
 		{
-			string commandName = e.CommandName;
-			int newStartIndex = -1;
-			int pageSize = DataPager.PageSize;
+			var commandName = e.CommandName;
+			var newStartIndex = -1;
+			var pageSize = DataPager.PageSize;
 			
 			if (String.Compare (commandName, DataControlCommands.FirstPageCommandArgument, StringComparison.OrdinalIgnoreCase) == 0)
 				newStartIndex = 0;
 			else if (String.Compare (commandName, DataControlCommands.LastPageCommandArgument, StringComparison.OrdinalIgnoreCase) == 0) {
-				int lastPageMod = _totalRowCount % pageSize;
+				var lastPageMod = _totalRowCount % pageSize;
 				if (lastPageMod == 0)
 					newStartIndex = _totalRowCount - pageSize;
 				else
@@ -302,7 +302,7 @@ namespace System.Web.UI.WebControls
 
 		public ButtonType ButtonType {
 			get {
-				object o = ViewState ["ButtonType"];
+				var o = ViewState ["ButtonType"];
 				if (o != null)
 					return (ButtonType) o;
 
@@ -410,7 +410,7 @@ namespace System.Web.UI.WebControls
 
 		public bool RenderDisabledButtonsAsLabels {
 			get {
-				object o = ViewState ["RenderDisabledButtonsAsLabels"];
+				var o = ViewState ["RenderDisabledButtonsAsLabels"];
 				if (o != null)
 					return (bool) o;
 
@@ -422,7 +422,7 @@ namespace System.Web.UI.WebControls
 
 		public bool RenderNonBreakingSpacesBetweenControls {
 			get {
-				object o = ViewState ["RenderNonBreakingSpacesBetweenControls"];
+				var o = ViewState ["RenderNonBreakingSpacesBetweenControls"];
 				if (o != null)
 					return (bool) o;
 
@@ -434,7 +434,7 @@ namespace System.Web.UI.WebControls
 
 		public bool ShowFirstPageButton {
 			get {
-				object o = ViewState ["ShowFirstPageButton"];
+				var o = ViewState ["ShowFirstPageButton"];
 				if (o != null)
 					return (bool) o;
 
@@ -446,7 +446,7 @@ namespace System.Web.UI.WebControls
 
 		public bool ShowLastPageButton {
 			get {
-				object o = ViewState ["ShowLastPageButton"];
+				var o = ViewState ["ShowLastPageButton"];
 				if (o != null)
 					return (bool) o;
 
@@ -458,7 +458,7 @@ namespace System.Web.UI.WebControls
 
 		public bool ShowNextPageButton {
 			get {
-				object o = ViewState ["ShowNextPageButton"];
+				var o = ViewState ["ShowNextPageButton"];
 				if (o != null)
 					return (bool) o;
 
@@ -470,7 +470,7 @@ namespace System.Web.UI.WebControls
 
 		public bool ShowPreviousPageButton {
 			get {
-				object o = ViewState ["ShowPreviousPageButton"];
+				var o = ViewState ["ShowPreviousPageButton"];
 				if (o != null)
 					return (bool) o;
 

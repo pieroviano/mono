@@ -440,7 +440,7 @@ namespace System.Web.UI.WebControls
 		[WebCategory ("Style")]
 		public DateTime TodaysDate {
 			get {
-				object obj = ViewState ["TodaysDate"];
+				var obj = ViewState ["TodaysDate"];
 
 				if (obj != null)
 					return (DateTime) obj;
@@ -465,7 +465,7 @@ namespace System.Web.UI.WebControls
 		[WebCategory ("Style")]
 		public DateTime VisibleDate {
 			get {
-				object obj = ViewState ["VisibleDate"];
+				var obj = ViewState ["VisibleDate"];
 
 				if (obj != null)
 					return (DateTime) obj;
@@ -507,7 +507,7 @@ namespace System.Web.UI.WebControls
 		
 		DateTime DisplayDate {
 			get {
-				DateTime dateTime = VisibleDate;
+				var dateTime = VisibleDate;
 				if (dateTime == DateTime.MinValue) // If visibledate is still the default value
 					dateTime = TodaysDate;
 
@@ -549,9 +549,9 @@ namespace System.Web.UI.WebControls
 				return;
 
 			if (eventArgument[0] == 'V') { // Goes to Next or Previous month
-				DateTime prev = VisibleDate;
-				int days = Int32.Parse (eventArgument.Substring (1));
-				DateTime dt = GetGlobalCalendar().AddDays (dateZenith, days);
+				var prev = VisibleDate;
+				var days = Int32.Parse (eventArgument.Substring (1));
+				var dt = GetGlobalCalendar().AddDays (dateZenith, days);
 				VisibleDate = dt;
 				OnVisibleMonthChanged (VisibleDate, prev);
 				return;
@@ -562,22 +562,22 @@ namespace System.Web.UI.WebControls
 				num = eventArgument.Substring (1);
 				days = num.Substring (num.Length - 2, 2);
 				date = num.Substring (0, num.Length - 2);
-				DateTime d = GetGlobalCalendar().AddDays (dateZenith, Int32.Parse (date));
+				var d = GetGlobalCalendar().AddDays (dateZenith, Int32.Parse (date));
 				SelectedDates.SelectRange (d, d.AddDays (Int32.Parse (days)));
 				OnSelectionChanged ();
 				return;
 			}
 
 			// Selects a single day
-			int daysFromZenith = Int32.Parse (eventArgument);
-			DateTime day = GetGlobalCalendar().AddDays (dateZenith, daysFromZenith);
+			var daysFromZenith = Int32.Parse (eventArgument);
+			var day = GetGlobalCalendar().AddDays (dateZenith, daysFromZenith);
 			SelectedDates.SelectRange (day, day);
 			OnSelectionChanged ();
 		}
 
 		protected override void LoadViewState (object savedState)
 		{
-			object [] states = (object []) savedState;
+			var states = (object []) savedState;
 
 			if (states [0] != null)
 				 base.LoadViewState (states [0]);
@@ -609,7 +609,7 @@ namespace System.Web.UI.WebControls
 			if (states [9] != null)
 				WeekendDayStyle.LoadViewState (states [9]);
 
-			ArrayList array = (ArrayList) ViewState ["SelectedDates"];
+			var array = (ArrayList) ViewState ["SelectedDates"];
 			if (array != null) {
 				dateList = array;
 				selectedDatesCollection = new SelectedDatesCollection (dateList);
@@ -620,7 +620,7 @@ namespace System.Web.UI.WebControls
 		{
 			DayRenderEventHandler eh = (DayRenderEventHandler) (Events [DayRenderEvent]);
 			if (eh != null) {
-				Page page = Page;
+				var page = Page;
 				if (page != null)
 					eh (this, new DayRenderEventArgs (cell, day, page.ClientScript.GetPostBackClientHyperlink (this, GetDaysFromZenith (day.Date).ToString (), true)));
 				else
@@ -649,7 +649,7 @@ namespace System.Web.UI.WebControls
 
 		protected internal override void Render (HtmlTextWriter writer)
 		{
-			TableStyle ts = new TableStyle ();
+			var ts = new TableStyle ();
 			ts.CellSpacing = CellSpacing;
 			ts.CellPadding = CellPadding;
 			ts.BorderWidth = 1;
@@ -664,7 +664,7 @@ namespace System.Web.UI.WebControls
 			if (!String.IsNullOrEmpty (Caption))
 				WriteCaption (writer);
 
-			bool enabled = IsEnabled;
+			var enabled = IsEnabled;
 			
 			if (ShowTitle)
 				WriteTitle (writer, enabled);
@@ -679,7 +679,7 @@ namespace System.Web.UI.WebControls
 
 		protected override object SaveViewState ()
 		{
-			object [] states = new object [10];
+			var states = new object [10];
 
 			if (dayHeaderStyle != null)
 				states [1] = dayHeaderStyle.SaveViewState ();
@@ -714,7 +714,7 @@ namespace System.Web.UI.WebControls
 
 			states [0] = base.SaveViewState ();
 
-			for (int i = 0; i < states.Length; i++) {
+			for (var i = 0; i < states.Length; i++) {
 				if (states [i] != null)
 					return states;
 			}
@@ -777,12 +777,12 @@ namespace System.Web.UI.WebControls
 				cell.RenderEndTag (writer);
 			} else {
 				if (SelectionMode == CalendarSelectionMode.DayWeekMonth) {
-					TableCell selector = new TableCell ();
+					var selector = new TableCell ();
 					selector.ApplyStyle (SelectorStyle);
 					selector.HorizontalAlign = HorizontalAlign.Center;
 
-					DateTime date = new DateTime (DisplayDate.Year, DisplayDate.Month, 1); // first date
-					int days =  DateTime.DaysInMonth (DisplayDate.Year, DisplayDate.Month);
+					var date = new DateTime (DisplayDate.Year, DisplayDate.Month, 1); // first date
+					var days =  DateTime.DaysInMonth (DisplayDate.Year, DisplayDate.Month);
 
 					selector.RenderBeginTag (writer);
 					writer.Write (BuildLink ("R" + GetDaysFromZenith (date) + days, SelectMonthText, DayHeaderStyle.ForeColor, enabled));
@@ -790,9 +790,9 @@ namespace System.Web.UI.WebControls
 				}
 			}
 
-			DateTimeFormatInfo dti = DateInfo;
+			var dti = DateInfo;
 			while (true) {
-				DayOfWeek dayOfWeek = (DayOfWeek) i;
+				var dayOfWeek = (DayOfWeek) i;
 				dayName = dti.GetDayName (dayOfWeek);
 
 				if (UseAccessibleHeader) {
@@ -842,10 +842,10 @@ namespace System.Web.UI.WebControls
 
 		void WriteDay (DateTime date, HtmlTextWriter writer, bool enabled)
 		{			
-			TableItemStyle style = new TableItemStyle ();
-			TableCell cell = new TableCell ();
+			var style = new TableItemStyle ();
+			var cell = new TableCell ();
 
-			CalendarDay day = new CalendarDay (date,
+			var day = new CalendarDay (date,
 				IsWeekEnd (date.DayOfWeek),
 				date == TodaysDate, SelectedDates.Contains (date),
 				GetGlobalCalendar ().GetMonth (DisplayDate) != GetGlobalCalendar ().GetMonth (date),
@@ -855,7 +855,7 @@ namespace System.Web.UI.WebControls
 			cell.HorizontalAlign = HorizontalAlign.Center;
 			cell.Width = Unit.Percentage (GetCellWidth ());
 
-			LiteralControl lit = new LiteralControl (day.DayNumberText);
+			var lit = new LiteralControl (day.DayNumberText);
 			cell.Controls.Add (lit);
 
 			OnDayRender (cell, day);
@@ -889,7 +889,7 @@ namespace System.Web.UI.WebControls
 
 		void WriteDays (HtmlTextWriter writer, bool enabled)
 		{
-			DateTime date = new DateTime (DisplayDate.Year, DisplayDate.Month, 1); // first date
+			var date = new DateTime (DisplayDate.Year, DisplayDate.Month, 1); // first date
 			DateTime lastDate;
 			TableCell selectorCell = null;
 			int n;
@@ -923,7 +923,7 @@ namespace System.Web.UI.WebControls
 					selectorCell.RenderEndTag (writer);
 				}
 
-				for (int i = 0; i < daysInAWeek; i++) {
+				for (var i = 0; i < daysInAWeek; i++) {
 					WriteDay (date, writer, enabled);
 					date = GetGlobalCalendar().AddDays (date, 1);
 				}
@@ -936,9 +936,9 @@ namespace System.Web.UI.WebControls
 
 		string BuildLink (string arg, string text, Color foreColor, bool hasLink)
 		{
-			StringBuilder str = new StringBuilder ();
+			var str = new StringBuilder ();
 			Color clr;
-			Page page = Page;
+			var page = Page;
 			hasLink = (page != null && hasLink == true) ? true : false;
 
 			if (hasLink) {
@@ -968,7 +968,7 @@ namespace System.Web.UI.WebControls
 
 		int GetDaysFromZenith (DateTime date)
 		{
-			TimeSpan span =  date.Subtract (dateZenith);
+			var span =  date.Subtract (dateZenith);
 			return span.Days;
 		}
 
@@ -985,8 +985,8 @@ namespace System.Web.UI.WebControls
 		void WriteTitle (HtmlTextWriter writer, bool enabled)
 		{
 			TableCell cellNextPrev = null;
-			TableCell titleCell = new TableCell ();
-			Table tableTitle = new Table ();
+			var titleCell = new TableCell ();
+			var tableTitle = new Table ();
 
 			writer.RenderBeginTag (HtmlTextWriterTag.Tr);
 
@@ -1012,7 +1012,7 @@ namespace System.Web.UI.WebControls
 				cellNextPrev.ApplyStyle (nextPrevStyle);
 				cellNextPrev.Width = Unit.Percentage (15);
 
-				DateTime date = GetGlobalCalendar().AddMonths (DisplayDate, - 1);
+				var date = GetGlobalCalendar().AddMonths (DisplayDate, - 1);
 				date = GetGlobalCalendar ().AddDays (date, -date.Day + 1);
 				cellNextPrev.RenderBeginTag (writer);
 				writer.Write (BuildLink ("V" + GetDaysFromZenith (date), GetNextPrevFormatText (date, false), cellNextPrev.ForeColor, enabled));
@@ -1021,9 +1021,9 @@ namespace System.Web.UI.WebControls
 
 			// Current Month Table Data
 			{
-				DateTimeFormatInfo dti = DateInfo;
+				var dti = DateInfo;
 				string str;
-				TableCell cellMonth = new TableCell ();
+				var cellMonth = new TableCell ();
 				cellMonth.Width = Unit.Percentage (70);
 				cellMonth.HorizontalAlign = HorizontalAlign.Center;
 
@@ -1039,7 +1039,7 @@ namespace System.Web.UI.WebControls
 			}
 
 			if (ShowNextPrevMonth) { // Next Table Data
-				DateTime date = GetGlobalCalendar().AddMonths (DisplayDate, + 1);
+				var date = GetGlobalCalendar().AddMonths (DisplayDate, + 1);
 				date = GetGlobalCalendar ().AddDays (date, -date.Day + 1);
 
 				cellNextPrev.HorizontalAlign = HorizontalAlign.Right;
@@ -1057,7 +1057,7 @@ namespace System.Web.UI.WebControls
 		string GetNextPrevFormatText (DateTime date, bool next)
 		{
 			string text;
-			DateTimeFormatInfo dti = DateInfo;
+			var dti = DateInfo;
 			switch (NextPrevFormat) {
 				case NextPrevFormat.FullMonth:
 					text = dti.GetMonthName (GetGlobalCalendar ().GetMonth (date));

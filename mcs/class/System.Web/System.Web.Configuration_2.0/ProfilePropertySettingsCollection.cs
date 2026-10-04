@@ -89,7 +89,7 @@ namespace System.Web.Configuration
 
 		public string GetKey (int index)
 		{
-			ProfilePropertySettings s = Get (index);
+			var s = Get (index);
 			if (s == null)
 				return null;
 
@@ -113,13 +113,13 @@ namespace System.Web.Configuration
 
 		public void Set (ProfilePropertySettings propertySettings)
 		{
-			ProfilePropertySettings existing = Get (propertySettings.Name);
+			var existing = Get (propertySettings.Name);
 
 			if (existing == null) {
 				Add (propertySettings);
 			}
 			else {
-				int index = BaseIndexOf (existing);
+				var index = BaseIndexOf (existing);
 				RemoveAt (index);
 				BaseAdd (index, propertySettings);
 			}
@@ -127,8 +127,8 @@ namespace System.Web.Configuration
 
 		public string[ ] AllKeys {
 			get {
-				string[] keys = new string[Count];
-				for (int i = 0; i < Count; i ++)
+				var keys = new string[Count];
+				for (var i = 0; i < Count; i ++)
 					keys[i] = this[i].Name;
 				return keys;
 			}

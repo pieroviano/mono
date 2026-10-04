@@ -164,7 +164,7 @@ namespace System.Web
 
 		public static SiteMapNodeCollection ReadOnly (SiteMapNodeCollection collection)
 		{
-			SiteMapNodeCollection col = new SiteMapNodeCollection ();
+			var col = new SiteMapNodeCollection ();
 			if (collection.list != null)
 				col.list = ArrayList.ReadOnly (collection.list);
 			else

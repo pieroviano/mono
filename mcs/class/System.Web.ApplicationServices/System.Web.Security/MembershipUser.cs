@@ -92,13 +92,13 @@ namespace System.Web.Security
 
 		internal void UpdateUser ()
 		{
-			MembershipUser newUser = Provider.GetUser (UserName, false);
+			var newUser = Provider.GetUser (UserName, false);
 			UpdateSelf (newUser);
 		}
 
 		public virtual bool ChangePassword (string oldPassword, string newPassword)
 		{
-			bool success = Provider.ChangePassword (UserName, oldPassword, newPassword);
+			var success = Provider.ChangePassword (UserName, oldPassword, newPassword);
 
 			UpdateUser ();
 			
@@ -107,7 +107,7 @@ namespace System.Web.Security
 		
 		public virtual bool ChangePasswordQuestionAndAnswer (string password, string newPasswordQuestion, string newPasswordAnswer)
 		{
-			bool success = Provider.ChangePasswordQuestionAndAnswer (UserName, password, newPasswordQuestion, newPasswordAnswer);
+			var success = Provider.ChangePasswordQuestionAndAnswer (UserName, password, newPasswordQuestion, newPasswordAnswer);
 
 			UpdateUser ();
 			
@@ -131,7 +131,7 @@ namespace System.Web.Security
 		
 		public virtual string ResetPassword (string passwordAnswer)
 		{
-			string newPass = Provider.ResetPassword (UserName, passwordAnswer);
+			var newPass = Provider.ResetPassword (UserName, passwordAnswer);
 
 			UpdateUser ();
 			
@@ -165,7 +165,7 @@ namespace System.Web.Security
 		bool IsOnline {
 			get {
 				int minutes;
-				IMembershipHelper helper = MembershipProvider.Helper;
+				var helper = MembershipProvider.Helper;
 				if (helper == null)
 					throw new PlatformNotSupportedException ("The method is not available.");
 				minutes = helper.UserIsOnlineTimeWindow;
@@ -214,7 +214,7 @@ namespace System.Web.Security
 		
 		public virtual bool UnlockUser ()
 		{
-			bool retval = Provider.UnlockUser (UserName);
+			var retval = Provider.UnlockUser (UserName);
 
 			UpdateUser ();
 
@@ -224,7 +224,7 @@ namespace System.Web.Security
 		MembershipProvider Provider {
 			get {
 				MembershipProvider p;				
-				IMembershipHelper helper = MembershipProvider.Helper;
+				var helper = MembershipProvider.Helper;
 				if (helper == null)
 					throw new PlatformNotSupportedException ("The method is not available.");
 				p = helper.Providers [ProviderName];

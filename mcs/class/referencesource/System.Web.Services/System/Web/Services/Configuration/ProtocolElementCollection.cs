@@ -60,7 +60,7 @@ namespace System.Web.Services.Configuration
                 throw new ArgumentNullException("element");
             }
 
-            ProtocolElement configElementKey = (ProtocolElement)element;
+            var configElementKey = (ProtocolElement)element;
             return configElementKey.Name.ToString();
         }
 
@@ -101,10 +101,10 @@ namespace System.Web.Services.Configuration
 
         internal void SetDefaults()
         {
-            ProtocolElement httpSoap12Element = new ProtocolElement(WebServiceProtocols.HttpSoap12);
-            ProtocolElement httpSoapElement = new ProtocolElement(WebServiceProtocols.HttpSoap);
-            ProtocolElement httpPostLocalhostElement = new ProtocolElement(WebServiceProtocols.HttpPostLocalhost);
-            ProtocolElement documentationElement = new ProtocolElement(WebServiceProtocols.Documentation);
+            var httpSoap12Element = new ProtocolElement(WebServiceProtocols.HttpSoap12);
+            var httpSoapElement = new ProtocolElement(WebServiceProtocols.HttpSoap);
+            var httpPostLocalhostElement = new ProtocolElement(WebServiceProtocols.HttpPostLocalhost);
+            var documentationElement = new ProtocolElement(WebServiceProtocols.Documentation);
 
             this.Add(httpSoap12Element);
             this.Add(httpSoapElement);
@@ -120,7 +120,7 @@ namespace System.Web.Services.Configuration
                 {
                     throw new ArgumentNullException("key");
                 }
-                ProtocolElement retval = (ProtocolElement)this.BaseGet(key);
+                var retval = (ProtocolElement)this.BaseGet(key);
                 if (retval == null)
                 {
                     throw new System.Collections.Generic.KeyNotFoundException(

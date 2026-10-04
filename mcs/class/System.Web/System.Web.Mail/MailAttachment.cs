@@ -52,7 +52,7 @@ namespace System.Web.Mail
 			}
 
 			if (!File.Exists (filename)) {
-				string msg = Locale.GetText ("Cannot find file: '{0}'.");
+				var msg = Locale.GetText ("Cannot find file: '{0}'.");
 				throw new HttpException (String.Format (msg, filename));
 			}
 

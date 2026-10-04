@@ -203,9 +203,9 @@ namespace System.Web.UI.WebControls {
 
 		protected virtual void RenderItem (ListItemType itemType, int repeatIndex, RepeatInfo repeatInfo, HtmlTextWriter writer)
 		{
-			ListItem item = Items [repeatIndex];
+			var item = Items [repeatIndex];
 
-			RadioButton radio = new RadioButton ();
+			var radio = new RadioButton ();
 			radio.Text = item.Text;
 			radio.ID = ClientID + "_"  + repeatIndex;
 			radio.TextAlign = TextAlign;
@@ -230,11 +230,11 @@ namespace System.Web.UI.WebControls {
 		{
 			EnsureDataBound ();
 			string val = postCollection [postDataKey];
-			ListItemCollection items = Items;
-			int end = items.Count;
-			int selected = SelectedIndex;
-			for (int i = 0; i < end; i++) {
-				ListItem item = items [i];
+			var items = Items;
+			var end = items.Count;
+			var selected = SelectedIndex;
+			for (var i = 0; i < end; i++) {
+				var item = items [i];
 				if (item == null || val != item.Value)
 					continue;
 
@@ -250,7 +250,7 @@ namespace System.Web.UI.WebControls {
 		protected virtual void RaisePostDataChangedEvent ()
 		{
 			ValidateEvent (UniqueID, String.Empty);
-			Page page = Page;
+			var page = Page;
 			if (CausesValidation && page != null)
 				page.Validate (ValidationGroup);
 
@@ -279,14 +279,14 @@ namespace System.Web.UI.WebControls {
 
 		protected internal override void Render (HtmlTextWriter writer)
 		{
-			Page page = Page;
+			var page = Page;
 			if (page != null)
 				page.ClientScript.RegisterForEventValidation (UniqueID);
 
 			if (Items.Count == 0)
 				return;
 
-			RepeatInfo repeat = new RepeatInfo ();
+			var repeat = new RepeatInfo ();
 			repeat.RepeatColumns = RepeatColumns;
 			repeat.RepeatDirection = RepeatDirection;
 			repeat.RepeatLayout = RepeatLayout;

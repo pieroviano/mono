@@ -81,16 +81,16 @@ namespace System.Web.UI.WebControls
 			return new RouteParameter (this);
 		}
 
-		protected internal override object Evaluate (HttpContext context, Control control)
+		protected internal override object Evaluate (HttpContext? context, Control? control)
 		{
 			if (context == null || control == null)
 				return null;
 
-			Page p = control.Page;
+			var p = control.Page;
 			if (p == null)
 				throw new NullReferenceException (".NET emulation");
 
-			RouteData rd = p.RouteData;
+			var rd = p.RouteData;
 			if (rd == null)
 				return null;
 			

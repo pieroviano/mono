@@ -32,7 +32,7 @@ namespace System.Web.Services.Protocols {
         internal override void Write(HttpResponse response, Stream outputStream, object returnValue) {
             Encoding encoding = new UTF8Encoding(false);
             response.ContentType = ContentType.Compose("text/xml", encoding);
-            StreamWriter writer = new StreamWriter(outputStream, encoding);
+            var writer = new StreamWriter(outputStream, encoding);
 
             TraceMethod caller = Tracing.On ? new TraceMethod(this, "Write") : null;
             if (Tracing.On) Tracing.Enter(Tracing.TraceId(Res.TraceWriteResponse), caller, new TraceMethod(xmlSerializer, "Serialize", writer, returnValue));

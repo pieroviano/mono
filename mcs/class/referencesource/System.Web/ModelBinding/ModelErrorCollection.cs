@@ -9,7 +9,7 @@
             Add(new ModelError(exception));
         }
 
-        public void Add(string errorMessage) {
+        public void Add(string? errorMessage) {
             Add(new ModelError(errorMessage));
         }
     }

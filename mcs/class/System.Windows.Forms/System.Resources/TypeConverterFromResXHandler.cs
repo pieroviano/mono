@@ -47,43 +47,43 @@ namespace System.Resources {
 		}
 
 		#region implemented abstract members of System.Resources.ResXDataNodeHandler
-		public override object GetValue (ITypeResolutionService typeResolver)
+		public override object GetValue (ITypeResolutionService? typeResolver)
 		{
 			if (!String.IsNullOrEmpty(mime_type)
 			    && mime_type != ResXResourceWriter.ByteArraySerializedObjectMimeType)
 				return null;
 
-			Type type = ResolveType (typeString, typeResolver);
+			var type = ResolveType (typeString, typeResolver);
 			if (type == null)
 				throw new TypeLoadException();
 
-			TypeConverter c = TypeDescriptor.GetConverter (type);
+			var c = TypeDescriptor.GetConverter (type);
 			if (c == null)
 				throw new TypeLoadException();
 
 			return ConvertData (c);
 		}
 
-		public override object GetValue (AssemblyName[] assemblyNames)
+		public override object GetValue (AssemblyName[]? assemblyNames)
 		{
 			if (!String.IsNullOrEmpty(mime_type)
 			    && mime_type != ResXResourceWriter.ByteArraySerializedObjectMimeType)
 				return null;
 
-			Type type = ResolveType (typeString, assemblyNames);
+			var type = ResolveType (typeString, assemblyNames);
 			if (type == null)
 				throw new TypeLoadException();
 
-			TypeConverter c = TypeDescriptor.GetConverter (type);
+			var c = TypeDescriptor.GetConverter (type);
 			if (c == null)
 				throw new TypeLoadException();
 
 			return ConvertData (c);
 		}
 
-		public override string GetValueTypeName (ITypeResolutionService typeResolver)
+		public override string GetValueTypeName (ITypeResolutionService? typeResolver)
 		{
-			Type type = ResolveType (typeString, typeResolver);
+			var type = ResolveType (typeString, typeResolver);
 
 			if (type == null)
 				return typeString;
@@ -91,9 +91,9 @@ namespace System.Resources {
 				return type.AssemblyQualifiedName;
 		}
 
-		public override string GetValueTypeName (AssemblyName [] assemblyNames)
+		public override string GetValueTypeName (AssemblyName []? assemblyNames)
 		{
-			Type type = ResolveType (typeString, assemblyNames);
+			var type = ResolveType (typeString, assemblyNames);
 
 			if (type == null)
 				return typeString;

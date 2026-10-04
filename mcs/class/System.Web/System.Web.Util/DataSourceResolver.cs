@@ -53,7 +53,7 @@ namespace System.Web.Util {
 			if (ls == null)
 				return null;
 			
-			IList member_list = ls.GetList ();
+			var member_list = ls.GetList ();
 			if (! ls.ContainsListCollection)
 				return member_list;
 
@@ -61,7 +61,7 @@ namespace System.Web.Util {
 			if (tl == null)
 				return null;
 
-			PropertyDescriptorCollection pd = tl.GetItemProperties (new PropertyDescriptor [0]);
+			var pd = tl.GetItemProperties (new PropertyDescriptor [0]);
 		
 			if (pd == null || pd.Count == 0)
 				throw new HttpException ("The selected data source did not contain any data members to bind to");

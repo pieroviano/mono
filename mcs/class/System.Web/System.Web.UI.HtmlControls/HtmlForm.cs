@@ -55,7 +55,7 @@ namespace System.Web.UI.HtmlControls
 		// See https://bugzilla.novell.com/show_bug.cgi?id=442104
 		public string Action {
 			get {
-				string action = Attributes ["action"];
+				var action = Attributes ["action"];
 				if (String.IsNullOrEmpty (action))
 					return String.Empty;
 
@@ -94,7 +94,7 @@ namespace System.Web.UI.HtmlControls
 		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public string Enctype {
 			get {
-				string enc = Attributes["enctype"];
+				var enc = Attributes["enctype"];
 
 				if (enc == null) {
 					return (String.Empty);
@@ -115,7 +115,7 @@ namespace System.Web.UI.HtmlControls
 		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public string Method {
 			get {
-				string method = Attributes["method"];
+				var method = Attributes["method"];
 
 				if ((method == null) || (method.Length == 0)) {
 					return ("post");
@@ -157,7 +157,7 @@ namespace System.Web.UI.HtmlControls
 		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public string Target {
 			get {
-				string target = Attributes["target"];
+				var target = Attributes["target"];
 
 				if (target == null) {
 					return (String.Empty);
@@ -176,7 +176,7 @@ namespace System.Web.UI.HtmlControls
 
 		public override string UniqueID {
 			get {
-				Control container = NamingContainer;
+				var container = NamingContainer;
 				if (container == Page)
 					return ID;
 				return "aspnetForm";
@@ -192,7 +192,7 @@ namespace System.Web.UI.HtmlControls
 		protected internal override void OnInit (EventArgs e)
 		{
 			inited = true;
-			Page page = Page;
+			var page = Page;
 			if (page != null) {
 				page.RegisterViewStateHandler ();
 				page.RegisterForm (this);
@@ -222,8 +222,8 @@ namespace System.Web.UI.HtmlControls
 			 */
 			
 			string action;
-			string customAction = Attributes ["action"];
-			Page page = Page;
+			var customAction = Attributes ["action"];
+			var page = Page;
 			HttpRequest req = page != null ? page.RequestInternal : null;
 			if (String.IsNullOrEmpty (customAction)) {
 				string file_path = req != null ? req.ClientFilePath : null;
@@ -240,8 +240,8 @@ namespace System.Web.UI.HtmlControls
 					bool cookieless;
 					SessionStateSection sec = WebConfigurationManager.GetSection ("system.web/sessionState") as SessionStateSection;
 					cookieless = sec != null ? sec.Cookieless == HttpCookieMode.UseUri: false;
-					string appVPath = HttpRuntime.AppDomainAppVirtualPath;
-					int appVPathLen = appVPath.Length;
+					var appVPath = HttpRuntime.AppDomainAppVirtualPath;
+					var appVPathLen = appVPath.Length;
 						
 					if (appVPathLen > 1) {
 						if (cookieless) {
@@ -252,11 +252,11 @@ namespace System.Web.UI.HtmlControls
 					}
 					
 					if (cookieless) {
-						Uri current_uri = new Uri ("http://host" + current_path);
+						var current_uri = new Uri ("http://host" + current_path);
 						//Determine if the file_path is rooted (ie starts with a '/')
 						//and inject a '/' into the Uri string accordingly.
-						string separator = file_path[0] == '/' ? "" : "/";
-						Uri fp_uri = new Uri ("http://host" + separator + file_path);
+						var separator = file_path[0] == '/' ? "" : "/";
+						var fp_uri = new Uri ("http://host" + separator + file_path);
 						action = fp_uri.MakeRelative (current_uri);
 					} else
 						action = current_path;
@@ -288,7 +288,7 @@ namespace System.Web.UI.HtmlControls
 			 */
 			if (ID == null) {
 #pragma warning disable 219
-				string client = ClientID;
+				var client = ClientID;
 #pragma warning restore 219
 			}
 			
@@ -301,17 +301,17 @@ namespace System.Web.UI.HtmlControls
 			/* enctype and target should not be written if
 			 * they are empty
 			 */
-			string enctype = Enctype;
+			var enctype = Enctype;
 			if (!String.IsNullOrEmpty (enctype))
 				writer.WriteAttribute ("enctype", enctype);
 
-			string target = Target;
+			var target = Target;
 			if (!String.IsNullOrEmpty (target))
 				writer.WriteAttribute ("target", target);
 
-			string defaultbutton = DefaultButton;
+			var defaultbutton = DefaultButton;
 			if (!String.IsNullOrEmpty (defaultbutton)) {
-				Control c = FindControl (defaultbutton);
+				var c = FindControl (defaultbutton);
 
 				if (c == null || !(c is IButtonControl))
 					throw new InvalidOperationException(String.Format ("The DefaultButton of '{0}' must be the ID of a control of type IButtonControl.",
@@ -336,7 +336,7 @@ namespace System.Web.UI.HtmlControls
 
 		protected internal override void RenderChildren (HtmlTextWriter writer)
 		{
-			Page page = Page;
+			var page = Page;
 			
 			if (!inited && page != null) {
 				page.RegisterViewStateHandler ();

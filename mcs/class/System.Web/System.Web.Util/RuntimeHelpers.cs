@@ -81,7 +81,7 @@ namespace System.Web.Util
 		
 		static RuntimeHelpers ()
 		{
-			PlatformID pid = Environment.OSVersion.Platform;
+			var pid = Environment.OSVersion.Platform;
 			RunningOnWindows = ((int) pid != 128 && pid != PlatformID.Unix && pid != PlatformID.MacOSX);
 
 			if (RunningOnWindows) {
@@ -100,8 +100,8 @@ namespace System.Web.Util
 					if (mono_iomap == "all")
 						CaseInsensitive = true;
 					else {
-						string[] parts = mono_iomap.Split (':');
-						foreach (string p in parts) {
+						var parts = mono_iomap.Split (':');
+						foreach (var p in parts) {
 							if (p == "all" || p == "case") {
 								CaseInsensitive = true;
 								break;

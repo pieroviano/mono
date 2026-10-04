@@ -54,9 +54,9 @@ namespace System.Web.Caching
 		{
 		}
 
-		OutputCacheProvider FindCacheProvider (HttpApplication app)
+		OutputCacheProvider FindCacheProvider (HttpApplication? app)
 		{				
-			HttpContext ctx = HttpContext.Current;
+			var ctx = HttpContext.Current;
 			if (app == null) {
 				app = ctx != null ? ctx.ApplicationInstance : null;
 
@@ -64,11 +64,11 @@ namespace System.Web.Caching
 					throw new InvalidOperationException ("Unable to find output cache provider.");
 			}
 
-			string providerName = app.GetOutputCacheProviderName (ctx);
+			var providerName = app.GetOutputCacheProviderName (ctx);
 			if (String.IsNullOrEmpty (providerName))
 				throw new ProviderException ("Invalid OutputCacheProvider name. Name must not be null or an empty string.");
 
-			OutputCacheProvider ret = OutputCache.GetProvider (providerName);
+			var ret = OutputCache.GetProvider (providerName);
 			if (ret == null)
 				throw new ProviderException (String.Format ("OutputCacheProvider named '{0}' cannot be found.", providerName));
 
@@ -88,8 +88,8 @@ namespace System.Web.Caching
 
 		void OnBuildManagerRemoveEntry (BuildManagerRemoveEntryEventArgs args)
 		{
-			string entry = args.EntryName;
-			HttpContext context = args.Context;
+			var entry = args.EntryName;
+			var context = args.Context;
 			string cacheValue;
 
 			lock (keysCacheLock) {
@@ -109,7 +109,7 @@ namespace System.Web.Caching
 				}
 			}
 
-			OutputCacheProvider provider = FindCacheProvider (context != null ? context.ApplicationInstance : null);
+			var provider = FindCacheProvider (context != null ? context.ApplicationInstance : null);
 			provider.Remove (entry);
 			if (!String.IsNullOrEmpty (cacheValue))
 				provider.Remove (cacheValue);
@@ -123,8 +123,8 @@ namespace System.Web.Caching
 			if (context == null)
 				return;
 
-			OutputCacheProvider provider = FindCacheProvider (app);
-			string vary_key = context.Request.FilePath;
+			var provider = FindCacheProvider (app);
+			var vary_key = context.Request.FilePath;
 			CachedVaryBy varyby = provider.Get (vary_key) as CachedVaryBy;
 			string key;
 			CachedRawResponse c;
@@ -147,15 +147,15 @@ namespace System.Web.Caching
 				}
 			}
 			
-			ArrayList callbacks = c.Policy.ValidationCallbacks;
+			var callbacks = c.Policy.ValidationCallbacks;
 			if (callbacks != null && callbacks.Count > 0) {
-				bool isValid = true;
-				bool isIgnored = false;
+				var isValid = true;
+				var isIgnored = false;
 
 				foreach (Pair p in callbacks) {
-					HttpCacheValidateHandler validate = (HttpCacheValidateHandler)p.First;
-					object data = p.Second;
-					HttpValidationStatus status = HttpValidationStatus.Valid;
+					var validate = (HttpCacheValidateHandler)p.First;
+					var data = p.Second;
+					var status = HttpValidationStatus.Valid;
 
 					try {
 						validate (context, data, ref status);
@@ -180,11 +180,11 @@ namespace System.Web.Caching
 					return;
 			}
 
-			HttpResponse response = context.Response;			
+			var response = context.Response;			
 			response.ClearContent ();
-			IList cachedData = c.GetData ();
+			var cachedData = c.GetData ();
 			if (cachedData != null) {
-				Encoding outEnc = WebEncoding.ResponseEncoding;
+				var outEnc = WebEncoding.ResponseEncoding;
 				
 				foreach (CachedRawResponse.DataItem d in cachedData) {
 					if (d.Length > 0) {
@@ -195,11 +195,11 @@ namespace System.Web.Caching
 					if (d.Callback == null)
 						continue;
 
-					string s = d.Callback (context);
+					var s = d.Callback (context);
 					if (s == null || s.Length == 0)
 						continue;
 
-					byte[] bytes = outEnc.GetBytes (s);
+					var bytes = outEnc.GetBytes (s);
 					response.BinaryWrite (bytes, 0, bytes.Length);
 				}
 			}
@@ -222,16 +222,16 @@ namespace System.Web.Caching
 				DoCacheInsert (context, app, response);
 		}
 
-		void DoCacheInsert (HttpContext context, HttpApplication app, HttpResponse response)
+		void DoCacheInsert (HttpContext context, HttpApplication? app, HttpResponse response)
 		{
-			string vary_key = context.Request.FilePath;
+			var vary_key = context.Request.FilePath;
 			string key;
-			OutputCacheProvider provider = FindCacheProvider (app);
+			var provider = FindCacheProvider (app);
 			CachedVaryBy varyby = provider.Get (vary_key) as CachedVaryBy;
 			CachedRawResponse prev = null;
-			bool lookup = true;
+			var lookup = true;
 			string cacheKey = null, cacheValue = null;
-			HttpCachePolicy cachePolicy = response.Cache;
+			var cachePolicy = response.Cache;
 			
 			if (varyby == null) {
 				varyby = new CachedVaryBy (cachePolicy, vary_key);
@@ -246,9 +246,9 @@ namespace System.Web.Caching
 				prev = provider.Get (key) as CachedRawResponse;
 			
 			if (prev == null) {
-				CachedRawResponse c = response.GetCachedResponse ();
+				var c = response.GetCachedResponse ();
 				if (c != null) {
-					string [] keys = new string [] { vary_key };
+					var keys = new string [] { vary_key };
 					DateTime utcExpiry, absoluteExpiration;
 					TimeSpan slidingExpiration;
 
@@ -291,8 +291,8 @@ namespace System.Web.Caching
 			if (varyby == null)
 				return;
 
-			List <string> itemList = varyby.ItemList;
-			OutputCacheProvider provider = FindCacheProvider (null);
+			var itemList = varyby.ItemList;
+			var provider = FindCacheProvider (null);
 			
 			itemList.Remove (key);
 			provider.Remove (key);

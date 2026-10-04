@@ -52,8 +52,8 @@ namespace System.Web.Compilation
 			
 		public override string ToString ()
 		{
-			StringBuilder sb = new StringBuilder ("BuildCacheItem [");
-			bool first = true;
+			var sb = new StringBuilder ("BuildCacheItem [");
+			var first = true;
 				
 			if (!String.IsNullOrEmpty (CompiledCustomString)) {
 				sb.Append ("compiledCustomString: " + CompiledCustomString);

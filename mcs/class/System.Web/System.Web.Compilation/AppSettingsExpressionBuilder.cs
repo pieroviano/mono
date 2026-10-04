@@ -57,9 +57,9 @@ namespace System.Web.Compilation
 			return value;
 		}
 
-		public static object GetAppSetting (string key, Type targetType, string propertyName)
+		public static object GetAppSetting (string key, Type? targetType, string propertyName)
 		{
-			object value = GetAppSetting (key);
+			var value = GetAppSetting (key);
 
 			if (targetType == null)
 				return value.ToString ();
@@ -69,7 +69,7 @@ namespace System.Web.Compilation
 				return value.ToString ();
 
 			try {
-				TypeConverter converter = TypeDescriptor.GetConverter (pi.PropertyType);
+				var converter = TypeDescriptor.GetConverter (pi.PropertyType);
 				return converter.ConvertFrom (value);
 			} catch (NotSupportedException) {
 				throw new InvalidOperationException (String.Format (
@@ -81,9 +81,9 @@ namespace System.Web.Compilation
 
 		public override CodeExpression GetCodeExpression (BoundPropertyEntry entry, object parsedData, ExpressionBuilderContext context)
 		{
-			Type type = entry.DeclaringType;
+			var type = entry.DeclaringType;
 			PropertyDescriptor descriptor = TypeDescriptor.GetProperties(type)[entry.PropertyInfo.Name];
-			CodeExpression[] expressionArray = new CodeExpression[3];
+			var expressionArray = new CodeExpression[3];
 			expressionArray[0] = new CodePrimitiveExpression(entry.Expression.Trim());
 			expressionArray[1] = new CodeTypeOfExpression(entry.Type);
 			expressionArray[2] = new CodePrimitiveExpression(entry.Name);

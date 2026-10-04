@@ -60,7 +60,7 @@ namespace System.Configuration {
 		}
 
 		[MonoTODO]
-		protected internal override void Reset (ConfigurationElement parentSection)
+		protected internal override void Reset (ConfigurationElement? parentSection)
 		{
 			base.Reset (parentSection);
 		}

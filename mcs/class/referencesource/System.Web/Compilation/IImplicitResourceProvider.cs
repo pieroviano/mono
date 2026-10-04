@@ -104,7 +104,7 @@ namespace System.Web.Compilation {
         public virtual object GetObject(ImplicitResourceKey entry, CultureInfo culture) {
 
             // Put together the full resource key based on the ImplicitResourceKey
-            string fullResourceKey = ConstructFullKey(entry);
+            var fullResourceKey = ConstructFullKey(entry);
 
             // Look it up in the resource provider
             return _resourceProvider.GetObject(fullResourceKey, culture);
@@ -136,7 +136,7 @@ namespace System.Web.Compilation {
 
             _attemptedGetPageResources = true;
 
-            IResourceReader resourceReader = _resourceProvider.ResourceReader;
+            var resourceReader = _resourceProvider.ResourceReader;
             if (resourceReader == null)
                 return;
 
@@ -146,7 +146,7 @@ namespace System.Web.Compilation {
             foreach (DictionaryEntry entry in resourceReader) {
 
                 // Attempt to parse the key into a ImplicitResourceKey
-                ImplicitResourceKey implicitResKey = ParseFullKey((string) entry.Key);
+                var implicitResKey = ParseFullKey((string) entry.Key);
 
                 // If we couldn't parse it as such, skip it
                 if (implicitResKey == null)
@@ -172,13 +172,13 @@ namespace System.Web.Compilation {
          */
         private static ImplicitResourceKey ParseFullKey(string key) {
 
-            string filter = String.Empty;
+            var filter = String.Empty;
 
             // A page resource key looks like [myfilter:]MyResKey.MyProp[.MySubProp]
 
             // Check if there is a filter
             if (key.IndexOf(':') > 0) {
-                string[] parts = key.Split(':');
+                var parts = key.Split(':');
 
                 // Shouldn't be multiple ':'.  If there is, ignore it
                 if (parts.Length > 2)
@@ -188,19 +188,19 @@ namespace System.Web.Compilation {
                 key = parts[1];
             }
 
-            int periodIndex = key.IndexOf('.');
+            var periodIndex = key.IndexOf('.');
 
             // There should be at least one period, for the meta:resourcekey part. If not, ignore.
             if (periodIndex <= 0)
                 return null;
 
-            string keyPrefix = key.Substring(0, periodIndex);
+            var keyPrefix = key.Substring(0, periodIndex);
 
             // The rest of the string is the property (e.g. MyProp.MySubProp)
-            string property = key.Substring(periodIndex+1);
+            var property = key.Substring(periodIndex+1);
 
             // Create a ImplicitResourceKey with the parsed data
-            ImplicitResourceKey implicitResKey = new ImplicitResourceKey();
+            var implicitResKey = new ImplicitResourceKey();
             implicitResKey.Filter = filter;
             implicitResKey.KeyPrefix = keyPrefix;
             implicitResKey.Property = property;
@@ -209,7 +209,7 @@ namespace System.Web.Compilation {
         }
 
         private static string ConstructFullKey(ImplicitResourceKey entry) {
-            string key = entry.KeyPrefix + "." + entry.Property;
+            var key = entry.KeyPrefix + "." + entry.Property;
 
             if (entry.Filter.Length > 0)
                 key = entry.Filter + ":" + key;

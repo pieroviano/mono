@@ -77,7 +77,7 @@ namespace System.Web.Util
 		// Public instance constructor
 		public SecureHashCodeProvider ()
 		{
-			CultureInfo culture = CultureInfo.CurrentCulture;
+			var culture = CultureInfo.CurrentCulture;
 			if (!AreEqual (culture, CultureInfo.InvariantCulture))
 				m_text = CultureInfo.CurrentCulture.TextInfo;
 		}
@@ -110,17 +110,17 @@ namespace System.Web.Util
 			if (str == null)
 				return obj.GetHashCode ();
 
-			int h = seed;
+			var h = seed;
 			char c;
 
 			if ((m_text != null) && !AreEqual (m_text, CultureInfo.InvariantCulture)) {
 				str = m_text.ToLower (str);
-				for (int i = 0; i < str.Length; i++) {
+				for (var i = 0; i < str.Length; i++) {
 					c = str [i];
 					h = h * 31 + c;
 				}
 			} else {
-				for (int i = 0; i < str.Length; i++) {
+				for (var i = 0; i < str.Length; i++) {
 					c = Char.ToLower (str [i], CultureInfo.InvariantCulture);
 					h = h * 31 + c;
 				}

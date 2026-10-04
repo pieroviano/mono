@@ -487,7 +487,7 @@ namespace System.Web.Configuration
 				// This is the list of different windows platforms that browscap.ini has.
 				// Win16 Win2000 Win2003 Win32 Win95 Win98 WinME WinNT WinVI WinXP
 				if (!Get (HaveWin32)) {
-					string platform = Platform;
+					var platform = Platform;
 					win32 = (platform != "Win16" && platform.StartsWith ("Win"));
 					Set (HaveWin32);
 				}
@@ -505,16 +505,16 @@ namespace System.Web.Configuration
 
 		void InternalGetClrVersions ()
 		{
-			char [] anychars = new char [] { ';', ')' };
-			string s = useragent;
+			var anychars = new char [] { ';', ')' };
+			var s = useragent;
 			ArrayList list = null;
 			int idx;
 			while ((s != null) && (idx = s.IndexOf (".NET CLR ")) != -1) {
-				int end = s.IndexOfAny (anychars, idx + 9);
+				var end = s.IndexOfAny (anychars, idx + 9);
 				if (end == -1)
 					break;
 
-				string ver = s.Substring (idx + 9, end - idx - 9);
+				var ver = s.Substring (idx + 9, end - idx - 9);
 				Version v = null;
 				try {
 					v = new Version (ver);
@@ -540,7 +540,7 @@ namespace System.Web.Configuration
 
 		bool ReadBoolean (string key)
 		{
-			string v = this [key];
+			var v = this [key];
 			if (v == null) {
 				throw CreateCapabilityNotFoundException (key);
 			}
@@ -550,7 +550,7 @@ namespace System.Web.Configuration
 
 		int ReadInt32 (string key)
 		{
-			string v = this [key];
+			var v = this [key];
 			if (v == null) {
 				throw CreateCapabilityNotFoundException (key);
 			}
@@ -564,7 +564,7 @@ namespace System.Web.Configuration
 
 		double ReadDouble (string key)
 		{
-			string v = this [key];
+			var v = this [key];
 			if (v == null) {
 				throw CreateCapabilityNotFoundException (key);
 			}
@@ -578,7 +578,7 @@ namespace System.Web.Configuration
 
 		string ReadString (string key) 
 		{
-			string v = this [key];
+			var v = this [key];
 			if (v == null) {
 				throw CreateCapabilityNotFoundException (key);
 			}
@@ -588,7 +588,7 @@ namespace System.Web.Configuration
 
 		Version ReadVersion (string key) 
 		{
-			string v = this [key];
+			var v = this [key];
 			if (v == null) {
 				throw CreateCapabilityNotFoundException (key);
 			}

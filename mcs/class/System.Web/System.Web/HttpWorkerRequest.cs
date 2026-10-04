@@ -112,11 +112,11 @@ namespace System.Web
 		static HttpWorkerRequest ()
 		{
 			RequestHeaderIndexer = new Dictionary <string, int> (StringComparer.OrdinalIgnoreCase);			
-			for (int i = 0; i < RequestHeaderMaximum; i++)
+			for (var i = 0; i < RequestHeaderMaximum; i++)
 				RequestHeaderIndexer.Add (GetKnownRequestHeaderName(i), i);
 
 			ResponseHeaderIndexer = new Dictionary <string, int> (StringComparer.OrdinalIgnoreCase);
-			for (int i = 0; i < ResponseHeaderMaximum; i++)
+			for (var i = 0; i < ResponseHeaderMaximum; i++)
 				ResponseHeaderIndexer.Add (GetKnownResponseHeaderName(i), i);
 		}
 
@@ -142,7 +142,7 @@ namespace System.Web
 			get { return Guid.Empty; }
 		}
 
-		public virtual string RootWebConfigPath {
+		public virtual string? RootWebConfigPath {
 			get { return null; }
 		}
 
@@ -155,7 +155,7 @@ namespace System.Web
 			return null;
 		}
 
-		public virtual string GetAppPathTranslated ()
+		public virtual string? GetAppPathTranslated ()
 		{
 			return null;
 		}
@@ -170,27 +170,27 @@ namespace System.Web
 			return 0;
 		}
 
-		public virtual string GetFilePath ()
+		public virtual string? GetFilePath ()
 		{
 			return null;
 		}
 
-		public virtual string GetFilePathTranslated ()
+		public virtual string? GetFilePathTranslated ()
 		{
 			return null;
 		}
 
-		public virtual string GetKnownRequestHeader (int index)
+		public virtual string? GetKnownRequestHeader (int index)
 		{
 			return null;
 		}
 
-		public virtual string GetPathInfo ()
+		public virtual string? GetPathInfo ()
 		{
 			return "";
 		}
 
-		public virtual byte [] GetPreloadedEntityBody ()
+		public virtual byte []? GetPreloadedEntityBody ()
 		{
 			return null;
 		}
@@ -233,7 +233,7 @@ namespace System.Web
 			return GetLocalAddress ();
 		}
 
-		public virtual string GetServerVariable (string name)
+		public virtual string? GetServerVariable (string name)
 		{
 			return null;
 		}
@@ -243,7 +243,7 @@ namespace System.Web
 			return 0;
 		}
 
-		public virtual string GetUnknownRequestHeader (string name)
+		public virtual string? GetUnknownRequestHeader (string name)
 		{
 			return null;
 		}
@@ -286,7 +286,7 @@ namespace System.Web
 			return false;
 		}
 
-		public virtual string MapPath (string virtualPath)
+		public virtual string? MapPath (string virtualPath)
 		{
 			return null;
 		}
@@ -298,8 +298,8 @@ namespace System.Web
 
 		public virtual int ReadEntityBody (byte [] buffer, int offset, int size)
 		{
-			byte[] temp = new byte [size];
-			int n = ReadEntityBody (temp, size);
+			var temp = new byte [size];
+			var n = ReadEntityBody (temp, size);
 
 			if(n > 0)
 				Array.Copy (temp, 0, buffer, offset, n);
@@ -320,7 +320,7 @@ namespace System.Web
 		public virtual void SendResponseFromMemory (IntPtr data, int length)
 		{
 			if (data != IntPtr.Zero) {
-				byte [] copy = new byte [length];
+				var copy = new byte [length];
 				Marshal.Copy (data, copy, 0, length);
 				SendResponseFromMemory (copy, length);
 			}

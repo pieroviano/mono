@@ -47,9 +47,9 @@ namespace System.Web.Compilation
 		{
 			base.CreateMethods ();
 
-			Type type = parser.MasterType;
+			var type = parser.MasterType;
 			if (type != null) {
-				CodeMemberProperty mprop = new CodeMemberProperty ();
+				var mprop = new CodeMemberProperty ();
 				mprop.Name = "Master";
 				mprop.Type = new CodeTypeReference (parser.MasterType);
 				mprop.Attributes = MemberAttributes.Public | MemberAttributes.New;

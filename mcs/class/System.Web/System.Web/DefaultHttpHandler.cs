@@ -53,7 +53,7 @@ namespace System.Web
 				get { return true; }
 			}
 			
-			public DefaultHandlerAsyncResult (AsyncCallback callback, object state)
+			public DefaultHandlerAsyncResult (AsyncCallback? callback, object state)
 			{
 				this.AsyncState = state;
 
@@ -75,7 +75,7 @@ namespace System.Web
 		
 		protected NameValueCollection ExecuteUrlHeaders {
 			get {
-				HttpContext context = Context;
+				var context = Context;
 				HttpRequest req = context != null ? context.Request : null;
 				if (req != null && executeUrlHeaders != null)	
 					executeUrlHeaders = new NameValueCollection (req.Headers);
@@ -84,7 +84,7 @@ namespace System.Web
 			}
 		}
 
-		public virtual IAsyncResult BeginProcessRequest (HttpContext context, AsyncCallback callback, object state)
+		public virtual IAsyncResult BeginProcessRequest (HttpContext? context, AsyncCallback? callback, object state)
 		{
 			this.Context = context;
 

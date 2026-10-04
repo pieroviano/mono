@@ -86,8 +86,8 @@ namespace System.Web.DynamicData
 			Model = table.Model;
 			HtmlEncode = true;
 
-			Type columnType = ColumnType;
-			TypeCode code = Type.GetTypeCode (columnType);
+			var columnType = ColumnType;
+			var code = Type.GetTypeCode (columnType);
 			TypeCode = code;
 			switch (code) {
 				case TypeCode.Single:
@@ -176,7 +176,7 @@ namespace System.Web.DynamicData
 		public Object DefaultValue {
 			get {
 				if (!defaultValueReflected && defaultValue == null) {
-					DefaultValueAttribute defaultValueAttr = CheckDefaultValueAttribute ();
+					var defaultValueAttr = CheckDefaultValueAttribute ();
 					if (defaultValueAttr != null)
 						defaultValue = defaultValueAttr.Value;
 				}
@@ -188,7 +188,7 @@ namespace System.Web.DynamicData
 		public string Description {
 			get {
 				if (!descriptionReflected && description == null) {
-					DescriptionAttribute descriptionAttr = CheckDescriptionAttribute ();
+					var descriptionAttr = CheckDescriptionAttribute ();
 					if (descriptionAttr != null)
 						description = descriptionAttr.Description;
 				}
@@ -290,7 +290,7 @@ namespace System.Web.DynamicData
 		public string RequiredErrorMessage {
 			get {
 				if (requiredErrorMessage == null) {
-					RequiredAttribute attr = CheckRequiredAttribute ();
+					var attr = CheckRequiredAttribute ();
 					if (attr == null)
 						requiredErrorMessage = String.Empty;
 					else
@@ -314,7 +314,7 @@ namespace System.Web.DynamicData
 					return (bool)scaffoldReflected;
 				}
 
-				string uiHint = UIHint;
+				var uiHint = UIHint;
 				if (!String.IsNullOrEmpty (uiHint))
 					scaffoldReflected = true;
 				// LAMESPEC: IsForeignKeyComponent does NOT set Scaffold=false
@@ -333,7 +333,7 @@ namespace System.Web.DynamicData
 
 		public string SortExpression {
 			get {
-				ColumnProvider provider = Provider;
+				var provider = Provider;
 				if (provider.IsSortable)
 					return Name;
 
@@ -477,7 +477,7 @@ namespace System.Web.DynamicData
 
 		string CheckNullDisplayText ()
 		{
-			DisplayFormatAttribute displayFormat = GetDisplayFormat ();
+			var displayFormat = GetDisplayFormat ();
 
 			if (displayFormat == null)
 				return String.Empty;
@@ -505,7 +505,7 @@ namespace System.Web.DynamicData
 			var props = MetaModel.GetTypeDescriptor (Table.EntityType).GetProperties ();
 			AttributeCollection reflected;
 
-			int propsCount = props == null ? 0 : props.Count;
+			var propsCount = props == null ? 0 : props.Count;
 			if (propsCount == 0)
 				reflected = AttributeCollection.Empty;
 			else {

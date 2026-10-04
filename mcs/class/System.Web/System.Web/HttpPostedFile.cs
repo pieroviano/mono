@@ -69,7 +69,7 @@ namespace System.Web
 				if (count < 0)
 					throw new ArgumentOutOfRangeException ("count", "< 0");
 
-				int len = buffer.Length;
+				var len = buffer.Length;
 				if (dest_offset > len)
 					throw new ArgumentException ("destination offset is beyond array size");
 				// reordered to avoid possible integer overflow
@@ -83,7 +83,7 @@ namespace System.Web
 					return 0;
 
 				s.Position = position;
-				int result = s.Read (buffer, dest_offset, count);
+				var result = s.Read (buffer, dest_offset, count);
 				if (result > 0)
 					position += result;
 				else
@@ -98,7 +98,7 @@ namespace System.Web
 					return -1;
 
 				s.Position = position;
-				int result = s.ReadByte ();
+				var result = s.ReadByte ();
 				if (result < 0)
 					position = end;
 				else
@@ -124,7 +124,7 @@ namespace System.Web
 					throw new ArgumentException ();
 				}
 
-				long virt = real - offset;
+				var virt = real - offset;
 				if (virt < 0 || virt > Length)
 					throw new ArgumentException ();
 
@@ -204,12 +204,12 @@ namespace System.Web
 
 		public void SaveAs (string filename)
 		{
-			byte [] buffer = new byte [16*1024];
-			long old_post = stream.Position;
+			var buffer = new byte [16*1024];
+			var old_post = stream.Position;
 
 			try {
 				File.Delete (filename);
-				using (FileStream fs = File.Create (filename)){
+				using (var fs = File.Create (filename)){
 					stream.Position = 0;
 					int n;
 					

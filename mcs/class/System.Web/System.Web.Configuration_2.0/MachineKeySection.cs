@@ -89,7 +89,7 @@ namespace System.Web.Configuration {
 			get; set;
 		}
 
-		protected internal override void Reset (ConfigurationElement parentElement)
+		protected internal override void Reset (ConfigurationElement? parentElement)
 		{
 			base.Reset (parentElement);
 			decryption_key = null;
@@ -127,7 +127,7 @@ namespace System.Web.Configuration {
 				if (value == MachineKeyValidation.Custom)
 					throw new ArgumentException ();
 
-				string algo = value.ToString ();
+				var algo = value.ToString ();
 				// enum and accept values differs for TripleDES
 				ValidationAlgorithm = (algo == "TripleDES") ? "3DES" : algo;
 			}
@@ -198,7 +198,7 @@ namespace System.Web.Configuration {
 			return decryption_key;
 		}
 
-		void SetDecryptionKey (string key)
+		void SetDecryptionKey (string? key)
 		{
 			if ((key == null) || key.StartsWith ("AutoGenerate")) {
 				decryption_key = AutoGenerate (MachineKeyRegistryStorage.KeyType.Encryption);
@@ -238,7 +238,7 @@ namespace System.Web.Configuration {
 
 		// key can be expended for HMAC - i.e. a small key, e.g. 32 bytes, is still accepted as valid
 		// the HMAC class already deals with keys larger than what it can use (digested to right size)
-		void SetValidationKey (string key)
+		void SetValidationKey (string? key)
 		{
 			if ((key == null) || key.StartsWith ("AutoGenerate")) {
 				validation_key = AutoGenerate (MachineKeyRegistryStorage.KeyType.Validation);
@@ -250,7 +250,7 @@ namespace System.Web.Configuration {
 				catch (CryptographicException) {
 					// second chance, use the key length that the HMAC really wants
 					try {
-						byte[] expanded_key = new byte [ValidationTemplate.Key.Length];
+						var expanded_key = new byte [ValidationTemplate.Key.Length];
 						Array.Copy (validation_key, 0, expanded_key, 0, validation_key.Length);
 						ValidationTemplate.Key = expanded_key;
 						validation_key = expanded_key;

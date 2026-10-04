@@ -71,7 +71,7 @@ namespace System.Web.Configuration
 		}
 
 		// Why override?
-		protected internal override void Reset (ConfigurationElement parentElement)
+		protected internal override void Reset (ConfigurationElement? parentElement)
 		{
 			base.Reset (parentElement);
 		}

@@ -52,7 +52,7 @@ namespace System.Web.Mail {
 	    outputBuffer[ 0 ] = (byte)'M';
 	    
 	    // transform the block 3bytes at a time
-	    for( int i=0;i<15;i++ ) {
+	    for( var i=0;i<15;i++ ) {
 		
 		TransformTriplet( inputBuffer , inputOffset + i * 3 , 3,
 				  outputBuffer , outputOffset + i * 4 + 1);
@@ -70,19 +70,19 @@ namespace System.Web.Mail {
 					  ) {
 	    
 	    // calculate how many 4-byte blocks there are
-	    int tripletBlocks = inputCount / 3 + 1;
+	    var tripletBlocks = inputCount / 3 + 1;
 	    
 	    // create a new buffer and copy the input data into that
-	    byte[] buffer = new byte[ tripletBlocks * 3 ];
+	    var buffer = new byte[ tripletBlocks * 3 ];
 	    Buffer.BlockCopy( inputBuffer,inputOffset, buffer,0,inputCount);
 	    
 	    // create the outpur buffer and set the first byte
 	    // to the length+0x20
-	    byte[] outputBuffer = new byte[ tripletBlocks * 4 + 1 ];
+	    var outputBuffer = new byte[ tripletBlocks * 4 + 1 ];
 	    outputBuffer[ 0 ] = (byte)(inputCount+0x20);
 	    
 	    // transform the block 3bytes at a time
-	    for( int i =0 ; i < tripletBlocks ; i++ ) {
+	    for( var i =0 ; i < tripletBlocks ; i++ ) {
 		TransformTriplet( inputBuffer , inputOffset + i * 3 , 3,
 				  outputBuffer , i * 4 + 1);
 	    }
@@ -101,9 +101,9 @@ namespace System.Web.Mail {
 					int outputOffset
 					) {
 	    
-	    byte a = inputBuffer[ inputOffset + 0 ];
-	    byte b = inputBuffer[ inputOffset + 1 ];
-	    byte c = inputBuffer[ inputOffset + 2 ];
+	    var a = inputBuffer[ inputOffset + 0 ];
+	    var b = inputBuffer[ inputOffset + 1 ];
+	    var c = inputBuffer[ inputOffset + 2 ];
 	    
 	    outputBuffer[ outputOffset + 0 ] = 
 		(byte)(0x20 + (( a >> 2                    ) & 0x3F));
@@ -118,7 +118,7 @@ namespace System.Web.Mail {
 		(byte)(0x20 + (( c                         ) & 0x3F));
 	    
 	    // tanslate all 0x20 to 0x60 according to specs
-	    for( int i = 0; i < 4; i++ ) {
+	    for( var i = 0; i < 4; i++ ) {
 		if( outputBuffer[ outputOffset + i ] == 0x20 ) {
 		    outputBuffer[ outputOffset + i ] = 0x60;
 		}

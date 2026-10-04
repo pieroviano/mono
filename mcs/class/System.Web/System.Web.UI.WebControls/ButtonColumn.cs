@@ -133,7 +133,7 @@ namespace System.Web.UI.WebControls
 
 					case ButtonColumnType.PushButton: 
 					{
-						Button butt = new Button ();
+						var butt = new Button ();
 					
 						butt.Text = Text;
 						butt.CommandName = CommandName;
@@ -162,18 +162,18 @@ namespace System.Web.UI.WebControls
 
 		void DoDataBind (object sender, EventArgs e)
 		{
-			Control ctrl = (Control) sender;
-			string text = GetValueFromItem ((DataGridItem) ctrl.NamingContainer);
+			var ctrl = (Control) sender;
+			var text = GetValueFromItem ((DataGridItem) ctrl.NamingContainer);
 
 			LinkButton lb = sender as LinkButton;
 			if (lb == null) {
-				Button b = (Button) sender;
+				var b = (Button) sender;
 				b.Text = text;
 			} else
 				lb.Text = text;
 		}
 		
-		protected virtual string FormatDataTextValue (object dataTextValue)
+		protected virtual string FormatDataTextValue (object? dataTextValue)
 		{
 			if (dataTextValue == null)
 				return String.Empty;

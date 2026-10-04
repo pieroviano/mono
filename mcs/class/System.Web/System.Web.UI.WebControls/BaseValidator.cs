@@ -151,7 +151,7 @@ namespace System.Web.UI.WebControls
 
 		protected bool PropertiesValid {
 			get {
-				Control control = NamingContainer.FindControl (ControlToValidate);
+				var control = NamingContainer.FindControl (ControlToValidate);
 				if (control == null)
 					return false;
 				else
@@ -188,7 +188,7 @@ namespace System.Web.UI.WebControls
 				if (SetFocusOnError)
 					RegisterExpandoAttribute (ClientID, "focusOnError", "t");
 
-				bool enabled = IsEnabled;
+				var enabled = IsEnabled;
 				if (!enabled)
 					RegisterExpandoAttribute (ClientID, "enabled", "False");
 
@@ -215,7 +215,7 @@ namespace System.Web.UI.WebControls
 
 		internal void RegisterExpandoAttribute (string controlId, string attributeName, string attributeValue, bool encode)
 		{
-			Page page = Page;
+			var page = Page;
 			if (page.ScriptManager != null)
 				page.ScriptManager.RegisterExpandoAttributeExternal (this, controlId, attributeName, attributeValue, encode);
 			else
@@ -224,7 +224,7 @@ namespace System.Web.UI.WebControls
 
 		protected void CheckControlValidationProperty (string name, string propertyName)
 		{
-			Control control = NamingContainer.FindControl (name);
+			var control = NamingContainer.FindControl (name);
 			PropertyDescriptor prop = null;
 
 			if (control == null)
@@ -258,7 +258,7 @@ namespace System.Web.UI.WebControls
 
 		protected string GetControlRenderID (string name)
 		{
-			Control control = NamingContainer.FindControl (name);
+			var control = NamingContainer.FindControl (name);
 			if (control == null)
 				return null;
 
@@ -267,12 +267,12 @@ namespace System.Web.UI.WebControls
 
 		protected string GetControlValidationValue (string name)
 		{
-			Control control = NamingContainer.FindControl (name);
+			var control = NamingContainer.FindControl (name);
 
 			if (control == null)
 				return null;
 
-			PropertyDescriptor prop = BaseValidator.GetValidationProperty (control);
+			var prop = BaseValidator.GetValidationProperty (control);
 			if (prop == null)
 				return null;
 
@@ -306,7 +306,7 @@ namespace System.Web.UI.WebControls
 
 		protected internal override void OnInit (EventArgs e)
 		{
-			Page page = Page;
+			var page = Page;
 			/* according to an msdn article, this is done here */
 			if (page != null) {
 				page.Validators.Add (this);
@@ -330,11 +330,11 @@ namespace System.Web.UI.WebControls
 
 		protected internal override void OnUnload (EventArgs e)
 		{
-			Page page = Page;
+			var page = Page;
 			/* according to an msdn article, this is done here */
 			if (page != null) {
 				page.Validators.Remove (this);
-				string validationGroup = ValidationGroup;
+				var validationGroup = ValidationGroup;
 				if (!String.IsNullOrEmpty (validationGroup))
 					page.GetValidators (ValidationGroup).Remove (this);
 			}
@@ -343,7 +343,7 @@ namespace System.Web.UI.WebControls
 
 		protected void RegisterValidatorCommonScript ()
 		{
-			Page page = Page;
+			var page = Page;
 			if (page != null) {
 				if (page.ScriptManager != null) {
 					page.ScriptManager.RegisterClientScriptResourceExternal (this, typeof (BaseValidator), "WebUIValidation_2.0.js");
@@ -362,7 +362,7 @@ namespace System.Web.UI.WebControls
 
 		protected virtual void RegisterValidatorDeclaration ()
 		{
-			Page page = Page;
+			var page = Page;
 			if (page != null) {
 				if (page.ScriptManager != null) {
 					page.ScriptManager.RegisterArrayDeclarationExternal (this, "Page_Validators", String.Concat ("document.getElementById ('", ClientID, "')"));
@@ -387,10 +387,10 @@ document.getElementById('" + ClientID + @"').dispose = function() {
 				RegisterValidatorDeclaration ();
 			}
 
-			bool render_tags = false;
-			bool render_text = false;
-			bool render_nbsp = false;
-			bool v = IsValid;
+			var render_tags = false;
+			var render_text = false;
+			var render_nbsp = false;
+			var v = IsValid;
 
 			if (!pre_render_called) {
 				render_tags = true;

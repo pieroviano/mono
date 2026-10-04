@@ -77,7 +77,7 @@ namespace System.Web.Mail {
 		// encode the subject if it needs encoding
 		if( MailUtil.NeedEncoding( message.Subject ) ) {
 		    		
-		    byte[] subjectBytes = message.BodyEncoding.GetBytes( message.Subject );
+		    var subjectBytes = message.BodyEncoding.GetBytes( message.Subject );
 		    // encode the subject with Base64
 		    header.Subject = "=?" + message.BodyEncoding.BodyName + "?B?" + Convert.ToBase64String (subjectBytes) + "?=";
 		} else {
@@ -230,7 +230,7 @@ namespace System.Web.Mail {
 
 		public MailHeader Fields {
 			get {
-					MailHeader bodyHeaders = new MailHeader();
+					var bodyHeaders = new MailHeader();
 					// Add Fields to MailHeader Object
 					foreach( string key in message.Fields.Keys )
 						bodyHeaders.Data[ key ] = this.message.Fields[ key ].ToString();

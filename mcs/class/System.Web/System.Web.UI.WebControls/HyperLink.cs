@@ -56,8 +56,8 @@ namespace System.Web.UI.WebControls
 			if (!IsEnabled)
 				return;
 			// add attributes - only if they're not empty
-			string t = Target;
-			string s = NavigateUrl;
+			var t = Target;
+			var s = NavigateUrl;
 			if (s.Length > 0)
 				writer.AddAttribute (HtmlTextWriterAttribute.Href, ResolveClientUrl (s));
 			if (t.Length > 0)
@@ -74,7 +74,7 @@ namespace System.Web.UI.WebControls
 			LiteralControl lc = obj as LiteralControl;
 
 			if (lc == null) {
-				string s = Text;
+				var s = Text;
 				if (s.Length != 0) {
 					Text = null;
 					Controls.Add (new LiteralControl (s));
@@ -85,7 +85,7 @@ namespace System.Web.UI.WebControls
 		}
 
 		[MonoTODO ("Why override?")]
-		protected override void LoadViewState (object savedState)
+		protected override void LoadViewState (object? savedState)
 		{
 			base.LoadViewState (savedState);
 		}
@@ -96,9 +96,9 @@ namespace System.Web.UI.WebControls
 				base.RenderContents (writer);
 				return;
 			}
-			string image_url = ImageUrl;
+			var image_url = ImageUrl;
 			if (!String.IsNullOrEmpty (image_url)) {
-				string str = ToolTip;
+				var str = ToolTip;
 				if (!String.IsNullOrEmpty (str))
 					writer.AddAttribute (HtmlTextWriterAttribute.Title, str);
 

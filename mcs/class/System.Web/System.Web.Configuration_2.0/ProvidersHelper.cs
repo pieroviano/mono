@@ -46,7 +46,7 @@ namespace System.Web.Configuration {
 	{
 		public static ProviderBase InstantiateProvider (ProviderSettings providerSettings, Type providerType)
 		{
-			Type settingsType = HttpApplication.LoadType (providerSettings.Type);
+			var settingsType = HttpApplication.LoadType (providerSettings.Type);
 			if (settingsType == null)
 				throw new ConfigurationErrorsException (String.Format ("Could not find type: {0}",
 										       providerSettings.Type));
@@ -56,7 +56,7 @@ namespace System.Web.Configuration {
 
 			ProviderBase provider = Activator.CreateInstance (settingsType) as ProviderBase;
 
-			NameValueCollection col = new NameValueCollection (providerSettings.Parameters);
+			var col = new NameValueCollection (providerSettings.Parameters);
 			provider.Initialize (providerSettings.Name, col);
 
 			return provider;
@@ -71,7 +71,7 @@ namespace System.Web.Configuration {
 				providers.Add (InstantiateProvider (settings, providerType));
 		}
 
-		internal static DbProviderFactory GetDbProviderFactory (string providerName)
+		internal static DbProviderFactory GetDbProviderFactory (string? providerName)
 		{
 			DbProviderFactory f = null;
 

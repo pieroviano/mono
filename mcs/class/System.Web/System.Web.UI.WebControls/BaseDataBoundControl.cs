@@ -182,8 +182,8 @@ namespace System.Web.UI.WebControls
 		internal Control FindDataSource ()
 		{
 			Control ctrl;
-			Control namingContainer = NamingContainer;
-			string dataSourceID = DataSourceID;
+			var namingContainer = NamingContainer;
+			var dataSourceID = DataSourceID;
 			
 			while (namingContainer != null) {
 				ctrl = namingContainer.FindControl (dataSourceID);

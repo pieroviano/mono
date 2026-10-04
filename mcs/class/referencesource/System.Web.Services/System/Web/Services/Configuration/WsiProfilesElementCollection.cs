@@ -60,7 +60,7 @@ namespace System.Web.Services.Configuration
                 throw new ArgumentNullException("element");
             }
 
-            WsiProfilesElement configElementKey = (WsiProfilesElement)element;
+            var configElementKey = (WsiProfilesElement)element;
             return configElementKey.Name.ToString();
         }
 
@@ -101,7 +101,7 @@ namespace System.Web.Services.Configuration
 
         internal void SetDefaults()
         {
-            WsiProfilesElement basic10Element = new WsiProfilesElement(WsiProfiles.BasicProfile1_1);
+            var basic10Element = new WsiProfilesElement(WsiProfiles.BasicProfile1_1);
             this.Add(basic10Element);
         }
 
@@ -113,7 +113,7 @@ namespace System.Web.Services.Configuration
                 {
                     throw new ArgumentNullException("key");
                 }
-                WsiProfilesElement retval = (WsiProfilesElement)this.BaseGet(key);
+                var retval = (WsiProfilesElement)this.BaseGet(key);
                 if (retval == null)
                 {
                     throw new System.Collections.Generic.KeyNotFoundException(

@@ -53,7 +53,7 @@ namespace System.Web.DynamicData.ModelProviders
 		public virtual Type EntityType { get; protected set; }
 		public virtual string Name { get; protected set; }
 
-		public virtual object EvaluateForeignKey (object row, string foreignKeyName)
+		public virtual object EvaluateForeignKey (object row, string? foreignKeyName)
 		{
 			return DataBinder.GetPropertyValue (row, foreignKeyName);
 		}
@@ -62,7 +62,7 @@ namespace System.Web.DynamicData.ModelProviders
 
 		public override string ToString ()
 		{
-			string name = Name;
+			var name = Name;
 			if (String.IsNullOrEmpty (name))
 				return base.ToString ();
 

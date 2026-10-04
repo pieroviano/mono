@@ -50,13 +50,13 @@ namespace System.Web.UI {
 			_tagTable = new Hashtable (tags.Length, StringComparer.OrdinalIgnoreCase);
 			_attributeTable = new Hashtable (htmlattrs.Length, StringComparer.OrdinalIgnoreCase);
 			_styleTable = new Hashtable (htmlstyles.Length, StringComparer.OrdinalIgnoreCase);
-			foreach (HtmlTag tag in tags)
+			foreach (var tag in tags)
 				_tagTable.Add (tag.name, tag);
 
-			foreach (HtmlAttribute attr in htmlattrs)
+			foreach (var attr in htmlattrs)
 				_attributeTable.Add (attr.name, attr);
 
-			foreach (HtmlStyle style in htmlstyles)
+			foreach (var style in htmlstyles)
 				_styleTable.Add (style.name, style);
 		}
 
@@ -122,7 +122,7 @@ namespace System.Web.UI {
 
 		public virtual void AddAttribute (string name, string value)
 		{
-			HtmlTextWriterAttribute key = GetAttributeKey (name);
+			var key = GetAttributeKey (name);
 
 			if ((key != HtmlTextWriterAttribute.Name) && (key != HtmlTextWriterAttribute.Id))
 				value = HttpUtility.HtmlAttributeEncode (value);
@@ -164,7 +164,7 @@ namespace System.Web.UI {
 			b.Close ();
 		}
 
-		protected virtual string EncodeAttributeValue (HtmlTextWriterAttribute attrKey, string value)
+		protected virtual string EncodeAttributeValue (HtmlTextWriterAttribute attrKey, string? value)
 		{
 			return HttpUtility.HtmlAttributeEncode (value);
 		}
@@ -184,10 +184,10 @@ namespace System.Web.UI {
 
 		protected virtual void FilterAttributes ()
 		{
-			AddedAttr style_attr = new AddedAttr ();
+			var style_attr = new AddedAttr ();
 
-			for (int i = 0; i <= attrs_pos; i++) {
-				AddedAttr a = attrs [i];
+			for (var i = 0; i <= attrs_pos; i++) {
+				var a = attrs [i];
 				if (OnAttributeRender (a.name, a.value, a.key)) {
 					if (a.key == HtmlTextWriterAttribute.Style) {
 						style_attr = a;
@@ -204,8 +204,8 @@ namespace System.Web.UI {
 				Write (EqualsDoubleQuoteString);
 
 
-				for (int i = 0; i <= styles_pos; i++) {
-					AddedStyle a = styles [i];
+				for (var i = 0; i <= styles_pos; i++) {
+					var a = styles [i];
 					if (OnStyleAttributeRender (a.name, a.value, a.key)) {
 						if (a.key == HtmlTextWriterStyle.BackgroundImage)
 							a.value = String.Concat ("url(", HttpUtility.UrlPathEncode (a.value), ")");
@@ -290,7 +290,7 @@ namespace System.Web.UI {
 
 		protected bool IsAttributeDefined (HtmlTextWriterAttribute key, out string value)
 		{
-			for (int i = 0; i <= attrs_pos; i++)
+			for (var i = 0; i <= attrs_pos; i++)
 				if (attrs [i].key == key) {
 					value = attrs [i].value;
 					return true;
@@ -308,7 +308,7 @@ namespace System.Web.UI {
 
 		protected bool IsStyleAttributeDefined (HtmlTextWriterStyle key, out string value)
 		{
-			for (int i = 0; i <= styles_pos; i++)
+			for (var i = 0; i <= styles_pos; i++)
 				if (styles [i].key == key) {
 					value = styles [i].value;
 					return true;
@@ -340,7 +340,7 @@ namespace System.Web.UI {
 				return;
 			newline = false;
 
-			for (int i = 0; i < Indent; i++)
+			for (var i = 0; i < Indent; i++)
 				b.Write (tab_string);
 		}
 
@@ -351,7 +351,7 @@ namespace System.Web.UI {
 			if (tagstack_pos == -1)
 				throw new InvalidOperationException ();
 
-			string s = TagName;
+			var s = TagName;
 			tagstack_pos--;
 			return s;
 		}
@@ -391,7 +391,7 @@ namespace System.Web.UI {
 
 		public virtual void RenderBeginTag (string tagName)
 		{
-			bool ignore = !OnTagRender (tagName, GetTagKey (tagName));
+			var ignore = !OnTagRender (tagName, GetTagKey (tagName));
 
 			PushEndTag (tagName);
 			TagIgnore = ignore;
@@ -400,14 +400,14 @@ namespace System.Web.UI {
 
 		public virtual void RenderBeginTag (HtmlTextWriterTag tagKey)
 		{
-			bool ignore = !OnTagRender (GetTagName (tagKey), tagKey);
+			var ignore = !OnTagRender (GetTagName (tagKey), tagKey);
 
 			PushEndTag (tagKey);
 			DoBeginTag ();
 			TagIgnore = ignore;
 		}
 
-		void WriteIfNotNull (string s)
+		void WriteIfNotNull (string? s)
 		{
 			if (s != null)
 				Write (s);
@@ -421,7 +421,7 @@ namespace System.Web.UI {
 				WriteBeginTag (TagName);
 				FilterAttributes ();
 
-				HtmlTextWriterTag key = (int) TagKey < tags.Length ? TagKey : HtmlTextWriterTag.Unknown;
+				var key = (int) TagKey < tags.Length ? TagKey : HtmlTextWriterTag.Unknown;
 
 				switch (tags [(int) key].tag_type) {
 					case TagType.Inline:
@@ -450,7 +450,7 @@ namespace System.Web.UI {
 			WriteIfNotNull (RenderAfterContent ());
 
 			if (!TagIgnore) {
-				HtmlTextWriterTag key = (int) TagKey < tags.Length ? TagKey : HtmlTextWriterTag.Unknown;
+				var key = (int) TagKey < tags.Length ? TagKey : HtmlTextWriterTag.Unknown;
 
 				switch (tags [(int) key].tag_type) {
 					case TagType.Inline:
@@ -474,7 +474,7 @@ namespace System.Web.UI {
 		}
 
 
-		public virtual void WriteAttribute (string name, string value, bool fEncode)
+		public virtual void WriteAttribute (string name, string? value, bool fEncode)
 		{
 			Write (SpaceChar);
 			Write (name);
@@ -598,7 +598,7 @@ namespace System.Web.UI {
 			b.Write (value);
 		}
 
-		public virtual void WriteAttribute (string name, string value)
+		public virtual void WriteAttribute (string name, string? value)
 		{
 			WriteAttribute (name, value, false);
 		}
@@ -841,8 +841,8 @@ namespace System.Web.UI {
 			if (++styles_pos < styles.Length)
 				return;
 
-			int nsize = styles.Length * 2;
-			AddedStyle [] ncontents = new AddedStyle [nsize];
+			var nsize = styles.Length * 2;
+			var ncontents = new AddedStyle [nsize];
 
 			Array.Copy (styles, ncontents, styles.Length);
 			styles = ncontents;
@@ -856,8 +856,8 @@ namespace System.Web.UI {
 			if (++attrs_pos < attrs.Length)
 				return;
 
-			int nsize = attrs.Length * 2;
-			AddedAttr [] ncontents = new AddedAttr [nsize];
+			var nsize = attrs.Length * 2;
+			var ncontents = new AddedAttr [nsize];
 
 			Array.Copy (attrs, ncontents, attrs.Length);
 			attrs = ncontents;
@@ -871,8 +871,8 @@ namespace System.Web.UI {
 			if (++tagstack_pos < tagstack.Length)
 				return;
 
-			int nsize = tagstack.Length * 2;
-			AddedTag [] ncontents = new AddedTag [nsize];
+			var nsize = tagstack.Length * 2;
+			var ncontents = new AddedTag [nsize];
 
 			Array.Copy (tagstack, ncontents, tagstack.Length);
 			tagstack = ncontents;
@@ -1147,12 +1147,12 @@ namespace System.Web.UI {
 		// writes <br />
 		public virtual void WriteBreak ()
 		{
-			string br = GetTagName (HtmlTextWriterTag.Br);
+			var br = GetTagName (HtmlTextWriterTag.Br);
 			WriteBeginTag (br);
 			Write (SelfClosingTagEnd);
 		}
 
-		public virtual void WriteEncodedText (string text)
+		public virtual void WriteEncodedText (string? text)
 		{
 			Write (HttpUtility.HtmlEncode (text));
 		}

@@ -65,7 +65,7 @@ namespace System.Web.Configuration {
 		}
 
 
-		internal bool IsValidUser (IPrincipal user, string verb)
+		internal bool IsValidUser (IPrincipal? user, string verb)
 		{
 			string username = (user == null) ? String.Empty : user.Identity.Name;
 			foreach (AuthorizationRule rule in Rules) {

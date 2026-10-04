@@ -55,7 +55,7 @@ namespace System.Web.UI
 			base.ClearItems ();
 		}
 
-		protected override void InsertItem (int index, UpdatePanelTrigger item)
+		protected override void InsertItem (int index, UpdatePanelTrigger? item)
 		{
 			base.InsertItem (index, item);
 			item.Owner = Owner;
@@ -82,7 +82,7 @@ namespace System.Web.UI
 			if (initialized)
 				return;
 
-			for (int i = 0; i < Count; i++)
+			for (var i = 0; i < Count; i++)
 				this [i].Initialize ();
 
 			initialized = true;

@@ -77,7 +77,7 @@ namespace System.Web.UI
 		internal Assembly ResolvedAssembly {
 			get {
 				if (_resolvedAssembly == null) {
-					string assemblyName = this.Assembly;
+					var assemblyName = this.Assembly;
 				
 					if (String.IsNullOrEmpty (assemblyName))
 						_resolvedAssembly = typeof (ScriptManager).Assembly;
@@ -119,7 +119,7 @@ namespace System.Web.UI
 			}
 		}
 
-		internal bool IsDebugMode (ScriptManager scriptManager)
+		internal bool IsDebugMode (ScriptManager? scriptManager)
 		{
 			if (scriptManager == null)
 				return ScriptModeInternal == ScriptMode.Debug;
@@ -142,21 +142,21 @@ namespace System.Web.UI
 		[MonoTODO ("Compression not supported yet.")]
 		protected internal override string GetUrl (ScriptManager scriptManager, bool zip)
 		{
-			bool isDebugMode = IsDebugMode (scriptManager);
+			var isDebugMode = IsDebugMode (scriptManager);
 			string path;
-			string url = String.Empty;
-			string name = Name;
+			var url = String.Empty;
+			var name = Name;
 			WebResourceAttribute wra;
 			
 			// LAMESPEC: Name property takes precedence
 			if (!String.IsNullOrEmpty (name)) {
-				Assembly assembly = ResolvedAssembly;
+				var assembly = ResolvedAssembly;
 				name = GetScriptName (name, isDebugMode, null, assembly, out wra);
 				path = scriptManager.ScriptPath;
 				if (IgnoreScriptPath || String.IsNullOrEmpty (path))
 					url = ScriptResourceHandler.GetResourceUrl (assembly, name, NotifyScriptLoaded);
 				else {
-					AssemblyName an = assembly.GetName ();
+					var an = assembly.GetName ();
 					url = scriptManager.ResolveClientUrl (String.Concat (VirtualPathUtility.AppendTrailingSlash (path), an.Name, '/', an.Version, '/', name));
 				}
 			} else if (!String.IsNullOrEmpty ((path = Path))) {

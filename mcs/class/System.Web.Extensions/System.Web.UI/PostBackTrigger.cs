@@ -52,8 +52,8 @@ namespace System.Web.UI
 		}
 
 		protected internal override void Initialize () {
-			Control c = FindTargetControl (false);
-			ScriptManager sm = Owner.ScriptManager;
+			var c = FindTargetControl (false);
+			var sm = Owner.ScriptManager;
 			sm.RegisterPostBackControl (c);
 		}
 

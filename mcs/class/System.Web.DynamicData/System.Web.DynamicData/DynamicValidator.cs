@@ -69,7 +69,7 @@ namespace System.Web.DynamicData
 			get {
 				// LAMESPEC: returns Column.Name if Column is not null, String.Empty
 				// otherwise
-				MetaColumn column = Column;
+				var column = Column;
 				return column != null ? column.Name : String.Empty;
 			}
 		}
@@ -84,13 +84,13 @@ namespace System.Web.DynamicData
 		[MonoTODO]
 		protected override bool EvaluateIsValid ()
 		{
-			Exception ex = ValidationException;
+			var ex = ValidationException;
 			if (ex != null) {
 				ErrorMessage = HttpUtility.HtmlEncode (ex.Message);
 				return false;
 			}
 
-			string controlToValidate = ControlToValidate;
+			var controlToValidate = ControlToValidate;
 			if (String.IsNullOrEmpty (controlToValidate))
 				return true;
 
@@ -99,7 +99,7 @@ namespace System.Web.DynamicData
 			return true;
 		}
 
-		void HandleException (object sender, DynamicValidatorEventArgs args)
+		void HandleException (object sender, DynamicValidatorEventArgs? args)
 		{
 			if (args == null)
 				return;
@@ -109,7 +109,7 @@ namespace System.Web.DynamicData
 		
 		protected override void OnInit (EventArgs e)
 		{
-			IDynamicDataSource dds = DynamicDataSource;
+			var dds = DynamicDataSource;
 			if (dds != null)
 				dds.Exception += HandleException;
 			

@@ -126,7 +126,7 @@ namespace System.Web.UI.WebControls
 						return value;	
 				}
 
-				int val = (int)value;
+				var val = (int)value;
 				if (destinationType == typeof (string)) {
 					if (val == -1)
 						return "FullyExpand";
@@ -659,7 +659,7 @@ namespace System.Web.UI.WebControls
 		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public TreeNodeCollection CheckedNodes {
 			get {
-				TreeNodeCollection col = new TreeNodeCollection ();
+				var col = new TreeNodeCollection ();
 				FindCheckedNodes (Nodes, col);
 				return col;
 			}
@@ -690,10 +690,10 @@ namespace System.Web.UI.WebControls
 		{
 			if (valuePath == null)
 				throw new ArgumentNullException ("valuePath");
-			string[] path = valuePath.Split (PathSeparator);
-			int n = 0;
-			TreeNodeCollection col = Nodes;
-			bool foundBranch = true;
+			var path = valuePath.Split (PathSeparator);
+			var n = 0;
+			var col = Nodes;
+			var foundBranch = true;
 			while (col.Count > 0 && foundBranch) {
 				foundBranch = false;
 				foreach (TreeNode node in col) {
@@ -807,7 +807,7 @@ namespace System.Web.UI.WebControls
 
 		protected override object SaveViewState()
 		{
-			object[] states = new object [10];
+			var states = new object [10];
 			states[0] = base.SaveViewState();
 			states[1] = (hoverNodeStyle == null ? null : hoverNodeStyle.SaveViewState());
 			states[2] = (leafNodeStyle == null ? null : leafNodeStyle.SaveViewState());
@@ -819,7 +819,7 @@ namespace System.Web.UI.WebControls
 			states[8] = (dataBindings == null ? null : ((IStateManager)dataBindings).SaveViewState());
 			states[9] = (nodes == null ? null : ((IStateManager)nodes).SaveViewState());
 
-			for (int i = states.Length - 1; i >= 0; i--) {
+			for (var i = states.Length - 1; i >= 0; i--) {
 				if (states [i] != null)
 					return states;
 			}
@@ -827,12 +827,12 @@ namespace System.Web.UI.WebControls
 			return null;
 		}
 
-		protected override void LoadViewState (object state)
+		protected override void LoadViewState (object? state)
 		{
 			if (state == null)
 				return;
 				
-			object [] states = (object []) state;
+			var states = (object []) state;
 			base.LoadViewState (states[0]);
 			
 			if (states[1] != null)
@@ -858,8 +858,8 @@ namespace System.Web.UI.WebControls
 		protected virtual void RaisePostBackEvent (string eventArgument)
 		{
 			ValidateEvent (UniqueID, eventArgument);
-			string[] args = eventArgument.Split ('|');
-			TreeNode node = FindNodeByPos (args[1]);
+			var args = eventArgument.Split ('|');
+			var node = FindNodeByPos (args[1]);
 			if (node == null)
 				return;
 			
@@ -896,11 +896,11 @@ namespace System.Web.UI.WebControls
 
 		TreeNode MakeNodeTree (string[] args)
 		{
-			string[] segments = args [0].Split ('_');
+			var segments = args [0].Split ('_');
 			TreeNode ret = null, node;
 
-			foreach (string seg in segments) {
-				int idx = Int32.Parse (seg);
+			foreach (var seg in segments) {
+				var idx = Int32.Parse (seg);
 				node = new TreeNode (seg);
 				if (ret != null) {
 					ret.ChildNodes.Add (node);
@@ -923,29 +923,29 @@ namespace System.Web.UI.WebControls
 		string callbackResult;
 		protected virtual void RaiseCallbackEvent (string eventArgument)
 		{
-			string[] args = eventArgument.Split ('|');
+			var args = eventArgument.Split ('|');
 			RequiresDataBinding = true;
 			EnsureDataBound ();
 			
-			TreeNode node = MakeNodeTree (args);
-			ArrayList levelLines = new ArrayList ();
-			TreeNode nd = node;
+			var node = MakeNodeTree (args);
+			var levelLines = new ArrayList ();
+			var nd = node;
 			while (nd != null) {
-				int childCount = nd.Parent != null ? nd.Parent.ChildNodes.Count : Nodes.Count;
+				var childCount = nd.Parent != null ? nd.Parent.ChildNodes.Count : Nodes.Count;
 				levelLines.Insert (0, (nd.Index < childCount - 1) ? this : null);
 				nd = nd.Parent;
 			}
 			
-			StringWriter sw = new StringWriter ();
-			HtmlTextWriter writer = new HtmlTextWriter (sw);
+			var sw = new StringWriter ();
+			var writer = new HtmlTextWriter (sw);
 			EnsureStylesPrepared ();
 
 			node.Expanded = true;
-			int num = node.ChildNodes.Count;
-			for (int n=0; n<num; n++)
+			var num = node.ChildNodes.Count;
+			for (var n=0; n<num; n++)
 				RenderNode (writer, node.ChildNodes [n], node.Depth + 1, levelLines, true, n<num-1);
 			
-			string res = sw.ToString ();
+			var res = sw.ToString ();
 			callbackResult = res.Length > 0 ? res : "*";
 		}
 		
@@ -988,22 +988,22 @@ namespace System.Web.UI.WebControls
 		{
 			base.PerformDataBinding ();
 			InitializeDataBindings ();
-			HierarchicalDataSourceView data = GetData (String.Empty);
+			var data = GetData (String.Empty);
 			if (data == null)
 				return;
 			Nodes.Clear ();
-			IHierarchicalEnumerable e = data.Select ();
+			var e = data.Select ();
 			FillBoundChildrenRecursive (e, Nodes);
 		}
 		
-		void FillBoundChildrenRecursive (IHierarchicalEnumerable hEnumerable, TreeNodeCollection nodeCollection)
+		void FillBoundChildrenRecursive (IHierarchicalEnumerable? hEnumerable, TreeNodeCollection nodeCollection)
 		{
 			if (hEnumerable == null)
 				return;			
 			
-			foreach (object obj in hEnumerable) {
-				IHierarchyData hdata = hEnumerable.GetHierarchyData (obj);
-				TreeNode child = new TreeNode ();
+			foreach (var obj in hEnumerable) {
+				var hdata = hEnumerable.GetHierarchyData (obj);
+				var child = new TreeNode ();
 				nodeCollection.Add (child);
 				child.Bind (hdata);
 				OnTreeNodeDataBound (new TreeNodeEventArgs (child));
@@ -1014,22 +1014,22 @@ namespace System.Web.UI.WebControls
 				if (hdata == null || !hdata.HasChildren)
 					continue;
 
-				IHierarchicalEnumerable e = hdata.GetChildren ();
+				var e = hdata.GetChildren ();
 				FillBoundChildrenRecursive (e, child.ChildNodes);
 			}
 		}
 		
 		protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
 		{
-			bool res = false;
+			var res = false;
 
 			if (EnableClientScript && PopulateNodesFromClient) {
 				string states = postCollection [ClientID + "_PopulatedStates"];
 				if (states != null) {
-					foreach (string id in states.Split (postDataSplitChars, StringSplitOptions.RemoveEmptyEntries)) {
-						TreeNode node = FindNodeByPos (id);
+					foreach (var id in states.Split (postDataSplitChars, StringSplitOptions.RemoveEmptyEntries)) {
+						var node = FindNodeByPos (id);
 						if (node != null && node.PopulateOnDemand && !node.Populated) {
-							Page page = Page;
+							var page = Page;
 							if (page != null && page.IsCallback)
 								node.Populated = true; // Bug #492307
 							else
@@ -1046,7 +1046,7 @@ namespace System.Web.UI.WebControls
 			if (EnableClientScript) {
 				string states = postCollection [ClientID + "_ExpandStates"];
 				if (states != null) {
-					string[] ids = states.Split (postDataSplitChars, StringSplitOptions.RemoveEmptyEntries);
+					var ids = states.Split (postDataSplitChars, StringSplitOptions.RemoveEmptyEntries);
 					UnsetExpandStates (Nodes, ids);
 					SetExpandStates (ids);
 				} else
@@ -1090,19 +1090,19 @@ namespace System.Web.UI.WebControls
 		{
 			base.OnPreRender (e);
 
-			Page page = Page;
+			var page = Page;
 			if (page != null) {
 				if (IsEnabled)
 					page.RegisterRequiresPostBack (this);
 			
 				if (EnableClientScript && !page.ClientScript.IsClientScriptIncludeRegistered (typeof(TreeView), "TreeView.js")) {
-					string url = page.ClientScript.GetWebResourceUrl (typeof(TreeView), "TreeView.js");
+					var url = page.ClientScript.GetWebResourceUrl (typeof(TreeView), "TreeView.js");
 					page.ClientScript.RegisterClientScriptInclude (typeof(TreeView), "TreeView.js", url);
 				}
 			}
 			
-			string ctree = ClientID + "_data";
-			StringBuilder script = new StringBuilder ();
+			var ctree = ClientID + "_data";
+			var script = new StringBuilder ();
 			script.AppendFormat (_OnPreRender_Script_Preamble,
 					     ctree,
 					     ClientScriptManager.GetScriptLiteral (ClientID),
@@ -1110,7 +1110,7 @@ namespace System.Web.UI.WebControls
 					     ClientScriptManager.GetScriptLiteral (ShowExpandCollapse));			
 			
 			if (ShowExpandCollapse) {
-				ImageStyle imageStyle = GetImageStyle ();
+				var imageStyle = GetImageStyle ();
 				script.AppendFormat (_OnPreRender_Script_ShowExpandCollapse,
 						     ctree,
 						     ClientScriptManager.GetScriptLiteral (GetNodeImageUrl ("plus", imageStyle)),
@@ -1142,7 +1142,7 @@ namespace System.Web.UI.WebControls
 				if (!page.IsPostBack)
 					SetNodesExpandedToDepthRecursive (Nodes);
 
-				bool enableClientScript = EnableClientScript;
+				var enableClientScript = EnableClientScript;
 				if (enableClientScript) {
 					page.ClientScript.RegisterHiddenField (ClientID + "_ExpandStates", GetExpandStates ());
 
@@ -1201,7 +1201,7 @@ namespace System.Web.UI.WebControls
 			if (levelStyles != null && levelStyles.Count > 0) {
 				levelLinkStyles = new List<Style> (levelStyles.Count);
 				foreach (Style style in levelStyles) {
-					Style linkStyle = new Style ();
+					var linkStyle = new Style ();
 					levelLinkStyles.Add (linkStyle);
 					RegisterStyle (style, linkStyle);
 				}
@@ -1242,7 +1242,7 @@ namespace System.Web.UI.WebControls
 		{
 			if (Page.Header == null)
 				return;
-			string className = IncrementStyleClassName ().Trim ('_');
+			var className = IncrementStyleClassName ().Trim ('_');
 			baseStyle.SetRegisteredCssClass (className);
 			Page.Header.StyleSheet.CreateStyleRule (baseStyle, this, "." + className);
 		}
@@ -1257,7 +1257,7 @@ namespace System.Web.UI.WebControls
 			if (dataBindings != null && dataBindings.Count > 0) {
 				bindings = new Hashtable ();
 				foreach (TreeNodeBinding bin in dataBindings) {
-					string key = GetBindingKey (bin.DataMember, bin.Depth);
+					var key = GetBindingKey (bin.DataMember, bin.Depth);
 					if (!bindings.ContainsKey(key))
 						bindings [key] = bin;
 				}
@@ -1285,7 +1285,7 @@ namespace System.Web.UI.WebControls
 			return (TreeNodeBinding) bindings [GetBindingKey (String.Empty, -1)];
 		}
 		
-		internal void DecorateNode(TreeNode node)
+		internal void DecorateNode(TreeNode? node)
 		{
 			if (node == null)
 				return;
@@ -1308,7 +1308,7 @@ namespace System.Web.UI.WebControls
 		protected internal override void RenderContents (HtmlTextWriter writer)
 		{
 			SiteMapDataSource siteMap = GetDataSource () as SiteMapDataSource;
-			bool checkSitePath = IsBoundUsingDataSourceID && siteMap != null;
+			var checkSitePath = IsBoundUsingDataSourceID && siteMap != null;
 
 			if (checkSitePath) {
 				IHierarchyData data = siteMap.Provider.CurrentNode;
@@ -1316,9 +1316,9 @@ namespace System.Web.UI.WebControls
 					activeSiteMapPath = data.Path;
 			}
 			
-			ArrayList levelLines = new ArrayList ();
-			int num = Nodes.Count;
-			for (int n=0; n<num; n++)
+			var levelLines = new ArrayList ();
+			var num = Nodes.Count;
+			for (var n=0; n<num; n++)
 				RenderNode (writer, Nodes [n], 0, levelLines, n>0, n<num-1);
 		}
 		
@@ -1329,13 +1329,13 @@ namespace System.Web.UI.WebControls
 		
 		public override void RenderBeginTag (HtmlTextWriter writer)
 		{
-			string skipLinkText = SkipLinkText;
+			var skipLinkText = SkipLinkText;
 			
 			if (!String.IsNullOrEmpty (skipLinkText)) {
 				writer.AddAttribute (HtmlTextWriterAttribute.Href, "#" + ClientID + "_SkipLink");
 				writer.RenderBeginTag (HtmlTextWriterTag.A);
 
-				ClientScriptManager csm = new ClientScriptManager (null);
+				var csm = new ClientScriptManager (null);
 				
 				writer.AddAttribute (HtmlTextWriterAttribute.Alt, skipLinkText);
 				writer.AddAttribute (HtmlTextWriterAttribute.Src, csm.GetWebResourceUrl (typeof (SiteMapPath), "transparent.gif"));
@@ -1370,9 +1370,9 @@ namespace System.Web.UI.WebControls
 			DecorateNode(node);
 			
 			string nodeImage;
-			bool clientExpand = EnableClientScript && Events [TreeNodeCollapsedEvent] == null && Events [TreeNodeExpandedEvent] == null;
-			ImageStyle imageStyle = GetImageStyle ();
-			bool renderChildNodes = node.Expanded.HasValue && node.Expanded.Value;
+			var clientExpand = EnableClientScript && Events [TreeNodeCollapsedEvent] == null && Events [TreeNodeExpandedEvent] == null;
+			var imageStyle = GetImageStyle ();
+			var renderChildNodes = node.Expanded.HasValue && node.Expanded.Value;
 			
 			if (clientExpand && !renderChildNodes)
 				renderChildNodes = (!node.PopulateOnDemand || node.Populated);
@@ -1394,7 +1394,7 @@ namespace System.Web.UI.WebControls
 			// Vertical lines from previous levels
 
 			nodeImage = GetNodeImageUrl ("i", imageStyle);
-			for (int n=0; n<level; n++) {
+			for (var n=0; n<level; n++) {
 				writer.RenderBeginTag (HtmlTextWriterTag.Td);
 				writer.AddStyleAttribute (HtmlTextWriterStyle.Width, NodeIndent + "px");
 				writer.AddStyleAttribute (HtmlTextWriterStyle.Height, "1px");
@@ -1410,12 +1410,12 @@ namespace System.Web.UI.WebControls
 			}
 			
 			// Node image + line
-			bool showExpandCollapse = ShowExpandCollapse;
-			bool showLines = ShowLines;
+			var showExpandCollapse = ShowExpandCollapse;
+			var showLines = ShowLines;
 			if (showExpandCollapse || showLines) {
-				bool buttonImage = false;
-				string tooltip = String.Empty;
-				string shape = String.Empty;
+				var buttonImage = false;
+				var tooltip = String.Empty;
+				var shape = String.Empty;
 				
 				if (showLines) {
 					if (hasPrevious && hasNext)
@@ -1501,7 +1501,7 @@ namespace System.Web.UI.WebControls
 			if (!NodeWrap)
 				writer.AddStyleAttribute (HtmlTextWriterStyle.WhiteSpace, "nowrap");
 
-			bool nodeIsSelected = node == SelectedNode && selectedNodeStyle != null;
+			var nodeIsSelected = node == SelectedNode && selectedNodeStyle != null;
 			if (!nodeIsSelected && selectedNodeStyle != null) {
 				if (!String.IsNullOrEmpty (activeSiteMapPath))
 					nodeIsSelected = String.Compare (activeSiteMapPath, node.NavigateUrl, RuntimeHelpers.StringComparison) == 0;
@@ -1519,7 +1519,7 @@ namespace System.Web.UI.WebControls
 			if (node.ShowCheckBoxInternal) {
 				writer.AddAttribute (HtmlTextWriterAttribute.Name, ClientID + "_cs_" + node.Path);
 				writer.AddAttribute (HtmlTextWriterAttribute.Type, "checkbox", false);
-				string str = node.ToolTip;
+				var str = node.ToolTip;
 				if (!String.IsNullOrEmpty (str))
 					writer.AddAttribute (HtmlTextWriterAttribute.Title, str);
 				if (node.Checked)
@@ -1572,8 +1572,8 @@ namespace System.Web.UI.WebControls
 					
 					if (renderChildNodes) {
 						AddChildrenPadding (writer, node);
-						int num = node.ChildNodes.Count;
-						for (int n=0; n<num; n++)
+						var num = node.ChildNodes.Count;
+						for (var n=0; n<num; n++)
 							RenderNode (writer, node.ChildNodes [n], level + 1, levelLines, true, n<num-1);
 						if (hasNext)
 							AddChildrenPadding (writer, node);
@@ -1581,8 +1581,8 @@ namespace System.Web.UI.WebControls
 					writer.RenderEndTag ();	// SPAN
 				} else if (renderChildNodes) {
 					AddChildrenPadding (writer, node);
-					int num = node.ChildNodes.Count;
-					for (int n=0; n<num; n++)
+					var num = node.ChildNodes.Count;
+					for (var n=0; n<num; n++)
 						RenderNode (writer, node.ChildNodes [n], level + 1, levelLines, true, n<num-1);
 					if (hasNext)
 						AddChildrenPadding (writer, node);
@@ -1592,8 +1592,8 @@ namespace System.Web.UI.WebControls
 
 		void AddChildrenPadding (HtmlTextWriter writer, TreeNode node)
 		{
-			int level = node.Depth;
-			Unit cnp = Unit.Empty;
+			var level = node.Depth;
+			var cnp = Unit.Empty;
 			
 			if (levelStyles != null && level < levelStyles.Count)
 				cnp = levelStyles [level].ChildNodesPadding;
@@ -1648,7 +1648,7 @@ namespace System.Web.UI.WebControls
 
 		void AddNodeStyle (HtmlTextWriter writer, TreeNode node, int level, bool nodeIsSelected)
 		{
-			TreeNodeStyle style = new TreeNodeStyle ();
+			var style = new TreeNodeStyle ();
 			if (Page.Header != null) {
 				// styles are registered
 				if (nodeStyle != null) {
@@ -1710,8 +1710,8 @@ namespace System.Web.UI.WebControls
 
 		void AddNodeLinkStyle (HtmlTextWriter writer, TreeNode node, int level, bool nodeIsSelected)
 		{
-			Style style = new Style ();
-			bool addBorderStyle = false;
+			var style = new Style ();
+			var addBorderStyle = false;
 			if (Page.Header != null) {
 				// styles are registered
 				style.AddCssClass (ControlLinkStyle.RegisteredCssClass);
@@ -1789,10 +1789,10 @@ namespace System.Web.UI.WebControls
 			if(node.ToolTip.Length>0)
 				writer.AddAttribute (HtmlTextWriterAttribute.Title, node.ToolTip);
 
-			string navigateUrl = node.NavigateUrl;
+			var navigateUrl = node.NavigateUrl;
 			if (!String.IsNullOrEmpty (navigateUrl)) {
-				string target = node.Target.Length > 0 ? node.Target : Target;
-				string navUrl = ResolveClientUrl (navigateUrl);
+				var target = node.Target.Length > 0 ? node.Target : Target;
+				var navUrl = ResolveClientUrl (navigateUrl);
 				writer.AddAttribute (HtmlTextWriterAttribute.Href, navUrl);
 				if (target.Length > 0)
 					writer.AddAttribute (HtmlTextWriterAttribute.Target, target);
@@ -1808,10 +1808,10 @@ namespace System.Web.UI.WebControls
 				writer.RenderBeginTag (HtmlTextWriterTag.Span);
 		}
 		
-		string GetNodeImageToolTip (bool expand, string txt)
+		string GetNodeImageToolTip (bool expand, string? txt)
 		{
 			if (expand) {
-				string expandImageToolTip = ExpandImageToolTip;
+				var expandImageToolTip = ExpandImageToolTip;
 				if (!String.IsNullOrEmpty (expandImageToolTip))
 					return String.Format (expandImageToolTip, HttpUtility.HtmlAttributeEncode (txt));
 				else if (txt != null)
@@ -1819,7 +1819,7 @@ namespace System.Web.UI.WebControls
 				else
 					return "Expand {0}";
 			} else {
-				string collapseImageToolTip = CollapseImageToolTip;
+				var collapseImageToolTip = CollapseImageToolTip;
 				if (!String.IsNullOrEmpty (collapseImageToolTip))
 					return String.Format (collapseImageToolTip, HttpUtility.HtmlAttributeEncode (txt));
 				else if (txt != null)
@@ -1829,12 +1829,12 @@ namespace System.Web.UI.WebControls
 			}
 		}
 		
-		string GetNodeClientId (TreeNode node, string sufix)
+		string GetNodeClientId (TreeNode node, string? sufix)
 		{
 			return ClientID + "_" + node.Path + (sufix != null ? "_" + sufix : String.Empty);
 		}
 							
-		string GetNodeImageUrl (string shape, ImageStyle imageStyle)
+		string GetNodeImageUrl (string shape, ImageStyle? imageStyle)
 		{
 			if (ShowLines) {
 				if (!String.IsNullOrEmpty (LineImagesFolder))
@@ -1892,11 +1892,11 @@ namespace System.Web.UI.WebControls
 
 		TreeNode FindNodeByPos (string path)
 		{
-			string[] indexes = path.Split ('_');
+			var indexes = path.Split ('_');
 			TreeNode node = null;
 			
-			foreach (string index in indexes) {
-				int i = int.Parse (index);
+			foreach (var index in indexes) {
+				var i = int.Parse (index);
 				if (node == null) {
 					if (i >= Nodes.Count) return null;
 					node = Nodes [i];
@@ -1908,7 +1908,7 @@ namespace System.Web.UI.WebControls
 			return node;
 		}
 		
-		void UnsetCheckStates (TreeNodeCollection col, NameValueCollection states)
+		void UnsetCheckStates (TreeNodeCollection col, NameValueCollection? states)
 		{
 			foreach (TreeNode node in col) {
 				if (node.ShowCheckBoxInternal && node.Checked) {
@@ -1920,16 +1920,16 @@ namespace System.Web.UI.WebControls
 			}
 		}
 		
-		void SetCheckStates (NameValueCollection states)
+		void SetCheckStates (NameValueCollection? states)
 		{
 			if (states == null)
 				return;
 
-			string keyPrefix = ClientID + "_cs_";
+			var keyPrefix = ClientID + "_cs_";
 			foreach (string key in states) {
 				if (key.StartsWith (keyPrefix, StringComparison.Ordinal)) {
-					string id = key.Substring (keyPrefix.Length);
-					TreeNode node = FindNodeByPos (id);
+					var id = key.Substring (keyPrefix.Length);
+					var node = FindNodeByPos (id);
 					if (node != null && !node.Checked)
 						node.Checked = true;
 				}
@@ -1940,7 +1940,7 @@ namespace System.Web.UI.WebControls
 		{
 			foreach (TreeNode node in col) {
 				if (node.Expanded.HasValue && node.Expanded.Value) {
-					bool expand = (Array.IndexOf (states, node.Path) != -1);
+					var expand = (Array.IndexOf (states, node.Path) != -1);
 					if (!expand) node.Expanded = false;
 				}
 				if (node.HasChildData)
@@ -1950,10 +1950,10 @@ namespace System.Web.UI.WebControls
 		
 		void SetExpandStates (string[] states)
 		{
-			foreach (string id in states) {
+			foreach (var id in states) {
 				if (String.IsNullOrEmpty (id))
 					continue;
-				TreeNode node = FindNodeByPos (id);
+				var node = FindNodeByPos (id);
 				if (node != null)
 					node.Expanded = true;
 			}
@@ -1961,7 +1961,7 @@ namespace System.Web.UI.WebControls
 		
 		string GetExpandStates ()
 		{
-			StringBuilder sb = new StringBuilder ("|");
+			var sb = new StringBuilder ("|");
 			
 			foreach (TreeNode node in Nodes)
 				GetExpandStates (sb, node);

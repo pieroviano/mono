@@ -58,7 +58,7 @@ namespace System.Configuration
 		
 		public override object Clone ()
 		{
-			ExeConfigurationFileMap map = new ExeConfigurationFileMap ();
+			var map = new ExeConfigurationFileMap ();
 			map.exeConfigFilename = exeConfigFilename;
 			map.localUserConfigFilename = localUserConfigFilename;
 			map.roamingUserConfigFilename = roamingUserConfigFilename;

@@ -124,7 +124,7 @@ namespace System.Web.UI.WebControls
 			}
 		}
 
-		public override void CopyFrom (Style s)
+		public override void CopyFrom (Style? s)
 		{
 			if ((s == null) || s.IsEmpty)
 				return;
@@ -152,7 +152,7 @@ namespace System.Web.UI.WebControls
 			}
 		}
 
-		public override void MergeWith (Style s)
+		public override void MergeWith (Style? s)
 		{
 			if ((s == null) || (s.IsEmpty))
 				return;

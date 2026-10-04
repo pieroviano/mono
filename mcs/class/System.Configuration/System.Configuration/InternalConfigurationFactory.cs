@@ -36,7 +36,7 @@ namespace System.Configuration {
 	{
 		public Configuration Create (Type typeConfigHost, params object[] hostInitConfigurationParams)
 		{
-			InternalConfigurationSystem system = new InternalConfigurationSystem ();
+			var system = new InternalConfigurationSystem ();
 			system.Init (typeConfigHost, hostInitConfigurationParams);
 			return new Configuration (system, null);
 		}

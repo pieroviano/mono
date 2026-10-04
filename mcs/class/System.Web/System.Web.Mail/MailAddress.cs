@@ -57,7 +57,7 @@ namespace System.Web.Mail {
 		get { return String.Concat (user, "@", host); }
 	    set {
 		
-		string[] parts = value.Split( new char[] { '@' } );
+		var parts = value.Split( new char[] { '@' } );
 		
 		if( parts.Length != 2 ) 
 		    throw new FormatException( "Invalid e-mail address: '" + value + "'.");
@@ -67,19 +67,19 @@ namespace System.Web.Mail {
 	    }
 	}
 
-	public static MailAddress Parse( string str ) {
+	public static MailAddress Parse( string? str ) {
 	    if (str == null || str.Trim () == "")
 	    	return null;
 
-	    MailAddress addr = new MailAddress();
+	    var addr = new MailAddress();
 	    string address = null;
 	    string nameString = null;
-	    string[] parts = str.Split( new char[] { ' ', '<' } );
+	    var parts = str.Split( new char[] { ' ', '<' } );
 	    
 	    // find the address: xxx@xx.xxx
 	    // and put to gether all the parts
 	    // before the address as nameString
-	    foreach( string part in parts ) {
+	    foreach( var part in parts ) {
 		
 		if( part.IndexOf( '@' ) > 0 ) {
 		    address = part;
@@ -108,7 +108,7 @@ namespace System.Web.Mail {
     
 	public override string ToString() {
 	    
-	    string retString = "";
+	    var retString = "";
 	
 	    if( name == null ) {
 		
@@ -116,7 +116,7 @@ namespace System.Web.Mail {
 	    
 	    } else {
 		
-		string personName = this.Name;
+		var personName = this.Name;
 
 		if( MailUtil.NeedEncoding( personName ))
 		    personName = "=?" + Encoding.Default.BodyName + "?B?" + MailUtil.Base64Encode(personName) + "?=";

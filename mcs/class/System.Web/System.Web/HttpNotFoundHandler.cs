@@ -34,7 +34,7 @@ namespace System.Web
 	{
 		public void ProcessRequest (HttpContext context)
 		{
-			string path = context.Request.Path;
+			var path = context.Request.Path;
 
 			throw new HttpException (404, "Path '" + path + "' was not found.", path);
 		}

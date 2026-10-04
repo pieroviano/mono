@@ -42,9 +42,9 @@ namespace System.Web.Mail {
 	// that it would be changed.
 	public static bool NeedEncoding( string str ) {
 	    
-	    foreach( char chr in str ) {
+	    foreach( var chr in str ) {
 		
-		int ch = (int)chr;
+		var ch = (int)chr;
 		
 		if( ! ( (ch > 61) && (ch < 127) || (ch>31) && (ch<61) ) ) {
 		
@@ -62,11 +62,11 @@ namespace System.Web.Mail {
 	
 	// Generate a unique boundary
 	public static string GenerateBoundary() {
-	    StringBuilder  boundary = new StringBuilder("__MONO__Boundary");
+	    var  boundary = new StringBuilder("__MONO__Boundary");
 	    
 	    boundary.Append("__");
 	    
-	    DateTime now = DateTime.Now;
+	    var now = DateTime.Now;
 	    boundary.Append(now.Year);
 	    boundary.Append(now.Month);
 	    boundary.Append(now.Day);

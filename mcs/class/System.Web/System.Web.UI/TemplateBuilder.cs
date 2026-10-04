@@ -51,7 +51,7 @@ namespace System.Web.UI {
 
 		internal TemplateBuilder (ICustomAttributeProvider prov)
 		{
-			object[] ats = prov.GetCustomAttributes (typeof (TemplateContainerAttribute), true);
+			var ats = prov.GetCustomAttributes (typeof (TemplateContainerAttribute), true);
 			if (ats.Length > 0)
 				containerAttribute = (TemplateContainerAttribute) ats [0];
 
@@ -93,9 +93,9 @@ namespace System.Web.UI {
 			return base.BuildObject ();
 		}
 
-		public override void Init (TemplateParser parser,
+		public override void Init (TemplateParser? parser,
 					  ControlBuilder parentBuilder,
-					  Type type,
+					  Type? type,
 					  string tagName,
 					  string ID,
 					  IDictionary attribs)

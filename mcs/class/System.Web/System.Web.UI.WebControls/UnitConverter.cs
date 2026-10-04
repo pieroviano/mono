@@ -69,12 +69,12 @@ namespace System.Web.UI.WebControls {
 			return base.ConvertTo (context, culture, value, destinationType);
 		}
 		
-		public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object value)
+		public override object ConvertFrom (ITypeDescriptorContext context, CultureInfo culture, object? value)
 		{
 			if (value == null)
 				return null;
 					
-			Type t = value.GetType ();
+			var t = value.GetType ();
 			if (t == typeof (string))
 				return new Unit ((string) value, culture);
 

@@ -67,7 +67,7 @@ namespace System.Web.UI.WebControls {
 		[WebSysDescription ("")]
 		[WebCategory ("Appearance")]
 		[Localizable (true)]
-		public string Text {
+		public string? Text {
 			get {
 				return ViewState.GetString ("Text", String.Empty);
 			}

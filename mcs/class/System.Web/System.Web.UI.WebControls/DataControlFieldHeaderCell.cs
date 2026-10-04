@@ -46,7 +46,7 @@ namespace System.Web.UI.WebControls
 		
 		public virtual TableHeaderScope Scope {
 			get {
-				object ob = ViewState ["Scope"];
+				var ob = ViewState ["Scope"];
 				if (ob != null)
 					return (TableHeaderScope) ob;
 				else
@@ -57,7 +57,7 @@ namespace System.Web.UI.WebControls
 		
 		public virtual string AbbreviatedText {
 			get {
-				object ob = ViewState ["AbbreviatedText"];
+				var ob = ViewState ["AbbreviatedText"];
 				if (ob != null)
 					return (string) ob;
 				else

@@ -221,25 +221,25 @@ namespace System.Web.Services.Protocols {
             get { return SoapProtocolVersion.Default; }
         }
 
-        internal static SoapExtension[] InitializeExtensions(SoapReflectedExtension[] reflectedExtensions, object[] extensionInitializers) {
+        internal static SoapExtension[] InitializeExtensions(SoapReflectedExtension[]? reflectedExtensions, object[] extensionInitializers) {
             if (reflectedExtensions == null)
                 return null;
-            SoapExtension[] extensions = new SoapExtension[reflectedExtensions.Length];
-            for (int i = 0; i < extensions.Length; i++) {
+            var extensions = new SoapExtension[reflectedExtensions.Length];
+            for (var i = 0; i < extensions.Length; i++) {
                 extensions[i] = reflectedExtensions[i].CreateInstance(extensionInitializers[i]);
             }
             return extensions;
         }
 
-        internal void InitExtensionStreamChain(SoapExtension[] extensions) {
+        internal void InitExtensionStreamChain(SoapExtension[]? extensions) {
             if (extensions == null)
                 return;
-            for (int i = 0; i < extensions.Length; i++) {
+            for (var i = 0; i < extensions.Length; i++) {
                 stream = extensions[i].ChainStream(stream);
             }
         }
 
-        internal void RunExtensions(SoapExtension[] extensions, bool throwOnException) {
+        internal void RunExtensions(SoapExtension[]? extensions, bool throwOnException) {
             if (extensions == null)
                 return;
 
@@ -248,7 +248,7 @@ namespace System.Web.Services.Protocols {
             // Higher priority extensions (earlier in the list) run earlier for deserialization stages,
             // and later for serialization stages
             if ((stage & (SoapMessageStage.BeforeDeserialize | SoapMessageStage.AfterDeserialize)) != 0) {
-                for (int i = 0; i < extensions.Length; i++) {
+                for (var i = 0; i < extensions.Length; i++) {
                     if (Tracing.On) Tracing.Enter("SoapExtension", caller, new TraceMethod(extensions[i], "ProcessMessage", stage));
                     extensions[i].ProcessMessage(this);
                     if (Tracing.On) Tracing.Exit("SoapExtension", caller);
@@ -260,7 +260,7 @@ namespace System.Web.Services.Protocols {
                 }
             }
             else {
-                for (int i = extensions.Length - 1; i >= 0; i--) {
+                for (var i = extensions.Length - 1; i >= 0; i--) {
                     if (Tracing.On) Tracing.Enter("SoapExtension", caller, new TraceMethod(extensions[i], "ProcessMessage", stage));
                     extensions[i].ProcessMessage(this);
                     if (Tracing.On) Tracing.Exit("SoapExtension", caller);

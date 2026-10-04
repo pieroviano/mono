@@ -67,12 +67,12 @@ namespace System.Web.Configuration
 #region CompatabilityCode
 		internal object LocateHandler (string verb, string filepath, out bool allowCache)
 		{
-			int top = Handlers.Count;
+			var top = Handlers.Count;
 			
-			for (int i = 0; i < top; i++){
-				HttpHandlerAction handler = (HttpHandlerAction) Handlers [i];
+			for (var i = 0; i < top; i++){
+				var handler = (HttpHandlerAction) Handlers [i];
 
-				string[] verbs = handler.Verbs;
+				var verbs = handler.Verbs;
 				if (verbs == null){
 					if (handler.PathMatches (filepath)) {
 						allowCache = handler.Path != "*";
@@ -81,7 +81,7 @@ namespace System.Web.Configuration
 					continue;
 				}
 
-				for (int j = verbs.Length; j > 0; ){
+				for (var j = verbs.Length; j > 0; ){
 					j--;
 					if (verbs [j] != verb)
 						continue;

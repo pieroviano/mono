@@ -149,7 +149,7 @@ namespace System.Web.UI.WebControls {
 			get {
 				if (items == null)
 					return -1;
-				for (int i = 0; i < items.Count; i++) {
+				for (var i = 0; i < items.Count; i++) {
 					if (items [i].Selected)
 						return i;
 				}
@@ -182,7 +182,7 @@ namespace System.Web.UI.WebControls {
 		[WebCategory ("Misc")]
 		public virtual ListItem SelectedItem {
 			get {
-				int si = SelectedIndex;
+				var si = SelectedIndex;
 				if (si == -1)
 					return null;
 				return Items [si];
@@ -198,7 +198,7 @@ namespace System.Web.UI.WebControls {
 		[WebCategory ("Misc")]
 		public virtual string SelectedValue {
 			get {
-				int si = SelectedIndex;
+				var si = SelectedIndex;
 				if (si == -1)
 					return String.Empty;
 				return Items [si].Value;
@@ -212,9 +212,9 @@ namespace System.Web.UI.WebControls {
 		bool SetSelectedValue (string value)
 		{
 			if (items != null && items.Count > 0) {
-				int count = items.Count;
-				ListItemCollection coll = Items;
-				for (int i = 0; i < count; i++) {
+				var count = items.Count;
+				var coll = Items;
+				for (var i = 0; i < count; i++) {
 					if (coll [i].Value == value) {
 						ClearSelection ();
 						coll [i].Selected = true;
@@ -264,22 +264,22 @@ namespace System.Web.UI.WebControls {
 			if (items == null)
 				return;
 
-			int count = Items.Count;
-			for (int i = 0; i<count; i++)
+			var count = Items.Count;
+			for (var i = 0; i<count; i++)
 				items [i].Selected = false;
 		}
 
 		protected override void OnDataBinding (EventArgs e)
 		{
 			base.OnDataBinding (e);
-			IEnumerable list = GetData ().ExecuteSelect (DataSourceSelectArguments.Empty);
+			var list = GetData ().ExecuteSelect (DataSourceSelectArguments.Empty);
 			InternalPerformDataBinding (list);
 		}
 
 		protected internal override void OnPreRender (EventArgs e)
 		{
 			base.OnPreRender (e);
-			Page page = Page;
+			var page = Page;
 			if (page != null && IsEnabled)
 				page.RegisterEnabledControl (this);
 		}
@@ -291,27 +291,27 @@ namespace System.Web.UI.WebControls {
 				handler (this, e);
 		}
 
-		protected internal override void PerformDataBinding (IEnumerable dataSource)
+		protected internal override void PerformDataBinding (IEnumerable? dataSource)
 		{
 			if (dataSource == null)
 				goto setselected;
 			if (!AppendDataBoundItems)
 				Items.Clear ();
 
-			string format = DataTextFormatString;
+			var format = DataTextFormatString;
 			if (format.Length == 0)
 				format = null;
 
-			string text_field = DataTextField;
-			string value_field = DataValueField;
+			var text_field = DataTextField;
+			var value_field = DataValueField;
 
 			if (text_field.Length == 0)
 				text_field = null;
 			if (value_field.Length == 0)
 				value_field = null;
 			
-			ListItemCollection coll = Items;
-			foreach (object container in dataSource) {
+			var coll = Items;
+			foreach (var container in dataSource) {
 				string text;
 				string val;
 
@@ -357,10 +357,10 @@ namespace System.Web.UI.WebControls {
 
 		protected internal override void RenderContents (HtmlTextWriter writer)
 		{
-			bool selected = false;
-			Page page = Page;
-			for (int i = 0; i < Items.Count; i++) {
-				ListItem item = Items [i];
+			var selected = false;
+			var page = Page;
+			for (var i = 0; i < Items.Count; i++) {
+				var item = Items [i];
 				if (page != null)
 					page.ClientScript.RegisterForEventValidation (UniqueID, item.Value);
 				writer.WriteBeginTag ("option");
@@ -376,7 +376,7 @@ namespace System.Web.UI.WebControls {
 					item.Attributes.Render (writer);
 
 				writer.Write (">");
-				string encoded = HttpUtility.HtmlEncode (item.Text);
+				var encoded = HttpUtility.HtmlEncode (item.Text);
 				writer.Write (encoded);
 				writer.WriteEndTag ("option");
 				writer.WriteLine ();
@@ -390,7 +390,7 @@ namespace System.Web.UI.WebControls {
 			
 			if (items != null && (count = items.Count) > 0) {
 				selected = new ArrayList ();
-				for (int i = 0; i < count; i++) {
+				for (var i = 0; i < count; i++) {
 					if (items [i].Selected)
 						selected.Add (i);
 				}
@@ -405,7 +405,7 @@ namespace System.Web.UI.WebControls {
 
 			baseState = base.SaveViewState ();
 
-			IStateManager manager = items as IStateManager;
+			var manager = items as IStateManager;
 			if (manager != null)
 				itemsState = manager.SaveViewState ();
 
@@ -429,7 +429,7 @@ namespace System.Web.UI.WebControls {
 			base.LoadViewState (baseState);
 
 			if (itemsState != null) {
-				IStateManager manager = Items as IStateManager;
+				var manager = Items as IStateManager;
 				manager.LoadViewState (itemsState);
 			}
 		}
@@ -443,7 +443,7 @@ namespace System.Web.UI.WebControls {
 		protected override void TrackViewState ()
 		{
 			base.TrackViewState ();
-			IStateManager manager = items as IStateManager;
+			var manager = items as IStateManager;
 			if (manager != null)
 				manager.TrackViewState ();
 		}

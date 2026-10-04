@@ -96,8 +96,8 @@ namespace System.Web.Security
 
 		void OnAuthenticateRequest (object sender, EventArgs args)
 		{
-			HttpApplication app = (HttpApplication) sender;
-			HttpContext context = app.Context;
+			var app = (HttpApplication) sender;
+			var context = app.Context;
 
 			string cookieName;
 			string cookiePath;
@@ -117,7 +117,7 @@ namespace System.Web.Security
 			if (!VirtualPathUtility.IsRooted (loginPage))
 				loginPage = "~/" + loginPage;
 
-			string reqPath = String.Empty;
+			var reqPath = String.Empty;
 			string loginPath = null;
 			try {
 				reqPath = context.Request.PhysicalPath;
@@ -127,23 +127,23 @@ namespace System.Web.Security
 			context.SkipAuthorization = String.Compare (reqPath, loginPath, RuntimeHelpers.CaseInsensitive, Helpers.InvariantCulture) == 0;
 			
 			//TODO: need to check that the handler is System.Web.Handlers.AssemblyResourceLoader type
-			string filePath = context.Request.FilePath;
+			var filePath = context.Request.FilePath;
 			if (filePath.Length > 15 && String.CompareOrdinal ("WebResource.axd", 0, filePath, filePath.Length - 15, 15) == 0)
 				context.SkipAuthorization = true;
 
-			FormsAuthenticationEventArgs formArgs = new FormsAuthenticationEventArgs (context);
+			var formArgs = new FormsAuthenticationEventArgs (context);
 			FormsAuthenticationEventHandler eh = events [authenticateEvent] as FormsAuthenticationEventHandler;
 			if (eh != null)
 				eh (this, formArgs);
 
-			bool contextUserNull = (context.User == null);
+			var contextUserNull = (context.User == null);
 			if (formArgs.User != null || !contextUserNull) {
 				if (contextUserNull)
 					context.User = formArgs.User;
 				return;
 			}
 				
-			HttpCookie cookie = context.Request.Cookies [cookieName];
+			var cookie = context.Request.Cookies [cookieName];
 			if (cookie == null || (cookie.Expires != DateTime.MinValue && cookie.Expires < DateTime.Now))
 				return;
 
@@ -158,7 +158,7 @@ namespace System.Web.Security
 			if (ticket == null || ticket.Expired)
 				return;
 
-			FormsAuthenticationTicket oldticket = ticket;
+			var oldticket = ticket;
 			if (slidingExpiration)
 				ticket = FormsAuthentication.RenewTicketIfOld (ticket);
 
@@ -177,8 +177,8 @@ namespace System.Web.Security
 
 		void OnEndRequest (object sender, EventArgs args)
 		{
-			HttpApplication app = (HttpApplication) sender;
-			HttpContext context = app.Context;
+			var app = (HttpApplication) sender;
+			var context = app.Context;
 			if (context.Response.StatusCode != 401 || context.Request.QueryString ["ReturnUrl"] != null)
 				return;
 
@@ -191,7 +191,7 @@ namespace System.Web.Security
 			if (_config == null || _config.Mode != AuthenticationMode.Forms)
 				return;
 
-			StringBuilder login = new StringBuilder ();
+			var login = new StringBuilder ();
 			login.Append (UrlUtils.Combine (context.Request.ApplicationPath, loginPage));
 			login.AppendFormat ("?ReturnUrl={0}", HttpUtility.UrlEncode (context.Request.RawUrl));
 			context.Response.Redirect (login.ToString (), false);

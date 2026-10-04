@@ -56,7 +56,7 @@ namespace System.Web.UI.WebControls
 						DataSourceSelectArguments arguments)
 		{
 			oleCommand = new OleDbCommand (this.SelectCommand, oleConnection);
-			SqlDataSourceSelectingEventArgs cmdEventArgs = new SqlDataSourceSelectingEventArgs (oleCommand, arguments);
+			var cmdEventArgs = new SqlDataSourceSelectingEventArgs (oleCommand, arguments);
 			OnSelecting (cmdEventArgs);
 			IEnumerable enums = null; 
 			Exception exception = null;
@@ -71,7 +71,7 @@ namespace System.Web.UI.WebControls
 			} catch (Exception e) {
 				exception = e;
 			}
-			SqlDataSourceStatusEventArgs statusEventArgs = 
+			var statusEventArgs = 
 				new SqlDataSourceStatusEventArgs (oleCommand, reader.RecordsAffected, exception);
 			OnSelected (statusEventArgs);
 			if (exception !=null)

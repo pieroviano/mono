@@ -89,7 +89,7 @@ namespace System.Web.Security {
 
 		DbParameter AddParameter (DbCommand command, string parameterName, ParameterDirection direction, object parameterValue)
 		{
-			DbParameter dbp = command.CreateParameter ();
+			var dbp = command.CreateParameter ();
 			dbp.ParameterName = parameterName;
 			dbp.Value = parameterValue;
 			dbp.Direction = direction;
@@ -99,7 +99,7 @@ namespace System.Web.Security {
 
 		DbParameter AddParameter (DbCommand command, string parameterName, ParameterDirection direction, DbType type, object parameterValue)
 		{
-			DbParameter dbp = command.CreateParameter ();
+			var dbp = command.CreateParameter ();
 			dbp.ParameterName = parameterName;
 			dbp.Value = parameterValue;
 			dbp.Direction = direction;
@@ -122,7 +122,7 @@ namespace System.Web.Security {
 				throw new ArgumentException (String.Format ("invalid format for {0}", pName));
 		}
 
-		public override bool ChangePassword (string username, string oldPassword, string newPassword)
+		public override bool ChangePassword (string? username, string? oldPassword, string? newPassword)
 		{
 			if (username != null) username = username.Trim ();
 			if (oldPassword != null) oldPassword = oldPassword.Trim ();
@@ -138,12 +138,12 @@ namespace System.Web.Security {
 						MinRequiredPasswordLength,
 						MinRequiredNonAlphanumericCharacters));
 
-			using (DbConnection connection = CreateConnection ()) {
-				PasswordInfo pi = ValidateUsingPassword (username, oldPassword);
+			using (var connection = CreateConnection ()) {
+				var pi = ValidateUsingPassword (username, oldPassword);
 
 				if (pi != null) {
 					EmitValidatingPassword (username, newPassword, false);
-					string db_password = EncodePassword (newPassword, pi.PasswordFormat, pi.PasswordSalt);
+					var db_password = EncodePassword (newPassword, pi.PasswordFormat, pi.PasswordSalt);
 
 					DbCommand command = factory.CreateCommand ();
 					command.Connection = connection;
@@ -156,7 +156,7 @@ namespace System.Web.Security {
 					AddParameter (command, "@PasswordFormat", (int) pi.PasswordFormat);
 					AddParameter (command, "@PasswordSalt", pi.PasswordSalt);
 					AddParameter (command, "@CurrentTimeUtc", DateTime.UtcNow);
-					DbParameter returnValue = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
+					var returnValue = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
 
 					command.ExecuteNonQuery ();
 
@@ -169,7 +169,7 @@ namespace System.Web.Security {
 			}
 		}
 
-		public override bool ChangePasswordQuestionAndAnswer (string username, string password, string newPasswordQuestion, string newPasswordAnswer)
+		public override bool ChangePasswordQuestionAndAnswer (string? username, string password, string? newPasswordQuestion, string? newPasswordAnswer)
 		{
 			if (username != null) username = username.Trim ();
 			if (newPasswordQuestion != null) newPasswordQuestion = newPasswordQuestion.Trim ();
@@ -181,11 +181,11 @@ namespace System.Web.Security {
 			if (RequiresQuestionAndAnswer)
 				CheckParam ("newPasswordAnswer", newPasswordAnswer, 128);
 
-			using (DbConnection connection = CreateConnection ()) {
-				PasswordInfo pi = ValidateUsingPassword (username, password);
+			using (var connection = CreateConnection ()) {
+				var pi = ValidateUsingPassword (username, password);
 
 				if (pi != null) {
-					string db_passwordAnswer = EncodePassword (newPasswordAnswer, pi.PasswordFormat, pi.PasswordSalt);
+					var db_passwordAnswer = EncodePassword (newPasswordAnswer, pi.PasswordFormat, pi.PasswordSalt);
 
 					DbCommand command = factory.CreateCommand ();
 					command.Connection = connection;
@@ -196,7 +196,7 @@ namespace System.Web.Security {
 					AddParameter (command, "@UserName", username);
 					AddParameter (command, "@NewPasswordQuestion", newPasswordQuestion);
 					AddParameter (command, "@NewPasswordAnswer", db_passwordAnswer);
-					DbParameter returnValue = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
+					var returnValue = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
 
 					command.ExecuteNonQuery ();
 
@@ -209,13 +209,13 @@ namespace System.Web.Security {
 			}
 		}
 
-		public override MembershipUser CreateUser (string username,
-							   string password,
-							   string email,
-							   string passwordQuestion,
-							   string passwordAnswer,
+		public override MembershipUser CreateUser (string? username,
+							   string? password,
+							   string? email,
+							   string? passwordQuestion,
+							   string? passwordAnswer,
 							   bool isApproved,
-							   object providerUserKey,
+							   object? providerUserKey,
 							   out MembershipCreateStatus status)
 		{
 			if (username != null) username = username.Trim ();
@@ -266,10 +266,10 @@ namespace System.Web.Security {
 
 			/* encode our password/answer using the
 			 * "passwordFormat" configuration option */
-			string passwordSalt = "";
+			var passwordSalt = "";
 
-			RandomNumberGenerator rng = RandomNumberGenerator.Create ();
-			byte [] salt = new byte [MembershipHelper.SALT_BYTES];
+			var rng = RandomNumberGenerator.Create ();
+			var salt = new byte [MembershipHelper.SALT_BYTES];
 			rng.GetBytes (salt);
 			passwordSalt = Convert.ToBase64String (salt);
 
@@ -292,7 +292,7 @@ namespace System.Web.Security {
 			}
 			status = MembershipCreateStatus.Success;
 
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 
 				try {
 					DbCommand command = factory.CreateCommand ();
@@ -300,7 +300,7 @@ namespace System.Web.Security {
 					command.CommandText = @"aspnet_Membership_CreateUser";
 					command.CommandType = CommandType.StoredProcedure;
 
-					DateTime Now = DateTime.UtcNow;
+					var Now = DateTime.UtcNow;
 
 					AddParameter (command, "@ApplicationName", ApplicationName);
 					AddParameter (command, "@UserName", username);
@@ -315,11 +315,11 @@ namespace System.Web.Security {
 					AddParameter (command, "@UniqueEmail", RequiresUniqueEmail);
 					AddParameter (command, "@PasswordFormat", (int) PasswordFormat);
 					AddParameter (command, "@UserId", ParameterDirection.InputOutput, providerUserKey);
-					DbParameter returnValue = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
+					var returnValue = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
 
 					command.ExecuteNonQuery ();
 
-					int st = GetReturnValue (returnValue);
+					var st = GetReturnValue (returnValue);
 
 					if (st == 0)
 						return GetUser (username, false);
@@ -347,8 +347,8 @@ namespace System.Web.Security {
 				return false;
 
 			if (MinRequiredNonAlphanumericCharacters > 0) {
-				int nonAlphanumeric = 0;
-				for (int i = 0; i < password.Length; i++) {
+				var nonAlphanumeric = 0;
+				for (var i = 0; i < password.Length; i++) {
 					if (!Char.IsLetterOrDigit (password [i]))
 						nonAlphanumeric++;
 				}
@@ -361,7 +361,7 @@ namespace System.Web.Security {
 		{
 			CheckParam ("username", username, 256);
 
-			DeleteUserTableMask deleteBitmask = DeleteUserTableMask.MembershipUsers;
+			var deleteBitmask = DeleteUserTableMask.MembershipUsers;
 
 			if (deleteAllRelatedData)
 				deleteBitmask |=
@@ -369,7 +369,7 @@ namespace System.Web.Security {
 					DeleteUserTableMask.UsersInRoles |
 					DeleteUserTableMask.WebPartStateUser;
 
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 				DbCommand command = factory.CreateCommand ();
 				command.Connection = connection;
 				command.CommandText = @"aspnet_Users_DeleteUser";
@@ -379,7 +379,7 @@ namespace System.Web.Security {
 				AddParameter (command, "@UserName", username);
 				AddParameter (command, "@TablesToDeleteFrom", (int) deleteBitmask);
 				AddParameter (command, "@NumTablesDeletedFrom", ParameterDirection.Output, 0);
-				DbParameter returnValue = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
+				var returnValue = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
 
 				command.ExecuteNonQuery ();
 
@@ -409,7 +409,7 @@ namespace System.Web.Security {
 			if (pageIndex * pageSize + pageSize - 1 > Int32.MaxValue)
 				throw new ArgumentException ("pageIndex and pageSize are too large");
 
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 
 				DbCommand command = factory.CreateCommand ();
 				command.Connection = connection;
@@ -423,7 +423,7 @@ namespace System.Web.Security {
 				// return value
 				AddParameter (command, "@ReturnValue", ParameterDirection.ReturnValue, null);
 
-				MembershipUserCollection c = BuildMembershipUserCollection (command, pageIndex, pageSize, out totalRecords);
+				var c = BuildMembershipUserCollection (command, pageIndex, pageSize, out totalRecords);
 
 				return c;
 			}
@@ -440,7 +440,7 @@ namespace System.Web.Security {
 			if (pageIndex * pageSize + pageSize - 1 > Int32.MaxValue)
 				throw new ArgumentException ("pageIndex and pageSize are too large");
 
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 
 				DbCommand command = factory.CreateCommand ();
 				command.Connection = connection;
@@ -454,7 +454,7 @@ namespace System.Web.Security {
 				// return value
 				AddParameter (command, "@ReturnValue", ParameterDirection.ReturnValue, null);
 
-				MembershipUserCollection c = BuildMembershipUserCollection (command, pageIndex, pageSize, out totalRecords);
+				var c = BuildMembershipUserCollection (command, pageIndex, pageSize, out totalRecords);
 
 				return c;
 			}
@@ -469,7 +469,7 @@ namespace System.Web.Security {
 			if (pageIndex * pageSize + pageSize - 1 > Int32.MaxValue)
 				throw new ArgumentException ("pageIndex and pageSize are too large");
 
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 				DbCommand command = factory.CreateCommand ();
 				command.Connection = connection;
 				command.CommandText = @"aspnet_Membership_GetAllUsers";
@@ -481,7 +481,7 @@ namespace System.Web.Security {
 				// return value
 				AddParameter (command, "@ReturnValue", ParameterDirection.ReturnValue, null);
 
-				MembershipUserCollection c = BuildMembershipUserCollection (command, pageIndex, pageSize, out totalRecords);
+				var c = BuildMembershipUserCollection (command, pageIndex, pageSize, out totalRecords);
 
 				return c;
 			}
@@ -491,7 +491,7 @@ namespace System.Web.Security {
 		{
 			DbDataReader reader = null;
 			try {
-				MembershipUserCollection users = new MembershipUserCollection ();
+				var users = new MembershipUserCollection ();
 				reader = command.ExecuteReader ();
 				while (reader.Read ())
 					users.Add (GetUserFromReader (reader, null, null));
@@ -511,8 +511,8 @@ namespace System.Web.Security {
 
 		public override int GetNumberOfUsersOnline ()
 		{
-			using (DbConnection connection = CreateConnection ()) {
-				DateTime now = DateTime.UtcNow;
+			using (var connection = CreateConnection ()) {
+				var now = DateTime.UtcNow;
 
 				DbCommand command = factory.CreateCommand ();
 				command.Connection = connection;
@@ -522,7 +522,7 @@ namespace System.Web.Security {
 				AddParameter (command, "@CurrentTimeUtc", now.ToString ());
 				AddParameter (command, "@ApplicationName", ApplicationName);
 				AddParameter (command, "@MinutesSinceLastInActive", userIsOnlineTimeWindow.Minutes);
-				DbParameter returnValue = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
+				var returnValue = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
 
 				command.ExecuteScalar ();
 				return GetReturnValue (returnValue);
@@ -538,14 +538,14 @@ namespace System.Web.Security {
 			if (RequiresQuestionAndAnswer)
 				CheckParam ("passwordAnswer", passwordAnswer, 128);
 
-			PasswordInfo pi = GetPasswordInfo (username);
+			var pi = GetPasswordInfo (username);
 			if (pi == null)
 				throw new ProviderException ("An error occurred while retrieving the password from the database");
 
-			string user_answer = EncodePassword (passwordAnswer, pi.PasswordFormat, pi.PasswordSalt);
+			var user_answer = EncodePassword (passwordAnswer, pi.PasswordFormat, pi.PasswordSalt);
 			string password = null;
 
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 				DbCommand command = factory.CreateCommand ();
 				command.Connection = connection;
 				command.CommandText = @"aspnet_Membership_GetPassword";
@@ -557,11 +557,11 @@ namespace System.Web.Security {
 				AddParameter (command, "@PasswordAttemptWindow", PasswordAttemptWindow);
 				AddParameter (command, "@CurrentTimeUtc", DateTime.UtcNow);
 				AddParameter (command, "@PasswordAnswer", user_answer);
-				DbParameter retValue = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
+				var retValue = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
 
-				DbDataReader reader = command.ExecuteReader ();
+				var reader = command.ExecuteReader ();
 
-				int returnValue = GetReturnValue (retValue);
+				var returnValue = GetReturnValue (retValue);
 				if (returnValue == 3)
 					throw new MembershipPasswordException ("Password Answer is invalid");
 				if (returnValue == 99)
@@ -581,9 +581,9 @@ namespace System.Web.Security {
 			}
 		}
 
-		MembershipUser GetUserFromReader (DbDataReader reader, string username, object userId)
+		MembershipUser GetUserFromReader (DbDataReader reader, string? username, object? userId)
 		{
-			int i = 0;
+			var i = 0;
 			if (username == null)
 				i = 1;
 
@@ -605,12 +605,12 @@ namespace System.Web.Security {
 				reader.GetDateTime (10 + i).ToLocalTime () /* lastLockoutDate */);
 		}
 
-		MembershipUser BuildMembershipUser (DbCommand query, string username, object userId)
+		MembershipUser BuildMembershipUser (DbCommand query, string? username, object? userId)
 		{
 			try {
-				using (DbConnection connection = CreateConnection ()) {
+				using (var connection = CreateConnection ()) {
 					query.Connection = connection;
-					using (DbDataReader reader = query.ExecuteReader ()) {
+					using (var reader = query.ExecuteReader ()) {
 						if (!reader.Read ())
 							return null;
 
@@ -645,7 +645,7 @@ namespace System.Web.Security {
 			AddParameter (command, "@CurrentTimeUtc", DateTime.Now);
 			AddParameter (command, "@UpdateLastActivity", userIsOnline);
 
-			MembershipUser u = BuildMembershipUser (command, username, null);
+			var u = BuildMembershipUser (command, username, null);
 
 			return u;
 		}
@@ -660,7 +660,7 @@ namespace System.Web.Security {
 			AddParameter (command, "@CurrentTimeUtc", DateTime.Now);
 			AddParameter (command, "@UpdateLastActivity", userIsOnline);
 
-			MembershipUser u = BuildMembershipUser (command, string.Empty, providerUserKey);
+			var u = BuildMembershipUser (command, string.Empty, providerUserKey);
 			return u;
 		}
 
@@ -668,7 +668,7 @@ namespace System.Web.Security {
 		{
 			CheckParam ("email", email, 256);
 
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 
 				DbCommand command = factory.CreateCommand ();
 				command.Connection = connection;
@@ -678,7 +678,7 @@ namespace System.Web.Security {
 				AddParameter (command, "@ApplicationName", ApplicationName);
 				AddParameter (command, "@Email", email);
 
-				DbDataReader reader = command.ExecuteReader ();
+				var reader = command.ExecuteReader ();
 				string rv = null;
 				if (reader.Read ())
 					rv = reader.GetString (0);
@@ -689,7 +689,7 @@ namespace System.Web.Security {
 
 		bool GetBoolConfigValue (NameValueCollection config, string name, bool def)
 		{
-			bool rv = def;
+			var rv = def;
 			string val = config [name];
 			if (val != null) {
 				try { rv = Boolean.Parse (val); }
@@ -702,7 +702,7 @@ namespace System.Web.Security {
 
 		int GetIntConfigValue (NameValueCollection config, string name, int def)
 		{
-			int rv = def;
+			var rv = def;
 			string val = config [name];
 			if (val != null) {
 				try { rv = Int32.Parse (val); }
@@ -715,7 +715,7 @@ namespace System.Web.Security {
 
 		int GetEnumConfigValue (NameValueCollection config, string name, Type enumType, int def)
 		{
-			int rv = def;
+			var rv = def;
 			string val = config [name];
 			if (val != null) {
 				try { rv = (int) Enum.Parse (enumType, val); }
@@ -728,7 +728,7 @@ namespace System.Web.Security {
 
 		string GetStringConfigValue (NameValueCollection config, string name, string def)
 		{
-			string rv = def;
+			var rv = def;
 			string val = config [name];
 			if (val != null)
 				rv = val;
@@ -737,7 +737,7 @@ namespace System.Web.Security {
 
 		void EmitValidatingPassword (string username, string password, bool isNewUser)
 		{
-			ValidatePasswordEventArgs args = new ValidatePasswordEventArgs (username, password, isNewUser);
+			var args = new ValidatePasswordEventArgs (username, password, isNewUser);
 			OnValidatingPassword (args);
 
 			/* if we're canceled.. */
@@ -769,7 +769,7 @@ namespace System.Web.Security {
 			passwordAttemptWindow = GetIntConfigValue (config, "passwordAttemptWindow", 10);
 			passwordStrengthRegularExpression = GetStringConfigValue (config, "passwordStrengthRegularExpression", "");
 
-			MembershipSection section = (MembershipSection) WebConfigurationManager.GetSection ("system.web/membership");
+			var section = (MembershipSection) WebConfigurationManager.GetSection ("system.web/membership");
 
 			userIsOnlineTimeWindow = section.UserIsOnlineTimeWindow;
 
@@ -800,17 +800,17 @@ namespace System.Web.Security {
 			if (RequiresQuestionAndAnswer)
 				CheckParam ("passwordAnswer", passwordAnswer, 128);
 
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 
-				PasswordInfo pi = GetPasswordInfo (username);
+				var pi = GetPasswordInfo (username);
 				if (pi == null)
 					throw new ProviderException (username + "is not found in the membership database");
 
-				string newPassword = GeneratePassword ();
+				var newPassword = GeneratePassword ();
 				EmitValidatingPassword (username, newPassword, false);
 
-				string db_password = EncodePassword (newPassword, pi.PasswordFormat, pi.PasswordSalt);
-				string db_answer = EncodePassword (passwordAnswer, pi.PasswordFormat, pi.PasswordSalt);
+				var db_password = EncodePassword (newPassword, pi.PasswordFormat, pi.PasswordSalt);
+				var db_answer = EncodePassword (passwordAnswer, pi.PasswordFormat, pi.PasswordSalt);
 
 				DbCommand command = factory.CreateCommand ();
 				command.Connection = connection;
@@ -826,11 +826,11 @@ namespace System.Web.Security {
 				AddParameter (command, "@CurrentTimeUtc", DateTime.UtcNow);
 				AddParameter (command, "@PasswordFormat", (int) pi.PasswordFormat);
 				AddParameter (command, "@PasswordAnswer", db_answer);
-				DbParameter retValue = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
+				var retValue = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
 
 				command.ExecuteNonQuery ();
 
-				int returnValue = GetReturnValue (retValue);
+				var returnValue = GetReturnValue (retValue);
 
 				if (returnValue == 0)
 					return newPassword;
@@ -859,8 +859,8 @@ namespace System.Web.Security {
 			if (user.Email.Length > 256 || (RequiresUniqueEmail && user.Email.Length == 0))
 				throw new ArgumentException ("invalid format for user.Email");
 
-			using (DbConnection connection = CreateConnection ()) {
-				int returnValue = 0;
+			using (var connection = CreateConnection ()) {
+				var returnValue = 0;
 
 				DbCommand command = factory.CreateCommand ();
 				command.Connection = connection;
@@ -876,7 +876,7 @@ namespace System.Web.Security {
 				AddParameter (command, "@LastActivityDate", DateTime.UtcNow);
 				AddParameter (command, "@UniqueEmail", RequiresUniqueEmail);
 				AddParameter (command, "@CurrentTimeUtc", DateTime.UtcNow);
-				DbParameter retValue = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
+				var retValue = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
 
 				command.ExecuteNonQuery ();
 
@@ -899,7 +899,7 @@ namespace System.Web.Security {
 			CheckParam ("username", username, 256);
 			EmitValidatingPassword (username, password, false);
 
-			PasswordInfo pi = ValidateUsingPassword (username, password);
+			var pi = ValidateUsingPassword (username, password);
 			if (pi != null) {
 				pi.LastLoginDate = DateTime.UtcNow;
 				UpdateUserInfo (username, pi, true, true);
@@ -913,7 +913,7 @@ namespace System.Web.Security {
 		{
 			CheckParam ("username", username, 256);
 
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 				try {
 					DbCommand command = factory.CreateCommand ();
 					command.Connection = connection;
@@ -922,7 +922,7 @@ namespace System.Web.Security {
 
 					AddParameter (command, "@ApplicationName", ApplicationName);
 					AddParameter (command, "@UserName", username);
-					DbParameter returnValue = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
+					var returnValue = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
 
 					command.ExecuteNonQuery ();
 					if (GetReturnValue (returnValue) != 0)
@@ -939,7 +939,7 @@ namespace System.Web.Security {
 		{
 			CheckParam ("username", username, 256);
 
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 				try {
 					DbCommand command = factory.CreateCommand ();
 					command.Connection = connection;
@@ -955,11 +955,11 @@ namespace System.Web.Security {
 					AddParameter (command, "@CurrentTimeUtc", DateTime.UtcNow);
 					AddParameter (command, "@LastLoginDate", pi.LastLoginDate);
 					AddParameter (command, "@LastActivityDate", pi.LastActivityDate);
-					DbParameter retValue = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
+					var retValue = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
 
 					command.ExecuteNonQuery ();
 
-					int returnValue = GetReturnValue (retValue);
+					var returnValue = GetReturnValue (retValue);
 					if (returnValue != 0)
 						return;
 				}
@@ -972,20 +972,20 @@ namespace System.Web.Security {
 
 		PasswordInfo ValidateUsingPassword (string username, string password)
 		{
-			MembershipUser user = GetUser (username, true);
+			var user = GetUser (username, true);
 			if (user == null)
 				return null;
 
 			if (!user.IsApproved || user.IsLockedOut)
 				return null;
 
-			PasswordInfo pi = GetPasswordInfo (username);
+			var pi = GetPasswordInfo (username);
 
 			if (pi == null)
 				return null;
 
 			/* do the actual validation */
-			string user_password = EncodePassword (password, pi.PasswordFormat, pi.PasswordSalt);
+			var user_password = EncodePassword (password, pi.PasswordFormat, pi.PasswordSalt);
 
 			if (user_password != pi.Password) {
 				UpdateUserInfo (username, pi, false, false);
@@ -997,7 +997,7 @@ namespace System.Web.Security {
 
 		PasswordInfo GetPasswordInfo (string username)
 		{
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 				DbCommand command = factory.CreateCommand ();
 				command.Connection = connection;
 				command.CommandType = CommandType.StoredProcedure;
@@ -1010,11 +1010,11 @@ namespace System.Web.Security {
 				// return value
 				AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
 
-				DbDataReader reader = command.ExecuteReader ();
+				var reader = command.ExecuteReader ();
 				if (!reader.Read ())
 					return null;
 
-				PasswordInfo pi = new PasswordInfo (
+				var pi = new PasswordInfo (
 					reader.GetString (0),
 					(MembershipPasswordFormat) reader.GetInt32 (1),
 					reader.GetString (2),
@@ -1040,13 +1040,13 @@ namespace System.Web.Security {
 					password_bytes = Encoding.Unicode.GetBytes (password);
 					salt_bytes = Convert.FromBase64String (salt);
 
-					byte [] hashBytes = new byte [salt_bytes.Length + password_bytes.Length];
+					var hashBytes = new byte [salt_bytes.Length + password_bytes.Length];
 
 					Buffer.BlockCopy (salt_bytes, 0, hashBytes, 0, salt_bytes.Length);
 					Buffer.BlockCopy (password_bytes, 0, hashBytes, salt_bytes.Length, password_bytes.Length);
 
-					MembershipSection section = (MembershipSection) WebConfigurationManager.GetSection ("system.web/membership");
-					string alg_type = section.HashAlgorithmType;
+					var section = (MembershipSection) WebConfigurationManager.GetSection ("system.web/membership");
+					var alg_type = section.HashAlgorithmType;
 					if (alg_type.Length == 0) {
 						alg_type = MachineKeySection.Config.Validation.ToString ();
 						// support new (4.0) custom algorithms
@@ -1066,7 +1066,7 @@ namespace System.Web.Security {
 					password_bytes = Encoding.Unicode.GetBytes (password);
 					salt_bytes = Convert.FromBase64String (salt);
 
-					byte [] buf = new byte [password_bytes.Length + salt_bytes.Length];
+					var buf = new byte [password_bytes.Length + salt_bytes.Length];
 
 					Array.Copy (salt_bytes, 0, buf, 0, salt_bytes.Length);
 					Array.Copy (password_bytes, 0, buf, salt_bytes.Length, password_bytes.Length);

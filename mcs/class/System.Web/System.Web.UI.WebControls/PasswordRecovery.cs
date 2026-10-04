@@ -270,7 +270,7 @@ namespace System.Web.UI.WebControls
 		{
 			get
 			{
-				object o = ViewState ["SubmitButtonType"];
+				var o = ViewState ["SubmitButtonType"];
 				return (o == null) ? ButtonType.Button : (ButtonType) o;
 			}
 			set
@@ -302,7 +302,7 @@ namespace System.Web.UI.WebControls
 		public virtual LoginTextLayout TextLayout {
 			get
 			{
-				object o = ViewState ["TextLayout"];
+				var o = ViewState ["TextLayout"];
 				return (o == null) ? LoginTextLayout.TextOnLeft : (LoginTextLayout) o;
 			}
 			set
@@ -371,7 +371,7 @@ namespace System.Web.UI.WebControls
 			get {
 				if (_questionTemplateContainer == null) {
 					_questionTemplateContainer = new QuestionContainer (this);
-					ITemplate template = QuestionTemplate;
+					var template = QuestionTemplate;
 					if (template != null)
 						_questionTemplateContainer.InstantiateTemplate (template);
 				}
@@ -396,7 +396,7 @@ namespace System.Web.UI.WebControls
 			get {
 				if (_successTemplateContainer == null) {
 					_successTemplateContainer = new SuccessContainer (this);
-					ITemplate template = SuccessTemplate;
+					var template = SuccessTemplate;
 					if (template != null)
 						_successTemplateContainer.InstantiateTemplate (template);
 				}
@@ -419,7 +419,7 @@ namespace System.Web.UI.WebControls
 			get {
 				if (_userNameTemplateContainer == null) {
 					_userNameTemplateContainer = new UserNameContainer (this);
-					ITemplate template = UserNameTemplate;
+					var template = UserNameTemplate;
 					if (template != null)
 						_userNameTemplateContainer.InstantiateTemplate (template);
 				}
@@ -584,19 +584,19 @@ namespace System.Web.UI.WebControls
 
 		protected internal override void CreateChildControls ()
 		{
-			ITemplate userNameTemplate = UserNameTemplate;
+			var userNameTemplate = UserNameTemplate;
 			if (userNameTemplate == null) {
 				userNameTemplate = new UserNameDefaultTemplate (this);
 				((UserNameContainer) UserNameTemplateContainer).InstantiateTemplate (userNameTemplate);
 			}
 			
-			ITemplate questionTemplate = QuestionTemplate;
+			var questionTemplate = QuestionTemplate;
 			if (questionTemplate == null) {
 				questionTemplate = new QuestionDefaultTemplate (this);
 				((QuestionContainer) QuestionTemplateContainer).InstantiateTemplate (questionTemplate);
 			}
 
-			ITemplate successTemplate = SuccessTemplate;
+			var successTemplate = SuccessTemplate;
 			if (successTemplate == null) {
 				successTemplate = new SuccessDefaultTemplate (this);
 				((SuccessContainer) SuccessTemplateContainer).InstantiateTemplate (successTemplate);
@@ -623,15 +623,15 @@ namespace System.Web.UI.WebControls
 		{
 			((QuestionContainer) QuestionTemplateContainer).UpdateChildControls ();
 
-			for (int i = 0; i < Controls.Count; i++)
+			for (var i = 0; i < Controls.Count; i++)
 				if (Controls [i].Visible)
 					Controls [i].Render (writer);
 		}
 
-		protected internal override void LoadControlState (object savedState)
+		protected internal override void LoadControlState (object? savedState)
 		{
 			if (savedState == null) return;
-			object [] state = (object []) savedState;
+			var state = (object []) savedState;
 			base.LoadControlState (state [0]);
 
 			_currentStep = (PasswordReciveryStep) state [1];
@@ -640,7 +640,7 @@ namespace System.Web.UI.WebControls
 
 		protected internal override object SaveControlState ()
 		{
-			object state = base.SaveControlState ();
+			var state = base.SaveControlState ();
 			return new object [] { state, _currentStep, _username };
 		}
 
@@ -679,12 +679,12 @@ namespace System.Web.UI.WebControls
 				((IStateManager) _mailDefinition).TrackViewState ();
 		}
 
-		protected override void LoadViewState (object savedState)
+		protected override void LoadViewState (object? savedState)
 		{
 			if (savedState == null)
 				return;
 
-			object [] states = (object []) savedState;
+			var states = (object []) savedState;
 			base.LoadViewState (states [0]);
 
 			if (states [1] != null)
@@ -720,7 +720,7 @@ namespace System.Web.UI.WebControls
 
 		protected override object SaveViewState ()
 		{
-			object [] states = new object [11];
+			var states = new object [11];
 			states [0] = base.SaveViewState ();
 
 			if (_failureTextStyle != null)
@@ -753,7 +753,7 @@ namespace System.Web.UI.WebControls
 			if (_mailDefinition != null)
 				states [10] = ((IStateManager) _mailDefinition).SaveViewState ();
 
-			for (int i = 0; i < states.Length; i++) {
+			for (var i = 0; i < states.Length; i++) {
 				if (states [i] != null)
 					return states;
 			}
@@ -781,12 +781,12 @@ namespace System.Web.UI.WebControls
 
 		void ProcessUserName ()
 		{
-			LoginCancelEventArgs args = new LoginCancelEventArgs ();
+			var args = new LoginCancelEventArgs ();
 			OnVerifyingUser (args);
 			if (args.Cancel)
 				return;
 
-			MembershipUser user = MembershipProviderInternal.GetUser (UserName, false);
+			var user = MembershipProviderInternal.GetUser (UserName, false);
 			if (user == null) {
 				OnUserLookupError (EventArgs.Empty);
 				((UserNameContainer) UserNameTemplateContainer).FailureTextLiteral.Text = UserNameFailureText;
@@ -807,12 +807,12 @@ namespace System.Web.UI.WebControls
 
 		void ProcessUserAnswer ()
 		{
-			LoginCancelEventArgs args = new LoginCancelEventArgs ();
+			var args = new LoginCancelEventArgs ();
 			OnVerifyingAnswer (args);
 			if (args.Cancel)
 				return;
 
-			MembershipUser user = MembershipProviderInternal.GetUser (UserName, false);
+			var user = MembershipProviderInternal.GetUser (UserName, false);
 			if (user == null || string.IsNullOrEmpty (user.Email)) {
 				((QuestionContainer) QuestionTemplateContainer).FailureTextLiteral.Text = GeneralFailureText;
 				return;
@@ -826,7 +826,7 @@ namespace System.Web.UI.WebControls
 
 		void GenerateAndSendEmail ()
 		{
-			string newPassword = "";
+			var newPassword = "";
 			try {
 				if (MembershipProviderInternal.EnablePasswordRetrieval) {
 					newPassword = MembershipProviderInternal.GetPassword (UserName, Answer);
@@ -848,7 +848,7 @@ namespace System.Web.UI.WebControls
 
 		void InitMemberShipProvider ()
 		{
-			string mp = MembershipProvider;
+			var mp = MembershipProvider;
 			_provider = (mp.Length == 0) ? _provider = Membership.Provider : Membership.Providers [mp];
 			if (_provider == null)
 				throw new HttpException (Locale.GetText ("No provider named '{0}' could be found.", mp));
@@ -856,16 +856,16 @@ namespace System.Web.UI.WebControls
 
 		void SendPasswordByMail (string username, string password)
 		{
-			MembershipUser user = MembershipProviderInternal.GetUser (UserName, false);
+			var user = MembershipProviderInternal.GetUser (UserName, false);
 			if (user == null)
 				return;
 
 			// DO NOT change format of the message - it has to be exactly the same as in
 			// .NET as some software (e.g. YetAnotherForum) depends on it.
-			string messageText = "Please return to the site and log in using the following information.\n" +
+			var messageText = "Please return to the site and log in using the following information.\n" +
 				"User Name: <%USERNAME%>\nPassword: <%PASSWORD%>\n";
 
-			ListDictionary dictionary = new ListDictionary (StringComparer.OrdinalIgnoreCase);
+			var dictionary = new ListDictionary (StringComparer.OrdinalIgnoreCase);
 			dictionary.Add ("<%USERNAME%>", username);
 			dictionary.Add ("<% UserName %>", username);
 			dictionary.Add ("<%PASSWORD%>", password);
@@ -881,15 +881,15 @@ namespace System.Web.UI.WebControls
 			if (string.IsNullOrEmpty (message.Subject))
 				message.Subject = "Password";
 
-			MailMessageEventArgs args = new MailMessageEventArgs (message);
+			var args = new MailMessageEventArgs (message);
 			OnSendingMail (args);
 
-			SmtpClient smtpClient = new SmtpClient ();
+			var smtpClient = new SmtpClient ();
 			try {
 				smtpClient.Send (message);
 			}
 			catch (Exception e) {
-				SendMailErrorEventArgs mailArgs = new SendMailErrorEventArgs (e);
+				var mailArgs = new SendMailErrorEventArgs (e);
 				OnSendMailError (mailArgs);
 				if (!mailArgs.Handled)
 					throw e;
@@ -902,7 +902,7 @@ namespace System.Web.UI.WebControls
 		{
 		}
 
-		protected override bool OnBubbleEvent (object source, EventArgs e)
+		protected override bool OnBubbleEvent (object source, EventArgs? e)
 		{
 			CommandEventArgs args = e as CommandEventArgs;
 			if (e != null && args.CommandName == SubmitButtonCommandName) {
@@ -1023,7 +1023,7 @@ namespace System.Web.UI.WebControls
 			void InitTable ()
 			{
 				_table = new Table ();
-				string id = _owner.ID;
+				var id = _owner.ID;
 				if (!String.IsNullOrEmpty (id))
 					_table.Attributes.Add ("id", id);
 
@@ -1032,7 +1032,7 @@ namespace System.Web.UI.WebControls
 
 				_containerCell = new TableCell ();
 
-				TableRow row = new TableRow ();
+				var row = new TableRow ();
 				row.Cells.Add (_containerCell);
 				_table.Rows.Add (row);
 
@@ -1061,7 +1061,7 @@ namespace System.Web.UI.WebControls
 			{
 				get
 				{
-					Control c = FindControl ("Answer");
+					var c = FindControl ("Answer");
 					if (c == null)
 						throw new HttpException ("QuestionTemplate does not contain an IEditableTextControl with ID Answer for the username.");
 					return c as IEditableTextControl;
@@ -1114,7 +1114,7 @@ namespace System.Web.UI.WebControls
 			{
 				get
 				{
-					Control c = FindControl ("UserName");
+					var c = FindControl ("UserName");
 					if (c == null)
 						throw new HttpException ("UserNameTemplate does not contain an IEditableTextControl with ID UserName for the username.");
 					return c as IEditableTextControl;
@@ -1133,10 +1133,10 @@ namespace System.Web.UI.WebControls
 
 		class TemplateUtils
 		{
-			public static TableRow CreateRow(Control c1, Control c2, Style s1, Style s2, bool twoCells)
+			public static TableRow CreateRow(Control c1, Control? c2, Style? s1, Style? s2, bool twoCells)
 			{
-				TableRow row = new TableRow ();
-				TableCell cell1 = new TableCell ();
+				var row = new TableRow ();
+				var cell1 = new TableCell ();
 
 				cell1.Controls.Add (c1);
 				if (s1 != null)
@@ -1145,7 +1145,7 @@ namespace System.Web.UI.WebControls
 				row.Cells.Add (cell1);
 
 				if (c2 != null) {
-					TableCell cell2 = new TableCell ();
+					var cell2 = new TableCell ();
 					cell2.Controls.Add (c2);
 
 					if (s2 != null)
@@ -1167,16 +1167,16 @@ namespace System.Web.UI.WebControls
 
 			public static TableRow CreateHelpRow (string pageUrl, string linkText, string linkIcon, Style linkStyle, bool twoCells)
 			{
-				TableRow row = new TableRow ();
-				TableCell cell1 = new TableCell ();
+				var row = new TableRow ();
+				var cell1 = new TableCell ();
 
 				if (linkIcon.Length > 0) {
-					Image img = new Image ();
+					var img = new Image ();
 					img.ImageUrl = linkIcon;
 					cell1.Controls.Add (img);
 				}
 				if (linkText.Length > 0) {
-					HyperLink link = new HyperLink ();
+					var link = new HyperLink ();
 					link.NavigateUrl = pageUrl;
 					link.Text = linkText;
 					link.ControlStyle.CopyTextStylesFrom (linkStyle);
@@ -1203,10 +1203,10 @@ namespace System.Web.UI.WebControls
 
 			public void InstantiateIn (Control container)
 			{
-				Table table = new Table ();
+				var table = new Table ();
 				table.CellPadding = 0;
 
-				bool twoCells = _owner.TextLayout == LoginTextLayout.TextOnLeft;
+				var twoCells = _owner.TextLayout == LoginTextLayout.TextOnLeft;
 
 				// row 0
 				table.Rows.Add (
@@ -1217,18 +1217,18 @@ namespace System.Web.UI.WebControls
 					TemplateUtils.CreateRow (new LiteralControl (_owner.UserNameInstructionText), null, _owner.InstructionTextStyle, null, twoCells));
 
 				// row 2
-				TextBox UserNameTextBox = new TextBox ();
+				var UserNameTextBox = new TextBox ();
 				UserNameTextBox.ID = "UserName";
 				UserNameTextBox.Text = _owner.UserName;
 				UserNameTextBox.ApplyStyle (_owner.TextBoxStyle);
 
-				Label UserNameLabel = new Label ();
+				var UserNameLabel = new Label ();
 				UserNameLabel.ID = "UserNameLabel";
 				UserNameLabel.AssociatedControlID = "UserName";
 				UserNameLabel.Text = _owner.UserNameLabelText;
 				UserNameLabel.ApplyStyle (_owner.LabelStyle);
 
-				RequiredFieldValidator UserNameRequired = new RequiredFieldValidator ();
+				var UserNameRequired = new RequiredFieldValidator ();
 				UserNameRequired.ID = "UserNameRequired";
 				UserNameRequired.ControlToValidate = "UserName";
 				UserNameRequired.ErrorMessage = _owner.UserNameRequiredErrorMessage;
@@ -1238,19 +1238,19 @@ namespace System.Web.UI.WebControls
 				UserNameRequired.ApplyStyle (_owner.ValidatorTextStyle);
 
 				if (twoCells) {
-					TableRow row = TemplateUtils.CreateRow (UserNameLabel, UserNameTextBox, null, null, twoCells);
+					var row = TemplateUtils.CreateRow (UserNameLabel, UserNameTextBox, null, null, twoCells);
 					row.Cells [1].Controls.Add (UserNameRequired);
 					table.Rows.Add (row);
 				}
 				else {
 					table.Rows.Add (TemplateUtils.CreateRow (UserNameLabel, null, null, null, twoCells));
-					TableRow row = TemplateUtils.CreateRow (UserNameTextBox, null, null, null, twoCells);
+					var row = TemplateUtils.CreateRow (UserNameTextBox, null, null, null, twoCells);
 					row.Cells [0].Controls.Add (UserNameRequired);
 					table.Rows.Add (row);
 				}
 
 				// row 3
-				Literal FailureText = new Literal ();
+				var FailureText = new Literal ();
 				FailureText.ID = "FailureText";
 				if (_owner.FailureTextStyle.ForeColor.IsEmpty)
 					_owner.FailureTextStyle.ForeColor = System.Drawing.Color.Red;
@@ -1276,7 +1276,7 @@ namespace System.Web.UI.WebControls
 				((IButtonControl) SubmitButton).Text = _owner.SubmitButtonText;
 				((IButtonControl) SubmitButton).ValidationGroup = _owner.ID;
 
-				TableRow buttonRow = TemplateUtils.CreateRow (SubmitButton, null, null, null, twoCells);
+				var buttonRow = TemplateUtils.CreateRow (SubmitButton, null, null, null, twoCells);
 				buttonRow.Cells [0].HorizontalAlign = HorizontalAlign.Right;
 				table.Rows.Add (buttonRow);
 
@@ -1300,10 +1300,10 @@ namespace System.Web.UI.WebControls
 
 			public void InstantiateIn (Control container)
 			{
-				Table table = new Table ();
+				var table = new Table ();
 				table.CellPadding = 0;
 
-				bool twoCells = _owner.TextLayout == LoginTextLayout.TextOnLeft;
+				var twoCells = _owner.TextLayout == LoginTextLayout.TextOnLeft;
 
 				// row 0
 				table.Rows.Add (
@@ -1314,31 +1314,31 @@ namespace System.Web.UI.WebControls
 					TemplateUtils.CreateRow (new LiteralControl (_owner.QuestionInstructionText), null, _owner.InstructionTextStyle, null, twoCells));
 
 				// row 2
-				Literal UserNameLiteral = new Literal ();
+				var UserNameLiteral = new Literal ();
 				UserNameLiteral.ID = "UserName";
 
 				table.Rows.Add (
 					TemplateUtils.CreateRow (new LiteralControl (_owner.UserNameLabelText), UserNameLiteral, _owner.LabelStyle, _owner.LabelStyle, twoCells));
 
 				// row 3
-				Literal QuestionLiteral = new Literal ();
+				var QuestionLiteral = new Literal ();
 				QuestionLiteral.ID = "Question";
 
 				table.Rows.Add (
 					TemplateUtils.CreateRow (new LiteralControl (_owner.QuestionLabelText), QuestionLiteral, _owner.LabelStyle, _owner.LabelStyle, twoCells));
 
 				// row 5
-				TextBox AnswerTextBox = new TextBox ();
+				var AnswerTextBox = new TextBox ();
 				AnswerTextBox.ID = "Answer";
 				AnswerTextBox.ApplyStyle (_owner.TextBoxStyle);
 
-				Label AnswerLabel = new Label ();
+				var AnswerLabel = new Label ();
 				AnswerLabel.ID = "AnswerLabel";
 				AnswerLabel.AssociatedControlID = "Answer";
 				AnswerLabel.Text = _owner.AnswerLabelText;
 				AnswerLabel.ApplyStyle (_owner.LabelStyle);
 
-				RequiredFieldValidator AnswerRequired = new RequiredFieldValidator ();
+				var AnswerRequired = new RequiredFieldValidator ();
 				AnswerRequired.ID = "AnswerRequired";
 				AnswerRequired.ControlToValidate = "Answer";
 				AnswerRequired.ErrorMessage = _owner.AnswerRequiredErrorMessage;
@@ -1348,19 +1348,19 @@ namespace System.Web.UI.WebControls
 				AnswerRequired.ApplyStyle (_owner.ValidatorTextStyle);
 
 				if (twoCells) {
-					TableRow row = TemplateUtils.CreateRow (AnswerLabel, AnswerTextBox, null, null, twoCells);
+					var row = TemplateUtils.CreateRow (AnswerLabel, AnswerTextBox, null, null, twoCells);
 					row.Cells [1].Controls.Add (AnswerRequired);
 					table.Rows.Add (row);
 				}
 				else {
 					table.Rows.Add (TemplateUtils.CreateRow (AnswerLabel, null, null, null, twoCells));
-					TableRow row = TemplateUtils.CreateRow (AnswerTextBox, null, null, null, twoCells);
+					var row = TemplateUtils.CreateRow (AnswerTextBox, null, null, null, twoCells);
 					row.Cells [0].Controls.Add (AnswerRequired);
 					table.Rows.Add (row);
 				}
 
 				// row 6
-				Literal FailureText = new Literal ();
+				var FailureText = new Literal ();
 				FailureText.ID = "FailureText";
 				if (_owner.FailureTextStyle.ForeColor.IsEmpty)
 					_owner.FailureTextStyle.ForeColor = System.Drawing.Color.Red;
@@ -1386,7 +1386,7 @@ namespace System.Web.UI.WebControls
 				((IButtonControl) SubmitButton).Text = _owner.SubmitButtonText;
 				((IButtonControl) SubmitButton).ValidationGroup = _owner.ID;
 
-				TableRow buttonRow = TemplateUtils.CreateRow (SubmitButton, null, null, null, twoCells);
+				var buttonRow = TemplateUtils.CreateRow (SubmitButton, null, null, null, twoCells);
 				buttonRow.Cells [0].HorizontalAlign = HorizontalAlign.Right;
 				table.Rows.Add (buttonRow);
 
@@ -1410,10 +1410,10 @@ namespace System.Web.UI.WebControls
 
 			public void InstantiateIn (Control container)
 			{
-				Table table = new Table ();
+				var table = new Table ();
 				table.CellPadding = 0;
 
-				bool twoCells = _owner.TextLayout == LoginTextLayout.TextOnLeft;
+				var twoCells = _owner.TextLayout == LoginTextLayout.TextOnLeft;
 
 				// row 0
 				table.Rows.Add (

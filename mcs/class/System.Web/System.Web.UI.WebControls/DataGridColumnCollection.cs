@@ -92,24 +92,24 @@ namespace System.Web.UI.WebControls {
 	
 		void System.Web.UI.IStateManager.LoadViewState (object savedState)
 		{
-			object [] o = (object []) savedState;
+			var o = (object []) savedState;
 			if (o == null)
 				return;
 
-			int i = 0;
+			var i = 0;
 			foreach (IStateManager ism in this)
 				ism.LoadViewState (o [i++]);
 		}
 	
 		object System.Web.UI.IStateManager.SaveViewState ()
 		{
-			object [] o = new object [Count];
+			var o = new object [Count];
 
-			int i = 0;
+			var i = 0;
 			foreach (IStateManager ism in this)
 				o [i++] = ism.SaveViewState ();
 
-			foreach (object a in o)
+			foreach (var a in o)
 				if (a != null)
 					return o;
 			return null;

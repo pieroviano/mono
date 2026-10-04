@@ -39,7 +39,7 @@ namespace System.Configuration
 		public bool Failed { get; private set; }
 		public Exception Exception { get; private set; }
 		
-		public ConfigurationSaveEventArgs (string streamPath, bool start, Exception ex, object context)
+		public ConfigurationSaveEventArgs (string streamPath, bool start, Exception? ex, object context)
 		{
 			this.StreamPath = streamPath;
 			this.Start = start;

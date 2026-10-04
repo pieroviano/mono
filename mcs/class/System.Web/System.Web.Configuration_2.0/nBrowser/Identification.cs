@@ -59,7 +59,7 @@ namespace System.Web.Configuration.nBrowser
 		/// </summary>
 		/// <param name="Header">Header Value which the regular expression will evaluate.</param>
 		/// <returns>A Match object created from the regular expression and the passed in header.</returns>
-		public System.Text.RegularExpressions.Match GetMatch(string Header)
+		public System.Text.RegularExpressions.Match GetMatch(string? Header)
 		{
 			return RegexPattern.Match(Header == null ? string.Empty : Header);
 		}

@@ -28,7 +28,7 @@ namespace System.Web.Services.Diagnostics {
         private static object InternalSyncObject {
             get {
                 if (internalSyncObject == null) {
-                    object o = new Object();
+                    var o = new Object();
                     Interlocked.CompareExchange(ref internalSyncObject, o, null);
                 }
                 return internalSyncObject;
@@ -68,11 +68,11 @@ namespace System.Web.Services.Diagnostics {
         private static void InitializeLogging() {
             lock (InternalSyncObject) {
                 if (!tracingInitialized) {
-                    bool loggingEnabled = false;
+                    var loggingEnabled = false;
                     asmxTraceSource = new TraceSource(TraceSourceAsmx);
                     if (asmxTraceSource.Switch.ShouldTrace(TraceEventType.Critical)) {
                         loggingEnabled = true;
-                        AppDomain currentDomain = AppDomain.CurrentDomain;
+                        var currentDomain = AppDomain.CurrentDomain;
                         currentDomain.UnhandledException += new UnhandledExceptionEventHandler(UnhandledExceptionHandler);
                         currentDomain.DomainUnload += new EventHandler(AppDomainUnloadEvent);
                         currentDomain.ProcessExit += new EventHandler(ProcessExitEvent);
@@ -92,8 +92,8 @@ namespace System.Web.Services.Diagnostics {
         /// <devdoc>
         ///    <para>Logs any unhandled exception through this event handler</para>
         /// </devdoc>
-        private static void UnhandledExceptionHandler(object sender, UnhandledExceptionEventArgs args) {
-            Exception e = (Exception)args.ExceptionObject;
+        private static void UnhandledExceptionHandler(object? sender, UnhandledExceptionEventArgs args) {
+            var e = (Exception)args.ExceptionObject;
             ExceptionCatch(TraceEventType.Error, sender, "UnhandledExceptionHandler", e);
         }
 
@@ -113,7 +113,7 @@ namespace System.Web.Services.Diagnostics {
         /// <devdoc>
         ///    <para>Confirms logging is enabled, given current logging settings</para>
         /// </devdoc>
-        private static bool ValidateSettings(TraceSource traceSource, TraceEventType traceLevel) {
+        private static bool ValidateSettings(TraceSource? traceSource, TraceEventType traceLevel) {
             if (!tracingEnabled) {
                 return false;
             }
@@ -169,7 +169,7 @@ namespace System.Web.Services.Diagnostics {
             return e;
         }
 
-        internal static Exception ExceptionCatch(TraceEventType eventType, object target, string method, Exception e) {
+        internal static Exception ExceptionCatch(TraceEventType eventType, object? target, string method, Exception e) {
             if (!ValidateSettings(Asmx, eventType))
                 return e;
 
@@ -208,13 +208,13 @@ namespace System.Web.Services.Diagnostics {
             }
         }
 
-        internal static List<string> Details(HttpRequest request) {
+        internal static List<string> Details(HttpRequest? request) {
             if (request == null)
                 return null;
             List<string> requestDetails = null;
             requestDetails = new List<string>();
             requestDetails.Add(Res.GetString(Res.TraceUserHostAddress, request.UserHostAddress));
-            string hostName = request.UserHostAddress == request.UserHostName ? GetHostByAddress(request.UserHostAddress) : request.UserHostName;
+            var hostName = request.UserHostAddress == request.UserHostName ? GetHostByAddress(request.UserHostAddress) : request.UserHostName;
             if (!string.IsNullOrEmpty(hostName))
                 requestDetails.Add(Res.GetString(Res.TraceUserHostName, hostName));
             requestDetails.Add(Res.GetString(Res.TraceUrl, request.HttpMethod, request.Url));
@@ -228,21 +228,21 @@ namespace System.Web.Services.Diagnostics {
             Enter(callId, caller, null, null);
         }
 
-        internal static void Enter(string callId, TraceMethod caller, List<string> details) {
+        internal static void Enter(string callId, TraceMethod caller, List<string>? details) {
             Enter(callId, caller, null, details);
         }
 
-        internal static void Enter(string callId, TraceMethod caller, TraceMethod callDetails) {
+        internal static void Enter(string callId, TraceMethod caller, TraceMethod? callDetails) {
             Enter(callId, caller, callDetails, null);
         }
 
-        internal static void Enter(string callId, TraceMethod caller, TraceMethod callDetails, List<string> details) {
+        internal static void Enter(string callId, TraceMethod caller, TraceMethod? callDetails, List<string>? details) {
             if (!ValidateSettings(Asmx, TraceEventType.Information))
                 return;
-            string trace = callDetails == null ? Res.GetString(Res.TraceCallEnter, callId, caller) : Res.GetString(Res.TraceCallEnterDetails, callId, caller, callDetails);
+            var trace = callDetails == null ? Res.GetString(Res.TraceCallEnter, callId, caller) : Res.GetString(Res.TraceCallEnterDetails, callId, caller, callDetails);
             if (details != null && details.Count > 0) {
-                StringBuilder sb = new StringBuilder(trace);
-                foreach (string detail in details) {
+                var sb = new StringBuilder(trace);
+                foreach (var detail in details) {
                     sb.Append(Environment.NewLine);
                     sb.Append("    ");
                     sb.Append(detail);
@@ -253,7 +253,7 @@ namespace System.Web.Services.Diagnostics {
         }
 
         internal static XmlDeserializationEvents GetDeserializationEvents() {
-            XmlDeserializationEvents events = new XmlDeserializationEvents();
+            var events = new XmlDeserializationEvents();
             events.OnUnknownElement = new XmlElementEventHandler(OnUnknownElement);
             events.OnUnknownAttribute = new XmlAttributeEventHandler(OnUnknownAttribute);
             return events;
@@ -271,8 +271,8 @@ namespace System.Web.Services.Diagnostics {
                 return;
             if (e.Element == null)
                 return;
-            string xml = RuntimeUtils.ElementString(e.Element);
-            string format = e.ExpectedElements == null ? Res.WebUnknownElement : e.ExpectedElements.Length == 0 ? Res.WebUnknownElement1 : Res.WebUnknownElement2;
+            var xml = RuntimeUtils.ElementString(e.Element);
+            var format = e.ExpectedElements == null ? Res.WebUnknownElement : e.ExpectedElements.Length == 0 ? Res.WebUnknownElement1 : Res.WebUnknownElement2;
             TraceEvent(TraceEventType.Warning, Res.GetString(format, xml, e.ExpectedElements));
         }
 
@@ -284,7 +284,7 @@ namespace System.Web.Services.Diagnostics {
             // ignore attributes from known namepsaces
             if (RuntimeUtils.IsKnownNamespace(e.Attr.NamespaceURI))
                 return;
-            string format = e.ExpectedAttributes == null ? Res.WebUnknownAttribute : e.ExpectedAttributes.Length == 0 ? Res.WebUnknownAttribute2 : Res.WebUnknownAttribute3;
+            var format = e.ExpectedAttributes == null ? Res.WebUnknownAttribute : e.ExpectedAttributes.Length == 0 ? Res.WebUnknownAttribute2 : Res.WebUnknownAttribute3;
             TraceEvent(TraceEventType.Warning, Res.GetString(format, e.Attr.Name, e.Attr.Value, e.ExpectedAttributes));
         }
     }
@@ -307,16 +307,16 @@ namespace System.Web.Services.Diagnostics {
             return call;
         }
 
-        internal static string CallString(object target, string method, params object[] args) {
-            StringBuilder sb = new StringBuilder();
+        internal static string CallString(object? target, string method, params object[] args) {
+            var sb = new StringBuilder();
             WriteObjectId(sb, target);
             sb.Append(':');
             sb.Append(':');
             sb.Append(method);
             sb.Append('(');
 
-            for (int i = 0; i < args.Length; i++) {
-                object o = args[i];
+            for (var i = 0; i < args.Length; i++) {
+                var o = args[i];
                 WriteObjectId(sb, o);
                 if (o != null) {
                     sb.Append('=');
@@ -332,8 +332,8 @@ namespace System.Web.Services.Diagnostics {
             return sb.ToString();
         }
 
-        internal static string MethodId(object target, string method) {
-            StringBuilder sb = new StringBuilder();
+        internal static string MethodId(object? target, string method) {
+            var sb = new StringBuilder();
             WriteObjectId(sb, target);
             sb.Append(':');
             sb.Append(':');
@@ -342,13 +342,13 @@ namespace System.Web.Services.Diagnostics {
             return sb.ToString();
         }
 
-        static void WriteObjectId(StringBuilder sb, object o) {
+        static void WriteObjectId(StringBuilder sb, object? o) {
 
             if (o == null) {
                 sb.Append("(null)");
             }
             else if (o is Type) {
-                Type type = (Type)o;
+                var type = (Type)o;
                 sb.Append(type.FullName);
                 if (!(type.IsAbstract && type.IsSealed)) {
                     sb.Append('#');
@@ -362,7 +362,7 @@ namespace System.Web.Services.Diagnostics {
             }
         }
 
-        static void WriteValue(StringBuilder sb, object o) {
+        static void WriteValue(StringBuilder sb, object? o) {
             if (o == null) {
                 return;
             }
@@ -373,7 +373,7 @@ namespace System.Web.Services.Diagnostics {
                 sb.Append('"');
             }
             else {
-                Type type = o.GetType();
+                var type = o.GetType();
                 if (type.IsArray) {
                     sb.Append('[');
                     sb.Append(((Array)o).Length);
@@ -392,7 +392,7 @@ namespace System.Web.Services.Diagnostics {
             }
         }
 
-        static string HashString(object objectValue) {
+        static string HashString(object? objectValue) {
             if (objectValue == null) {
                 return "(null)";
             }

@@ -63,19 +63,19 @@ namespace System.Web.Handlers
 			// the CompleteRequest method is called, bypassing all pipeline events and executing 
 			// the EndRequest method. This allows MS AJAX to be able to call a method on a page 
 			// instead of having to create a web service to call a method.
-			HttpApplication app = (HttpApplication) sender;
-			HttpContext context = app.Context;
+			var app = (HttpApplication) sender;
+			var context = app.Context;
 			if (context == null)
 				return;
 			
-			HttpRequest request = context.Request;
-			string contentType = request.ContentType;
-			IHttpHandler currentHandler = context.CurrentHandler;
+			var request = context.Request;
+			var contentType = request.ContentType;
+			var currentHandler = context.CurrentHandler;
 			if (currentHandler == null)
 				return;
-			Type pageType = currentHandler.GetType ();
+			var pageType = currentHandler.GetType ();
 			if (typeof (Page).IsAssignableFrom (pageType) && !String.IsNullOrEmpty (contentType) && contentType.StartsWith ("application/json", StringComparison.OrdinalIgnoreCase)) {
-				IHttpHandler h = RestHandler.GetHandler (context, pageType, request.FilePath);
+				var h = RestHandler.GetHandler (context, pageType, request.FilePath);
 				h.ProcessRequest (context);
 				app.CompleteRequest ();
 			}
@@ -83,11 +83,11 @@ namespace System.Web.Handlers
 
 		void PreSendRequestHeaders (object sender, EventArgs e)
 		{
-			HttpApplication app = (HttpApplication) sender;
-			HttpContext context = app.Context;
+			var app = (HttpApplication) sender;
+			var context = app.Context;
 			if (context.Request.Headers ["X-MicrosoftAjax"] == "Delta=true") {
 				Page p = context.CurrentHandler as Page;
-				ScriptManager sm = ScriptManager.GetCurrentInternal (p);
+				var sm = ScriptManager.GetCurrentInternal (p);
 				if (context.Response.StatusCode == 302) {
 					context.Response.StatusCode = 200;
 					context.Response.ClearContent ();

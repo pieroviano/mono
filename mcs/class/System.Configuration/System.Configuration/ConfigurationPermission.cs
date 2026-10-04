@@ -60,7 +60,7 @@ namespace System.Configuration {
                         }
 		}
 
-		public override IPermission Intersect (IPermission target)
+		public override IPermission Intersect (IPermission? target)
 		{
 			if (target == null)
 				return null;
@@ -72,7 +72,7 @@ namespace System.Configuration {
 			return new ConfigurationPermission (unrestricted && p.IsUnrestricted() ? PermissionState.Unrestricted : PermissionState.None);
 		}
 
-		public override IPermission Union (IPermission target)
+		public override IPermission Union (IPermission? target)
 		{
 			if (target == null)
 				return Copy ();
@@ -84,7 +84,7 @@ namespace System.Configuration {
 			return new ConfigurationPermission (unrestricted || p.IsUnrestricted() ? PermissionState.Unrestricted : PermissionState.None);
 		}
 
-		public override bool IsSubsetOf (IPermission target)
+		public override bool IsSubsetOf (IPermission? target)
 		{
 			if (target == null)
 				return !unrestricted;
@@ -106,7 +106,7 @@ namespace System.Configuration {
 
 		public override SecurityElement ToXml ()
 		{
-			SecurityElement root = new SecurityElement ("IPermission");
+			var root = new SecurityElement ("IPermission");
 			root.AddAttribute ("class", this.GetType().AssemblyQualifiedName);
 			root.AddAttribute ("version", "1");
 			if (unrestricted) {

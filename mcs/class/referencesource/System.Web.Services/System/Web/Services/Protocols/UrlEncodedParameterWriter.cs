@@ -51,11 +51,11 @@ namespace System.Web.Services.Protocols {
         /// </devdoc>
         protected void Encode(TextWriter writer, object[] values) {
             numberEncoded = 0;
-            for (int i = 0; i < paramInfos.Length; i++) {
-                ParameterInfo paramInfo = paramInfos[i];
+            for (var i = 0; i < paramInfos.Length; i++) {
+                var paramInfo = paramInfos[i];
                 if (paramInfo.ParameterType.IsArray) {
-                    Array array = (Array)values[i];
-                    for (int j = 0; j < array.Length; j++) {
+                    var array = (Array)values[i];
+                    for (var j = 0; j < array.Length; j++) {
                         Encode(writer, paramInfo.Name, array.GetValue(j));
                     }
                 }
@@ -66,7 +66,7 @@ namespace System.Web.Services.Protocols {
         }
 
         /// <include file='doc\UrlEncodedParameterWriter.uex' path='docs/doc[@for="UrlEncodedParameterWriter.Encode1"]/*' />
-        protected void Encode(TextWriter writer, string name, object value) {
+        protected void Encode(TextWriter writer, string name, object? value) {
             if (numberEncoded > 0) writer.Write('&');
             writer.Write(UrlEncode(name));
             writer.Write('=');

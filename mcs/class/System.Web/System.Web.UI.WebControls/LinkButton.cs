@@ -51,13 +51,13 @@ namespace System.Web.UI.WebControls
 	
 		protected override void AddAttributesToRender (HtmlTextWriter writer)
 		{
-			Page page = Page;
+			var page = Page;
 			if (page != null)
 				page.VerifyRenderingInServerForm (this);
 
 			base.AddAttributesToRender (writer);
-			bool enabled = IsEnabled;
-			string onclick = OnClientClick;
+			var enabled = IsEnabled;
+			var onclick = OnClientClick;
 			onclick = ClientScriptManager.EnsureEndsWithSemicolon (onclick);
 			if (HasAttributes && Attributes ["onclick"] != null) {
 				onclick = ClientScriptManager.EnsureEndsWithSemicolon (onclick + Attributes ["onclick"]);
@@ -68,8 +68,8 @@ namespace System.Web.UI.WebControls
 				writer.AddAttribute (HtmlTextWriterAttribute.Onclick, onclick);
 			
 			if (enabled && page != null) {
-				PostBackOptions options = GetPostBackOptions ();
-				string href = page.ClientScript.GetPostBackEventReference (options, true);
+				var options = GetPostBackOptions ();
+				var href = page.ClientScript.GetPostBackEventReference (options, true);
 				writer.AddAttribute (HtmlTextWriterAttribute.Href, href);
 			}
 			
@@ -80,7 +80,7 @@ namespace System.Web.UI.WebControls
 		{
 			ValidateEvent (UniqueID, eventArgument);
 			if (CausesValidation) {
-				Page page = Page;
+				var page = Page;
 				if (page != null)
 					page.Validate (ValidationGroup);
 			}
@@ -104,7 +104,7 @@ namespace System.Web.UI.WebControls
 			LiteralControl lc = obj as LiteralControl;
 
 			if (lc == null) {
-				string s = Text;
+				var s = Text;
 				if (s.Length != 0) {
 					Text = null;
 					Controls.Add (new LiteralControl (s));
@@ -116,8 +116,8 @@ namespace System.Web.UI.WebControls
 
 		protected virtual PostBackOptions GetPostBackOptions ()
 		{
-			PostBackOptions options = new PostBackOptions (this);
-			Page page = Page;
+			var options = new PostBackOptions (this);
+			var page = Page;
 			
 			options.ActionUrl = (PostBackUrl.Length > 0 ?
 					     page != null ? page.ResolveClientUrl (PostBackUrl) : PostBackUrl
@@ -133,7 +133,7 @@ namespace System.Web.UI.WebControls
 			return options;
 		}
 
-		protected override void LoadViewState (object savedState)
+		protected override void LoadViewState (object? savedState)
 		{
 			base.LoadViewState (savedState);
 

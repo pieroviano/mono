@@ -97,7 +97,7 @@ namespace System.Web.Configuration
 
 		protected override object GetElementKey (ConfigurationElement element)
 		{
-			BuildProvider prov = (BuildProvider) element;
+			var prov = (BuildProvider) element;
 			return prov.Extension;
 		}
 

@@ -53,7 +53,7 @@ namespace System.Web.Caching
 
 			this.Callback = callback;
 
-			MethodInfo mi = callback.Method;
+			var mi = callback.Method;
 			this.typeName = mi.DeclaringType.AssemblyQualifiedName;
 			this.methodName = mi.Name;
 		}

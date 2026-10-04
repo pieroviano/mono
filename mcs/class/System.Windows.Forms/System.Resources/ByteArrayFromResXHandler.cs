@@ -52,9 +52,9 @@ namespace System.Resources {
 			return Convert.FromBase64String (dataString);
 		}
 
-		public override string GetValueTypeName (ITypeResolutionService typeResolver)
+		public override string GetValueTypeName (ITypeResolutionService? typeResolver)
 		{
-			Type type = ResolveType (typeof (byte []).AssemblyQualifiedName, typeResolver);
+			var type = ResolveType (typeof (byte []).AssemblyQualifiedName, typeResolver);
 			return type.AssemblyQualifiedName;
 		}
 

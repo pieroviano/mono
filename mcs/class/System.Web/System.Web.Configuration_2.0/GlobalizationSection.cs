@@ -83,7 +83,7 @@ namespace System.Web.Configuration {
 
 		void VerifyData ()
 		{
-			bool fake = false;
+			var fake = false;
 			try {
 				GetSanitizedCulture (Culture, ref fake);
 			}
@@ -217,7 +217,7 @@ namespace System.Web.Configuration {
 				
 		internal CultureInfo GetUICulture ()
 		{
-			string uiculture = UICulture;
+			var uiculture = UICulture;
 			if (cached_uiculture != uiculture) {
 				try {
 					cached_uicultureinfo = GetSanitizedCulture (uiculture, ref autoUICulture);
@@ -234,7 +234,7 @@ namespace System.Web.Configuration {
 
 		internal CultureInfo GetCulture ()
 		{
-			string culture = Culture;
+			var culture = Culture;
 			if (cached_culture != culture) {
 				try {
 					cached_cultureinfo = GetSanitizedCulture (culture, ref autoCulture);
@@ -249,9 +249,9 @@ namespace System.Web.Configuration {
 			return cached_cultureinfo;
 		}
 
-		Encoding GetEncoding (ConfigurationProperty prop, ref string cached_encoding_name)
+		Encoding GetEncoding (ConfigurationProperty prop, ref string? cached_encoding_name)
 		{
-			string enc = (string) base [prop];
+			var enc = (string) base [prop];
 			if (cached_encoding_name == null)
 				cached_encoding_name = ((enc == null) ? "utf-8" : enc);
 

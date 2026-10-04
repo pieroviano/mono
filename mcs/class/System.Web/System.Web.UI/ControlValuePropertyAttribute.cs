@@ -64,10 +64,10 @@ namespace System.Web.UI {
 			get { return propertyValue; }
 		}
 		
-		public override bool Equals (object obj)
+		public override bool Equals (object? obj)
 		{
 			if (obj != null && obj is ControlValuePropertyAttribute) {
-				ControlValuePropertyAttribute propAttrib = (ControlValuePropertyAttribute)obj;
+				var propAttrib = (ControlValuePropertyAttribute)obj;
 				return (this.propertyName == propAttrib.propertyName && 
 					this.propertyValue == propAttrib.propertyValue &&
 					this.propertyType == propAttrib.propertyType);

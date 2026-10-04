@@ -213,7 +213,7 @@ namespace System.Web.UI.WebControls {
 
 			// We have validators
 			errors = new ArrayList(validators.Count);
-			for (int i = 0; i < validators.Count; i++) {
+			for (var i = 0; i < validators.Count; i++) {
 				if (!validators[i].IsValid) {
 					errors.Add(validators[i].ErrorMessage);
 				}
@@ -247,7 +247,7 @@ document.getElementById('" + ClientID + @"').dispose = function() {
 						}
 
 						writer.Write("<ul>");
-						for (int i = 0; i < errors.Count; i++) {
+						for (var i = 0; i < errors.Count; i++) {
 							writer.Write("<li>");
 							writer.Write(errors[i]);
 							writer.Write("</li>");
@@ -262,7 +262,7 @@ document.getElementById('" + ClientID + @"').dispose = function() {
 							writer.Write("<br />");
 						}
 
-						for (int i = 0; i < errors.Count; i++) {
+						for (var i = 0; i < errors.Count; i++) {
 							writer.Write(errors[i]);
 							writer.Write("<br />");
 						}
@@ -275,7 +275,7 @@ document.getElementById('" + ClientID + @"').dispose = function() {
 							writer.Write(" ");
 						}
 
-						for (int i = 0; i < errors.Count; i++) {
+						for (var i = 0; i < errors.Count; i++) {
 							writer.Write(errors[i]);
 							writer.Write(" ");
 						}

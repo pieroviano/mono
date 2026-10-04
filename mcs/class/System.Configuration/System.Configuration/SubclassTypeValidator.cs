@@ -45,7 +45,7 @@ namespace System.Configuration {
 
 		public override void Validate (object value)
 		{
-			Type type = (Type)value;
+			var type = (Type)value;
 
 			if (!baseClass.IsAssignableFrom (type))
 				throw new ArgumentException ("The value must be a subclass");

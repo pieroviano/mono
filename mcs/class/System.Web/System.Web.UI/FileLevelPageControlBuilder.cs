@@ -45,9 +45,9 @@ namespace System.Web.UI
 		{
 		}
 		
-		public override void AppendLiteralString (string text)
+		public override void AppendLiteralString (string? text)
 		{
-			bool emptyText = text != null ? text.Trim ().Length == 0 : true;
+			var emptyText = text != null ? text.Trim ().Length == 0 : true;
 			if (hasContentControls && !emptyText)
 				throw new HttpException ("Literal strings cannot be appended to Content pages.");
 
@@ -57,7 +57,7 @@ namespace System.Web.UI
 			base.AppendLiteralString (text);
 		}
 		
-		public override void AppendSubBuilder (ControlBuilder subBuilder)
+		public override void AppendSubBuilder (ControlBuilder? subBuilder)
 		{
 			if (subBuilder == null) {
 				base.AppendSubBuilder (subBuilder);

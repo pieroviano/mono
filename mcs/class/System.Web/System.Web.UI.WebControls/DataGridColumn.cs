@@ -156,7 +156,7 @@ namespace System.Web.UI.WebControls
 
 		internal class ForeColorLinkButton : LinkButton
 		{
-			Color GetForeColor (WebControl control)
+			Color GetForeColor (WebControl? control)
 			{
 				if (control == null)
 					return Color.Empty;
@@ -165,7 +165,7 @@ namespace System.Web.UI.WebControls
 				if (control is Table)
 					return control.ControlStyle.ForeColor;
 				
-				Color color = control.ControlStyle.ForeColor;
+				var color = control.ControlStyle.ForeColor;
 				if (color != Color.Empty)
 					return color;
 
@@ -174,7 +174,7 @@ namespace System.Web.UI.WebControls
 
 			protected internal override void Render (HtmlTextWriter writer)
 			{
-				Color color = GetForeColor (this);
+				var color = GetForeColor (this);
 				if (color != Color.Empty)
 					ForeColor = color;
 				base.Render (writer);
@@ -197,16 +197,16 @@ namespace System.Web.UI.WebControls
 					 * If neither HeaderText nor
 					 * HeaderImageUrl is set, use &nbsp;
 					 */
-					bool sort = false;
-					string sort_ex = SortExpression;
+					var sort = false;
+					var sort_ex = SortExpression;
 				
 					if (owner != null && sort_ex.Length > 0)
 						sort = owner.AllowSorting;
 				
-					string image_url = HeaderImageUrl;
+					var image_url = HeaderImageUrl;
 					if (image_url.Length > 0) {
 						if (sort) {
-							ImageButton butt = new ImageButton ();
+							var butt = new ImageButton ();
 
 							/* Don't need to
 							 * resolve this, Image
@@ -219,7 +219,7 @@ namespace System.Web.UI.WebControls
 
 							cell.Controls.Add (butt);
 						} else {
-							Image image = new Image ();
+							var image = new Image ();
 
 							image.ImageUrl = image_url;
 
@@ -238,7 +238,7 @@ namespace System.Web.UI.WebControls
 
 							cell.Controls.Add (link);
 						} else {
-							string text = HeaderText;
+							var text = HeaderText;
 							if (text.Length > 0)
 								cell.Text = text;
 							else
@@ -251,7 +251,7 @@ namespace System.Web.UI.WebControls
 				case ListItemType.Footer:
 				{
 					/* Display FooterText or &nbsp; */
-					string text = FooterText;
+					var text = FooterText;
 
 					if (text.Length > 0)
 						cell.Text = text;
@@ -346,7 +346,7 @@ namespace System.Web.UI.WebControls
 
 		protected virtual object SaveViewState ()
 		{
-			object[] res = new object[4];
+			var res = new object[4];
 
 			res[0] = viewstate.SaveViewState ();
 

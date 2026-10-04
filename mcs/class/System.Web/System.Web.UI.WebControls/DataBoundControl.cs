@@ -64,7 +64,7 @@ namespace System.Web.UI.WebControls
 		protected virtual IDataSource GetDataSource ()
 		{
 			if (IsBoundUsingDataSourceID) {
-				Control ctrl = FindDataSource ();
+				var ctrl = FindDataSource ();
 
 				if (ctrl == null)
 					throw new HttpException (string.Format ("A control with ID '{0}' could not be found.", DataSourceID));
@@ -77,7 +77,7 @@ namespace System.Web.UI.WebControls
 			if (ds != null)
 				return ds;
 			
-			IEnumerable ie = DataSourceResolver.ResolveDataSource (DataSource, DataMember);
+			var ie = DataSourceResolver.ResolveDataSource (DataSource, DataMember);
 			return new CollectionDataSource (ie);
 		}
 		
@@ -96,7 +96,7 @@ namespace System.Web.UI.WebControls
 			if (DataSource != null && IsBoundUsingDataSourceID)
 				throw new HttpException ("Control bound using both DataSourceID and DataSource properties.");
 			
-			IDataSource ds = GetDataSource ();
+			var ds = GetDataSource ();
 			if (ds != null)
 				return ds.GetView (DataMember);
 			else
@@ -135,7 +135,7 @@ namespace System.Web.UI.WebControls
 
 		void Initialize ()
 		{
-			Page page = Page;
+			var page = Page;
 			if (page != null && !IsDataBound) {
 				// LAMESPEC: see the comment above OnPagePreLoad
 				if (!page.IsPostBack)
@@ -151,7 +151,7 @@ namespace System.Web.UI.WebControls
 			if (currentView != null)
 				currentView.DataSourceViewChanged -= new EventHandler (OnDataSourceViewChanged);
 			
-			DataSourceView view = InternalGetData ();
+			var view = InternalGetData ();
 			if (view != currentView)
 				currentView = view;
 
@@ -178,7 +178,7 @@ namespace System.Web.UI.WebControls
 		{
 		}
 
-		protected override void ValidateDataSource (object dataSource)
+		protected override void ValidateDataSource (object? dataSource)
 		{
 			if (dataSource == null || dataSource is IListSource || dataSource is IEnumerable || dataSource is IDataSource)
 				return;
@@ -269,7 +269,7 @@ namespace System.Web.UI.WebControls
 
 		bool IsDataBound {
 			get {
-				object dataBound = ViewState ["DataBound"];
+				var dataBound = ViewState ["DataBound"];
 				return dataBound != null ? (bool) dataBound : false;
 			}
 			set {

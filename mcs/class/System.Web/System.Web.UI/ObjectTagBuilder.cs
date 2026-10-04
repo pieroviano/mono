@@ -60,8 +60,8 @@ namespace System.Web.UI
 					   ControlBuilder parentBuilder,
 					   Type type,
 					   string tagName,
-					   string id,
-					   IDictionary attribs) 
+					   string? id,
+					   IDictionary? attribs) 
 		{
 			if (id == null && attribs == null)
 				throw new HttpException ("Missing 'id'.");

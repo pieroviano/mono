@@ -101,9 +101,9 @@ namespace System.Web.UI.WebControls
 
 		protected override bool EvaluateIsValid ()
 		{
-			string controlToValidate = ControlToValidate;
+			var controlToValidate = ControlToValidate;
 			if (!String.IsNullOrEmpty (controlToValidate)) {
-				string value = GetControlValidationValue (controlToValidate);
+				var value = GetControlValidationValue (controlToValidate);
 				if (String.IsNullOrEmpty (value) && !ValidateEmptyText)
 					return true;
 

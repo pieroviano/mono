@@ -64,7 +64,7 @@ namespace System.Web.Security
 			ErrorMessage = "The field {0} is invalid.";
 		}
 
-		protected override ValidationResult IsValid (object value, ValidationContext validationContext)
+		protected override ValidationResult IsValid (object value, ValidationContext? validationContext)
 		{
 			var password = value as string;
 			var isError = false;

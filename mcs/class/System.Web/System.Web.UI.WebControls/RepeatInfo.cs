@@ -39,11 +39,11 @@ namespace System.Web.UI.WebControls {
 	public sealed class RepeatInfo {
 
 		// What is baseControl for ?
-		public void RenderRepeater (HtmlTextWriter writer, IRepeatInfoUser user, Style controlStyle, WebControl baseControl)
+		public void RenderRepeater (HtmlTextWriter writer, IRepeatInfoUser? user, Style? controlStyle, WebControl baseControl)
 		{
 			PrintValues (user);
-			RepeatLayout layout = RepeatLayout;
-			bool listLayout = layout == RepeatLayout.OrderedList || layout == RepeatLayout.UnorderedList;
+			var layout = RepeatLayout;
+			var listLayout = layout == RepeatLayout.OrderedList || layout == RepeatLayout.UnorderedList;
 
 			if (listLayout) {
 				if (user != null) {
@@ -54,7 +54,7 @@ namespace System.Web.UI.WebControls {
 				if (OuterTableImplied)
 					throw new InvalidOperationException ("The UnorderedList and OrderedList layouts do not support implied outer tables.");
 
-				int cols = RepeatColumns;
+				var cols = RepeatColumns;
 				if (cols > 1)
 					throw new InvalidOperationException ("The UnorderedList and OrderedList layouts do not support multi-column layouts.");
 			}
@@ -74,12 +74,12 @@ namespace System.Web.UI.WebControls {
 		{
 			w.Write ("<br />");
 		}
-		void RenderList (HtmlTextWriter w, IRepeatInfoUser user, Style controlStyle, WebControl baseControl)
+		void RenderList (HtmlTextWriter w, IRepeatInfoUser user, Style? controlStyle, WebControl baseControl)
 		{
-			int items = user.RepeatedItemCount;
+			var items = user.RepeatedItemCount;
 			RenderBeginTag (w, controlStyle, baseControl);
 
-			for (int i = 0; i < items; i++) {
+			for (var i = 0; i < items; i++) {
 				// Style s = null;
 				// s = user.GetItemStyle (ListItemType.Item, i);
 				// if (s != null)
@@ -92,19 +92,19 @@ namespace System.Web.UI.WebControls {
 			
 			w.RenderEndTag ();
 		}
-		void RenderVert (HtmlTextWriter w, IRepeatInfoUser user, Style controlStyle, WebControl baseControl) 
+		void RenderVert (HtmlTextWriter w, IRepeatInfoUser user, Style? controlStyle, WebControl baseControl) 
 		{
-			int itms = user.RepeatedItemCount;
+			var itms = user.RepeatedItemCount;
 			// total number of rows/columns in our table
-			int cols = RepeatColumns == 0 ? 1 : RepeatColumns;
+			var cols = RepeatColumns == 0 ? 1 : RepeatColumns;
 			// this gets ceil (itms / cols)
-			int rows = (itms + cols - 1) / cols;
-			bool sep = user.HasSeparators;
-			bool oti = OuterTableImplied;
-			int hdr_span = cols * ((sep && cols != 1) ? 2 : 1);
-			bool table = RepeatLayout == RepeatLayout.Table && !oti;
-			bool show_empty_trailing_items = true;
-			bool show_empty_trailing_sep = true;
+			var rows = (itms + cols - 1) / cols;
+			var sep = user.HasSeparators;
+			var oti = OuterTableImplied;
+			var hdr_span = cols * ((sep && cols != 1) ? 2 : 1);
+			var table = RepeatLayout == RepeatLayout.Table && !oti;
+			var show_empty_trailing_items = true;
+			var show_empty_trailing_sep = true;
 			
 			if (! oti)
 				RenderBeginTag (w, controlStyle, baseControl);
@@ -134,7 +134,7 @@ namespace System.Web.UI.WebControls {
 					if (UseAccessibleHeader)
 						w.AddAttribute ("scope", "col", false);
 					
-					Style s = user.GetItemStyle (ListItemType.Header, -1);
+					var s = user.GetItemStyle (ListItemType.Header, -1);
 					if (s != null)
 						s.AddAttributesToRender (w);
 
@@ -152,14 +152,14 @@ namespace System.Web.UI.WebControls {
 				}
 			}
 
-			for (int r = 0; r < rows; r ++) {
+			for (var r = 0; r < rows; r ++) {
 				if (table)
 					w.RenderBeginTag (HtmlTextWriterTag.Tr);
 				
-				for (int c = 0; c < cols; c ++) {
+				for (var c = 0; c < cols; c ++) {
 					// Find the item number we are in according to the repeat
 					// direction.
-					int item = index_vert (rows, cols, r, c, itms);
+					var item = index_vert (rows, cols, r, c, itms);
 
 					// This item is blank because there there not enough items
 					// to make a full row.
@@ -184,7 +184,7 @@ namespace System.Web.UI.WebControls {
 					if (sep && cols != 1) {
 						if (table) {
 							if (item < itms - 1) {
-								Style s = user.GetItemStyle (ListItemType.Separator, item);
+								var s = user.GetItemStyle (ListItemType.Separator, item);
 								if (s != null)
 									s.AddAttributesToRender (w);
 							}
@@ -209,7 +209,7 @@ namespace System.Web.UI.WebControls {
 				if (sep && r != rows - 1 /* no sep on last item */ && cols == 1) {
 					if (table) {
 						w.RenderBeginTag (HtmlTextWriterTag.Tr);
-						Style s = user.GetItemStyle (ListItemType.Separator, r);
+						var s = user.GetItemStyle (ListItemType.Separator, r);
 						if (s != null)
 							s.AddAttributesToRender (w);
 					
@@ -236,7 +236,7 @@ namespace System.Web.UI.WebControls {
 					if (hdr_span != 1)
 						w.AddAttribute (HtmlTextWriterAttribute.Colspan, hdr_span.ToString (), false);
 
-					Style s = user.GetItemStyle (ListItemType.Footer, -1);
+					var s = user.GetItemStyle (ListItemType.Footer, -1);
 					if (s != null)
 						s.AddAttributesToRender (w);
 					
@@ -256,20 +256,20 @@ namespace System.Web.UI.WebControls {
 			
 		}
 		
-		void RenderHoriz (HtmlTextWriter w, IRepeatInfoUser user, Style controlStyle, WebControl baseControl) 
+		void RenderHoriz (HtmlTextWriter w, IRepeatInfoUser user, Style? controlStyle, WebControl baseControl) 
 		{
-			int itms = user.RepeatedItemCount;
+			var itms = user.RepeatedItemCount;
 			// total number of rows/columns in our table
-			int cols = RepeatColumns == 0 ? itms : RepeatColumns;
+			var cols = RepeatColumns == 0 ? itms : RepeatColumns;
 			// this gets ceil (itms / cols)
-			int rows = cols == 0 ? 0 : (itms + cols - 1) / cols;
-			bool sep = user.HasSeparators;
+			var rows = cols == 0 ? 0 : (itms + cols - 1) / cols;
+			var sep = user.HasSeparators;
 			//bool oti = OuterTableImplied;
-			int hdr_span = cols * (sep ? 2 : 1);
+			var hdr_span = cols * (sep ? 2 : 1);
 
-			bool table = RepeatLayout == RepeatLayout.Table;
-			bool show_empty_trailing_items = true;
-			bool show_empty_trailing_sep = true;
+			var table = RepeatLayout == RepeatLayout.Table;
+			var show_empty_trailing_items = true;
+			var show_empty_trailing_sep = true;
 
 			RenderBeginTag (w, controlStyle, baseControl);
 
@@ -296,7 +296,7 @@ namespace System.Web.UI.WebControls {
 					if (UseAccessibleHeader)
 						w.AddAttribute ("scope", "col", false);
 
-					Style s = user.GetItemStyle (ListItemType.Header, -1);
+					var s = user.GetItemStyle (ListItemType.Header, -1);
 					if (s != null)
 						s.AddAttributesToRender (w);
 
@@ -315,14 +315,14 @@ namespace System.Web.UI.WebControls {
 				}
 			}
 						
-			for (int r = 0; r < rows; r ++) {
+			for (var r = 0; r < rows; r ++) {
 				if (table)
 					w.RenderBeginTag (HtmlTextWriterTag.Tr);
 				
-				for (int c = 0; c < cols; c ++) {
+				for (var c = 0; c < cols; c ++) {
 					// Find the item number we are in according to the repeat
 					// direction.
-					int item = r * cols + c;
+					var item = r * cols + c;
 
 					// This item is blank because there there not enough items
 					// to make a full row.
@@ -348,7 +348,7 @@ namespace System.Web.UI.WebControls {
 					if (sep) {
 						if (table) {
 							if (item < itms - 1) {
-								Style s = user.GetItemStyle (ListItemType.Separator, item);
+								var s = user.GetItemStyle (ListItemType.Separator, item);
 								if (s != null)
 									s.AddAttributesToRender (w);
 							}
@@ -379,7 +379,7 @@ namespace System.Web.UI.WebControls {
 					if (hdr_span != 1)
 						w.AddAttribute (HtmlTextWriterAttribute.Colspan, hdr_span.ToString (), false);
 
-					Style s = user.GetItemStyle (ListItemType.Footer, -1);
+					var s = user.GetItemStyle (ListItemType.Footer, -1);
 					if (s != null)
 						s.AddAttributesToRender (w);
 					
@@ -398,7 +398,7 @@ namespace System.Web.UI.WebControls {
 
 		int index_vert (int rows, int cols, int r, int c, int items)
 		{
-			int last = items % cols;
+			var last = items % cols;
 
 			if (last == 0)
 				last = cols;
@@ -417,7 +417,7 @@ namespace System.Web.UI.WebControls {
 			return v;
 		}
 
-		void RenderBeginTag (HtmlTextWriter w, Style s, WebControl wc)
+		void RenderBeginTag (HtmlTextWriter w, Style? s, WebControl wc)
 		{
 			WebControl c;
 			switch (RepeatLayout) {	
@@ -498,7 +498,7 @@ namespace System.Web.UI.WebControls {
 		[Conditional ("DEBUG_REPEAT_INFO")]
 		internal void PrintValues (IRepeatInfoUser riu)
 		{
-			string s = String.Format ("Layout {0}; Direction {1}; Cols {2}; OuterTableImplied {3}\n" +
+			var s = String.Format ("Layout {0}; Direction {1}; Cols {2}; OuterTableImplied {3}\n" +
 					"User: itms {4}, hdr {5}; ftr {6}; sep {7}", RepeatLayout, RepeatDirection,
 					RepeatColumns, OuterTableImplied, riu.RepeatedItemCount, riu.HasSeparators, riu.HasHeader,
 					riu.HasFooter, riu.HasSeparators

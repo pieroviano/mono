@@ -82,7 +82,7 @@ namespace System.Web.Configuration
 
 		protected override object GetElementKey (ConfigurationElement element)
 		{
-			CodeSubDirectory sd = (CodeSubDirectory) element;
+			var sd = (CodeSubDirectory) element;
 			return sd.DirectoryName;
 		}
 

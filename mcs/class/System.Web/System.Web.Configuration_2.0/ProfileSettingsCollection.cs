@@ -71,7 +71,7 @@ namespace System.Web.Configuration {
 
 		public int IndexOf (string name)
 		{
-			ProfileSettings s = (ProfileSettings)BaseGet (name);
+			var s = (ProfileSettings)BaseGet (name);
 			if (s == null)
 				return -1; /* XXX */
 			else

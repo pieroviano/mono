@@ -58,7 +58,7 @@ namespace System.Web.UI
 		internal override void LoadConfigDefaults ()
 		{
 			base.LoadConfigDefaults ();
-			PagesSection ps = PagesConfig;
+			var ps = PagesConfig;
 			autoEventWireup = ps.AutoEventWireup;
 			enableViewState = ps.EnableViewState;
 			compilationMode = ps.CompilationMode;
@@ -69,7 +69,7 @@ namespace System.Web.UI
 			autoEventWireup = GetBool (atts, "AutoEventWireup", autoEventWireup);
 			enableViewState = GetBool (atts, "EnableViewState", enableViewState);
 
-			string value = GetString (atts, "CompilationMode", compilationMode.ToString ());
+			var value = GetString (atts, "CompilationMode", compilationMode.ToString ());
 			if (!String.IsNullOrEmpty (value)) {
 				try {
 					compilationMode = (CompilationMode) Enum.Parse (typeof (CompilationMode), value, true);
@@ -92,7 +92,7 @@ namespace System.Web.UI
 
 		internal object GetCompiledInstance ()
 		{
-			Type type = CompileIntoType ();
+			var type = CompileIntoType ();
 			if (type == null)
 				return null;
 
@@ -106,14 +106,14 @@ namespace System.Web.UI
 
 		internal override void AddDirective (string directive, IDictionary atts)
 		{
-			int cmp = String.Compare ("Register", directive, true, Helpers.InvariantCulture);
+			var cmp = String.Compare ("Register", directive, true, Helpers.InvariantCulture);
 			if (cmp == 0) {
-				string tagprefix = GetString (atts, "TagPrefix", null);
+				var tagprefix = GetString (atts, "TagPrefix", null);
 				if (tagprefix == null || tagprefix.Trim () == "")
 					ThrowParseException ("No TagPrefix attribute found.");
 
-				string ns = GetString (atts, "Namespace", null);
-				string assembly = GetString (atts, "Assembly", null);
+				var ns = GetString (atts, "Namespace", null);
+				var assembly = GetString (atts, "Assembly", null);
 
 				if (ns == null && assembly != null)
 					ThrowParseException ("Need a Namespace attribute with Assembly.");
@@ -126,8 +126,8 @@ namespace System.Web.UI
 					return;
 				}
 
-				string tagname = GetString (atts, "TagName", null);
-				string src = GetString (atts, "Src", null);
+				var tagname = GetString (atts, "TagName", null);
+				var src = GetString (atts, "Src", null);
 
 				if (tagname == null && src != null)
 					ThrowParseException ("Need a TagName attribute with Src.");
@@ -142,21 +142,21 @@ namespace System.Web.UI
 			cmp = String.Compare ("Reference", directive, true, Helpers.InvariantCulture);
 			if (cmp == 0) {
 				string vp = null;
-				string page = GetString (atts, "Page", null);
-				bool is_page = (page != null);
+				var page = GetString (atts, "Page", null);
+				var is_page = (page != null);
 
 				if (is_page)
 					vp = page;
 
-				bool dupe = false;
-				string control = GetString (atts, "Control", null);
+				var dupe = false;
+				var control = GetString (atts, "Control", null);
 				if (control != null)
 					if (is_page)
 						dupe = true;
 					else
 						vp = control;
 				
-				string virtualPath = GetString (atts, "VirtualPath", null);
+				var virtualPath = GetString (atts, "VirtualPath", null);
 				if (virtualPath != null)
 					if (vp != null)
 						dupe = true;

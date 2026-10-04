@@ -48,7 +48,7 @@ namespace System.Web.UI.WebControls
 			return null;
 		}*/
 
-		public override TypeConverter.StandardValuesCollection GetStandardValues (ITypeDescriptorContext context)
+		public override TypeConverter.StandardValuesCollection GetStandardValues (ITypeDescriptorContext? context)
 		{
 			if (context == null)
 				return null;
@@ -58,8 +58,8 @@ namespace System.Web.UI.WebControls
 			if (container == null)
 				return null;
 
-			ComponentCollection ctrlCollection = container.Components;
-			ArrayList arrayList = new ArrayList (0);
+			var ctrlCollection = container.Components;
+			var arrayList = new ArrayList (0);
 
 			foreach (Control control in ctrlCollection) {
 				if (FilterControl(control))
@@ -84,7 +84,7 @@ namespace System.Web.UI.WebControls
 			return false;
 		}*/
 
-		public override bool GetStandardValuesSupported (ITypeDescriptorContext context)
+		public override bool GetStandardValuesSupported (ITypeDescriptorContext? context)
 		{
 			if (context == null)
 				return false;

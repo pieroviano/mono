@@ -51,14 +51,14 @@ namespace System.Web.UI.WebControls {
 		{
 			base.AddAttributesToRender (writer);
 			
-			string image = BackImageUrl;
+			var image = BackImageUrl;
 			if (image != "") {
 				image = ResolveClientUrl (image);
 				writer.AddStyleAttribute (HtmlTextWriterStyle.BackgroundImage, image);
 			}
 
 			if (!String.IsNullOrEmpty (DefaultButton) && Page != null) {
-				Control button = FindControl (DefaultButton);
+				var button = FindControl (DefaultButton);
 				if (button == null || !(button is IButtonControl))
 					throw new InvalidOperationException (String.Format ("The DefaultButton of '{0}' must be the ID of a control of type IButtonControl.", ID));
 
@@ -92,7 +92,7 @@ namespace System.Web.UI.WebControls {
 				writer.AddStyleAttribute (HtmlTextWriterStyle.WhiteSpace, "nowrap");
 			}
 
-			string align = "";
+			var align = "";
 
 			switch (HorizontalAlign) {
 			case HorizontalAlign.Center: align = "center"; break;

@@ -132,7 +132,7 @@ namespace System.Web.UI {
 			imports = new Dictionary <string, bool> (StringComparer.Ordinal);
 			LoadConfigDefaults ();
 			assemblies = new List <string> ();
-			CompilationSection compConfig = CompilationConfig;
+			var compConfig = CompilationConfig;
 			foreach (AssemblyInfo info in compConfig.Assemblies) {
 				if (info.Assembly != "*")
 					AddAssemblyByName (info.Assembly);
@@ -153,7 +153,7 @@ namespace System.Web.UI {
 			if (Context.ApplicationInstance == null)
                                 return; // this may happen if we have Global.asax and have
                                         // controls registered from Web.Config
-			string location = Context.ApplicationInstance.AssemblyLocation;
+			var location = Context.ApplicationInstance.AssemblyLocation;
 			if (location != typeof (TemplateParser).Assembly.Location) {
 				 assemblies.Add (location);
 				 appAssemblyIndex = assemblies.Count - 1;
@@ -162,9 +162,9 @@ namespace System.Web.UI {
 
 		internal abstract Type CompileIntoType ();
 
-		internal void AddControl (Type type, IDictionary attributes)
+		internal void AddControl (Type? type, IDictionary attributes)
 		{
-			AspGenerator generator = AspGenerator;
+			var generator = AspGenerator;
 			if (generator == null)
 				return;
 			generator.AddControl (type, attributes);
@@ -175,16 +175,16 @@ namespace System.Web.UI {
 			if (BuildManager.HaveResources)
 				imports.Add ("System.Resources", true);
 			
-			PagesSection pages = PagesConfig;
+			var pages = PagesConfig;
 			if (pages == null)
 				return;
 
-			NamespaceCollection namespaces = pages.Namespaces;
+			var namespaces = pages.Namespaces;
 			if (namespaces == null || namespaces.Count == 0)
 				return;
 			
 			foreach (NamespaceInfo nsi in namespaces) {
-				string ns = nsi.Namespace;
+				var ns = nsi.Namespace;
 				if (imports.ContainsKey (ns))
 					continue;
 				
@@ -195,11 +195,11 @@ namespace System.Web.UI {
 		internal void RegisterCustomControl (string tagPrefix, string tagName, string src)
                 {
                         string realpath = null;
-			bool fileExists = false;
+			var fileExists = false;
 			VirtualFile vf = null;
-			VirtualPathProvider vpp = HostingEnvironment.VirtualPathProvider;
-			VirtualPath vp = new VirtualPath (src, BaseVirtualDir);
-			string vpAbsolute = vpp.CombineVirtualPaths (VirtualPath.Absolute, vp.Absolute);
+			var vpp = HostingEnvironment.VirtualPathProvider;
+			var vp = new VirtualPath (src, BaseVirtualDir);
+			var vpAbsolute = vpp.CombineVirtualPaths (VirtualPath.Absolute, vp.Absolute);
 			
 			if (vpp.FileExists (vpAbsolute)) {
 				fileExists = true;
@@ -214,7 +214,7 @@ namespace System.Web.UI {
 			if (String.Compare (realpath, inputFile, StringComparison.Ordinal) == 0)
                                 return;
 			
-			string vpath = vf.VirtualPath;
+			var vpath = vf.VirtualPath;
                         
                         try {
 				RegisterTagName (tagPrefix + ":" + tagName);
@@ -227,7 +227,7 @@ namespace System.Web.UI {
                         }
                 }
 
-                internal void RegisterNamespace (string tagPrefix, string ns, string assembly)
+                internal void RegisterNamespace (string tagPrefix, string ns, string? assembly)
                 {
                         AddImport (ns);
                         Assembly ass = null;
@@ -244,7 +244,7 @@ namespace System.Web.UI {
 
 		internal static string GetOneKey (IDictionary tbl)
 		{
-			foreach (object key in tbl.Keys)
+			foreach (var key in tbl.Keys)
 				return key.ToString ();
 
 			return null;
@@ -254,7 +254,7 @@ namespace System.Web.UI {
 		{
 			var pageParserFilter = PageParserFilter;
 			if (String.Compare (directive, DefaultDirectiveName, true, Helpers.InvariantCulture) == 0) {
-				bool allowMainDirective = allowedMainDirectives > 0;
+				var allowMainDirective = allowedMainDirectives > 0;
 				
 				if (mainAttributes != null && !allowMainDirective)
 					ThrowParseException ("Only 1 " + DefaultDirectiveName + " is allowed");
@@ -272,10 +272,10 @@ namespace System.Web.UI {
 			} else if (pageParserFilter != null)
 				pageParserFilter.PreprocessDirective (directive.ToLower (Helpers.InvariantCulture), atts);
 				
-			int cmp = String.Compare ("Assembly", directive, true, Helpers.InvariantCulture);
+			var cmp = String.Compare ("Assembly", directive, true, Helpers.InvariantCulture);
 			if (cmp == 0) {
-				string name = GetString (atts, "Name", null);
-				string src = GetString (atts, "Src", null);
+				var name = GetString (atts, "Name", null);
+				var src = GetString (atts, "Src", null);
 
 				if (atts.Count > 0)
 					ThrowParseException ("Attribute " + GetOneKey (atts) + " unknown.");
@@ -297,7 +297,7 @@ namespace System.Web.UI {
 
 			cmp = String.Compare ("Import", directive, true, Helpers.InvariantCulture);
 			if (cmp == 0) {
-				string namesp = GetString (atts, "Namespace", null);
+				var namesp = GetString (atts, "Namespace", null);
 				if (atts.Count > 0)
 					ThrowParseException ("Attribute " + GetOneKey (atts) + " unknown.");
 				
@@ -307,12 +307,12 @@ namespace System.Web.UI {
 
 			cmp = String.Compare ("Implements", directive, true, Helpers.InvariantCulture);
 			if (cmp == 0) {
-				string ifacename = GetString (atts, "Interface", "");
+				var ifacename = GetString (atts, "Interface", "");
 
 				if (atts.Count > 0)
 					ThrowParseException ("Attribute " + GetOneKey (atts) + " unknown.");
 				
-				Type iface = LoadType (ifacename);
+				var iface = LoadType (ifacename);
 				if (iface == null)
 					ThrowParseException ("Cannot find type " + ifacename);
 
@@ -325,7 +325,7 @@ namespace System.Web.UI {
 
 			cmp = String.Compare ("OutputCache", directive, true, Helpers.InvariantCulture);
 			if (cmp == 0) {
-				HttpResponse response = HttpContext.Current.Response;
+				var response = HttpContext.Current.Response;
 				if (response != null)
 					response.Cache.SetValidUntilExpires (true);
 				
@@ -347,7 +347,7 @@ namespace System.Web.UI {
 						     "or a list of name/value pairs.");
 
 			foreach (DictionaryEntry entry in atts) {
-				string key = (string) entry.Key;
+				var key = (string) entry.Key;
 				if (key == null)
 					continue;
 					
@@ -436,14 +436,14 @@ namespace System.Web.UI {
 		
 		internal Type LoadType (string typeName)
 		{
-			Type type = HttpApplication.LoadType (typeName);
+			var type = HttpApplication.LoadType (typeName);
 			if (type == null)
 				return null;
-			Assembly asm = type.Assembly;
-			string location = asm.Location;
+			var asm = type.Assembly;
+			var location = asm.Location;
 			
 			string dirname = Path.GetDirectoryName (location);
-			bool doAddAssembly = true;
+			var doAddAssembly = true;
 			if (dirname == HttpApplication.BinDirectory)
 				doAddAssembly = false;
 
@@ -462,7 +462,7 @@ namespace System.Web.UI {
 				interfaces.Add (iface);
 		}
 		
-		internal virtual void AddImport (string namesp)
+		internal virtual void AddImport (string? namesp)
 		{
 			if (namesp == null || namesp.Length == 0)
 				return;
@@ -489,11 +489,11 @@ namespace System.Web.UI {
 			else if (namespacesCache.ContainsKey (namesp))
 				return;
 			
-			foreach (Assembly asm in AppDomain.CurrentDomain.GetAssemblies ())
+			foreach (var asm in AppDomain.CurrentDomain.GetAssemblies ())
 				if (FindNamespaceInAssembly (asm, namesp))
 					return;
 			
-			IList tla = BuildManager.TopLevelAssemblies;
+			var tla = BuildManager.TopLevelAssemblies;
 			if (tla != null && tla.Count > 0) {
 				foreach (Assembly asm in tla) {
 					if (FindNamespaceInAssembly (asm, namesp))
@@ -502,7 +502,7 @@ namespace System.Web.UI {
 			}
 
 			Assembly a;
-			foreach (string s in binDirAssemblies) {
+			foreach (var s in binDirAssemblies) {
 				a = Assembly.LoadFrom (s);
 				if (FindNamespaceInAssembly (a, namesp))
 					return;
@@ -520,7 +520,7 @@ namespace System.Web.UI {
 				return false;
 			}
 			
-			foreach (Type type in asmTypes) {
+			foreach (var type in asmTypes) {
 				if (String.Compare (type.Namespace, namesp, StringComparison.Ordinal) == 0) {
 					namespacesCache.Add (namesp, true);
 					AddAssembly (asm, true);
@@ -559,7 +559,7 @@ namespace System.Web.UI {
 				dependencies.Add (filename);
 		}
 		
-		internal virtual void AddAssembly (Assembly assembly, bool fullPath)
+		internal virtual void AddAssembly (Assembly? assembly, bool fullPath)
 		{
 			if (assembly == null || assembly.Location == String.Empty)
 				return;
@@ -568,7 +568,7 @@ namespace System.Web.UI {
 				anames = new Dictionary <string, object> ();
 
 			string name = assembly.GetName ().Name;
-			string loc = assembly.Location;
+			var loc = assembly.Location;
 			if (fullPath) {
 				if (!assemblies.Contains (loc)) {
 					assemblies.Add (loc);
@@ -657,7 +657,7 @@ namespace System.Web.UI {
 			if (atts.Contains ("LinePragmas"))
 				linePragmasOn = GetBool (atts, "LinePragmas", true);
 
-			string inherits = GetString (atts, "Inherits", null);
+			var inherits = GetString (atts, "Inherits", null);
 			string srcRealPath = null;
 			
 			// In ASP 2+, the source file is actually integrated with
@@ -670,7 +670,7 @@ namespace System.Web.UI {
 			if (src == null && codeFileBaseClass != null)
 				ThrowParseException ("The 'CodeFileBaseClass' attribute cannot be used without a 'CodeFile' attribute");
 
-			string legacySrc = GetString (atts, "Src", null);
+			var legacySrc = GetString (atts, "Src", null);
 			var vpp = HostingEnvironment.VirtualPathProvider;
 			if (legacySrc != null) {
 				legacySrc = vpp.CombineVirtualPaths (BaseVirtualDir, legacySrc);
@@ -732,8 +732,8 @@ namespace System.Web.UI {
 			
 			className = GetString (atts, "ClassName", null);
 			if (className != null) {
-				string [] identifiers = className.Split ('.');
-				for (int i = 0; i < identifiers.Length; i++)
+				var identifiers = className.Split ('.');
+				for (var i = 0; i < identifiers.Length; i++)
 					if (!CodeGenerator.IsValidLanguageIndependentIdentifier (identifiers [i]))
 						ThrowParseException (String.Format ("'{0}' is not a valid "
 							+ "value for attribute 'classname'.", className));
@@ -776,21 +776,21 @@ namespace System.Web.UI {
 		void CheckUnknownAttribute (string name, string val, string inherits)
 		{
 			MemberInfo mi = null;
-			bool missing = false;
-			string memberName = name.Trim ().ToLower (Helpers.InvariantCulture);
-			Type parent = codeFileBaseClassType;
+			var missing = false;
+			var memberName = name.Trim ().ToLower (Helpers.InvariantCulture);
+			var parent = codeFileBaseClassType;
 
 			if (parent == null)
 				parent = baseType;
 			
 			try {
-				MemberInfo[] infos = parent.GetMember (memberName,
+				var infos = parent.GetMember (memberName,
 								       MemberTypes.Field | MemberTypes.Property,
 								       BindingFlags.Public | BindingFlags.Instance |
 								       BindingFlags.IgnoreCase | BindingFlags.Static);
 				if (infos.Length != 0) {
 					// prefer public properties to public methods (it's what MS.NET does)
-					foreach (MemberInfo tmp in infos) {
+					foreach (var tmp in infos) {
 						if (tmp is PropertyInfo) {
 							mi = tmp;
 							break;
@@ -822,8 +822,8 @@ namespace System.Web.UI {
 			} else
 				ThrowParseException ("Could not determine member the kind of '{0}' in base type '{1}",
 						     memberName, inherits);
-			TypeConverter converter = TypeDescriptor.GetConverter (memberType);
-			bool convertible = true;
+			var converter = TypeDescriptor.GetConverter (memberType);
+			var convertible = true;
 			object value = null;
 			
 			if (converter == null || !converter.CanConvertFrom (typeof (string)))
@@ -841,11 +841,11 @@ namespace System.Web.UI {
 				ThrowParseException ("Error parsing attribute '{0}': Cannot create an object of type '{1}' from its string representation '{2}' for the '{3}' property.",
 						     memberName, memberType, val, mi.Name);
 			
-			UnknownAttributeDescriptor desc = new UnknownAttributeDescriptor (mi, value);
+			var desc = new UnknownAttributeDescriptor (mi, value);
 			unknownMainAttributes.Add (desc);
 		}
 		
-		internal void SetBaseType (string type)
+		internal void SetBaseType (string? type)
 		{
 			Type parent;			
 			if (type == null || type == DefaultBaseTypeName)
@@ -895,7 +895,7 @@ namespace System.Web.UI {
 		Assembly GetAssemblyFromSource (string vpath)
 		{			
 			vpath = UrlUtils.Combine (BaseVirtualDir, vpath);
-			string realPath = MapPath (vpath, false);
+			var realPath = MapPath (vpath, false);
 			if (!File.Exists (realPath))
 				ThrowParseException ("File " + vpath + " not found");
 
@@ -904,18 +904,18 @@ namespace System.Web.UI {
 			CompilerResults result;
 			string tmp;
 			CompilerParameters parameters;
-			CodeDomProvider provider = BaseCompiler.CreateProvider (HttpContext.Current, language, out parameters, out tmp);
+			var provider = BaseCompiler.CreateProvider (HttpContext.Current, language, out parameters, out tmp);
 			if (provider == null)
 				throw new HttpException ("Cannot find provider for language '" + language + "'.");
 			
-			AssemblyBuilder abuilder = new AssemblyBuilder (provider);
+			var abuilder = new AssemblyBuilder (provider);
 			abuilder.CompilerOptions = parameters;
 			abuilder.AddAssemblyReference (BuildManager.GetReferencedAssemblies () as List <Assembly>);
 			abuilder.AddCodeFile (realPath);
 			result = abuilder.BuildAssembly (new VirtualPath (vpath));
 
 			if (result.NativeCompilerReturnValue != 0) {
-				using (StreamReader reader = new StreamReader (realPath)) {
+				using (var reader = new StreamReader (realPath)) {
 					throw new CompilationException (realPath, result.Errors, reader.ReadToEnd ());
 				}
 			}
@@ -941,7 +941,7 @@ namespace System.Web.UI {
 				if (pageParserFilter != null)
 					return pageParserFilter;
 
-				Type t = PageParserFilterType;
+				var t = PageParserFilterType;
 				if (t == null)
 					return null;
 				
@@ -958,7 +958,7 @@ namespace System.Web.UI {
 					pageParserFilterType = PageParser.DefaultPageParserFilterType;
 					if (pageParserFilterType != null)
 						return pageParserFilterType;
-					string typeName = PagesConfig.PageParserFilterType;
+					var typeName = PagesConfig.PageParserFilterType;
 					if (String.IsNullOrEmpty (typeName))
 						return null;
 					
@@ -1052,14 +1052,14 @@ namespace System.Web.UI {
 
 		static long autoClassCounter = 0;
 
-		internal string EncodeIdentifier (string value)
+		internal string EncodeIdentifier (string? value)
 		{
 			if (value == null || value.Length == 0 || CodeGenerator.IsValidLanguageIndependentIdentifier (value))
 				return value;
 
-			StringBuilder ret = new StringBuilder ();
+			var ret = new StringBuilder ();
 
-			char ch = value [0];
+			var ch = value [0];
 			switch (Char.GetUnicodeCategory (ch)) {
 				case UnicodeCategory.LetterNumber:
 				case UnicodeCategory.LowercaseLetter:
@@ -1081,7 +1081,7 @@ namespace System.Web.UI {
 					break;
 			}
 
-			for (int i = 1; i < value.Length; i++) {
+			for (var i = 1; i < value.Length; i++) {
 				ch = value [i];
 				switch (Char.GetUnicodeCategory (ch)) {
 					case UnicodeCategory.LetterNumber:
@@ -1112,7 +1112,7 @@ namespace System.Web.UI {
 				if (className != null)
 					return className;
 
-				string physPath = HttpContext.Current.Request.PhysicalApplicationPath;
+				var physPath = HttpContext.Current.Request.PhysicalApplicationPath;
 				string inFile;
 				
 				if (String.IsNullOrEmpty (inputFile)) {
@@ -1164,7 +1164,7 @@ namespace System.Web.UI {
 		internal List <string> Assemblies {
 			get {
 				if (appAssemblyIndex != -1) {
-					string o = assemblies [appAssemblyIndex];
+					var o = assemblies [appAssemblyIndex];
 					assemblies.RemoveAt (appAssemblyIndex);
 					assemblies.Add (o);
 					appAssemblyIndex = -1;
@@ -1178,7 +1178,7 @@ namespace System.Web.UI {
 			get {
 				if (rootBuilder != null)
 					return rootBuilder;
-				AspGenerator generator = AspGenerator;
+				var generator = AspGenerator;
 				if (generator != null)
 					rootBuilder = generator.RootBuilder;
 

@@ -46,7 +46,7 @@ namespace System.Web
 
 		string QueryString {
 			get {
-				string qs = _request.QueryStringRaw;
+				var qs = _request.QueryStringRaw;
 
 				if (String.IsNullOrEmpty (qs))
 					return qs;
@@ -93,20 +93,20 @@ namespace System.Web
 				     
 		string Fill (HttpWorkerRequest wr, bool standard)
 		{
-			StringBuilder sb = new StringBuilder ();
+			var sb = new StringBuilder ();
 			
-			for (int i = 0; i < HttpWorkerRequest.RequestHeaderMaximum; i++){
+			for (var i = 0; i < HttpWorkerRequest.RequestHeaderMaximum; i++){
 				string val = wr.GetKnownRequestHeader (i);
 				if (String.IsNullOrEmpty (val))
 					continue;
-				string key = HttpWorkerRequest.GetKnownRequestHeaderName (i);
+				var key = HttpWorkerRequest.GetKnownRequestHeaderName (i);
 				AppendKeyValue (sb, key, val, standard);
 			}
-			string [][] other = wr.GetUnknownRequestHeaders ();
+			var other = wr.GetUnknownRequestHeaders ();
 			if (other == null)
 				return sb.ToString ();
 
-			for (int i = other.Length; i > 0; ){
+			for (var i = other.Length; i > 0; ){
 				i--;
 				AppendKeyValue (sb, other [i][0], other [i][1], standard);
 			}
@@ -120,7 +120,7 @@ namespace System.Web
 			string hvalue;
 
 			// Add all known headers
-			for (int i = 0; i < HttpWorkerRequest.RequestHeaderMaximum; i++) {
+			for (var i = 0; i < HttpWorkerRequest.RequestHeaderMaximum; i++) {
 				hvalue = wr.GetKnownRequestHeader (i);
 				if (null != hvalue && hvalue.Length > 0) {
 					hname = HttpWorkerRequest.GetKnownRequestHeaderName (i);
@@ -130,9 +130,9 @@ namespace System.Web
 			}
 
 			// Get all other headers
-			string [][] unknown = wr.GetUnknownRequestHeaders ();
+			var unknown = wr.GetUnknownRequestHeaders ();
 			if (null != unknown) {
-				for (int i = 0; i < unknown.Length; i++) {
+				for (var i = 0; i < unknown.Length; i++) {
 					hname = unknown [i][0];
 					if (hname == null)
 						continue;
@@ -144,7 +144,7 @@ namespace System.Web
 
 		void loadServerVariablesCollection()
 		{
-			HttpWorkerRequest wr = _request.WorkerRequest;
+			var wr = _request.WorkerRequest;
 			if (loaded || (wr == null))
 				return;
 
@@ -156,7 +156,7 @@ namespace System.Web
 			Add("APPL_MD_PATH", wr.GetServerVariable("APPL_MD_PATH"));
 			Add("APPL_PHYSICAL_PATH", wr.GetServerVariable("APPL_PHYSICAL_PATH"));
 
-			IIdentity identity = UserIdentity;
+			var identity = UserIdentity;
 			
 			if (identity != null && identity.IsAuthenticated) {
 				Add ("AUTH_TYPE", identity.AuthenticationType);
@@ -222,7 +222,7 @@ namespace System.Web
 			loadServerVariablesCollection ();
 		}
 
-		protected override string InternalGet (string name)
+		protected override string InternalGet (string? name)
 		{
 			if ((name == null) || (this._request == null))
 				return null;

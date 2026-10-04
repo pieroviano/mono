@@ -117,12 +117,12 @@ namespace System.Web.UI
 		void RetrieveCachedContents ()
 		{
 			cacheKey = CreateKey ();
-			OutputCacheProvider provider = GetProvider ();
+			var provider = GetProvider ();
 			cachedData = provider.Get (cacheKey) as string;
 		}
 		OutputCacheProvider GetProvider ()
 		{
-			string providerName = ProviderName;
+			var providerName = ProviderName;
 			OutputCacheProvider provider;
 
 			if (String.IsNullOrEmpty (providerName))
@@ -165,10 +165,10 @@ namespace System.Web.UI
 				return;
 			}
 			
-			HttpContext context = HttpContext.Current;
-			StringWriter writer = new StringWriter ();
-			TextWriter prev = context.Response.SetTextWriter (writer);
-			HtmlTextWriter txt_writer = new HtmlTextWriter (writer);
+			var context = HttpContext.Current;
+			var writer = new StringWriter ();
+			var prev = context.Response.SetTextWriter (writer);
+			var txt_writer = new HtmlTextWriter (writer);
 			string text;
 			try {
 				control.RenderControl (txt_writer);
@@ -177,8 +177,8 @@ namespace System.Web.UI
 				context.Response.SetTextWriter (prev);
 				output.Write (text);
 			}
-			OutputCacheProvider provider = GetProvider ();
-			DateTime utcExpire = DateTime.UtcNow.AddSeconds (duration);
+			var provider = GetProvider ();
+			var utcExpire = DateTime.UtcNow.AddSeconds (duration);
 			provider.Set (cacheKey, text, utcExpire);;
 			context.InternalCache.Insert (cacheKey, text, dependency, utcExpire.ToLocalTime (),
 						      Cache.NoSlidingExpiration, CacheItemPriority.Normal,
@@ -202,15 +202,15 @@ namespace System.Web.UI
 
 		string CreateKey ()
 		{
-			StringBuilder builder = new StringBuilder ();
-			HttpContext context = HttpContext.Current;
+			var builder = new StringBuilder ();
+			var context = HttpContext.Current;
 
 			builder.Append ("PartialCachingControl\n");
 			builder.Append ("GUID: " + guid + "\n");
 
 			if (varyby_params != null && varyby_params.Length > 0) {
-				string[] prms = varyby_params.Split (';');
-				for (int i=0; i<prms.Length; i++) {
+				var prms = varyby_params.Split (';');
+				for (var i=0; i<prms.Length; i++) {
 					string val = context.Request.Params [prms [i]];
 					builder.Append ("VP:");
 					builder.Append (prms [i]);
@@ -221,8 +221,8 @@ namespace System.Web.UI
 			}
 
 			if (varyby_controls != null && varyby_params.Length > 0) {
-				string[] prms = varyby_controls.Split (';');
-				for (int i=0; i<prms.Length; i++) {
+				var prms = varyby_controls.Split (';');
+				for (var i=0; i<prms.Length; i++) {
 					string val = context.Request.Params [prms [i]];
 					builder.Append ("VCN:");
 					builder.Append (prms [i]);
@@ -233,7 +233,7 @@ namespace System.Web.UI
 			}
 
 			if (varyby_custom != null) {
-				string val = context.ApplicationInstance.GetVaryByCustomString (context,
+				var val = context.ApplicationInstance.GetVaryByCustomString (context,
 						varyby_custom);
 				builder.Append ("VC:");
 				builder.Append (varyby_custom);

@@ -78,7 +78,7 @@ namespace System.Web.Caching
 			if (!needsEviction)
 				return;
 
-			for (int i = dict.Count; i > lowWaterMark; i--) {
+			for (var i = dict.Count; i > lowWaterMark; i--) {
 				var key = revdict [list.Last];
 
 				owner.Remove (key, CacheItemRemovedReason.Underused, false, true);
@@ -89,7 +89,7 @@ namespace System.Web.Caching
 		public void InvokePrivateCallbacks ()
 		{
 			foreach (var de in dict) {
-				CacheItem item = de.Value.Value;
+				var item = de.Value.Value;
 				if (item == null || item.Disabled)
 					continue;
 				
@@ -108,8 +108,8 @@ namespace System.Web.Caching
 		{
 			var ret = new List <CacheItem> ();
 
-			foreach (LinkedListNode <CacheItem> node in dict.Values) {
-				CacheItem item = node.Value;
+			foreach (var node in dict.Values) {
+				var item = node.Value;
 				
 				if (qualifier (item))
 					ret.Add (item);
@@ -126,13 +126,13 @@ namespace System.Web.Caching
 			if (dict.Count == 0)
 				return ret;
 
-			foreach (LinkedListNode <CacheItem> node in dict.Values)
+			foreach (var node in dict.Values)
 				ret.Add (node.Value);
 
 			return ret;
 		}
 		
-		public void Remove (string key)
+		public void Remove (string? key)
 		{
 			if (key == null)
 				return;
@@ -141,7 +141,7 @@ namespace System.Web.Caching
 			if (!dict.TryGetValue (key, out node))
 				return;
 
-			CacheItem item = node.Value;
+			var item = node.Value;
 			dict.Remove (key);
 
 			if (item == null || item.Priority != CacheItemPriority.NotRemovable) {

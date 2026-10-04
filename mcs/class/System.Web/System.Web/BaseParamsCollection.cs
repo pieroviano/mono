@@ -69,7 +69,7 @@ namespace System.Web
 		public override string Get (string name)
 		{
 			if (!_loaded) {
-				string s = InternalGet (name);
+				var s = InternalGet (name);
 				if (s != null && s.Length > 0)
 					return s;
 

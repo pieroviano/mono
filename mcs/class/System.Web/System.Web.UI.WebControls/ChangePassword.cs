@@ -485,7 +485,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValue ("")]
 		public virtual string MembershipProvider {
 			get {
-				object o = ViewState ["MembershipProvider"];
+				var o = ViewState ["MembershipProvider"];
 				return (o == null) ? String.Empty : (string) o;
 			}
 			
@@ -722,12 +722,12 @@ namespace System.Web.UI.WebControls
 		{
 			Controls.Clear ();
 
-			ITemplate cpTemplate = ChangePasswordTemplate;
+			var cpTemplate = ChangePasswordTemplate;
 			if (cpTemplate == null)
 				cpTemplate = new ChangePasswordDeafultTemplate (this);
 			((ChangePasswordContainer) ChangePasswordTemplateContainer).InstantiateTemplate (cpTemplate);
 
-			ITemplate sTemplate = SuccessTemplate;
+			var sTemplate = SuccessTemplate;
 			if (sTemplate == null)
 				sTemplate = new SuccessDefaultTemplate (this);
 			((SuccessContainer) SuccessTemplateContainer).InstantiateTemplate (sTemplate);
@@ -737,7 +737,7 @@ namespace System.Web.UI.WebControls
 
 			IEditableTextControl editable;
 
-			ChangePasswordContainer container = (ChangePasswordContainer) ChangePasswordTemplateContainer;
+			var container = (ChangePasswordContainer) ChangePasswordTemplateContainer;
 			if (DisplayUserName) {
 				editable = container.UserNameTextBox;
 				if (editable != null)
@@ -760,7 +760,7 @@ namespace System.Web.UI.WebControls
 		protected internal override void Render (HtmlTextWriter writer)
 		{
 			VerifyInlinePropertiesNotSet ();
-			for (int i = 0; i < Controls.Count; i++)
+			for (var i = 0; i < Controls.Count; i++)
 				if (Controls [i].Visible)
 					Controls [i].Render (writer);
 		}
@@ -777,7 +777,7 @@ namespace System.Web.UI.WebControls
 
 		void InitMemberShipProvider ()
 		{
-			string mp = MembershipProvider;
+			var mp = MembershipProvider;
 			_provider = (mp.Length == 0) ? Membership.Provider : Membership.Providers [mp];
 			if (_provider == null)
 				throw new HttpException (Locale.GetText ("No provider named '{0}' could be found.", mp));
@@ -788,12 +788,12 @@ namespace System.Web.UI.WebControls
 			if (!Page.IsValid)
 				return;
 
-			LoginCancelEventArgs loginCancelEventArgs = new LoginCancelEventArgs ();
+			var loginCancelEventArgs = new LoginCancelEventArgs ();
 			OnChangingPassword (loginCancelEventArgs);
 			if (loginCancelEventArgs.Cancel)
 				return;
 
-			bool res = false;
+			var res = false;
 			try {
 				res = MembershipProviderInternal.ChangePassword (UserName, CurrentPassword, NewPassword);
 			} catch {
@@ -807,12 +807,12 @@ namespace System.Web.UI.WebControls
 					SendMail (UserName, NewPassword);
 			} else {
 				OnChangePasswordError (EventArgs.Empty);
-				string lastError = string.Format (
+				var lastError = string.Format (
 					"Password incorrect or New Password invalid. New Password length minimum: {0}. Non-alphanumeric characters required: {1}.",
 					MembershipProviderInternal.MinRequiredPasswordLength,
 					MembershipProviderInternal.MinRequiredNonAlphanumericCharacters);
 
-				ChangePasswordContainer container = (ChangePasswordContainer) ChangePasswordTemplateContainer;
+				var container = (ChangePasswordContainer) ChangePasswordTemplateContainer;
 				container.FailureTextLiteral.Text = lastError;
 				_showContinue = false;
 			}
@@ -842,24 +842,24 @@ namespace System.Web.UI.WebControls
 
 		void SendMail (string username, string password)
 		{
-			MembershipUser user = MembershipProviderInternal.GetUser (UserName, false);
+			var user = MembershipProviderInternal.GetUser (UserName, false);
 			if (user == null)
 				return;
 
-			ListDictionary dictionary = new ListDictionary ();
+			var dictionary = new ListDictionary ();
 			dictionary.Add ("<%USERNAME%>", username);
 			dictionary.Add ("<%PASSWORD%>", password);
 
-			MailMessage message = MailDefinition.CreateMailMessage (user.Email, dictionary, this);
+			var message = MailDefinition.CreateMailMessage (user.Email, dictionary, this);
 
-			MailMessageEventArgs args = new MailMessageEventArgs (message);
+			var args = new MailMessageEventArgs (message);
 			OnSendingMail (args);
 
-			SmtpClient smtpClient = new SmtpClient ();
+			var smtpClient = new SmtpClient ();
 			try {
 				smtpClient.Send (message);
 			} catch (Exception e) {
-				SendMailErrorEventArgs mailArgs = new SendMailErrorEventArgs (e);
+				var mailArgs = new SendMailErrorEventArgs (e);
 				OnSendMailError (mailArgs);
 				if (!mailArgs.Handled)
 					throw e;
@@ -887,11 +887,11 @@ namespace System.Web.UI.WebControls
 
 		#region View and Control State
 
-		protected internal override void LoadControlState (object savedState)
+		protected internal override void LoadControlState (object? savedState)
 		{
 			if (savedState == null)
 				return;
-			object [] state = (object []) savedState;
+			var state = (object []) savedState;
 			base.LoadControlState (state [0]);
 
 			_showContinue = (bool) state [1];
@@ -900,16 +900,16 @@ namespace System.Web.UI.WebControls
 
 		protected internal override object SaveControlState ()
 		{
-			object state = base.SaveControlState ();
+			var state = base.SaveControlState ();
 			return new object [] { state, _showContinue, _username };
 		}
 
-		protected override void LoadViewState (object savedState)
+		protected override void LoadViewState (object? savedState)
 		{
 			if (savedState == null)
 				return;
 
-			object [] states = (object []) savedState;
+			var states = (object []) savedState;
 			base.LoadViewState (states [0]);
 
 			if (states [1] != null)
@@ -946,7 +946,7 @@ namespace System.Web.UI.WebControls
 
 		protected override object SaveViewState ()
 		{
-			object [] states = new object [14];
+			var states = new object [14];
 			states [0] = base.SaveViewState ();
 
 			if (_cancelButtonStyle != null)
@@ -980,7 +980,7 @@ namespace System.Web.UI.WebControls
 			if (_mailDefinition != null)
 				states [13] = ((IStateManager) _mailDefinition).SaveViewState ();
 
-			for (int i = 0; i < states.Length; i++) {
+			for (var i = 0; i < states.Length; i++) {
 				if (states [i] != null)
 					return states;
 			}
@@ -1027,7 +1027,7 @@ namespace System.Web.UI.WebControls
 
 		#region Event Handlers
 
-		protected override bool OnBubbleEvent (object source, EventArgs e)
+		protected override bool OnBubbleEvent (object source, EventArgs? e)
 		{
 			CommandEventArgs args = e as CommandEventArgs;
 			if (e != null) {
@@ -1163,7 +1163,7 @@ namespace System.Web.UI.WebControls
 			void InitTable ()
 			{
 				_table = new Table ();
-				string id = _owner.ID;
+				var id = _owner.ID;
 				if (!String.IsNullOrEmpty (id))
 					_table.Attributes.Add ("id", _owner.ID);
 
@@ -1172,7 +1172,7 @@ namespace System.Web.UI.WebControls
 
 				_containerCell = new TableCell ();
 
-				TableRow row = new TableRow ();
+				var row = new TableRow ();
 				row.Cells.Add (_containerCell);
 				_table.Rows.Add (row);
 
@@ -1206,7 +1206,7 @@ namespace System.Web.UI.WebControls
 			// Requried controls
 			public IEditableTextControl UserNameTextBox {
 				get {
-					Control c = FindControl ("UserName");
+					var c = FindControl ("UserName");
 					if (c == null)
 						throw new HttpException ("ChangePasswordTemplate does not contain an IEditableTextControl with ID UserName for the username, this is required if DisplayUserName=true.");
 					return c as IEditableTextControl;
@@ -1215,7 +1215,7 @@ namespace System.Web.UI.WebControls
 			
 			public IEditableTextControl CurrentPasswordTextBox {
 				get {
-					Control c = FindControl ("CurrentPassword");
+					var c = FindControl ("CurrentPassword");
 					if (c == null)
 						throw new HttpException ("ChangePasswordTemplate does not contain an IEditableTextControl with ID CurrentPassword for the current password.");
 					return c as IEditableTextControl;
@@ -1224,7 +1224,7 @@ namespace System.Web.UI.WebControls
 			
 			public IEditableTextControl NewPasswordTextBox {
 				get {
-					Control c = FindControl ("NewPassword");
+					var c = FindControl ("NewPassword");
 					if (c == null)
 						throw new HttpException ("ChangePasswordTemplate does not contain an IEditableTextControl with ID NewPassword for the new password.");
 					return c as IEditableTextControl;
@@ -1258,11 +1258,11 @@ namespace System.Web.UI.WebControls
 				_owner = cPassword;
 			}
 
-			TableRow CreateRow (Control c0, Control c1, Control c2, Style s0, Style s1)
+			TableRow CreateRow (Control c0, Control? c1, Control? c2, Style? s0, Style? s1)
 			{
-				TableRow row = new TableRow ();
-				TableCell cell0 = new TableCell ();
-				TableCell cell1 = new TableCell ();
+				var row = new TableRow ();
+				var cell0 = new TableCell ();
+				var cell1 = new TableCell ();
 
 				cell0.Controls.Add (c0);
 				row.Controls.Add (cell0);
@@ -1289,15 +1289,15 @@ namespace System.Web.UI.WebControls
 
 			bool AddLink (string pageUrl, string linkText, string linkIcon, WebControl container)
 			{
-				bool added = false;
+				var added = false;
 				if (linkIcon.Length > 0) {
-					Image img = new Image ();
+					var img = new Image ();
 					img.ImageUrl = linkIcon;
 					container.Controls.Add (img);
 					added = true;
 				}
 				if (linkText.Length > 0) {
-					HyperLink link = new HyperLink ();
+					var link = new HyperLink ();
 					link.NavigateUrl = pageUrl;
 					link.Text = linkText;
 					link.ControlStyle.CopyTextStylesFrom (container.ControlStyle);
@@ -1309,16 +1309,16 @@ namespace System.Web.UI.WebControls
 
 			public void InstantiateIn (Control container)
 			{
-				Table table = new Table ();
+				var table = new Table ();
 				table.CellPadding = 0;
-				Style ownerStyle = _owner.ControlStyle;
-				Style tableStyle = table.ControlStyle;
-				FontInfo ownerFont = ownerStyle.Font;
+				var ownerStyle = _owner.ControlStyle;
+				var tableStyle = table.ControlStyle;
+				var ownerFont = ownerStyle.Font;
 				
 				tableStyle.Font.CopyFrom (ownerFont);
 				ownerFont.ClearDefaults ();
 
-				Color ownerForeColor = ownerStyle.ForeColor;
+				var ownerForeColor = ownerStyle.ForeColor;
 				if (ownerForeColor != Color.Empty) {
 					tableStyle.ForeColor = ownerForeColor;
 					ownerStyle.RemoveBit ((int)global::System.Web.UI.WebControls.Style.Styles.ForeColor);
@@ -1337,17 +1337,17 @@ namespace System.Web.UI.WebControls
 
 				// Row #2
 				if (_owner.DisplayUserName) {
-					TextBox UserName = new TextBox ();
+					var UserName = new TextBox ();
 					UserName.ID = "UserName";
 					UserName.Text = _owner.UserName;
 					UserName.ApplyStyle (_owner.TextBoxStyle);
 
-					Label UserNameLabel = new Label ();
+					var UserNameLabel = new Label ();
 					UserNameLabel.ID = "UserNameLabel";
 					UserNameLabel.AssociatedControlID = "UserName";
 					UserNameLabel.Text = _owner.UserNameLabelText;
 
-					RequiredFieldValidator UserNameRequired = new RequiredFieldValidator ();
+					var UserNameRequired = new RequiredFieldValidator ();
 					UserNameRequired.ID = "UserNameRequired";
 					UserNameRequired.ControlToValidate = "UserName";
 					UserNameRequired.ErrorMessage = _owner.UserNameRequiredErrorMessage;
@@ -1360,17 +1360,17 @@ namespace System.Web.UI.WebControls
 				}
 
 				// Row #3
-				TextBox CurrentPassword = new TextBox ();
+				var CurrentPassword = new TextBox ();
 				CurrentPassword.ID = "CurrentPassword";
 				CurrentPassword.TextMode = TextBoxMode.Password;
 				CurrentPassword.ApplyStyle (_owner.TextBoxStyle);
 
-				Label CurrentPasswordLabel = new Label ();
+				var CurrentPasswordLabel = new Label ();
 				CurrentPasswordLabel.ID = "CurrentPasswordLabel";
 				CurrentPasswordLabel.AssociatedControlID = "CurrentPasswordLabel";
 				CurrentPasswordLabel.Text = _owner.PasswordLabelText;
 
-				RequiredFieldValidator CurrentPasswordRequired = new RequiredFieldValidator ();
+				var CurrentPasswordRequired = new RequiredFieldValidator ();
 				CurrentPasswordRequired.ID = "CurrentPasswordRequired";
 				CurrentPasswordRequired.ControlToValidate = "CurrentPassword";
 				CurrentPasswordRequired.ErrorMessage = _owner.PasswordRequiredErrorMessage;
@@ -1382,17 +1382,17 @@ namespace System.Web.UI.WebControls
 				table.Controls.Add (CreateRow (CurrentPasswordLabel, CurrentPassword, CurrentPasswordRequired, _owner.LabelStyle, null));
 
 				// Row #4
-				TextBox NewPassword = new TextBox ();
+				var NewPassword = new TextBox ();
 				NewPassword.ID = "NewPassword";
 				NewPassword.TextMode = TextBoxMode.Password;
 				NewPassword.ApplyStyle (_owner.TextBoxStyle);
 
-				Label NewPasswordLabel = new Label ();
+				var NewPasswordLabel = new Label ();
 				NewPasswordLabel.ID = "NewPasswordLabel";
 				NewPasswordLabel.AssociatedControlID = "NewPassword";
 				NewPasswordLabel.Text = _owner.NewPasswordLabelText;
 
-				RequiredFieldValidator NewPasswordRequired = new RequiredFieldValidator ();
+				var NewPasswordRequired = new RequiredFieldValidator ();
 				NewPasswordRequired.ID = "NewPasswordRequired";
 				NewPasswordRequired.ControlToValidate = "NewPassword";
 				NewPasswordRequired.ErrorMessage = _owner.PasswordRequiredErrorMessage;
@@ -1413,17 +1413,17 @@ namespace System.Web.UI.WebControls
 				}
 
 				// Row #6
-				TextBox ConfirmNewPassword = new TextBox ();
+				var ConfirmNewPassword = new TextBox ();
 				ConfirmNewPassword.ID = "ConfirmNewPassword";
 				ConfirmNewPassword.TextMode = TextBoxMode.Password;
 				ConfirmNewPassword.ApplyStyle (_owner.TextBoxStyle);
 
-				Label ConfirmNewPasswordLabel = new Label ();
+				var ConfirmNewPasswordLabel = new Label ();
 				ConfirmNewPasswordLabel.ID = "ConfirmNewPasswordLabel";
 				ConfirmNewPasswordLabel.AssociatedControlID = "ConfirmNewPasswordLabel";
 				ConfirmNewPasswordLabel.Text = _owner.ConfirmNewPasswordLabelText;
 
-				RequiredFieldValidator ConfirmNewPasswordRequired = new RequiredFieldValidator ();
+				var ConfirmNewPasswordRequired = new RequiredFieldValidator ();
 				ConfirmNewPasswordRequired.ID = "ConfirmNewPasswordRequired";
 				ConfirmNewPasswordRequired.ControlToValidate = "ConfirmNewPassword";
 				ConfirmNewPasswordRequired.ErrorMessage = _owner.PasswordRequiredErrorMessage;
@@ -1435,7 +1435,7 @@ namespace System.Web.UI.WebControls
 				table.Controls.Add (CreateRow (ConfirmNewPasswordLabel, ConfirmNewPassword, ConfirmNewPasswordRequired, _owner.LabelStyle, null));
 
 				// Row #7
-				CompareValidator NewPasswordCompare = new CompareValidator ();
+				var NewPasswordCompare = new CompareValidator ();
 				NewPasswordCompare.ID = "NewPasswordCompare";
 				NewPasswordCompare.ControlToCompare = "NewPassword";
 				NewPasswordCompare.ControlToValidate = "ConfirmNewPassword";
@@ -1446,7 +1446,7 @@ namespace System.Web.UI.WebControls
 				table.Controls.Add (CreateRow (NewPasswordCompare, null, null, null, null));
 
 				// Row #8
-				Literal FailureTextLiteral = new Literal ();
+				var FailureTextLiteral = new Literal ();
 				FailureTextLiteral.ID = "FailureText";
 				FailureTextLiteral.EnableViewState = false;
 
@@ -1497,8 +1497,8 @@ namespace System.Web.UI.WebControls
 				table.Controls.Add (CreateRow (ChangePasswordButton, CancelButton, new LiteralControl (String.Empty), null, null));
 
 				// Row #10
-				TableRow linksRow = new TableRow ();
-				TableCell linksCell = new TableCell ();
+				var linksRow = new TableRow ();
+				var linksCell = new TableCell ();
 				linksCell.ColumnSpan = 2;
 				linksCell.ControlStyle.CopyFrom (_owner.HyperLinkStyle);
 
@@ -1530,10 +1530,10 @@ namespace System.Web.UI.WebControls
 				_cPassword = cPassword;
 			}
 
-			TableRow CreateRow (Control c0, Style s0, HorizontalAlign align)
+			TableRow CreateRow (Control c0, Style? s0, HorizontalAlign align)
 			{
-				TableRow row = new TableRow ();
-				TableCell cell0 = new TableCell ();
+				var row = new TableRow ();
+				var cell0 = new TableCell ();
 
 				cell0.Controls.Add (c0);
 				cell0.HorizontalAlign = align;
@@ -1546,7 +1546,7 @@ namespace System.Web.UI.WebControls
 
 			public void InstantiateIn (Control container)
 			{
-				Table table = new Table ();
+				var table = new Table ();
 				table.ControlStyle.Width = Unit.Percentage (100);
 				table.ControlStyle.Height = Unit.Percentage (100);
 

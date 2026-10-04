@@ -113,7 +113,7 @@ namespace System.Web.UI.WebControls {
 		}
 
 
-		public override void AddAttributesToRender (HtmlTextWriter writer, WebControl owner)
+		public override void AddAttributesToRender (HtmlTextWriter? writer, WebControl owner)
 		{
 			base.AddAttributesToRender (writer, owner);
 			if (writer == null)
@@ -156,7 +156,7 @@ namespace System.Web.UI.WebControls {
 		void Copy (string name, TableItemStyles s, Style source)
 		{
 			if (source.CheckBit((int) s)) {
-				object o = source.ViewState [name];
+				var o = source.ViewState [name];
 				if (o != null) {
 					ViewState [name] = o;
 					SetBit ((int) s);
@@ -164,7 +164,7 @@ namespace System.Web.UI.WebControls {
 			}
 		}
 
-		public override void CopyFrom (Style s)
+		public override void CopyFrom (Style? s)
 		{
 			base.CopyFrom (s);
 			if (s != null && !s.IsEmpty) {
@@ -177,7 +177,7 @@ namespace System.Web.UI.WebControls {
 		void Merge (string name, TableItemStyles s, Style source)
 		{
 			if ((!CheckBit ((int) s)) && (source.CheckBit ((int) s))) {
-				object o = source.ViewState [name];
+				var o = source.ViewState [name];
 				if (o != null) {
 					ViewState [name] = o;
 					SetBit ((int) s);
@@ -185,7 +185,7 @@ namespace System.Web.UI.WebControls {
 			}
 		}
 
-		public override void MergeWith (Style s)
+		public override void MergeWith (Style? s)
 		{
 			// if we're empty then it's like a copy
 			if (IsEmpty) {

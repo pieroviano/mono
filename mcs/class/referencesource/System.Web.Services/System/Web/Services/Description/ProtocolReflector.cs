@@ -194,13 +194,13 @@ namespace System.Web.Services.Description {
         public Message InputMessage {
             get {
                 if (inputMessage == null) {
-                    string messageName = XmlConvert.EncodeLocalName(methodAttr.MessageName.Length == 0 ? Method.Name : methodAttr.MessageName);
-                    bool diffNames = messageName != Method.Name;
+                    var messageName = XmlConvert.EncodeLocalName(methodAttr.MessageName.Length == 0 ? Method.Name : methodAttr.MessageName);
+                    var diffNames = messageName != Method.Name;
 
                     inputMessage = new Message();
                     inputMessage.Name = messageName + ProtocolName + "In";
 
-                    OperationInput input = new OperationInput();
+                    var input = new OperationInput();
                     if (diffNames) input.Name = messageName;
                     input.Message = new XmlQualifiedName(inputMessage.Name, bindingServiceDescription.TargetNamespace);
                     operation.Messages.Add(input);
@@ -219,13 +219,13 @@ namespace System.Web.Services.Description {
         public Message OutputMessage {
             get {
                 if (outputMessage == null) {
-                    string messageName = XmlConvert.EncodeLocalName(methodAttr.MessageName.Length == 0 ? Method.Name : methodAttr.MessageName);
-                    bool diffNames = messageName != Method.Name;
+                    var messageName = XmlConvert.EncodeLocalName(methodAttr.MessageName.Length == 0 ? Method.Name : methodAttr.MessageName);
+                    var diffNames = messageName != Method.Name;
 
                     outputMessage = new Message();
                     outputMessage.Name = messageName + ProtocolName + "Out";
 
-                    OperationOutput output = new OperationOutput();
+                    var output = new OperationOutput();
                     if (diffNames) output.Name = messageName;
                     output.Message = new XmlQualifiedName(outputMessage.Name, bindingServiceDescription.TargetNamespace);
                     operation.Messages.Add(output);
@@ -267,11 +267,11 @@ namespace System.Web.Services.Description {
 
         internal void Reflect() {
             emptyBinding = false;
-            Hashtable bindings = new Hashtable();
-            Hashtable reflectedBindings = new Hashtable();
-            for (int i = 0; i < reflector.Methods.Length; i++) {
+            var bindings = new Hashtable();
+            var reflectedBindings = new Hashtable();
+            for (var i = 0; i < reflector.Methods.Length; i++) {
                 MoveToMethod(reflector.Methods[i]);
-                string bindingName = ReflectMethodBinding();
+                var bindingName = ReflectMethodBinding();
                 if (bindingName == null) bindingName = string.Empty;
                 ReflectedBinding reflectedBinding = (ReflectedBinding)reflectedBindings[bindingName];
                 if (reflectedBinding == null) {
@@ -304,9 +304,9 @@ namespace System.Web.Services.Description {
                 // get all WebServiceBindings
                 emptyBinding = true;
                 ReflectedBinding binding = null;
-                object[] attrs = ServiceType.GetCustomAttributes(typeof(WebServiceBindingAttribute), false);
-                for (int i = 0; i < attrs.Length; i++) {
-                    WebServiceBindingAttribute bindingAttribute = (WebServiceBindingAttribute)attrs[i];
+                var attrs = ServiceType.GetCustomAttributes(typeof(WebServiceBindingAttribute), false);
+                for (var i = 0; i < attrs.Length; i++) {
+                    var bindingAttribute = (WebServiceBindingAttribute)attrs[i];
                     if (bindings[bindingAttribute.Name] != null)
                         continue;
                     if (binding != null) {
@@ -318,12 +318,12 @@ namespace System.Web.Services.Description {
                 if (binding != null) ReflectBinding(binding);
             }
 
-            Type[] interfaces = ServiceType.GetInterfaces();
+            var interfaces = ServiceType.GetInterfaces();
             // iterate through all the interfaces for this type
-            foreach (Type bindingInterface in interfaces) {
-                object[] attrs = bindingInterface.GetCustomAttributes(typeof(WebServiceBindingAttribute), false);
-                for (int i = 0; i < attrs.Length; i++) {
-                    WebServiceBindingAttribute bindingAttribute = (WebServiceBindingAttribute)attrs[i];
+            foreach (var bindingInterface in interfaces) {
+                var attrs = bindingInterface.GetCustomAttributes(typeof(WebServiceBindingAttribute), false);
+                for (var i = 0; i < attrs.Length; i++) {
+                    var bindingAttribute = (WebServiceBindingAttribute)attrs[i];
                     if (bindings[bindingAttribute.Name] != null)
                         continue;
                     ReflectBinding(new ReflectedBinding(bindingAttribute));
@@ -338,7 +338,7 @@ namespace System.Web.Services.Description {
                     return;
                 }
             }
-            Import newImport = new Import();
+            var newImport = new Import();
             newImport.Namespace = ns;
             newImport.Location = location;
             ServiceDescription.Imports.Add(newImport);
@@ -349,7 +349,7 @@ namespace System.Web.Services.Description {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public ServiceDescription GetServiceDescription(string ns) {
-            ServiceDescription description = ServiceDescriptions[ns];
+            var description = ServiceDescriptions[ns];
             if (description == null) {
                 description = new ServiceDescription();
                 description.TargetNamespace = ns;
@@ -359,11 +359,11 @@ namespace System.Web.Services.Description {
         }
 
         void ReflectBinding(ReflectedBinding reflectedBinding) {
-            string bindingName = XmlConvert.EncodeLocalName(reflectedBinding.bindingAttr.Name);
-            string bindingNamespace = reflectedBinding.bindingAttr.Namespace;
+            var bindingName = XmlConvert.EncodeLocalName(reflectedBinding.bindingAttr.Name);
+            var bindingNamespace = reflectedBinding.bindingAttr.Namespace;
             if (bindingName.Length == 0) bindingName = Service.Name + ProtocolName;
             if (bindingNamespace.Length == 0) bindingNamespace = ServiceDescription.TargetNamespace;
-            WsiProfiles claims = WsiProfiles.None;
+            var claims = WsiProfiles.None;
             
             if (reflectedBinding.bindingAttr.Location.Length > 0) {
                 // If a URL is specified for the WSDL, file, then we just import the
@@ -373,7 +373,7 @@ namespace System.Web.Services.Description {
             }
             else {
                 bindingServiceDescription = GetServiceDescription(bindingNamespace);
-                CodeIdentifiers bindingNames = new CodeIdentifiers();
+                var bindingNames = new CodeIdentifiers();
                 foreach (Binding b in bindingServiceDescription.Bindings)
                     bindingNames.AddReserved(b.Name);
 
@@ -436,7 +436,7 @@ namespace System.Web.Services.Description {
                 }
             }
             if (binding != null && claims == WsiProfiles.BasicProfile1_1 && ProtocolName == "Soap") {
-                BasicProfileViolationCollection warnings = new BasicProfileViolationCollection();
+                var warnings = new BasicProfileViolationCollection();
                 WebServicesInteroperability.AnalyzeBinding(binding, bindingServiceDescription, ServiceDescriptions, warnings);
                 if (warnings.Count > 0) {
                     throw new InvalidOperationException(Res.GetString(Res.WebWsiViolation, ServiceType.FullName, warnings.ToString()));

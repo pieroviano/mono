@@ -45,7 +45,7 @@ namespace System.Web.UI.HtmlControls
 		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public virtual string Content {
 			get {
-				string s = Attributes["content"];
+				var s = Attributes["content"];
 				if (s == null)
 					return String.Empty;
 				return s;
@@ -62,7 +62,7 @@ namespace System.Web.UI.HtmlControls
 		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public virtual string HttpEquiv {
 			get {
-				string s = Attributes["http-equiv"];
+				var s = Attributes["http-equiv"];
 				if (s == null)
 					return String.Empty;
 				return s;
@@ -79,7 +79,7 @@ namespace System.Web.UI.HtmlControls
 		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public virtual string Name {
 			get {
-				string s = Attributes["name"];
+				var s = Attributes["name"];
 				if (s == null)
 					return String.Empty;
 				return s;
@@ -96,7 +96,7 @@ namespace System.Web.UI.HtmlControls
 		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public virtual string Scheme {
 			get {
-				string s = Attributes["scheme"];
+				var s = Attributes["scheme"];
 				if (s == null)
 					return String.Empty;
 				return s;

@@ -64,7 +64,7 @@ namespace System.Web.UI.WebControls
 			const string ListStyleType = "list-style-type";
 			const string ListStyleImage = "list-style-image";
 			
-			bool isNumeric = false;
+			var isNumeric = false;
 			switch (BulletStyle) {
 				case BulletStyle.NotSet:
 					break;
@@ -119,7 +119,7 @@ namespace System.Web.UI.WebControls
 
 		protected virtual void RenderBulletText (ListItem item, int index, HtmlTextWriter writer)
 		{
-			string text = HttpUtility.HtmlEncode (item.Text);
+			var text = HttpUtility.HtmlEncode (item.Text);
 			
 			switch (DisplayMode) {
 				case BulletedListDisplayMode.Text:
@@ -179,8 +179,8 @@ namespace System.Web.UI.WebControls
 		
 		protected internal override void RenderContents (HtmlTextWriter writer)
 		{
-			int idx = 0;
-			Page page = Page;
+			var idx = 0;
+			var page = Page;
 			ClientScriptManager scriptManager = page != null ? page.ClientScript : null;
 			
 			foreach (ListItem i in Items) {

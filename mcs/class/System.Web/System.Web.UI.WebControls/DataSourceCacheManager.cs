@@ -69,18 +69,18 @@ namespace System.Web.UI.WebControls
 			return DataCache [GetKeyFromParameters (methodName, parameters)];
 		}
 
-		internal void SetCachedObject (string methodName, ParameterCollection parameters, object o)
+		internal void SetCachedObject (string methodName, ParameterCollection parameters, object? o)
 		{
 			if (o == null)
 				return;
 
-			string key = GetKeyFromParameters (methodName, parameters);
+			var key = GetKeyFromParameters (methodName, parameters);
 
 			if (DataCache [key] != null)
 				DataCache.Remove (key);
 
-			DateTime absoluteExpiration = Cache.NoAbsoluteExpiration;
-			TimeSpan slidindExpiraion = Cache.NoSlidingExpiration;
+			var absoluteExpiration = Cache.NoAbsoluteExpiration;
+			var slidindExpiraion = Cache.NoSlidingExpiration;
 
 			if (cacheDuration > 0) {
 				if (cacheExpirationPolicy == DataSourceCacheExpiry.Absolute)
@@ -110,12 +110,12 @@ namespace System.Web.UI.WebControls
 
 		string GetKeyFromParameters (string methodName, ParameterCollection parameters)
 		{
-			StringBuilder sb = new StringBuilder (methodName);
+			var sb = new StringBuilder (methodName);
 
 			if (owner != null)
 				sb.Append (owner.ID);
 
-			for (int i = 0; i < parameters.Count; i++) {
+			for (var i = 0; i < parameters.Count; i++) {
 				sb.Append (parameters [i].Name);
 				sb.Append (parameters [i].GetValue (context, owner));
 			}

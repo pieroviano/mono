@@ -65,7 +65,7 @@ namespace System.Web.Compilation
 
 		protected virtual string MapPath (VirtualPath virtualPath)
 		{
-			HttpContext ctx = HttpContext.Current;
+			var ctx = HttpContext.Current;
 			HttpRequest req = ctx != null ? ctx.Request : null;
 
 			if (req != null)
@@ -82,7 +82,7 @@ namespace System.Web.Compilation
 				return parser;
 
 			if (!IsDirectoryBuilder) {
-				AspGenerator generator = CreateAspGenerator (parser);
+				var generator = CreateAspGenerator (parser);
 				if (_reader != null)
 					generator.Parse (_reader, MapPath (VirtualPathInternal), true);
 				else
@@ -108,7 +108,7 @@ namespace System.Web.Compilation
 		
 		protected virtual void GenerateCode (AssemblyBuilder assemblyBuilder, TParser parser, BaseCompiler compiler)
 		{				
-			CodeCompileUnit unit = _compiler.CompileUnit;
+			var unit = _compiler.CompileUnit;
 			if (unit == null)
 				throw new HttpException ("Unable to generate source code.");
 				
@@ -123,13 +123,13 @@ namespace System.Web.Compilation
 			TParser parser = Parse ();
 			OverrideAssemblyPrefix (parser, assemblyBuilder);
 			
-			string codeBehindSource = GetCodeBehindSource (parser);
+			var codeBehindSource = GetCodeBehindSource (parser);
 			if (codeBehindSource != null)
 				assemblyBuilder.AddCodeFile (codeBehindSource, this, true);
 
-			List <string> refasms = GetReferencedAssemblies (parser);
+			var refasms = GetReferencedAssemblies (parser);
 			if (refasms != null && refasms.Count > 0) {
-				foreach (string loc in refasms)
+				foreach (var loc in refasms)
 					assemblyBuilder.AddAssemblyReference (loc);
 			}
 			
@@ -141,7 +141,7 @@ namespace System.Web.Compilation
 			return null;
 		}
 		
-		public override Type GetGeneratedType (CompilerResults results)
+		public override Type GetGeneratedType (CompilerResults? results)
 		{
 			if (NeedsLoadFromBin && _compiler != null)
 				return LoadTypeFromBin (_compiler, Parser);
@@ -194,7 +194,7 @@ namespace System.Web.Compilation
 		public TParser Parser {
 			get {
 				if (_parser == null) {
-					VirtualPath vp = VirtualPathInternal;
+					var vp = VirtualPathInternal;
 					if (vp == null)
 						throw new HttpException ("VirtualPath not set, cannot instantiate parser.");
 					

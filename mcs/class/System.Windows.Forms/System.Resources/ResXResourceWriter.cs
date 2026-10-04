@@ -143,12 +143,12 @@ namespace System.Resources
 			sb.Insert(sb.Length, Environment.NewLine);
 			writer.WriteString(sb.ToString());
 		}
-		void WriteBytes (string name, Type type, byte[] value, int offset, int length)
+		void WriteBytes (string name, Type? type, byte[] value, int offset, int length)
 		{
 			WriteBytes (name, type, value, offset, length, String.Empty);
 		}
 
-		void WriteBytes (string name, Type type, byte[] value, int offset, int length, string comment)
+		void WriteBytes (string name, Type? type, byte[] value, int offset, int length, string? comment)
 		{
 			writer.WriteStartElement ("data");
 			writer.WriteAttributeString ("name", name);
@@ -178,7 +178,7 @@ namespace System.Resources
 			writer.WriteEndElement ();
 		}
 
-		void WriteBytes (string name, Type type, byte [] value, string comment)
+		void WriteBytes (string name, Type? type, byte [] value, string? comment)
 		{
 			WriteBytes (name, type, value, 0, value.Length, comment);
 		}
@@ -187,11 +187,11 @@ namespace System.Resources
 		{
 			WriteString (name, value, null);
 		}
-		void WriteString (string name, string value, Type type)
+		void WriteString (string name, string value, Type? type)
 		{
 			WriteString (name, value, type, String.Empty);
 		}
-		void WriteString (string name, string value, Type type, string comment)
+		void WriteString (string name, string value, Type? type, string? comment)
 		{
 			writer.WriteStartElement ("data");
 			writer.WriteAttributeString ("name", name);
@@ -226,12 +226,12 @@ namespace System.Resources
 			WriteBytes (name, value.GetType (), value, null);
 		}
 
-		public void AddResource (string name, object value)
+		public void AddResource (string name, object? value)
 		{
 			AddResource (name, value, String.Empty);
 		}
 
-		private void AddResource (string name, object value, string comment)
+		private void AddResource (string name, object? value, string? comment)
 		{
 			if (value is string) {
 				AddResource (name, (string) value, comment);
@@ -261,9 +261,9 @@ namespace System.Resources
 				return;
 			}
 
-			TypeConverter converter = TypeDescriptor.GetConverter (value);
+			var converter = TypeDescriptor.GetConverter (value);
 			if (value is ResXFileRef) {
-				ResXFileRef fileRef = ProcessFileRefBasePath ((ResXFileRef) value);	
+				var fileRef = ProcessFileRefBasePath ((ResXFileRef) value);	
 				string str = (string) converter.ConvertToInvariantString (fileRef);
 				WriteString (name, str, value.GetType (), comment);
 				return;
@@ -281,8 +281,8 @@ namespace System.Resources
 				return;
 			}
 			
-			MemoryStream ms = new MemoryStream ();
-			BinaryFormatter fmt = new BinaryFormatter ();
+			var ms = new MemoryStream ();
+			var fmt = new BinaryFormatter ();
 			try {
 				fmt.Serialize (ms, value);
 			} catch (Exception e) {
@@ -300,7 +300,7 @@ namespace System.Resources
 			AddResource (name, value, string.Empty);
 		}
 
-		private void AddResource (string name, string value, string comment)
+		private void AddResource (string name, string value, string? comment)
 		{
 			if (name == null)
 				throw new ArgumentNullException ("name");
@@ -343,7 +343,7 @@ namespace System.Resources
 			if (String.IsNullOrEmpty (BasePath))
 				return fileRef;
 
-			string newPath = AbsoluteToRelativePath (BasePath, fileRef.FileName);
+			var newPath = AbsoluteToRelativePath (BasePath, fileRef.FileName);
 			return new ResXFileRef (newPath, fileRef.TypeName, fileRef.TextFileEncoding);
 		}
 
@@ -365,7 +365,7 @@ namespace System.Resources
 				char* lastStartA = aEnd;
 				char* lastStartB = bEnd;
 				
-				int indx = 0;
+				var indx = 0;
 				// search common base path
 				var a = aPtr;
 				var b = bPtr;
@@ -403,7 +403,7 @@ namespace System.Resources
 				}
 				
 				// look how many levels to go up into the base path
-				int goUpCount = 0;
+				var goUpCount = 0;
 				while (lastStartB < bEnd) {
 					if (IsSeparator (*lastStartB))
 						goUpCount++;
@@ -414,7 +414,7 @@ namespace System.Resources
 				fixed (char* rPtr = result) {
 					// go paths up
 					var r = rPtr;
-					for (int i = 0; i < goUpCount; i++) {
+					for (var i = 0; i < goUpCount; i++) {
 						*(r++) = '.';
 						*(r++) = '.';
 						*(r++) = Path.DirectorySeparatorChar;
@@ -524,9 +524,9 @@ namespace System.Resources
 			if (writer == null)
 				InitWriter ();
 
-			Type type = value.GetType ();
+			var type = value.GetType ();
 			
-			TypeConverter converter = TypeDescriptor.GetConverter (value);
+			var converter = TypeDescriptor.GetConverter (value);
 			if (converter != null && converter.CanConvertTo (typeof (string)) && converter.CanConvertFrom (typeof (string))) {
 				string str = (string)converter.ConvertToInvariantString (value);
 				writer.WriteStartElement ("metadata");
@@ -562,8 +562,8 @@ namespace System.Resources
 				return;
 			}
 
-			MemoryStream ms = new MemoryStream ();
-			BinaryFormatter fmt = new BinaryFormatter ();
+			var ms = new MemoryStream ();
+			var fmt = new BinaryFormatter ();
 			try {
 				fmt.Serialize (ms, value);
 			} catch (Exception e) {

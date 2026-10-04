@@ -38,7 +38,7 @@ namespace System.Configuration
 			return ((string)data).Trim();
 		}
 
-		public override object ConvertTo (ITypeDescriptorContext ctx, CultureInfo ci, object value, Type type)
+		public override object ConvertTo (ITypeDescriptorContext ctx, CultureInfo ci, object? value, Type type)
 		{
 			if (value == null)
 				return "";

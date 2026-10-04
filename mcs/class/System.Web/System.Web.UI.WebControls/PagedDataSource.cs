@@ -191,7 +191,7 @@ namespace System.Web.UI.WebControls {
 
 		public void CopyTo (Array array, int index)
 		{
-			foreach (object o in source)
+			foreach (var o in source)
 				array.SetValue (o, index++);
 		}
 
@@ -199,7 +199,7 @@ namespace System.Web.UI.WebControls {
 		{
 			// IList goes first, as it implements ICollection
 			IList list = source as IList;
-			int first = 0;
+			var first = 0;
 			int count;
 			int limit;
 			if (list != null) {
@@ -240,15 +240,15 @@ namespace System.Web.UI.WebControls {
 			else if (start >= list.Count)
 				yield break;
 			
-			for (int i = start; i < end; i++)
+			for (var i = start; i < end; i++)
 				yield return list [i];
 		}
 
 		IEnumerator GetEnumeratorEnum (IEnumerator e, int start, int end)
 		{
-			for (int i = 0; i < start; i++)
+			for (var i = 0; i < start; i++)
 				e.MoveNext ();
-			for (int i = start; (!allow_paging || i < end) && e.MoveNext (); i++)
+			for (var i = start; (!allow_paging || i < end) && e.MoveNext (); i++)
 				yield return e.Current;
 		}
 	}

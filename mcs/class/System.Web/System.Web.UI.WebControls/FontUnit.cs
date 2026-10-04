@@ -58,7 +58,7 @@ namespace System.Web.UI.WebControls
 		
 		public FontUnit (FontSize type)
 		{
-			int t = (int) type;
+			var t = (int) type;
 			
 			if (t < 0 || t > (int)FontSize.XXLarge)
 				throw new ArgumentOutOfRangeException ("type");
@@ -178,7 +178,7 @@ namespace System.Web.UI.WebControls
 		public override bool Equals (object obj)
 		{
 			if (obj is FontUnit) {
-				FontUnit other = (FontUnit) obj;
+				var other = (FontUnit) obj;
 				return (other.type == type && other.unit == unit);
 			}
 			return false;

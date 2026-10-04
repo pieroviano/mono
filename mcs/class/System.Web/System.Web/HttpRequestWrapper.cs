@@ -267,12 +267,12 @@ namespace System.Web
 			return w.MapImageCoordinates (imageFieldName);
 		}
 
-		public override string MapPath (string virtualPath)
+		public override string MapPath (string? virtualPath)
 		{
 			return w.MapPath (virtualPath);
 		}
 
-		public override string MapPath (string virtualPath, string baseVirtualDir, bool allowCrossAppMapping)
+		public override string MapPath (string? virtualPath, string baseVirtualDir, bool allowCrossAppMapping)
 		{
 			return w.MapPath (virtualPath, baseVirtualDir, allowCrossAppMapping);
 		}

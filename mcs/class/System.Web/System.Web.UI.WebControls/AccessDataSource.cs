@@ -62,7 +62,7 @@ namespace System.Web.UI.WebControls
 
 		protected override SqlDataSourceView CreateDataSourceView (string viewName)
 		{
-			AccessDataSourceView view = new AccessDataSourceView (this, viewName, this.Context);
+			var view = new AccessDataSourceView (this, viewName, this.Context);
 			if (IsTrackingViewState)
 				((IStateManager) view).TrackViewState ();				
 			return view;

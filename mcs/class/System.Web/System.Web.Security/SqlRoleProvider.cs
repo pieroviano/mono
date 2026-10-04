@@ -68,7 +68,7 @@ namespace System.Web.Security
 
 		static DbParameter AddParameter (DbCommand command, string parameterName, ParameterDirection direction, object parameterValue)
 		{
-			DbParameter dbp = command.CreateParameter ();
+			var dbp = command.CreateParameter ();
 			dbp.ParameterName = parameterName;
 			dbp.Value = parameterValue;
 			dbp.Direction = direction;
@@ -78,7 +78,7 @@ namespace System.Web.Security
 
 		static DbParameter AddParameter (DbCommand command, string parameterName, ParameterDirection direction, DbType type, object parameterValue)
 		{
-			DbParameter dbp = command.CreateParameter ();
+			var dbp = command.CreateParameter ();
 			dbp.ParameterName = parameterName;
 			dbp.Value = parameterValue;
 			dbp.Direction = direction;
@@ -89,9 +89,9 @@ namespace System.Web.Security
 
 		public override void AddUsersToRoles (string [] usernames, string [] roleNames)
 		{
-			Hashtable h = new Hashtable ();
+			var h = new Hashtable ();
 
-			foreach (string u in usernames) {
+			foreach (var u in usernames) {
 				if (u == null)
 					throw new ArgumentNullException ("null element in usernames array");
 				if (h.ContainsKey (u))
@@ -102,7 +102,7 @@ namespace System.Web.Security
 			}
 
 			h = new Hashtable ();
-			foreach (string r in roleNames) {
+			foreach (var r in roleNames) {
 				if (r == null)
 					throw new ArgumentNullException ("null element in rolenames array");
 				if (h.ContainsKey (r))
@@ -112,7 +112,7 @@ namespace System.Web.Security
 				h.Add (r, r);
 			} 
 			
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 				/* add the user/role combination to dbo.aspnet_UsersInRoles */
 				DbCommand command = factory.CreateCommand ();
 				command.CommandText = @"dbo.aspnet_UsersInRoles_AddUsersToRoles";
@@ -123,11 +123,11 @@ namespace System.Web.Security
 				AddParameter (command, "@UserNames", String.Join (",", usernames));
 				AddParameter (command, "@ApplicationName", ApplicationName);
 				AddParameter (command, "@CurrentTimeUtc", DateTime.UtcNow);
-				DbParameter dbpr = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
+				var dbpr = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
 
 				command.ExecuteNonQuery ();
 
-				int returnValue = (int) dbpr.Value;
+				var returnValue = (int) dbpr.Value;
 				if (returnValue == 0)
 					return;
 				else if (returnValue == 2)
@@ -147,7 +147,7 @@ namespace System.Web.Security
 			if (roleName.Length == 0 || roleName.Length > 256 || roleName.IndexOf (',') != -1)
 				throw new ArgumentException ("rolename is in invalid format");
 
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 				DbCommand command = factory.CreateCommand ();
 				command.CommandText = @"dbo.aspnet_Roles_CreateRole";
 				command.Connection = connection;
@@ -155,10 +155,10 @@ namespace System.Web.Security
 				
 				AddParameter (command, "@ApplicationName", ApplicationName);
 				AddParameter (command, "@RoleName", roleName);
-				DbParameter dbpr = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
+				var dbpr = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
 
 				command.ExecuteNonQuery ();
-				int returnValue = (int) dbpr.Value;
+				var returnValue = (int) dbpr.Value;
 
 				if (returnValue == 1)
 					throw new ProviderException (roleName + " already exists in the database");
@@ -175,7 +175,7 @@ namespace System.Web.Security
 			if (roleName.Length == 0 || roleName.Length > 256 || roleName.IndexOf (',') != -1)
 				throw new ArgumentException ("rolename is in invalid format");
 
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 
 				DbCommand command = factory.CreateCommand ();
 				command.CommandText = @"dbo.aspnet_Roles_DeleteRole";
@@ -184,10 +184,10 @@ namespace System.Web.Security
 				AddParameter (command, "@ApplicationName", ApplicationName);
 				AddParameter (command, "@RoleName", roleName);
 				AddParameter (command, "@DeleteOnlyIfRoleIsEmpty", throwOnPopulatedRole);
-				DbParameter dbpr = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
+				var dbpr = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
 
 				command.ExecuteNonQuery ();
-				int returnValue = (int)dbpr.Value;
+				var returnValue = (int)dbpr.Value;
 
 				if (returnValue == 0)
 					return true;
@@ -211,7 +211,7 @@ namespace System.Web.Security
 			if (usernameToMatch.Length == 0 || usernameToMatch.Length > 256)
 				throw new ArgumentException ("usernameToMatch is in invalid format");
 
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 				DbCommand command = factory.CreateCommand ();
 				command.Connection = connection;
 				command.CommandText = @"dbo.aspnet_UsersInRoles_FindUsersInRole";
@@ -221,8 +221,8 @@ namespace System.Web.Security
 				AddParameter (command, "@RoleName", roleName);
 				AddParameter (command, "@UsernameToMatch", usernameToMatch);
 
-				DbDataReader reader = command.ExecuteReader ();
-				ArrayList userList = new ArrayList ();
+				var reader = command.ExecuteReader ();
+				var userList = new ArrayList ();
 				while (reader.Read ())
 					userList.Add (reader.GetString (0));
 				reader.Close ();
@@ -233,7 +233,7 @@ namespace System.Web.Security
 
 		public override string [] GetAllRoles ()
 		{
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 				DbCommand command = factory.CreateCommand ();
 				command.CommandText = @"dbo.aspnet_Roles_GetAllRoles";
 				command.Connection = connection;
@@ -241,8 +241,8 @@ namespace System.Web.Security
 				command.CommandType = CommandType.StoredProcedure;
 				AddParameter (command, "@ApplicationName", ApplicationName);
 
-				DbDataReader reader = command.ExecuteReader ();
-				ArrayList roleList = new ArrayList ();
+				var reader = command.ExecuteReader ();
+				var roleList = new ArrayList ();
 				while (reader.Read ())
 					roleList.Add (reader.GetString (0));
 				reader.Close ();
@@ -253,7 +253,7 @@ namespace System.Web.Security
 
 		public override string [] GetRolesForUser (string username)
 		{
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 				DbCommand command = factory.CreateCommand ();
 				command.CommandText = @"dbo.aspnet_UsersInRoles_GetRolesForUser";
 				command.Connection = connection;
@@ -262,8 +262,8 @@ namespace System.Web.Security
 				AddParameter (command, "@UserName", username);
 				AddParameter (command, "@ApplicationName", ApplicationName);
 
-				DbDataReader reader = command.ExecuteReader ();
-				ArrayList roleList = new ArrayList ();
+				var reader = command.ExecuteReader ();
+				var roleList = new ArrayList ();
 				while (reader.Read ())
 					roleList.Add (reader.GetString (0));
 				reader.Close ();
@@ -274,7 +274,7 @@ namespace System.Web.Security
 
 		public override string [] GetUsersInRole (string roleName)
 		{
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 				DbCommand command = factory.CreateCommand ();
 				command.CommandText = @"dbo.aspnet_UsersInRoles_GetUsersInRoles";
 				command.Connection = connection;
@@ -283,8 +283,8 @@ namespace System.Web.Security
 				AddParameter (command, "@RoleName", roleName);
 				AddParameter (command, "@ApplicationName", ApplicationName);
 
-				DbDataReader reader = command.ExecuteReader ();
-				ArrayList userList = new ArrayList ();
+				var reader = command.ExecuteReader ();
+				var userList = new ArrayList ();
 				while (reader.Read ())
 					userList.Add (reader.GetString (0));
 				reader.Close ();
@@ -295,7 +295,7 @@ namespace System.Web.Security
 
 		string GetStringConfigValue (NameValueCollection config, string name, string def)
 		{
-			string rv = def;
+			var rv = def;
 			string val = config [name];
 			if (val != null)
 				rv = val;
@@ -329,7 +329,7 @@ namespace System.Web.Security
 
 		public override bool IsUserInRole (string username, string roleName)
 		{
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 				DbCommand command = factory.CreateCommand ();
 				command.CommandText = @"dbo.aspnet_UsersInRoles_IsUserInRole";
 				command.Connection = connection;
@@ -338,10 +338,10 @@ namespace System.Web.Security
 				AddParameter (command, "@RoleName", roleName);
 				AddParameter (command, "@UserName", username);
 				AddParameter (command, "@ApplicationName", ApplicationName);
-				DbParameter dbpr = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
+				var dbpr = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
 
 				command.ExecuteNonQuery ();
-				int returnValue = (int) dbpr.Value;
+				var returnValue = (int) dbpr.Value;
 
 				if (returnValue == 1)
 					return true;
@@ -352,9 +352,9 @@ namespace System.Web.Security
 
 		public override void RemoveUsersFromRoles (string [] usernames, string [] roleNames)
 		{
-			Hashtable h = new Hashtable ();
+			var h = new Hashtable ();
 
-			foreach (string u in usernames) {
+			foreach (var u in usernames) {
 				if (u == null)
 					throw new ArgumentNullException ("null element in usernames array");
 				if (h.ContainsKey (u))
@@ -365,7 +365,7 @@ namespace System.Web.Security
 			}
 
 			h = new Hashtable ();
-			foreach (string r in roleNames) {
+			foreach (var r in roleNames) {
 				if (r == null)
 					throw new ArgumentNullException ("null element in rolenames array");
 				if (h.ContainsKey (r))
@@ -375,7 +375,7 @@ namespace System.Web.Security
 				h.Add (r, r);
 			} 
 
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 				DbCommand command = factory.CreateCommand ();
 				command.CommandText = @"dbo.aspnet_UsersInRoles_RemoveUsersFromRoles";
 				command.Connection = connection;
@@ -384,10 +384,10 @@ namespace System.Web.Security
 				AddParameter (command, "@UserNames", String.Join (",", usernames));
 				AddParameter (command, "@RoleNames", String.Join (",", roleNames));
 				AddParameter (command, "@ApplicationName", ApplicationName);
-				DbParameter dbpr = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
+				var dbpr = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
 
 				command.ExecuteNonQuery ();
-				int returnValue = (int) dbpr.Value;
+				var returnValue = (int) dbpr.Value;
 
 				if (returnValue == 0)
 					return;
@@ -404,7 +404,7 @@ namespace System.Web.Security
 
 		public override bool RoleExists (string roleName)
 		{
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 
 				DbCommand command = factory.CreateCommand ();
 				command.CommandText = @"dbo.aspnet_Roles_RoleExists";
@@ -413,10 +413,10 @@ namespace System.Web.Security
 
 				AddParameter (command, "@ApplicationName", ApplicationName);
 				AddParameter (command, "@RoleName", roleName);
-				DbParameter dbpr = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
+				var dbpr = AddParameter (command, "@ReturnVal", ParameterDirection.ReturnValue, DbType.Int32, null);
 
 				command.ExecuteNonQuery ();
-				int returnValue = (int) dbpr.Value;
+				var returnValue = (int) dbpr.Value;
 
 				if (returnValue == 1)
 					return true;

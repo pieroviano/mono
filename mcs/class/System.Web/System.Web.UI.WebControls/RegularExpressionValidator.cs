@@ -62,7 +62,7 @@ namespace System.Web.UI.WebControls {
 			if (GetControlValidationValue (ControlToValidate).Trim() == "")
 				return true;
 
-			StringBuilder expr = new StringBuilder(ValidationExpression);
+			var expr = new StringBuilder(ValidationExpression);
 
 			if (expr.Length == 0 || expr [0] != '^')
 				expr.Insert(0, '^');

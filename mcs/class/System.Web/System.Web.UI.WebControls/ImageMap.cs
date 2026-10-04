@@ -71,7 +71,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValueAttribute (HotSpotMode.NotSet)]
 		public virtual HotSpotMode HotSpotMode {
 			get {
-				object o = ViewState ["HotSpotMode"];
+				var o = ViewState ["HotSpotMode"];
 				return o != null ? (HotSpotMode) o : HotSpotMode.NotSet;
 			}
 			set { ViewState ["HotSpotMode"] = value; }
@@ -80,7 +80,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValueAttribute ("")]
 		public virtual string Target {
 			get {
-				object o = ViewState ["Target"];
+				var o = ViewState ["Target"];
 				return o != null ? (string) o : String.Empty;
 			}
 			set { ViewState ["Target"] = value; }
@@ -109,7 +109,7 @@ namespace System.Web.UI.WebControls
 		
 		protected override object SaveViewState ()
 		{
-			object ob1 = base.SaveViewState ();
+			var ob1 = base.SaveViewState ();
 			object ob2 = spots != null ? ((IStateManager)spots).SaveViewState () : null;
 			
 			if (ob1 != null || ob2 != null)
@@ -118,14 +118,14 @@ namespace System.Web.UI.WebControls
 				return null;
 		}
 		
-		protected override void LoadViewState (object savedState)
+		protected override void LoadViewState (object? savedState)
 		{
 			if (savedState == null) {
 				base.LoadViewState (null);
 				return;
 			}
 			
-			Pair pair = (Pair) savedState;
+			var pair = (Pair) savedState;
 			base.LoadViewState (pair.First);
 			((IStateManager)HotSpots).LoadViewState (pair.Second);
 		}
@@ -133,7 +133,7 @@ namespace System.Web.UI.WebControls
 		protected virtual void RaisePostBackEvent (string eventArgument)
 		{
 			ValidateEvent (UniqueID, eventArgument);
-			HotSpot spot = HotSpots [int.Parse (eventArgument)];
+			var spot = HotSpots [int.Parse (eventArgument)];
 			OnClick (new ImageMapEventArgs (spot.PostBackValue));
 		}
 
@@ -154,12 +154,12 @@ namespace System.Web.UI.WebControls
 			base.Render (writer);
 
 			if (spots != null && spots.Count > 0) {
-				bool enabled = Enabled;
+				var enabled = Enabled;
 				writer.AddAttribute (HtmlTextWriterAttribute.Id, "ImageMap" + ClientID);
 				writer.AddAttribute (HtmlTextWriterAttribute.Name, "ImageMap" + ClientID);
 				writer.RenderBeginTag (HtmlTextWriterTag.Map);
-				for (int n=0; n<spots.Count; n++) {
-					HotSpot spot = spots [n];
+				for (var n=0; n<spots.Count; n++) {
+					var spot = spots [n];
 					writer.AddAttribute (HtmlTextWriterAttribute.Shape, spot.MarkupName);
 					writer.AddAttribute (HtmlTextWriterAttribute.Coords, spot.GetCoordinates ());
 					writer.AddAttribute (HtmlTextWriterAttribute.Title, spot.AlternateText);
@@ -169,17 +169,17 @@ namespace System.Web.UI.WebControls
 					if (spot.TabIndex != 0)
 						writer.AddAttribute (HtmlTextWriterAttribute.Tabindex, spot.TabIndex.ToString ());
 					
-					HotSpotMode mode = spot.HotSpotMode != HotSpotMode.NotSet ? spot.HotSpotMode : HotSpotMode;
+					var mode = spot.HotSpotMode != HotSpotMode.NotSet ? spot.HotSpotMode : HotSpotMode;
 					switch (mode) {
 						case HotSpotMode.Inactive:
 							writer.AddAttribute ("nohref", "true", false);
 							break;
 						case HotSpotMode.Navigate:
-							string target = spot.Target.Length > 0 ? spot.Target : Target;
+							var target = spot.Target.Length > 0 ? spot.Target : Target;
 							if (!String.IsNullOrEmpty (target))
 								writer.AddAttribute (HtmlTextWriterAttribute.Target, target);
 							if (enabled) {
-								string navUrl = ResolveClientUrl (spot.NavigateUrl);
+								var navUrl = ResolveClientUrl (spot.NavigateUrl);
 								writer.AddAttribute (HtmlTextWriterAttribute.Href, navUrl);
 							}
 							break;

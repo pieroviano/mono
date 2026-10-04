@@ -73,17 +73,17 @@ namespace System.Web.Services.Discovery {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public static string FilenameFromUrl(string url) {
+        public static string FilenameFromUrl(string? url) {
             // get everything after the last /, not including the one at the end of the string
-            int lastSlash = url.LastIndexOf('/', url.Length - 1);
+            var lastSlash = url.LastIndexOf('/', url.Length - 1);
             if (lastSlash >= 0) url = url.Substring(lastSlash + 1);
 
             // get everything up to the first dot (the filename)
-            int firstDot = url.IndexOf('.');
+            var firstDot = url.IndexOf('.');
             if (firstDot >= 0) url = url.Substring(0, firstDot);
 
             // make sure we don't include the question mark and stuff that follows it
-            int question = url.IndexOf('?');
+            var question = url.IndexOf('?');
             if (question >= 0) url = url.Substring(0, question);
             if (url == null || url.Length == 0)
                 return "item";
@@ -91,24 +91,24 @@ namespace System.Web.Services.Discovery {
         }
 
         private static bool FindChar(char ch, char[] chars) {
-            for (int i = 0; i < chars.Length; i++) {
+            for (var i = 0; i < chars.Length; i++) {
                 if (ch == chars[i])
                     return true;
             }
             return false;
         }
 
-        internal static string MakeValidFilename(string filename) {
+        internal static string MakeValidFilename(string? filename) {
             if (filename == null)
                 return null;
 
-            StringBuilder sb = new StringBuilder(filename.Length);
-            for (int i = 0; i < filename.Length; i++) {
-                char c = filename[i];
+            var sb = new StringBuilder(filename.Length);
+            for (var i = 0; i < filename.Length; i++) {
+                var c = filename[i];
                 if (!FindChar(c, Path.InvalidPathChars))
                     sb.Append(c);
             }
-            string name = sb.ToString();
+            var name = sb.ToString();
             if (name.Length == 0)
                 name = "item";
 
@@ -128,10 +128,10 @@ namespace System.Web.Services.Discovery {
             if (ClientProtocol.InlinedSchemas[Url] != null)
                 return;
 
-            string newUrl = Url;
-            string oldUrl = Url;
+            var newUrl = Url;
+            var oldUrl = Url;
             string contentType = null;
-            Stream stream = ClientProtocol.Download(ref newUrl, ref contentType);
+            var stream = ClientProtocol.Download(ref newUrl, ref contentType);
             if (ClientProtocol.Documents[newUrl] != null) {
                 Url = newUrl;
                 return;

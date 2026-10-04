@@ -69,7 +69,7 @@ namespace System.Web
 			values = new CookieNVC();
 			Value = "";
 
-			HttpCookiesSection cookieConfig = (HttpCookiesSection) WebConfigurationManager.GetSection ("system.web/httpCookies");
+			var cookieConfig = (HttpCookiesSection) WebConfigurationManager.GetSection ("system.web/httpCookies");
 
 			if(!string.IsNullOrWhiteSpace(cookieConfig.Domain))
 				domain = cookieConfig.Domain;
@@ -89,7 +89,7 @@ namespace System.Web
 
 		internal string GetCookieHeaderValue ()
 		{
-			StringBuilder builder = new StringBuilder ();
+			var builder = new StringBuilder ();
 
 			builder.Append (name);
 			builder.Append ("=");
@@ -193,14 +193,14 @@ namespace System.Web
 				values.Clear ();
 				
 				if (value != null && value != "") {
-					string [] components = value.Split ('&');
-					foreach (string kv in components){
-						int pos = kv.IndexOf ('=');
+					var components = value.Split ('&');
+					foreach (var kv in components){
+						var pos = kv.IndexOf ('=');
 						if (pos == -1){
 							values.Add (null, kv);
 						} else {
-							string key = kv.Substring (0, pos);
-							string val = kv.Substring (pos+1);
+							var key = kv.Substring (0, pos);
+							var val = kv.Substring (pos+1);
 							
 							values.Add (key, val);
 						}
@@ -243,9 +243,9 @@ namespace System.Web
 
 			public override string ToString ()
 			{
-				StringBuilder builder = new StringBuilder ("");
+				var builder = new StringBuilder ("");
 
-				bool first_key = true;
+				var first_key = true;
 				foreach (string key in Keys) {
 					if (!first_key)
 						builder.Append ("&");
@@ -254,8 +254,8 @@ namespace System.Web
                                        if(vals == null)
                                                vals = new string[1] {String.Empty};
 
-				       bool first_val = true;
-                                       foreach (string v in vals) {
+				       var first_val = true;
+                                       foreach (var v in vals) {
 					       if (!first_val)
 						       builder.Append ("&");
 					       
@@ -278,7 +278,7 @@ namespace System.Web
 			 * cookie.Values[null] = "foo"
 			 * it clears out the rest of the values.
 			 */
-			public override void Set (string name, string value)
+			public override void Set (string? name, string value)
 			{
 				if (this.IsReadOnly)
 					throw new NotSupportedException ("Collection is read-only");

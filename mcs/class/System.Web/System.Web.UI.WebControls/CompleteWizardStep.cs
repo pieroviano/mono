@@ -54,7 +54,7 @@ namespace System.Web.UI.WebControls
 		[LocalizableAttribute (true)]
 		public override string Title {
 			get {
-				object o = ViewState ["TitleText"];
+				var o = ViewState ["TitleText"];
 				return (o == null) ? Locale.GetText ("Complete") : (string) o;
 			}
 			set {

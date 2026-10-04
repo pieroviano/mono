@@ -89,7 +89,7 @@ namespace System.Web
 
 		public override HttpPostedFileBase Get (int index)
 		{
-			HttpPostedFile file = w.Get (index);
+			var file = w.Get (index);
 			if (file == null)
 				return null;
 
@@ -98,7 +98,7 @@ namespace System.Web
 
 		public override HttpPostedFileBase Get (string name)
 		{
-			HttpPostedFile file = w.Get (name);
+			var file = w.Get (name);
 			if (file == null)
 				return null;
 

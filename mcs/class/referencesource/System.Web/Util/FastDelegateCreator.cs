@@ -37,7 +37,7 @@ namespace System.Web.Util {
             ConstructorInfo delegateCtor = typeof(TDelegate).GetConstructor(new Type[] { typeof(object), typeof(IntPtr) });
 
             // Define method FastCreateDelegate_X: (object, IntPtr) -> TDelegate
-            DynamicMethod dynamicMethod = new DynamicMethod(
+            var dynamicMethod = new DynamicMethod(
                 name: "FastCreateDelegate_" + typeof(TDelegate).Name,
                 returnType: typeof(TDelegate),
                 parameterTypes: new Type[] { typeof(object), typeof(IntPtr) },
@@ -45,7 +45,7 @@ namespace System.Web.Util {
                 skipVisibility: true);
 
             // return new TDelegate(obj, method);
-            ILGenerator ilGen = dynamicMethod.GetILGenerator();
+            var ilGen = dynamicMethod.GetILGenerator();
             ilGen.Emit(OpCodes.Ldarg_0); // Stack contains ('this')
             ilGen.Emit(OpCodes.Ldarg_1); // Stack contains ('this', 'method')
             ilGen.Emit(OpCodes.Newobj, delegateCtor); // Stack contains (delegate)

@@ -105,7 +105,7 @@ namespace System.Web.UI {
                 return (bool)result;
             }
 
-            System.ComponentModel.AttributeCollection attrs = TypeDescriptor.GetAttributes(type);
+            var attrs = TypeDescriptor.GetAttributes(type);
             FilterableAttribute attr = (FilterableAttribute)attrs[typeof(FilterableAttribute)];
             result = (attr != null) && attr.Filterable;
             _filterableTypes[type] = result;

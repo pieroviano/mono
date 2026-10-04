@@ -55,9 +55,9 @@ namespace System.Web.Caching
 
 		public override void Set (string key, object entry, DateTime utcExpiry)
 		{
-			Cache cache = HttpRuntime.InternalCache;
-			string cacheKey = CACHE_PREFIX + key;
-			object oldObject = cache.Get (cacheKey);
+			var cache = HttpRuntime.InternalCache;
+			var cacheKey = CACHE_PREFIX + key;
+			var oldObject = cache.Get (cacheKey);
 
 			if (oldObject != null)
 				cache.Remove (cacheKey);

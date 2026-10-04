@@ -110,7 +110,7 @@ namespace System.Web.Caching
 			this.headers = headers;
 		}
 
-		public void SetData (MemoryStream ms)
+		public void SetData (MemoryStream? ms)
 		{
 			if (ms == null)
 				return;
@@ -118,7 +118,7 @@ namespace System.Web.Caching
 			Data.Add (new DataItem (ms.GetBuffer (), ms.Length));
 		}
 
-		public void SetData (HttpResponseSubstitutionCallback callback)
+		public void SetData (HttpResponseSubstitutionCallback? callback)
 		{
 			if (callback == null)
 				return;
@@ -128,7 +128,7 @@ namespace System.Web.Caching
 		
 		public IList GetData ()
 		{
-			int count = data != null ? data.Count :0;
+			var count = data != null ? data.Count :0;
 			if (count == 0)
 				return null;
 

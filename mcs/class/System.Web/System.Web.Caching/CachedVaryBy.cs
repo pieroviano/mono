@@ -67,12 +67,12 @@ namespace System.Web.Caching
 			get { return key; }
 		}
 		
-		internal string CreateKey (string file_path, HttpContext context)
+		internal string CreateKey (string file_path, HttpContext? context)
 		{
 			if (String.IsNullOrEmpty (file_path))
 				throw new ArgumentNullException ("file_path");
 
-			StringBuilder builder = new StringBuilder ("vbk"); // VaryBy Key
+			var builder = new StringBuilder ("vbk"); // VaryBy Key
 			HttpRequest request = context != null ? context.Request : null;
 			string name, value;
 			
@@ -117,7 +117,7 @@ namespace System.Web.Caching
 				StringBuilder fprms = null;
 				builder.Append ("SQ"); // Specified, Query
 				
-				for (int i = 0; i < prms.Length; i++) {
+				for (var i = 0; i < prms.Length; i++) {
 					name = prms [i];
 					if (String.IsNullOrEmpty (name))
 						continue;
@@ -153,7 +153,7 @@ namespace System.Web.Caching
 			if (headers != null) {
 				builder.Append ('H'); // Headers
 				
-				for (int i=0; i < headers.Length; i++) {
+				for (var i=0; i < headers.Length; i++) {
 					builder.Append ('N'); // Name
 
 					name = headers [i];
@@ -170,7 +170,7 @@ namespace System.Web.Caching
 
 			if (custom != null) {
 				builder.Append ('C'); // Custom
-				string s = context.ApplicationInstance.GetVaryByCustomString (context, custom);
+				var s = context.ApplicationInstance.GetVaryByCustomString (context, custom);
 				builder.Append ('N'); // Name
 				builder.Append (custom);
 				builder.Append ('V'); // Value

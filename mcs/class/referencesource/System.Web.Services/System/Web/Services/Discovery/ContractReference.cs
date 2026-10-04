@@ -132,7 +132,7 @@ namespace System.Web.Services.Discovery {
             get {
                 if (ClientProtocol == null)
                     throw new InvalidOperationException(Res.GetString(Res.WebMissingClientProtocol));
-                object document = ClientProtocol.Documents[Url];
+                var document = ClientProtocol.Documents[Url];
                 if (document == null) {
                     Resolve();
                     document = ClientProtocol.Documents[Url];
@@ -155,7 +155,7 @@ namespace System.Web.Services.Discovery {
         [XmlIgnore]
         public override string DefaultFilename {
             get {
-                string fileName = MakeValidFilename(Contract.Name);
+                var fileName = MakeValidFilename(Contract.Name);
                 if (fileName == null || fileName.Length == 0)
                     fileName = FilenameFromUrl(Url);
                 return Path.ChangeExtension(fileName, ".wsdl");
@@ -194,7 +194,7 @@ namespace System.Web.Services.Discovery {
 
             ClientProtocol.References[Url] = this;
 
-            ArrayList importUrls = new ArrayList();
+            var importUrls = new ArrayList();
             foreach (Import import in serviceDescription.Imports)
                 if (import.Location != null)
                     importUrls.Add(import.Location);
@@ -208,27 +208,27 @@ namespace System.Web.Services.Discovery {
 
             foreach (string urlFromImport in importUrls) {
                 // make the (possibly) relative Uri in the contract fully qualified with respect to the contract URL
-                string importUrl = UriToString(Url, urlFromImport);
+                var importUrl = UriToString(Url, urlFromImport);
                 if ( ClientProtocol.Documents[importUrl] != null ) {
                     continue;
                 }
 
-                string oldUrl = importUrl;
+                var oldUrl = importUrl;
                 try {
                     stream = ClientProtocol.Download(ref importUrl, ref contentType);
                     try {
                         //Proceed only if not been here before
                         if ( ClientProtocol.Documents[importUrl] == null ) {
-                            XmlTextReader reader = new XmlTextReader(new StreamReader(stream, RequestResponseUtils.GetEncoding(contentType)));
+                            var reader = new XmlTextReader(new StreamReader(stream, RequestResponseUtils.GetEncoding(contentType)));
                             reader.WhitespaceHandling = WhitespaceHandling.Significant;
                             reader.XmlResolver = null;
                             reader.DtdProcessing = DtdProcessing.Prohibit;
                             //Resolve on WSDL and XSD will go recursivelly
                             if (ServiceDescription.CanRead(reader)) {
-                                ServiceDescription doc = ServiceDescription.Read(reader, true);
+                                var doc = ServiceDescription.Read(reader, true);
                                 doc.RetrievalUrl = importUrl;
                                 ClientProtocol.Documents[importUrl] = doc;
-                                ContractReference contractReference = new ContractReference(importUrl, null);
+                                var contractReference = new ContractReference(importUrl, null);
                                 contractReference.ClientProtocol = ClientProtocol;
                                 try {
                                     contractReference.Resolve(contentType, stream);
@@ -243,7 +243,7 @@ namespace System.Web.Services.Discovery {
                             }
                             else if (reader.IsStartElement("schema", XmlSchema.Namespace)) {
                                 ClientProtocol.Documents[importUrl] = XmlSchema.Read(reader, null);
-                                SchemaReference schemaReference = new SchemaReference(importUrl);
+                                var schemaReference = new SchemaReference(importUrl);
                                 schemaReference.ClientProtocol = ClientProtocol;
                                 try {
                                     schemaReference.Resolve(contentType, stream);

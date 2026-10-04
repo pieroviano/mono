@@ -63,7 +63,7 @@ namespace System.Web.DynamicData
 		bool displayColumnChecked;
 		bool sortColumnChecked;
 		
-		internal MetaTable (MetaModel model, TableProvider provider, ContextConfiguration configuration)
+		internal MetaTable (MetaModel model, TableProvider provider, ContextConfiguration? configuration)
 		{
 			bool scaffoldAllTables;
 			
@@ -71,10 +71,10 @@ namespace System.Web.DynamicData
 			Provider = provider;
 			if (configuration != null) {
 				ScaffoldAllTables = scaffoldAllTables = configuration.ScaffoldAllTables;
-				Func <Type, TypeDescriptionProvider> factory = configuration.MetadataProviderFactory;
+				var factory = configuration.MetadataProviderFactory;
 				if (factory != null) {
-					Type t = EntityType;
-					TypeDescriptionProvider p = factory (t);
+					var t = EntityType;
+					var p = factory (t);
 					if (p != null)
 						TypeDescriptor.AddProvider (p, t);
 				}
@@ -142,7 +142,7 @@ namespace System.Web.DynamicData
 		public global::System.ComponentModel.AttributeCollection Attributes {
 			get {
 				if (attributes == null) {
-					ICustomTypeDescriptor descriptor = MetaModel.GetTypeDescriptor (EntityType);
+					var descriptor = MetaModel.GetTypeDescriptor (EntityType);
 					if (descriptor != null)
 						attributes = descriptor.GetAttributes ();
 				}
@@ -225,7 +225,7 @@ namespace System.Web.DynamicData
 			}
 		}
 
-		string BuildActionPath (string path, RouteValueDictionary values)
+		string BuildActionPath (string path, RouteValueDictionary? values)
 		{
 			var sb = new StringBuilder ();
 
@@ -233,7 +233,7 @@ namespace System.Web.DynamicData
 			if (values != null && values.Count > 0) {
 				sb.Append ('?');
 
-				bool first = true;
+				var first = true;
 				foreach (var de in values) {
 					if (first)
 						first = false;
@@ -243,7 +243,7 @@ namespace System.Web.DynamicData
 					sb.Append (Uri.EscapeDataString (de.Key));
 					sb.Append ('=');
 
-					object parameterValue = de.Value;
+					var parameterValue = de.Value;
 					if (parameterValue != null)
 						sb.Append (Uri.EscapeDataString (parameterValue.ToString ()));
 				}
@@ -279,13 +279,13 @@ namespace System.Web.DynamicData
 			return attr.SortDescending;
 		}
 		
-		void FillWithPrimaryKeys (RouteValueDictionary values, IList<object> primaryKeyValues)
+		void FillWithPrimaryKeys (RouteValueDictionary values, IList<object>? primaryKeyValues)
 		{
 			if (primaryKeyValues == null)
 				return;
 
-			ReadOnlyCollection <MetaColumn> pkc = PrimaryKeyColumns;
-			int pkcCount = pkc.Count;
+			var pkc = PrimaryKeyColumns;
+			var pkcCount = pkc.Count;
 			
 			// Fill the above with primary keys using primaryKeyValues - .NET does not
 			// check (again) whether there are enough elements in primaryKeyValues, it
@@ -297,7 +297,7 @@ namespace System.Web.DynamicData
 			// This is so wrong (the generated URL might contain values assigned to
 			// primary column keys which do not correspond with the column's type) but
 			// this is how the upstream behaves, unfortunately.
-			for (int i = 0; i < pkcCount; i++)
+			for (var i = 0; i < pkcCount; i++)
 				values.Add (pkc [i].Name, primaryKeyValues [i]);
 		}
 		
@@ -307,13 +307,13 @@ namespace System.Web.DynamicData
 				return displayColumn;
 
 			displayColumnChecked = true;
-			ReadOnlyCollection<MetaColumn> columns = Columns;
+			var columns = Columns;
 
 			// 1. The column that is specified by using the DisplayColumnAttribute attribute. 
 			DisplayColumnAttribute attr = Attributes [typeof (DisplayColumnAttribute)] as DisplayColumnAttribute;
 			if (attr != null) {
-				string name = attr.DisplayColumn;
-				foreach (MetaColumn mc in columns)
+				var name = attr.DisplayColumn;
+				foreach (var mc in columns)
 					if (String.Compare (name, mc.Name, StringComparison.Ordinal) == 0)
 						return mc;
 				
@@ -322,9 +322,9 @@ namespace System.Web.DynamicData
 
 			// 2. The first string column that is not in the primary key.
 			// LAMESPEC: also a column which is not a custom one
-			ReadOnlyCollection <MetaColumn> pkc = PrimaryKeyColumns;
-			bool havePkc = pkc.Count > 0;
-			foreach (MetaColumn mc in columns) {
+			var pkc = PrimaryKeyColumns;
+			var havePkc = pkc.Count > 0;
+			foreach (var mc in columns) {
 				if (mc.IsCustomProperty || (havePkc && pkc.Contains (mc)))
 					continue;
 				if (mc.ColumnType == typeof (string))
@@ -333,7 +333,7 @@ namespace System.Web.DynamicData
 
 			// 3. The first string column that is in the primary key. 
 			if (havePkc) {
-				foreach (MetaColumn mc in pkc) {
+				foreach (var mc in pkc) {
 					if (mc.ColumnType == typeof (string))
 						return mc;
 				}
@@ -394,7 +394,7 @@ namespace System.Web.DynamicData
 			return GetActionPath (action, (IList <object>)null);
 		}
 
-		public string GetActionPath (string action, IList<object> primaryKeyValues)
+		public string GetActionPath (string action, IList<object>? primaryKeyValues)
 		{
 			if (String.IsNullOrEmpty (action))
 				return String.Empty;
@@ -411,7 +411,7 @@ namespace System.Web.DynamicData
 			return GetActionPathFromRoutes (values);
 		}
 
-		public string GetActionPath (string action, object row)
+		public string GetActionPath (string action, object? row)
 		{
 			// To see that this method is called, comment out setting of
 			// HttpContext in the GetActionPath_Action_Row test and look at
@@ -439,7 +439,7 @@ namespace System.Web.DynamicData
 			return GetActionPathFromRoutes (routeValues);
 		}
 
-		public string GetActionPath (string action, IList<object> primaryKeyValues, string path)
+		public string GetActionPath (string action, IList<object>? primaryKeyValues, string path)
 		{
 			if (String.IsNullOrEmpty (path))
 				return GetActionPath (action, primaryKeyValues);
@@ -449,7 +449,7 @@ namespace System.Web.DynamicData
 			return BuildActionPath (path, values);
 		}
 
-		public string GetActionPath (string action, object row, string path)
+		public string GetActionPath (string action, object? row, string path)
 		{
 			return GetActionPath (action, GetPrimaryKeyValues (row), path);
 		}
@@ -459,7 +459,7 @@ namespace System.Web.DynamicData
 			if (routes == null)
 				routes = RouteTable.Routes;
 
-			VirtualPathData vpd = routes.GetVirtualPath (DynamicDataRouteHandler.GetRequestContext (HttpContext.Current), values);
+			var vpd = routes.GetVirtualPath (DynamicDataRouteHandler.GetRequestContext (HttpContext.Current), values);
 			return vpd == null ? String.Empty : vpd.VirtualPath;
 		}
 		
@@ -471,13 +471,13 @@ namespace System.Web.DynamicData
 			throw new InvalidOperationException (String.Format ("Column '{0}' does not exist in the meta table '{1}'", columnName, Name));
 		}
 
-		public string GetDisplayString (object row)
+		public string GetDisplayString (object? row)
 		{
 			if (row == null)
 				return String.Empty;
 
 			if (entityHasToString == null) {
-				Type type = EntityType;
+				var type = EntityType;
 				MethodInfo pi = type == null ? null : type.GetMethod ("ToString", BindingFlags.Public | BindingFlags.Instance | BindingFlags.DeclaredOnly);
 				entityHasToString = pi != null;
 			}
@@ -486,23 +486,23 @@ namespace System.Web.DynamicData
 				return row.ToString ();
 			
 			// Once again no check is made for row's type
-			MetaColumn mc = DisplayColumn;
-			object value = DataBinder.GetPropertyValue (row, mc.Name);
+			var mc = DisplayColumn;
+			var value = DataBinder.GetPropertyValue (row, mc.Name);
 			if (value == null)
 				return String.Empty;
 			
 			return value.ToString ();
 		}
 
-		public string GetPrimaryKeyString (IList<object> primaryKeyValues)
+		public string GetPrimaryKeyString (IList<object>? primaryKeyValues)
 		{
 			if (primaryKeyValues == null || primaryKeyValues.Count == 0)
 				return String.Empty;
 			
 			var strings = new List <string> ();
-			bool allNull = true;
+			var allNull = true;
 			
-			foreach (object o in primaryKeyValues) {
+			foreach (var o in primaryKeyValues) {
 				if (o == null) {
 					strings.Add (null);
 					continue;
@@ -529,18 +529,18 @@ namespace System.Web.DynamicData
 			return ret;
 		}
 
-		public string GetPrimaryKeyString (object row)
+		public string GetPrimaryKeyString (object? row)
 		{
 			return GetPrimaryKeyString (GetPrimaryKeyValues (row));
 		}
 
-		public IList<object> GetPrimaryKeyValues (object row)
+		public IList<object> GetPrimaryKeyValues (object? row)
 		{
 			if (row == null)
 				return null;
 
-			ReadOnlyCollection <MetaColumn> pkc = PrimaryKeyColumns;
-			int pkcCount = pkc.Count;
+			var pkc = PrimaryKeyColumns;
+			var pkcCount = pkc.Count;
 			var ret = new List <object> ();
 			if (pkcCount == 0)
 				return ret;
@@ -548,7 +548,7 @@ namespace System.Web.DynamicData
 			// No check is made whether row is of correct type,
 			// DataBinder.GetPropertyValue is called instead to fetch value of each
 			// member of the row object corresponding to primary key columns.
-			for (int i = 0; i < pkcCount; i++)
+			for (var i = 0; i < pkcCount; i++)
 				ret.Add (DataBinder.GetPropertyValue (row, pkc [i].Name));
 				
 			return ret;
@@ -559,18 +559,18 @@ namespace System.Web.DynamicData
 			return GetQuery (CreateContext ());
 		}
 
-		public IQueryable GetQuery (object context)
+		public IQueryable GetQuery (object? context)
 		{
 			return Provider.GetQuery (context == null ? CreateContext () : context);
 		}
 
 		internal void Init ()
 		{
-			ReadOnlyCollection <MetaColumn> columns = Columns;
+			var columns = Columns;
 			if (columns == null)
 				return;
 
-			foreach (MetaColumn mc in columns)
+			foreach (var mc in columns)
 				mc.Init ();
 		}
 		

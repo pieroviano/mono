@@ -46,7 +46,7 @@ namespace System.Web.UI.Adapters
 		protected HttpBrowserCapabilities Browser 
 		{
 			get {
-				Page page = Page;
+				var page = Page;
 
 				if (page != null)
 					return page.Request.Browser;
@@ -69,7 +69,7 @@ namespace System.Web.UI.Adapters
 		protected Page Page 
 		{
 			get {
-				Control control = Control;
+				var control = Control;
 
 				if (control != null)
 					return control.Page;
@@ -83,7 +83,7 @@ namespace System.Web.UI.Adapters
 		protected PageAdapter PageAdapter 
 		{
 			get {
-				Page page = Page;
+				var page = Page;
 
 				if (page != null)
 					return page.PageAdapter;
@@ -99,7 +99,7 @@ namespace System.Web.UI.Adapters
 
 		protected internal virtual void CreateChildControls ()
 		{
-			Control control = Control;
+			var control = Control;
 			if (control != null)
 				control.CreateChildControls ();
 		}
@@ -119,7 +119,7 @@ namespace System.Web.UI.Adapters
 
 		protected internal virtual void OnInit (EventArgs e)
 		{
-			Control control = Control;
+			var control = Control;
 
 			if (control != null)
 				control.OnInit(e);
@@ -127,7 +127,7 @@ namespace System.Web.UI.Adapters
 
 		protected internal virtual void OnLoad (EventArgs e)
 		{
-			Control control = Control;
+			var control = Control;
 
 			if (control != null)
 				control.OnLoad(e);
@@ -135,7 +135,7 @@ namespace System.Web.UI.Adapters
 
 		protected internal virtual void OnPreRender (EventArgs e)
 		{
-			Control control = Control;
+			var control = Control;
 
 			if (control != null)
 				control.OnPreRender(e);
@@ -143,7 +143,7 @@ namespace System.Web.UI.Adapters
 
 		protected internal virtual void OnUnload (EventArgs e)
 		{
-			Control control = Control;
+			var control = Control;
 
 			if (control != null)
 				control.OnUnload(e);
@@ -151,7 +151,7 @@ namespace System.Web.UI.Adapters
 
 		protected internal virtual void Render (HtmlTextWriter writer)
 		{
-			Control control = Control;
+			var control = Control;
 
 			if (control != null)
 				control.Render (writer);
@@ -159,7 +159,7 @@ namespace System.Web.UI.Adapters
 
 		protected internal virtual void RenderChildren (HtmlTextWriter writer)
 		{
-			Control control = Control;
+			var control = Control;
 
 			if (control != null)
 				control.RenderChildren (writer);

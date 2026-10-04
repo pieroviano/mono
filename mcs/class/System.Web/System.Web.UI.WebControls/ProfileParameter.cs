@@ -70,7 +70,7 @@ namespace System.Web.UI.WebControls
 			return new ProfileParameter (this);
 		}
 		protected internal
-		override object Evaluate (HttpContext context, Control control)
+		override object Evaluate (HttpContext? context, Control control)
 		{
 			if (context == null || context.Profile == null)
 				return null;
@@ -84,7 +84,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValue ("")]
 		public string PropertyName {
 			get {
-				object o = ViewState ["PropertyName"];
+				var o = ViewState ["PropertyName"];
 				return (o != null) ? (string) o : string.Empty;
 			}
 			set { ViewState ["PropertyName"] = value; }

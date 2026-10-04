@@ -38,7 +38,7 @@ namespace System.Web.UI.HtmlControls
 	[ControlBuilder (typeof (HtmlEmptyTagControlBuilder))]
 	public abstract class HtmlInputControl : HtmlControl
 	{
-		protected HtmlInputControl (string type)
+		protected HtmlInputControl (string? type)
 			: base ("input")
 		{
 			if (type == null)
@@ -70,7 +70,7 @@ namespace System.Web.UI.HtmlControls
 		[WebCategory("Appearance")]
 		public virtual string Value {
 			get {
-				string s = Attributes ["value"];
+				var s = Attributes ["value"];
 				return (s == null) ? String.Empty : s;
 			}
 			set {

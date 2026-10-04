@@ -35,7 +35,7 @@ namespace System.Web.UI.WebControls
 {
 	internal static class HelperExtensions
 	{
-		public static void CopyTo (this IOrderedDictionary from, IOrderedDictionary to)
+		public static void CopyTo (this IOrderedDictionary from, IOrderedDictionary? to)
 		{
 			if (to == null || from.Count == 0)
 				return;

@@ -40,12 +40,12 @@ namespace System.Web.Services.Discovery {
         // -------------------------------------------------------------------------------
         //  Look in iven directory for subdirectories, feasable for further searching.
         protected override void SearchSubDirectories(string localDir) {
-            DirectoryInfo dir = new DirectoryInfo(localDir);
+            var dir = new DirectoryInfo(localDir);
             if (!dir.Exists)
                 return;
-            DirectoryInfo[] subDirs = dir.GetDirectories();
+            var subDirs = dir.GetDirectories();
             
-            foreach (DirectoryInfo subDir in subDirs) {
+            foreach (var subDir in subDirs) {
                 if (subDir.Name == "." || subDir.Name == ".." ) {
                     continue;
                 }
@@ -59,7 +59,7 @@ namespace System.Web.Services.Discovery {
             if ( !Directory.Exists(dir) )
                 return null;
 
-            DirectoryInfo directory = new DirectoryInfo(dir);
+            var directory = new DirectoryInfo(dir);
             if ( !directory.Exists )
                 return null;
 
@@ -73,7 +73,7 @@ namespace System.Web.Services.Discovery {
         // -------------------------------------------------------------------------------
         // Makes result URL found file path from diectory name and short file name.
         protected override string MakeResultPath(string dirName, string fileName) {
-            string res = origUrl 
+            var res = origUrl 
                    + dirName.Substring(startDir.Length, dirName.Length - startDir.Length).Replace('\\', '/') 
                    + '/' + fileName;  
             return res;

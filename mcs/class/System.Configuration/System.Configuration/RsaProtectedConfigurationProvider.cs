@@ -46,7 +46,7 @@ namespace System.Configuration
 		RSACryptoServiceProvider GetProvider ()
 		{
 			if (rsa == null) {
-				CspParameters c = new CspParameters ();
+				var c = new CspParameters ();
 				c.ProviderName = cspProviderName;
 				c.KeyContainerName = keyContainerName;
 				if (useMachineContainer)
@@ -69,7 +69,7 @@ namespace System.Configuration
 			
 			doc.Load (new StringReader (encryptedNode.OuterXml));
 
-			EncryptedXml ex = new EncryptedXml (doc);
+			var ex = new EncryptedXml (doc);
 
 			ex.AddKeyNameMapping ("Rsa Key", GetProvider ());
 
@@ -85,11 +85,11 @@ namespace System.Configuration
 			
 			doc.Load (new StringReader (node.OuterXml));
 
-			EncryptedXml ex = new EncryptedXml (doc);
+			var ex = new EncryptedXml (doc);
 
 			ex.AddKeyNameMapping ("Rsa Key", GetProvider ());
 
-			EncryptedData d = ex.Encrypt (doc.DocumentElement, "Rsa Key");
+			var d = ex.Encrypt (doc.DocumentElement, "Rsa Key");
 
 			return d.GetXml();
 		}
@@ -128,11 +128,11 @@ namespace System.Configuration
 		[MonoTODO]
 		public void ExportKey (string xmlFileName, bool includePrivateParameters)
 		{
-			RSACryptoServiceProvider prov = GetProvider ();
-			string xml = prov.ToXmlString (includePrivateParameters);
+			var prov = GetProvider ();
+			var xml = prov.ToXmlString (includePrivateParameters);
 
-			FileStream stream = new FileStream (xmlFileName, FileMode.OpenOrCreate, FileAccess.Write);
-			StreamWriter writer = new StreamWriter (stream);
+			var stream = new FileStream (xmlFileName, FileMode.OpenOrCreate, FileAccess.Write);
+			var writer = new StreamWriter (stream);
 
 			writer.Write (xml);
 			writer.Close ();
@@ -155,7 +155,7 @@ namespace System.Configuration
 
 		public RSAParameters RsaPublicKey {
 			get {
-				RSACryptoServiceProvider prov = GetProvider ();
+				var prov = GetProvider ();
 				return prov.ExportParameters (false);
 			}
 		}

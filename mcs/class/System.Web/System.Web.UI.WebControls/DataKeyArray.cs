@@ -78,7 +78,7 @@ namespace System.Web.UI.WebControls
 
 		void ICollection.CopyTo(Array array, int index)
 		{
-			foreach(object current in this)
+			foreach(var current in this)
 				array.SetValue(current, index++);
 		}
 
@@ -87,19 +87,19 @@ namespace System.Web.UI.WebControls
 			return keys.GetEnumerator();
 		}
 
-		void IStateManager.LoadViewState (object savedState)
+		void IStateManager.LoadViewState (object? savedState)
 		{
 			if (savedState == null) return;
-			object[] data = (object[]) savedState;
-			for (int n=0; n<data.Length && n<keys.Count; n++)
+			var data = (object[]) savedState;
+			for (var n=0; n<data.Length && n<keys.Count; n++)
 				((IStateManager)keys[n]).LoadViewState (data [n]);
 		}
 		
 		object IStateManager.SaveViewState ()
 		{
 			if (keys.Count == 0) return null;
-			object[] data = new object [keys.Count];
-			for (int n=0; n<keys.Count; n++)
+			var data = new object [keys.Count];
+			for (var n=0; n<keys.Count; n++)
 				data [n] = ((IStateManager)keys[n]).SaveViewState ();
 			return data;
 		}

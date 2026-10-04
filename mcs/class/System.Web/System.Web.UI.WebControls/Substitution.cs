@@ -72,15 +72,15 @@ namespace System.Web.UI.WebControls
 
 		protected internal override void Render (HtmlTextWriter writer)
 		{
-			string method = MethodName;
+			var method = MethodName;
 			if (method.Length == 0)
 				return;
 			
-			TemplateControl tc = TemplateControl;
+			var tc = TemplateControl;
 			if (tc == null)
 				return;
 			
-			HttpContext ctx = Context;
+			var ctx = Context;
 			HttpResponse resp = ctx != null ? ctx.Response : null;
 
 			if (resp == null)

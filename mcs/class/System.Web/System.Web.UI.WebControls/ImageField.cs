@@ -57,7 +57,7 @@ namespace System.Web.UI.WebControls {
 		[WebCategoryAttribute ("Appearance")]
 		public virtual string AlternateText {
 			get {
-				object ob = ViewState ["AlternateText"];
+				var ob = ViewState ["AlternateText"];
 				if (ob != null)
 					return (string) ob;
 				return String.Empty;
@@ -73,7 +73,7 @@ namespace System.Web.UI.WebControls {
 		[WebCategoryAttribute ("Behavior")]
 		public virtual bool ConvertEmptyStringToNull {
 			get {
-				object ob = ViewState ["ConvertEmptyStringToNull"];
+				var ob = ViewState ["ConvertEmptyStringToNull"];
 				if (ob != null)
 					return (bool) ob;
 				return true;
@@ -90,7 +90,7 @@ namespace System.Web.UI.WebControls {
 		[WebCategoryAttribute ("Data")]
 		public virtual string DataAlternateTextField {
 			get {
-				object ob = ViewState ["DataAlternateTextField"];
+				var ob = ViewState ["DataAlternateTextField"];
 				if (ob != null)
 					return (string) ob;
 				return String.Empty;
@@ -106,7 +106,7 @@ namespace System.Web.UI.WebControls {
 		[WebCategoryAttribute ("Data")]
 		public virtual string DataAlternateTextFormatString {
 			get {
-				object ob = ViewState ["DataAlternateTextFormatString"];
+				var ob = ViewState ["DataAlternateTextFormatString"];
 				if (ob != null)
 					return (string) ob;
 				return String.Empty;
@@ -123,7 +123,7 @@ namespace System.Web.UI.WebControls {
 		[WebCategoryAttribute ("Data")]
 		public virtual string DataImageUrlField {
 			get {
-				object ob = ViewState ["DataImageUrlField"];
+				var ob = ViewState ["DataImageUrlField"];
 				if (ob != null)
 					return (string) ob;
 				return String.Empty;
@@ -139,7 +139,7 @@ namespace System.Web.UI.WebControls {
 		[WebCategoryAttribute ("Data")]
 		public virtual string DataImageUrlFormatString {
 			get {
-				object ob = ViewState ["DataImageUrlFormatString"];
+				var ob = ViewState ["DataImageUrlFormatString"];
 				if (ob != null)
 					return (string) ob;
 				return String.Empty;
@@ -156,7 +156,7 @@ namespace System.Web.UI.WebControls {
 		[WebCategoryAttribute ("Behavior")]
 		public virtual string NullDisplayText {
 			get {
-				object ob = ViewState ["NullDisplayText"];
+				var ob = ViewState ["NullDisplayText"];
 				if (ob != null) return (string) ob;
 				return "";
 			}
@@ -173,7 +173,7 @@ namespace System.Web.UI.WebControls {
 		[WebCategoryAttribute ("Behavior")]
 		public virtual string NullImageUrl {
 			get {
-				object ob = ViewState ["NullImageUrl"];
+				var ob = ViewState ["NullImageUrl"];
 				if (ob != null)
 					return (string) ob;
 				return String.Empty;
@@ -189,7 +189,7 @@ namespace System.Web.UI.WebControls {
 		[WebCategoryAttribute ("Behavior")]
 		public virtual bool ReadOnly {
 			get {
-				object val = ViewState ["ReadOnly"];
+				var val = ViewState ["ReadOnly"];
 				return val != null ? (bool) val : false;
 			}
 			set { 
@@ -203,9 +203,9 @@ namespace System.Web.UI.WebControls {
 			if ((ReadOnly && !includeReadOnly) || cell.Controls.Count == 0)
 				return;
 			
-			bool editable = (rowState & (DataControlRowState.Edit | DataControlRowState.Insert)) != 0;
+			var editable = (rowState & (DataControlRowState.Edit | DataControlRowState.Insert)) != 0;
 			if (includeReadOnly || editable) {
-				Control control = cell.Controls [0];
+				var control = cell.Controls [0];
 				//TODO: other controls?
 				if (control is Image)
 					dictionary [DataImageUrlField] = ((Image)control).ImageUrl;
@@ -226,18 +226,18 @@ namespace System.Web.UI.WebControls {
 		
 		protected virtual void InitializeDataCell (DataControlFieldCell cell, DataControlRowState rowState)
 		{
-			bool editable = (rowState & (DataControlRowState.Edit | DataControlRowState.Insert)) != 0;
+			var editable = (rowState & (DataControlRowState.Edit | DataControlRowState.Insert)) != 0;
 			if (editable && !ReadOnly) {
-				TextBox box = new TextBox ();
+				var box = new TextBox ();
 				cell.Controls.Add (box);
 			} else if (DataImageUrlField.Length > 0) {
-				Image img = new Image ();
+				var img = new Image ();
 				img.ControlStyle.CopyFrom (ControlStyle);
 				cell.Controls.Add (img);
 			}
 		}
 		
-		protected virtual string FormatImageUrlValue (object dataValue)
+		protected virtual string FormatImageUrlValue (object? dataValue)
 		{
 			if (dataValue == null)
 				return null;
@@ -253,7 +253,7 @@ namespace System.Web.UI.WebControls {
 				if (textProperty == null)
 					textProperty = GetProperty (controlContainer, DataAlternateTextField);
 					
-				object value = GetValue (controlContainer, DataAlternateTextField, ref textProperty);
+				var value = GetValue (controlContainer, DataAlternateTextField, ref textProperty);
 				
 				if (value == null || (value.ToString().Length == 0 && ConvertEmptyStringToNull))
 					return NullDisplayText;
@@ -266,19 +266,19 @@ namespace System.Web.UI.WebControls {
 		
 		}
 		
-		protected virtual object GetValue (Control controlContainer, string fieldName, ref PropertyDescriptor cachedDescriptor)
+		protected virtual object GetValue (Control controlContainer, string fieldName, ref PropertyDescriptor? cachedDescriptor)
 		{
 			if (DesignMode)
 				return GetDesignTimeValue ();
 			else {
-				object dataItem = DataBinder.GetDataItem (controlContainer);
+				var dataItem = DataBinder.GetDataItem (controlContainer);
 				if (dataItem == null)
 					throw new HttpException ("A data item was not found in the container. The container must either implement IDataItemContainer, or have a property named DataItem.");
 				if (fieldName == ThisExpression)
 					return dataItem;
 				else {
 					if (cachedDescriptor != null) return cachedDescriptor.GetValue (dataItem);
-					PropertyDescriptor prop = GetProperty (controlContainer, fieldName);
+					var prop = GetProperty (controlContainer, fieldName);
 					return prop.GetValue (dataItem);
 				}
 			}
@@ -289,8 +289,8 @@ namespace System.Web.UI.WebControls {
 			if (fieldName == ThisExpression)
 				return null;
 			
-			IDataItemContainer dic = (IDataItemContainer) controlContainer;
-			PropertyDescriptorCollection properties = TypeDescriptor.GetProperties (dic.DataItem);
+			var dic = (IDataItemContainer) controlContainer;
+			var properties = TypeDescriptor.GetProperties (dic.DataItem);
 			PropertyDescriptor prop = properties != null ? properties [fieldName] : null;
 			if (prop == null)
 				throw new InvalidOperationException ("Property '" + fieldName + "' not found in object of type " + dic.DataItem.GetType());
@@ -305,9 +305,9 @@ namespace System.Web.UI.WebControls {
 		
 		protected virtual void OnDataBindField (object sender, EventArgs e)
 		{
-			Control control = (Control) sender;
+			var control = (Control) sender;
 			ControlCollection controls = control != null ? control.Controls : null;
-			Control namingContainer = control.NamingContainer;
+			var namingContainer = control.NamingContainer;
 			Control c;
 			if (sender is DataControlFieldCell) {
 				if (controls.Count == 0)
@@ -322,15 +322,15 @@ namespace System.Web.UI.WebControls {
 				imageProperty = GetProperty (namingContainer, DataImageUrlField);
 			
 			if (c is TextBox) {
-				object val = GetValue (namingContainer, DataImageUrlField, ref imageProperty);
+				var val = GetValue (namingContainer, DataImageUrlField, ref imageProperty);
 				((TextBox)c).Text = val != null ? val.ToString() : String.Empty;
 			} else if (c is Image) {
-				Image img = (Image)c;
-				string value =  FormatImageUrlValue (GetValue (namingContainer, DataImageUrlField, ref imageProperty));
+				var img = (Image)c;
+				var value =  FormatImageUrlValue (GetValue (namingContainer, DataImageUrlField, ref imageProperty));
 				if (value == null || (ConvertEmptyStringToNull && value.Length == 0)) {
 					if (NullImageUrl == null || NullImageUrl.Length == 0) {
 						c.Visible = false;
-						Label label = new Label ();
+						var label = new Label ();
 						label.Text = NullDisplayText;
 						controls.Add (label);
 					} else
@@ -353,7 +353,7 @@ namespace System.Web.UI.WebControls {
 		protected override void CopyProperties (DataControlField newField)
 		{
 			base.CopyProperties (newField);
-			ImageField field = (ImageField) newField;
+			var field = (ImageField) newField;
 			field.AlternateText = AlternateText;
 			field.ConvertEmptyStringToNull = ConvertEmptyStringToNull;
 			field.DataAlternateTextField = DataAlternateTextField;

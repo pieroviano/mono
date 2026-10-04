@@ -64,7 +64,7 @@ namespace System.Web.UI.HtmlControls
 		[WebCategory("Data")]
 		public virtual string DataMember {
 			get {
-				string member = Attributes["datamember"];
+				var member = Attributes["datamember"];
 
 				if (member == null) {
 					return (String.Empty);
@@ -121,7 +121,7 @@ namespace System.Web.UI.HtmlControls
 		[WebCategory("Data")]
 		public virtual string DataTextField {
 			get {
-				string text = Attributes["datatextfield"];
+				var text = Attributes["datatextfield"];
 
 				if (text == null) {
 					return (String.Empty);
@@ -143,7 +143,7 @@ namespace System.Web.UI.HtmlControls
 		[WebCategory("Data")]
 		public virtual string DataValueField {
 			get {
-				string value = Attributes["datavaluefield"];
+				var value = Attributes["datavaluefield"];
 
 				if (value == null) {
 					return (String.Empty);
@@ -204,7 +204,7 @@ namespace System.Web.UI.HtmlControls
 		[WebCategory("Behavior")]
 		public bool Multiple {
 			get {
-				string multi = Attributes["multiple"];
+				var multi = Attributes["multiple"];
 
 				if (multi == null) {
 					return (false);
@@ -244,9 +244,9 @@ namespace System.Web.UI.HtmlControls
 		public virtual int SelectedIndex {
 			get {
 				/* Make sure Items has been initialised */
-				ListItemCollection listitems = Items;
+				var listitems = Items;
 
-				for (int i = 0; i < listitems.Count; i++) {
+				for (var i = 0; i < listitems.Count; i++) {
 					if (listitems[i].Selected) {
 						return (i);
 					}
@@ -292,11 +292,11 @@ namespace System.Web.UI.HtmlControls
 		 */
 		protected virtual int[] SelectedIndices {
 			get {
-				ArrayList selected = new ArrayList ();
+				var selected = new ArrayList ();
 
-				int count = Items.Count;
+				var count = Items.Count;
 
-				for (int i = 0; i < count; i++) {
+				for (var i = 0; i < count; i++) {
 					if (Items [i].Selected) {
 						selected.Add (i);
 					}
@@ -310,7 +310,7 @@ namespace System.Web.UI.HtmlControls
 		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public int Size {
 			get {
-				string size = Attributes["size"];
+				var size = Attributes["size"];
 
 				if (size == null) {
 					return (-1);
@@ -330,7 +330,7 @@ namespace System.Web.UI.HtmlControls
 		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public string Value {
 			get {
-				int sel = SelectedIndex;
+				var sel = SelectedIndex;
 
 				if (sel >= 0 && sel < Items.Count) {
 					return (Items[sel].Value);
@@ -339,7 +339,7 @@ namespace System.Web.UI.HtmlControls
 				return (String.Empty);
 			}
 			set {
-				int sel = Items.IndexOf (value);
+				var sel = Items.IndexOf (value);
 
 				if (sel >= 0) {
 					SelectedIndex = sel;
@@ -378,8 +378,8 @@ namespace System.Web.UI.HtmlControls
 				return;
 			}
 
-			int count = items.Count;
-			for (int i = 0; i < count; i++) {
+			var count = items.Count;
+			for (var i = 0; i < count; i++) {
 				items[i].Selected = false;
 			}
 		}
@@ -408,7 +408,7 @@ namespace System.Web.UI.HtmlControls
 
 			IEnumerable result = null;
 
-			DataSourceView boundDataSourceView = ConnectToDataSource ();
+			var boundDataSourceView = ConnectToDataSource ();
 			boundDataSourceView.Select (DataSourceSelectArguments.Empty, delegate (IEnumerable data) { result = data; });
 
 			return result;
@@ -428,7 +428,7 @@ namespace System.Web.UI.HtmlControls
 			base.LoadViewState (first);
 
 			if (second != null) {
-				IStateManager manager = Items as IStateManager;
+				var manager = Items as IStateManager;
 				manager.LoadViewState (second);
 			}
 		}
@@ -438,15 +438,15 @@ namespace System.Web.UI.HtmlControls
 			base.OnDataBinding (e);
 
 			/* Make sure Items has been initialised */
-			ListItemCollection listitems = Items;
+			var listitems = Items;
 
 			listitems.Clear ();
 			
-			IEnumerable list = GetData ();
+			var list = GetData ();
 			if (list == null)
 				return;
 			
-			foreach (object container in list) {
+			foreach (var container in list) {
 				string text = null;
 				string value = null;
 
@@ -478,7 +478,7 @@ namespace System.Web.UI.HtmlControls
 					value = String.Empty;
 				}
 
-				ListItem item = new ListItem (text, value);
+				var item = new ListItem (text, value);
 				listitems.Add (item);
 			}
 			RequiresDataBinding = false;
@@ -544,7 +544,7 @@ namespace System.Web.UI.HtmlControls
 
 			/* verify that the data source exists and is an IDataSource */
 			object ctrl = null;
-			Page page = Page;
+			var page = Page;
 			if (page != null)
 				ctrl = page.FindControl (DataSourceID);
 
@@ -569,7 +569,7 @@ namespace System.Web.UI.HtmlControls
 			EnsureDataBound ();
 			base.OnPreRender (e);
 
-			Page page = Page;
+			var page = Page;
 			if (page != null && !Disabled) {
 				page.RegisterRequiresPostBack (this);
 				page.RegisterEnabledControl (this);
@@ -587,7 +587,7 @@ namespace System.Web.UI.HtmlControls
 		
 		protected override void RenderAttributes (HtmlTextWriter writer)
 		{
-			Page page = Page;
+			var page = Page;
 			if (page != null)
 				page.ClientScript.RegisterForEventValidation (UniqueID);
 
@@ -614,11 +614,11 @@ namespace System.Web.UI.HtmlControls
 			
 			writer.WriteLine ();
 
-			bool done_sel = false;
+			var done_sel = false;
 			
-			int count = items.Count;
-			for (int i = 0; i < count; i++) {
-				ListItem item = items[i];
+			var count = items.Count;
+			for (var i = 0; i < count; i++) {
+				var item = items[i];
 				writer.Indent++;
 				
 				/* Write the <option> elements this
@@ -640,7 +640,7 @@ namespace System.Web.UI.HtmlControls
 				
 				writer.WriteAttribute ("value", item.Value, true);
 				if (item.HasAttributes) {
-					AttributeCollection attrs = item.Attributes;
+					var attrs = item.Attributes;
 					foreach (string key in attrs.Keys)
 						writer.WriteAttribute (key, HttpUtility.HtmlAttributeEncode (attrs [key]));
 				}
@@ -661,7 +661,7 @@ namespace System.Web.UI.HtmlControls
 
 			first = base.SaveViewState ();
 
-			IStateManager manager = items as IStateManager;
+			var manager = items as IStateManager;
 			if (manager != null) {
 				second = manager.SaveViewState ();
 			}
@@ -683,8 +683,8 @@ namespace System.Web.UI.HtmlControls
 
 			ClearSelection ();
 			
-			int count = items.Count;
-			foreach (int i in selectedIndices) {
+			var count = items.Count;
+			foreach (var i in selectedIndices) {
 				if (i >= 0 && i < count) {
 					items[i].Selected = true;
 				}
@@ -695,7 +695,7 @@ namespace System.Web.UI.HtmlControls
 		{
 			base.TrackViewState ();
 
-			IStateManager manager = items as IStateManager;
+			var manager = items as IStateManager;
 			if (manager != null) {
 				manager.TrackViewState ();
 			}
@@ -713,7 +713,7 @@ namespace System.Web.UI.HtmlControls
 			 */
 
 			string[] values = postCollection.GetValues (postDataKey);
-			bool changed = false;
+			var changed = false;
 
 			if (values != null) {
 				if (Multiple) {
@@ -723,12 +723,12 @@ namespace System.Web.UI.HtmlControls
 					 * we need to know if the set
 					 * has changed from last time
 					 */
-					int value_len = values.Length;
-					int[] old_sel = SelectedIndices;
-					int[] new_sel = new int[value_len];
-					int old_sel_len = old_sel.Length;
+					var value_len = values.Length;
+					var old_sel = SelectedIndices;
+					var new_sel = new int[value_len];
+					var old_sel_len = old_sel.Length;
 					
-					for (int i = 0; i < value_len; i++) {
+					for (var i = 0; i < value_len; i++) {
 						new_sel[i] = Items.IndexOf (values[i]);
 						if (old_sel_len != value_len ||
 						    old_sel[i] != new_sel[i]) {
@@ -741,7 +741,7 @@ namespace System.Web.UI.HtmlControls
 					}
 				} else {
 					/* Just take the first one */
-					int sel = Items.IndexOf (values[0]);
+					var sel = Items.IndexOf (values[0]);
 
 					if (sel != SelectedIndex) {
 						SelectedIndex = sel;

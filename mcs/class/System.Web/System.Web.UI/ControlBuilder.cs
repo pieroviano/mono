@@ -91,7 +91,7 @@ namespace System.Web.UI {
 		{
 		}
 
-		internal ControlBuilder (TemplateParser parser,
+		internal ControlBuilder (TemplateParser? parser,
 					 ControlBuilder parentBuilder,
 					 Type type,
 					 string tagName,
@@ -226,7 +226,7 @@ namespace System.Web.UI {
 
 		public Type NamingContainerType {
 			get {
-				ControlBuilder cb = myNamingContainer;
+				var cb = myNamingContainer;
 				
 				if (cb == null)
 					return typeof (Control);
@@ -278,7 +278,7 @@ namespace System.Web.UI {
 			
 		public virtual Type BindingContainerType {
 			get {
-				ControlBuilder cb = (this is TemplateBuilder && !(this is RootBuilder)) ? this : MyNamingContainer;
+				var cb = (this is TemplateBuilder && !(this is RootBuilder)) ? this : MyNamingContainer;
 				
 				if (cb == null) {
 					if (this is RootBuilder && parserType == typeof (PageParser)) 
@@ -393,11 +393,11 @@ namespace System.Web.UI {
 			if (String.IsNullOrEmpty (tag))
 				return;
 
-			RootBuilder rb = Root;
+			var rb = Root;
 			AspComponentFoundry foundry = rb != null ? rb.Foundry : null;
 			if (foundry == null)
 				return;
-			AspComponent component = foundry.GetComponent (tag);
+			var component = foundry.GetComponent (tag);
 			if (component == null || !component.FromConfig)
 				return;
 			
@@ -410,7 +410,7 @@ namespace System.Web.UI {
 			return true;
 		}
 
-		public virtual void AppendLiteralString (string s)
+		public virtual void AppendLiteralString (string? s)
 		{
 			if (s == null || s.Length == 0)
 				return;
@@ -481,7 +481,7 @@ namespace System.Web.UI {
 		{
 		}
 
-		static Type MapTagType (Type tagType)
+		static Type MapTagType (Type? tagType)
 		{
 			if (tagType == null)
 				return null;
@@ -490,11 +490,11 @@ namespace System.Web.UI {
 			if (ps == null)
 				return tagType;
 
-			TagMapCollection tags = ps.TagMapping;
+			var tags = ps.TagMapping;
 			if (tags == null || tags.Count == 0)
 				return tagType;
 			
-			string tagTypeName = tagType.ToString ();
+			var tagTypeName = tagType.ToString ();
 			Type mappedType, originalType;
 			string originalTypeName = String.Empty, mappedTypeName = String.Empty;
 			bool missingType;
@@ -549,20 +549,20 @@ namespace System.Web.UI {
 			return tagType;
 		}
 
-		public static ControlBuilder CreateBuilderFromType (TemplateParser parser,
+		public static ControlBuilder CreateBuilderFromType (TemplateParser? parser,
 								    ControlBuilder parentBuilder,
-								    Type type,
+								    Type? type,
 								    string tagName,
 								    string id,
 								    IDictionary attribs,
 								    int line,
 								    string sourceFileName)
 		{
-			Type tagType = MapTagType (type);
+			var tagType = MapTagType (type);
 			ControlBuilder builder;
-			object [] atts = tagType.GetCustomAttributes (typeof (ControlBuilderAttribute), true);
+			var atts = tagType.GetCustomAttributes (typeof (ControlBuilderAttribute), true);
 			if (atts != null && atts.Length > 0) {
-				ControlBuilderAttribute att = (ControlBuilderAttribute) atts [0];
+				var att = (ControlBuilderAttribute) atts [0];
 				builder = (ControlBuilder) Activator.CreateInstance (att.BuilderType);
 			} else {
 				builder = new ControlBuilder ();
@@ -589,7 +589,7 @@ namespace System.Web.UI {
 			return false;
 		}
 		
-		ControlBuilder CreatePropertyBuilder (string propName, TemplateParser parser, IDictionary atts)
+		ControlBuilder CreatePropertyBuilder (string propName, TemplateParser? parser, IDictionary atts)
 		{
 			int idx;
 			string propertyName;
@@ -601,11 +601,11 @@ namespace System.Web.UI {
 			
 			PropertyInfo prop = type.GetProperty (propertyName, FlagsNoCase);
 			if (prop == null) {
-				string msg = String.Format ("Property {0} not found in type {1}", propertyName, type);
+				var msg = String.Format ("Property {0} not found in type {1}", propertyName, type);
 				throw new HttpException (msg);
 			}
 
-			Type propType = prop.PropertyType;
+			var propType = prop.PropertyType;
 			ControlBuilder builder = null;
 			if (typeof (ICollection).IsAssignableFrom (propType)) {
 				builder = new CollectionBuilder ();
@@ -633,9 +633,9 @@ namespace System.Web.UI {
 			return builder;
 		}
 		
-		public virtual void Init (TemplateParser parser,
+		public virtual void Init (TemplateParser? parser,
 					  ControlBuilder parentBuilder,
-					  Type type,
+					  Type? type,
 					  string tagName,
 					  string id,
 					  IDictionary attribs)
@@ -655,13 +655,13 @@ namespace System.Web.UI {
 			if (this is TemplateBuilder)
 				return;
 
-			object [] atts = type.GetCustomAttributes (typeof (ParseChildrenAttribute), true);
+			var atts = type.GetCustomAttributes (typeof (ParseChildrenAttribute), true);
 			
 			if (!typeof (IParserAccessor).IsAssignableFrom (type) && atts.Length == 0) {
 				isIParserAccessor = false;
 				childrenAsProperties = true;
 			} else if (atts.Length > 0) {
-				ParseChildrenAttribute att = (ParseChildrenAttribute) atts [0];
+				var att = (ParseChildrenAttribute) atts [0];
 				childrenAsProperties = att.ChildrenAsProperties;
 				if (childrenAsProperties && att.DefaultProperty.Length != 0)
 					defaultPropertyBuilder = CreatePropertyBuilder (att.DefaultProperty,
@@ -679,7 +679,7 @@ namespace System.Web.UI {
 			if (defaultPropertyBuilder == null)
 				return;
 
-			ControlBuilder old = defaultPropertyBuilder;
+			var old = defaultPropertyBuilder;
 			defaultPropertyBuilder = null;
 			AppendSubBuilder (old);
 		}
@@ -693,7 +693,7 @@ namespace System.Web.UI {
 		{
 		}
 
-		internal string GetNextID (string proposedID)
+		internal string GetNextID (string? proposedID)
 		{
 			if (proposedID != null && proposedID.Trim ().Length != 0)
 				return proposedID;
@@ -709,7 +709,7 @@ namespace System.Web.UI {
 		
 		internal virtual ControlBuilder CreateSubBuilder (string tagid,
 								  IDictionary atts,
-								  Type childType,
+								  Type? childType,
 								  TemplateParser parser,
 								  ILocation location)
 		{
@@ -725,7 +725,7 @@ namespace System.Web.UI {
 						defaultPropertyBuilder = null;
 						childBuilder = CreatePropertyBuilder (tagid, parser, atts);
 					} else {
-						Type ct = ControlType;
+						var ct = ControlType;
 						MemberInfo[] mems = ct != null ? ct.GetMember (tagid, MemberTypes.Property, FlagsNoCase) : null;
 						PropertyInfo prop = mems != null && mems.Length > 0 ? mems [0] as PropertyInfo : null;
 
@@ -756,10 +756,10 @@ namespace System.Web.UI {
 		internal virtual object CreateInstance ()
 		{
 			// HtmlGenericControl, HtmlTableCell...
-			object [] atts = type.GetCustomAttributes (typeof (ConstructorNeedsTagAttribute), true);
+			var atts = type.GetCustomAttributes (typeof (ConstructorNeedsTagAttribute), true);
 			object [] args = null;
 			if (atts != null && atts.Length > 0) {
-				ConstructorNeedsTagAttribute att = (ConstructorNeedsTagAttribute) atts [0];
+				var att = (ConstructorNeedsTagAttribute) atts [0];
 				if (att.NeedsTag)
 					args = new object [] {tagName};
 			}
@@ -776,7 +776,7 @@ namespace System.Web.UI {
 			if (parser == null)
 				return;
 
-			foreach (object o in children) {
+			foreach (var o in children) {
 				if (o is string) {
 					parser.AddParsedSubObject (new LiteralControl ((string) o));
 				} else {
@@ -806,7 +806,7 @@ namespace System.Web.UI {
 			haveParserVariable = false;
 
 			if (Children != null) {
-				foreach (object child in Children) {
+				foreach (var child in Children) {
 					ControlBuilder cb = child as ControlBuilder;
 					if (cb != null)
 						cb.ResetState ();

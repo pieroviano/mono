@@ -64,13 +64,13 @@ namespace System.Web.UI.HtmlControls{
 			return null;
 		}
 		
-		internal static string AttributeToString(string s){
+		internal static string AttributeToString(string? s){
 			if (s != null && s.Length != 0) return s;
 			return null;
 		}
 		
 		internal void PreProcessRelativeReference(HtmlTextWriter writer, string attribName){
-			string attr = Attributes[attribName];
+			var attr = Attributes[attribName];
 			if (attr != null){
 				if (attr.Length != 0){
 					try{
@@ -141,7 +141,7 @@ namespace System.Web.UI.HtmlControls{
 		[TypeConverter (typeof(MinimizableAttributeTypeConverter))]
 		public bool Disabled {
 			get {
-				string disableAttr = Attributes["disabled"] as string;
+				var disableAttr = Attributes["disabled"] as string;
 				return (disableAttr != null);
                         }
 			set {

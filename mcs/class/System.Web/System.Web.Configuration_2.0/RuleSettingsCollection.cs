@@ -71,7 +71,7 @@ namespace System.Web.Configuration {
 
 		public int IndexOf (string name)
 		{
-			RuleSettings r = (RuleSettings)BaseGet (name);
+			var r = (RuleSettings)BaseGet (name);
 			if (r == null)
 				return -1; /* XXX */
 			else

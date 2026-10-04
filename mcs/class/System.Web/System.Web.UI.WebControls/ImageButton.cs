@@ -140,7 +140,7 @@ namespace System.Web.UI.WebControls
 		}
 		protected override void AddAttributesToRender (HtmlTextWriter writer)
 		{			
-			Page page = Page;
+			var page = Page;
 			if (page != null)
 				page.VerifyRenderingInServerForm (this);
 			
@@ -149,7 +149,7 @@ namespace System.Web.UI.WebControls
 
 			base.AddAttributesToRender (writer);
 
-			string onclick = OnClientClick;
+			var onclick = OnClientClick;
 			if (!String.IsNullOrEmpty (onclick))
 				onclick = ClientScriptManager.EnsureEndsWithSemicolon (onclick);
 			else
@@ -169,8 +169,8 @@ namespace System.Web.UI.WebControls
 
 		internal virtual string GetClientScriptEventReference ()
 		{
-			PostBackOptions options = GetPostBackOptions ();
-			Page page = Page;
+			var options = GetPostBackOptions ();
+			var page = Page;
 			
 			if (options.PerformValidation || !String.IsNullOrEmpty (options.ActionUrl))
 				return page != null ? page.ClientScript.GetPostBackEventReference (options, true) : String.Empty;
@@ -183,8 +183,8 @@ namespace System.Web.UI.WebControls
 
 		protected virtual PostBackOptions GetPostBackOptions ()
 		{
-			PostBackOptions options = new PostBackOptions (this);
-			Page page = Page;
+			var options = new PostBackOptions (this);
+			var page = Page;
 			
 			options.ActionUrl = (PostBackUrl.Length > 0 ?
 					     (page != null ? page.ResolveClientUrl (PostBackUrl) : null)
@@ -205,7 +205,7 @@ namespace System.Web.UI.WebControls
 		protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection) 
 		{
 			string x, y;
-			string unique = UniqueID;
+			var unique = UniqueID;
 			x = postCollection [unique + ".x"];
 			y = postCollection [unique + ".y"];
 			if (!String.IsNullOrEmpty (x) && !String.IsNullOrEmpty (y)) {
@@ -234,7 +234,7 @@ namespace System.Web.UI.WebControls
 		{
 			ValidateEvent (UniqueID, String.Empty);
 			if (CausesValidation) {
-				Page page = Page;
+				var page = Page;
 				if (page != null)
 					page.Validate (ValidationGroup);
 			}
@@ -281,7 +281,7 @@ namespace System.Web.UI.WebControls
 
 		protected internal override void OnPreRender (EventArgs e)
 		{
-			Page page = Page;
+			var page = Page;
 			if (page != null && IsEnabled)
 				page.RegisterRequiresPostBack (this);
 		}

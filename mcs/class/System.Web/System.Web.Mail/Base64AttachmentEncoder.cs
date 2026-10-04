@@ -38,7 +38,7 @@ namespace System.Web.Mail {
 	
 	// reads bytes from a stream and writes the encoded
         // as base64 encoded characters. ( 60 chars on each row)
-	public void EncodeStream(  Stream ins , Stream outs ) {
+	public void EncodeStream(  Stream? ins , Stream? outs ) {
 	    
 	    if( ( ins == null ) || ( outs == null ) )
 		throw new ArgumentNullException( "The input and output streams may not " +
@@ -47,12 +47,12 @@ namespace System.Web.Mail {
             ICryptoTransform base64 = new ToBase64Transform();
                     
             // the buffers
-            byte[] plainText = new byte[ base64.InputBlockSize ];
-            byte[] cipherText = new byte[ base64.OutputBlockSize ];
+            var plainText = new byte[ base64.InputBlockSize ];
+            var cipherText = new byte[ base64.OutputBlockSize ];
 
-            int readLength = 0;
-	    int count = 0;
-	    byte[] newln = new byte[] { 13 , 10 }; //CR LF with mail
+            var readLength = 0;
+	    var count = 0;
+	    var newln = new byte[] { 13 , 10 }; //CR LF with mail
 
             // read through the stream until there 
             // are no more bytes left

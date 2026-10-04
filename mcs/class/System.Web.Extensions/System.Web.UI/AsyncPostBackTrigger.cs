@@ -66,16 +66,16 @@ namespace System.Web.UI
 
 		protected internal override bool HasTriggered ()
 		{
-			Control ctrl = FindTargetControl (true);
+			var ctrl = FindTargetControl (true);
 			string ctrlUniqueID = ctrl != null ? ctrl.UniqueID : null;
 			if (ctrlUniqueID == null)
 				return false;
 
-			string asyncPostBackElementID = Owner.ScriptManager.AsyncPostBackSourceElementID;
+			var asyncPostBackElementID = Owner.ScriptManager.AsyncPostBackSourceElementID;
 			if (String.Compare (asyncPostBackElementID, ctrlUniqueID, StringComparison.Ordinal) == 0)
 				return true;
 			else {
-				int sep = asyncPostBackElementID.IndexOfAny (_controlIdSeparators);
+				var sep = asyncPostBackElementID.IndexOfAny (_controlIdSeparators);
 				if (sep > -1 && String.Compare (asyncPostBackElementID, 0, ctrlUniqueID, 0, ctrlUniqueID.Length, StringComparison.Ordinal) == 0)
 					return true;
 			}
@@ -85,11 +85,11 @@ namespace System.Web.UI
 
 		protected internal override void Initialize ()
 		{
-			Control c = FindTargetControl (true);
-			ScriptManager sm = Owner.ScriptManager;
-			string eventName = EventName;
+			var c = FindTargetControl (true);
+			var sm = Owner.ScriptManager;
+			var eventName = EventName;
 			if (String.IsNullOrEmpty (eventName)) {
-				object[] attrs = c.GetType ().GetCustomAttributes (typeof (DefaultEventAttribute), true);
+				var attrs = c.GetType ().GetCustomAttributes (typeof (DefaultEventAttribute), true);
 				if (attrs != null && attrs.Length > 0) {
 					var dea = attrs [0] as DefaultEventAttribute;
 					if (dea != null)
@@ -118,7 +118,7 @@ namespace System.Web.UI
 
 		public void OnEvent (object sender, EventArgs e)
 		{
-			UpdatePanel owner = Owner;
+			var owner = Owner;
 			if (owner != null && owner.UpdateMode != UpdatePanelUpdateMode.Always)
 				owner.Update ();
 		}

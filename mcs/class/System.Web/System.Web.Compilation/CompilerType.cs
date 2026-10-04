@@ -50,7 +50,7 @@ namespace System.Web.Compilation {
 			if (!(o is CompilerType))
 				return false;
 
-			CompilerType other = (CompilerType) o;
+			var other = (CompilerType) o;
 			//FIXME: parameters does NOT have an Equals override
 			return (other.type == type && other.parameters == parameters);
 		}

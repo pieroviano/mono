@@ -112,7 +112,7 @@ namespace System.Web.Configuration {
 
 		public override int GetHashCode ()
 		{
-			int hashCode = (int)action;
+			var hashCode = (int)action;
 			int i;
 
 			for (i = 0; i < Roles.Count; i ++)
@@ -158,7 +158,7 @@ namespace System.Web.Configuration {
 
 		protected internal override void Reset (ConfigurationElement parentElement)
 		{
-			AuthorizationRule r = (AuthorizationRule)parentElement;
+			var r = (AuthorizationRule)parentElement;
 			Action = r.Action;
 
 			base.Reset (parentElement);
@@ -194,7 +194,7 @@ namespace System.Web.Configuration {
 			base.SetReadOnly();
 		}
 
-		protected internal override void Unmerge (ConfigurationElement sourceElement, ConfigurationElement parentElement, ConfigurationSaveMode saveMode)
+		protected internal override void Unmerge (ConfigurationElement sourceElement, ConfigurationElement? parentElement, ConfigurationSaveMode saveMode)
 		{
 			base.Unmerge (sourceElement, parentElement, saveMode);
 			this.saveMode = saveMode;

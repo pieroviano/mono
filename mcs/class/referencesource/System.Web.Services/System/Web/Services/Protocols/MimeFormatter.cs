@@ -34,8 +34,8 @@ namespace System.Web.Services.Protocols {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public virtual object[] GetInitializers(LogicalMethodInfo[] methodInfos) {
-            object[] initializers = new object[methodInfos.Length];
-            for (int i = 0; i < initializers.Length; i++)
+            var initializers = new object[methodInfos.Length];
+            for (var i = 0; i < initializers.Length; i++)
                 initializers[i] = GetInitializer(methodInfos[i]);
             return initializers;
         }

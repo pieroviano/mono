@@ -62,7 +62,7 @@ namespace System.Web.UI.WebControls
 				ht = ChooseAd ();
 			}
 
-		 	AdCreatedEventArgs ev = new AdCreatedEventArgs (ht);
+		 	var ev = new AdCreatedEventArgs (ht);
 			OnAdCreated (ev);
 			createdargs = ev;
 			
@@ -82,7 +82,7 @@ namespace System.Web.UI.WebControls
 
 		protected internal override void Render (HtmlTextWriter writer)
 		{
-			AdCreatedEventArgs e = createdargs;
+			var e = createdargs;
 
 			base.AddAttributesToRender (writer);
 
@@ -105,7 +105,7 @@ namespace System.Web.UI.WebControls
 
 		string ResolveAdUrl (string url)
 		{
-			string path = url;
+			var path = url;
 
 			if (AdvertisementFile != null && AdvertisementFile.Length > 0 && path [0] != '/' && path [0] != '~')
 				try {
@@ -129,18 +129,18 @@ namespace System.Web.UI.WebControls
 		Hashtable ChooseAd ()
 		{
 			// cache for performance
-			string KeywordFilter = this.KeywordFilter;
+			var KeywordFilter = this.KeywordFilter;
 			
-			int total_imp = 0;
-			int cur_imp = 0;
-			bool keywordFilterEmpty = KeywordFilter.Length == 0;
+			var total_imp = 0;
+			var cur_imp = 0;
+			var keywordFilterEmpty = KeywordFilter.Length == 0;
 			
 			foreach (Hashtable a in ads) {
 				if (keywordFilterEmpty || KeywordFilter == (string) a ["Keyword"])
 					total_imp += a ["Impressions"] != null ? int.Parse ((string) a ["Impressions"]) : 1;
 			}
 
-			int r = new Random ().Next (total_imp);
+			var r = new Random ().Next (total_imp);
 
 			foreach (Hashtable a in ads) {
 				if (!keywordFilterEmpty && KeywordFilter != (string) a ["Keyword"])
@@ -159,7 +159,7 @@ namespace System.Web.UI.WebControls
 		
 		void ReadAdsFromFile (string s)
 		{
-			XmlDocument d = new XmlDocument ();
+			var d = new XmlDocument ();
 			try {
 				d.Load (s);
 			} catch (Exception e) {
@@ -170,7 +170,7 @@ namespace System.Web.UI.WebControls
 			
 			foreach (XmlNode n in d.DocumentElement.ChildNodes) {
 
-				Hashtable ad = new Hashtable ();
+				var ad = new Hashtable ();
 				
 				foreach (XmlNode nn in n.ChildNodes)
 					ad.Add (nn.Name, nn.InnerText);

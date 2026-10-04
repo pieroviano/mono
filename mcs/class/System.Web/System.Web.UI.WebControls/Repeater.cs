@@ -90,13 +90,13 @@ namespace System.Web.UI.WebControls {
 
 		void DoItem (int i, ListItemType t, object d, bool databind)
 		{
-			RepeaterItem itm = CreateItem (i, t);
+			var itm = CreateItem (i, t);
 
 			if (t == ListItemType.Item || t == ListItemType.AlternatingItem)
 				items.Add (itm);
 			
 			itm.DataItem = d;
-			RepeaterItemEventArgs e = new RepeaterItemEventArgs (itm);
+			var e = new RepeaterItemEventArgs (itm);
 			InitializeItem (itm);
 			
 			//
@@ -134,8 +134,8 @@ namespace System.Web.UI.WebControls {
 			if (HeaderTemplate != null)
 				DoItem (-1, ListItemType.Header, null, useDataSource);
 
-			int idx = 0;
-			foreach (object o in ds) {
+			var idx = 0;
+			foreach (var o in ds) {
 				if (idx != 0 && SeparatorTemplate != null)
 					DoItem (idx - 1, ListItemType.Separator, null, useDataSource);
 
@@ -483,7 +483,7 @@ namespace System.Web.UI.WebControls {
 				if (boundDataSource == null)
 					return null;
 
-				DataSourceView dsv = boundDataSource.GetView (String.Empty);
+				var dsv = boundDataSource.GetView (String.Empty);
 				dsv.Select (SelectArguments, new DataSourceViewSelectCallback (SelectCallback));
 
 				result = data;
@@ -509,7 +509,7 @@ namespace System.Web.UI.WebControls {
 		protected internal override void OnInit (EventArgs e)
 		{
 			base.OnInit (e);
-			Page page = Page;
+			var page = Page;
 			if (page != null) {
 				page.PreLoad += new EventHandler (OnPagePreLoad);
 
@@ -533,7 +533,7 @@ namespace System.Web.UI.WebControls {
 
 		void Initialize () 
 		{
-			Page page = Page;
+			var page = Page;
 			if (page != null) {
 				if (!page.IsPostBack || (IsViewStateEnabled && (ViewState ["Items"] == null)))
 					RequiresDataBinding = true;

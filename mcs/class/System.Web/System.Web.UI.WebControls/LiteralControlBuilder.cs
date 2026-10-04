@@ -38,7 +38,7 @@ namespace System.Web.UI.WebControls {
 			throw new HttpException ("LiteralControlBuilder should never be called");
 		}
 
-		public override void AppendLiteralString (string s)
+		public override void AppendLiteralString (string? s)
 		{
 			// What does this method _really_ do? The MSDN documentation is vague
 			base.AppendLiteralString (s);

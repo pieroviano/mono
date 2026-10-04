@@ -53,7 +53,7 @@ namespace System.Web.Profile
 
 		public override int DeleteInactiveProfiles (ProfileAuthenticationOption authenticationOption, DateTime userInactiveSinceDate)
 		{
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 				DbCommand command = factory.CreateCommand ();
 				command.Connection = connection;
 				command.CommandType = CommandType.StoredProcedure;
@@ -62,10 +62,10 @@ namespace System.Web.Profile
 				AddParameter (command, "ApplicationName", ApplicationName);
 				AddParameter (command, "ProfileAuthOptions", authenticationOption);
 				AddParameter (command, "InactiveSinceDate", userInactiveSinceDate);
-				DbParameter returnValue = AddParameter (command, null, ParameterDirection.ReturnValue, null);
+				var returnValue = AddParameter (command, null, ParameterDirection.ReturnValue, null);
 
 				command.ExecuteNonQuery ();
-				int retVal = GetReturnValue (returnValue);
+				var retVal = GetReturnValue (returnValue);
 				return retVal;
 			}
 		}
@@ -77,9 +77,9 @@ namespace System.Web.Profile
 			if (profiles.Count == 0)
 				throw new ArgumentException ("prfoles");
 
-			string [] usernames = new string [profiles.Count];
+			var usernames = new string [profiles.Count];
 
-			int i = 0;
+			var i = 0;
 			foreach (ProfileInfo pi in profiles) {
 				if (pi.UserName == null)
 					throw new ArgumentNullException ("element in profiles collection is null");
@@ -98,8 +98,8 @@ namespace System.Web.Profile
 			if (usernames == null)
 				throw new ArgumentNullException ("usernames");
 
-			Hashtable users = new Hashtable ();
-			foreach (string username in usernames) {
+			var users = new Hashtable ();
+			foreach (var username in usernames) {
 				if (username == null)
 					throw new ArgumentNullException ("element in usernames array is null");
 
@@ -117,7 +117,7 @@ namespace System.Web.Profile
 
 		int DeleteProfilesInternal (string [] usernames)
 		{
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 				DbCommand command = factory.CreateCommand ();
 				command.Connection = connection;
 				command.CommandType = CommandType.StoredProcedure;
@@ -125,10 +125,10 @@ namespace System.Web.Profile
 
 				AddParameter (command, "ApplicationName", ApplicationName);
 				AddParameter (command, "UserNames", string.Join (",", usernames));
-				DbParameter returnValue = AddParameter (command, null, ParameterDirection.ReturnValue, null);
+				var returnValue = AddParameter (command, null, ParameterDirection.ReturnValue, null);
 
 				command.ExecuteNonQuery ();
-				int retVal = GetReturnValue (returnValue);
+				var retVal = GetReturnValue (returnValue);
 				return retVal;
 			}
 		}
@@ -148,7 +148,7 @@ namespace System.Web.Profile
 			if (pageIndex * pageSize + pageSize - 1 > Int32.MaxValue)
 				throw new ArgumentException ("pageIndex and pageSize are too large");
 
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 				DbCommand command = factory.CreateCommand ();
 				command.Connection = connection;
 				command.CommandType = CommandType.StoredProcedure;
@@ -161,7 +161,7 @@ namespace System.Web.Profile
 				AddParameter (command, "UserNameToMatch", usernameToMatch);
 				AddParameter (command, "InactiveSinceDate", userInactiveSinceDate);
 
-				using (DbDataReader reader = command.ExecuteReader ()) {
+				using (var reader = command.ExecuteReader ()) {
 					return BuildProfileInfoCollection (reader, out totalRecords);
 				}
 			}
@@ -181,7 +181,7 @@ namespace System.Web.Profile
 			if (pageIndex * pageSize + pageSize - 1 > Int32.MaxValue)
 				throw new ArgumentException ("pageIndex and pageSize are too large");
 
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 				DbCommand command = factory.CreateCommand ();
 				command.Connection = connection;
 				command.CommandType = CommandType.StoredProcedure;
@@ -194,7 +194,7 @@ namespace System.Web.Profile
 				AddParameter (command, "UserNameToMatch", usernameToMatch);
 				AddParameter (command, "InactiveSinceDate", null);
 
-				using (DbDataReader reader = command.ExecuteReader ()) {
+				using (var reader = command.ExecuteReader ()) {
 					return BuildProfileInfoCollection (reader, out totalRecords);
 				}
 			}
@@ -213,7 +213,7 @@ namespace System.Web.Profile
 			if (pageIndex * pageSize + pageSize - 1 > Int32.MaxValue)
 				throw new ArgumentException ("pageIndex and pageSize are too large");
 			
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 				DbCommand command = factory.CreateCommand ();
 				command.Connection = connection;
 				command.CommandType = CommandType.StoredProcedure;
@@ -226,7 +226,7 @@ namespace System.Web.Profile
 				AddParameter (command, "UserNameToMatch", null);
 				AddParameter (command, "InactiveSinceDate", null);
 
-				using (DbDataReader reader = command.ExecuteReader ()) {
+				using (var reader = command.ExecuteReader ()) {
 					return BuildProfileInfoCollection (reader, out totalRecords);
 				}
 			}
@@ -244,7 +244,7 @@ namespace System.Web.Profile
 			if (pageIndex * pageSize + pageSize - 1 > Int32.MaxValue)
 				throw new ArgumentException ("pageIndex and pageSize are too large");
 
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 				DbCommand command = factory.CreateCommand ();
 				command.Connection = connection;
 				command.CommandType = CommandType.StoredProcedure;
@@ -257,7 +257,7 @@ namespace System.Web.Profile
 				AddParameter (command, "UserNameToMatch", null);
 				AddParameter (command, "InactiveSinceDate", null);
 
-				using (DbDataReader reader = command.ExecuteReader ()) {
+				using (var reader = command.ExecuteReader ()) {
 					return BuildProfileInfoCollection (reader, out totalRecords);
 				}
 			}
@@ -265,7 +265,7 @@ namespace System.Web.Profile
 
 		public override int GetNumberOfInactiveProfiles (ProfileAuthenticationOption authenticationOption, DateTime userInactiveSinceDate)
 		{
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 
 				DbCommand command = factory.CreateCommand ();
 				command.Connection = connection;
@@ -276,8 +276,8 @@ namespace System.Web.Profile
 				AddParameter (command, "ProfileAuthOptions", authenticationOption);
 				AddParameter (command, "InactiveSinceDate", userInactiveSinceDate);
 
-				int returnValue = 0;
-				using (DbDataReader reader = command.ExecuteReader ()) {
+				var returnValue = 0;
+				using (var reader = command.ExecuteReader ()) {
 					if (reader.Read ())
 						returnValue = reader.GetInt32 (0);
 				}
@@ -287,7 +287,7 @@ namespace System.Web.Profile
 
 		public override SettingsPropertyValueCollection GetPropertyValues (SettingsContext sc, SettingsPropertyCollection properties)
 		{
-			SettingsPropertyValueCollection settings = new SettingsPropertyValueCollection ();
+			var settings = new SettingsPropertyValueCollection ();
 
 			if (properties.Count == 0)
 				return settings;
@@ -303,7 +303,7 @@ namespace System.Web.Profile
 			}
 
 			string username = (string) sc ["UserName"];
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 				DbCommand command = factory.CreateCommand ();
 				command.Connection = connection;
 				command.CommandType = CommandType.StoredProcedure;
@@ -313,12 +313,12 @@ namespace System.Web.Profile
 				AddParameter (command, "UserName", username);
 				AddParameter (command, "CurrentTimeUtc", DateTime.UtcNow);
 
-				using (DbDataReader reader = command.ExecuteReader ()) {
+				using (var reader = command.ExecuteReader ()) {
 					if (reader.Read ()) {
-						string allnames = reader.GetString (0);
-						string allvalues = reader.GetString (1);
-						int binaryLen = (int) reader.GetBytes (2, 0, null, 0, 0);
-						byte [] binaryvalues = new byte [binaryLen];
+						var allnames = reader.GetString (0);
+						var allvalues = reader.GetString (1);
+						var binaryLen = (int) reader.GetBytes (2, 0, null, 0, 0);
+						var binaryvalues = new byte [binaryLen];
 						reader.GetBytes (2, 0, binaryvalues, 0, binaryLen);
 
 						DecodeProfileData (allnames, allvalues, binaryvalues, settings);
@@ -332,15 +332,15 @@ namespace System.Web.Profile
 		public override void SetPropertyValues (SettingsContext sc, SettingsPropertyValueCollection properties)
 		{
 			string username = (string) sc ["UserName"];
-			bool isAnonymous = !(bool) sc ["IsAuthenticated"];
+			var isAnonymous = !(bool) sc ["IsAuthenticated"];
 
-			string names = String.Empty;
-			string values = String.Empty;
+			var names = String.Empty;
+			var values = String.Empty;
 			byte [] buf = null;
 
 			EncodeProfileData (ref names, ref values, ref buf, properties, !isAnonymous);
 
-			using (DbConnection connection = CreateConnection ()) {
+			using (var connection = CreateConnection ()) {
 				DbCommand command = factory.CreateCommand ();
 				command.Connection = connection;
 				command.CommandType = CommandType.StoredProcedure;
@@ -408,7 +408,7 @@ namespace System.Web.Profile
 
 		DbParameter AddParameter (DbCommand command, string parameterName, ParameterDirection direction, object parameterValue)
 		{
-			DbParameter dbp = command.CreateParameter ();
+			var dbp = command.CreateParameter ();
 			dbp.ParameterName = parameterName;
 			dbp.Value = parameterValue;
 			dbp.Direction = direction;
@@ -434,11 +434,11 @@ namespace System.Web.Profile
 		{
 			ProfileInfo pi = null;
 			try {
-				string username = reader.GetString (0);
-				bool anonymous = reader.GetBoolean (1);
-				DateTime lastUpdate = reader.GetDateTime (2);
-				DateTime lastActivity = reader.GetDateTime (3);
-				int size = reader.GetInt32 (4);
+				var username = reader.GetString (0);
+				var anonymous = reader.GetBoolean (1);
+				var lastUpdate = reader.GetDateTime (2);
+				var lastActivity = reader.GetDateTime (3);
+				var size = reader.GetInt32 (4);
 
 				pi = new ProfileInfo (username, anonymous, lastActivity, lastUpdate, size);
 			}
@@ -450,9 +450,9 @@ namespace System.Web.Profile
 
 		ProfileInfoCollection BuildProfileInfoCollection (DbDataReader reader, out int totalRecords)
 		{
-			ProfileInfoCollection pic = new ProfileInfoCollection ();
+			var pic = new ProfileInfoCollection ();
 			while (reader.Read ()) {
-				ProfileInfo pi = ReadProfileInfo (reader);
+				var pi = ReadProfileInfo (reader);
 				if (pi != null)
 					pic.Add (pi);
 			}
@@ -466,7 +466,7 @@ namespace System.Web.Profile
 
 		string GetStringConfigValue (NameValueCollection config, string name, string def)
 		{
-			string retVal = def;
+			var retVal = def;
 			string val = config [name];
 			if (val != null)
 				retVal = val;
@@ -474,21 +474,21 @@ namespace System.Web.Profile
 		}
 
 		// Helper methods
-		void DecodeProfileData (string allnames, string values, byte [] buf, SettingsPropertyValueCollection properties)
+		void DecodeProfileData (string? allnames, string? values, byte []? buf, SettingsPropertyValueCollection? properties)
 		{
 			if (allnames == null || values == null || buf == null || properties == null)
 				return;
 
-			string [] names = allnames.Split (':');
-			for (int i = 0; i < names.Length; i += 4) {
-				string name = names [i];
-				SettingsPropertyValue pp = properties [name];
+			var names = allnames.Split (':');
+			for (var i = 0; i < names.Length; i += 4) {
+				var name = names [i];
+				var pp = properties [name];
 
 				if (pp == null)
 					continue;
 
-				int pos = Int32.Parse (names [i + 2], Helpers.InvariantCulture);
-				int len = Int32.Parse (names [i + 3], Helpers.InvariantCulture);
+				var pos = Int32.Parse (names [i + 2], Helpers.InvariantCulture);
+				var len = Int32.Parse (names [i + 3], Helpers.InvariantCulture);
 
 				if (len == -1 && !pp.Property.PropertyType.IsValueType) {
 					pp.PropertyValue = null;
@@ -499,7 +499,7 @@ namespace System.Web.Profile
 					pp.SerializedValue = values.Substring (pos, len);
 				}
 				else if (names [i + 1] == "B" && pos >= 0 && len > 0 && buf.Length >= pos + len) {
-					byte [] buf2 = new byte [len];
+					var buf2 = new byte [len];
 					Buffer.BlockCopy (buf, pos, buf2, 0, len);
 					pp.SerializedValue = buf2;
 				}
@@ -508,9 +508,9 @@ namespace System.Web.Profile
 
 		void EncodeProfileData (ref string allNames, ref string allValues, ref byte [] buf, SettingsPropertyValueCollection properties, bool userIsAuthenticated)
 		{
-			StringBuilder names = new StringBuilder ();
-			StringBuilder values = new StringBuilder ();
-			MemoryStream stream = new MemoryStream ();
+			var names = new StringBuilder ();
+			var values = new StringBuilder ();
+			var stream = new MemoryStream ();
 
 			try {
 				foreach (SettingsPropertyValue pp in properties) {
@@ -526,7 +526,7 @@ namespace System.Web.Profile
 					if (pp.Deserialized && pp.PropertyValue == null)
 						len = -1;
 					else {
-						object sVal = pp.SerializedValue;
+						var sVal = pp.SerializedValue;
 
 						if (sVal == null)
 							len = -1;
@@ -536,7 +536,7 @@ namespace System.Web.Profile
 							pos = values.Length;
 						}
 						else {
-							byte [] b2 = (byte []) sVal;
+							var b2 = (byte []) sVal;
 							pos = (int) stream.Position;
 							stream.Write (b2, 0, b2.Length);
 							stream.Position = pos + b2.Length;

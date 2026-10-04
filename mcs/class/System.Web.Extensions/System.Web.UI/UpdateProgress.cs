@@ -59,7 +59,7 @@ namespace System.Web.UI
 		[DefaultValue (500)]
 		public int DisplayAfter {
 			get {
-				object o = ViewState ["DisplayAfter"];
+				var o = ViewState ["DisplayAfter"];
 				if (o == null)
 					return 500;
 				return (int) o;
@@ -73,7 +73,7 @@ namespace System.Web.UI
 		[DefaultValue (true)]
 		public bool DynamicLayout {
 			get {
-				object o = ViewState ["DynamicLayout"];
+				var o = ViewState ["DynamicLayout"];
 				if (o == null)
 					return true;
 				return (bool) o;
@@ -115,7 +115,7 @@ namespace System.Web.UI
 					throw new InvalidOperationException ("No UpdatePanel found for AssociatedUpdatePanelID '" + AssociatedUpdatePanelID + "'.");
 				updatePanelClientId = updatePanel.ClientID;
 			}
-			ScriptControlDescriptor descriptor = new ScriptControlDescriptor ("Sys.UI._UpdateProgress", this.ClientID);
+			var descriptor = new ScriptControlDescriptor ("Sys.UI._UpdateProgress", this.ClientID);
 			descriptor.AddProperty ("associatedUpdatePanelId", updatePanelClientId);
 			descriptor.AddProperty ("displayAfter", DisplayAfter);
 			descriptor.AddProperty ("dynamicLayout", DynamicLayout);
@@ -133,7 +133,7 @@ namespace System.Web.UI
 			if (_progressTemplate == null)
 				throw new InvalidOperationException (String.Format ("A ProgressTemplate must be specified on UpdateProgress control with ID '{0}'.", ID));
 
-			Control container = new Control ();
+			var container = new Control ();
 			_progressTemplate.InstantiateIn (container);
 			Controls.Add (container);
 		}

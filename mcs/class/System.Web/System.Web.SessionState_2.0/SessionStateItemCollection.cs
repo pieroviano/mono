@@ -39,7 +39,7 @@ namespace System.Web.SessionState
 	{
 		bool is_dirty;
 
-		static bool IsMutable (object o)
+		static bool IsMutable (object? o)
 		{
 			return (o != null && Type.GetTypeCode(o.GetType()) == TypeCode.Object);
 		}
@@ -101,8 +101,8 @@ namespace System.Web.SessionState
 
 		public static SessionStateItemCollection Deserialize (BinaryReader reader)
 		{
-			int i = reader.ReadInt32 ();
-			SessionStateItemCollection ret = new SessionStateItemCollection (i);
+			var i = reader.ReadInt32 ();
+			var ret = new SessionStateItemCollection (i);
 			for (; i > 0; i--)
 				ret [reader.ReadString ()] =
 					System.Web.Util.AltSerialization.Deserialize (reader);

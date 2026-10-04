@@ -87,7 +87,7 @@ namespace System.Web.UI.HtmlControls {
 			cc.AddAt (index, row);
 		}
 
-		public void Remove (HtmlTableRow row)
+		public void Remove (HtmlTableRow? row)
 		{
 			cc.Remove (row);
 		}

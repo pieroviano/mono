@@ -67,7 +67,7 @@ namespace System.Web.Profile
 		public static ProfileInfoCollection FindInactiveProfilesByUserName (ProfileAuthenticationOption authenticationOption,
 										    string usernameToMatch, DateTime userInactiveSinceDate)
 		{
-			int totalRecords = 0;
+			var totalRecords = 0;
 			return Provider.FindInactiveProfilesByUserName (authenticationOption, usernameToMatch, userInactiveSinceDate, 0, int.MaxValue, out totalRecords);
 		}
 
@@ -80,7 +80,7 @@ namespace System.Web.Profile
 
 		public static ProfileInfoCollection FindProfilesByUserName (ProfileAuthenticationOption authenticationOption, string usernameToMatch)
 		{
-			int totalRecords = 0;
+			var totalRecords = 0;
 			return Provider.FindProfilesByUserName (authenticationOption, usernameToMatch, 0, int.MaxValue, out totalRecords);
 		}
 
@@ -91,7 +91,7 @@ namespace System.Web.Profile
 
 		public static ProfileInfoCollection GetAllInactiveProfiles (ProfileAuthenticationOption authenticationOption, DateTime userInactiveSinceDate)
 		{
-			int totalRecords = 0;
+			var totalRecords = 0;
 			return Provider.GetAllInactiveProfiles (authenticationOption, userInactiveSinceDate, 0, int.MaxValue, out totalRecords);
 		}
 
@@ -104,7 +104,7 @@ namespace System.Web.Profile
 
 		public static ProfileInfoCollection GetAllProfiles (ProfileAuthenticationOption authenticationOption)
 		{
-			int totalRecords = 0;
+			var totalRecords = 0;
 			return Provider.GetAllProfiles (authenticationOption, 0, int.MaxValue, out totalRecords);
 		}
 
@@ -120,7 +120,7 @@ namespace System.Web.Profile
 
 		public static int GetNumberOfProfiles (ProfileAuthenticationOption authenticationOption)
 		{
-			int totalRecords = 0;
+			var totalRecords = 0;
 			Provider.GetAllProfiles (authenticationOption, 0, 1, out totalRecords);
 			return totalRecords;
 		}
@@ -149,7 +149,7 @@ namespace System.Web.Profile
 		[MonoTODO ("check AspNetHostingPermissionLevel")]
 		public static ProfileProvider Provider {
 			get	{
-				ProfileProvider p = Providers [config.DefaultProvider];
+				var p = Providers [config.DefaultProvider];
 				if (p == null)
 					throw new ConfigurationErrorsException ("Provider '" + config.DefaultProvider + "' was not found");
 				return p;
@@ -160,7 +160,7 @@ namespace System.Web.Profile
 			get {
 				CheckEnabled ();
 				if (providersCollection == null) {
-					ProfileProviderCollection providersCollectionTmp = new ProfileProviderCollection ();
+					var providersCollectionTmp = new ProfileProviderCollection ();
 					ProvidersHelper.InstantiateProviders (config.Providers, providersCollectionTmp, typeof (ProfileProvider));
 					providersCollection = providersCollectionTmp;
 				}

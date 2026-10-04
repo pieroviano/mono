@@ -79,12 +79,12 @@ namespace System.Web.Handlers
 
 		protected void ProcessRequest (HttpContext context)
 		{
-			TraceManager manager = HttpRuntime.TraceManager;
+			var manager = HttpRuntime.TraceManager;
 
 			if (!manager.Enabled || manager.LocalOnly && !context.Request.IsLocal)
 				throw new TraceNotAvailableException (manager.Enabled);
 				
-			HtmlTextWriter output = new HtmlTextWriter (context.Response.Output);
+			var output = new HtmlTextWriter (context.Response.Output);
 
 			if (context.Request.QueryString ["clear"] != null) {
 				manager.Clear ();
@@ -92,14 +92,14 @@ namespace System.Web.Handlers
 			}
 			
 			string id_str = context.Request.QueryString ["id"];
-			int id = -1;
+			var id = -1;
 			if (id_str != null)
 				id = Int32.Parse (id_str);
 			
 			if (id > 0 && id <= manager.ItemCount) {
 				RenderItem (manager, output, id);
 			} else {
-				string dir = context.Server.MapPath (UrlUtils.GetDirectory (context.Request.FilePath));
+				var dir = context.Server.MapPath (UrlUtils.GetDirectory (context.Request.FilePath));
 				RenderMenu (manager, output, dir);
 			}
 				
@@ -130,16 +130,16 @@ namespace System.Web.Handlers
 			output.AddAttribute ("class", "tracecontent");
 			output.RenderBeginTag (HtmlTextWriterTag.Span);
 
-			Table table = TraceData.CreateTable ();
+			var table = TraceData.CreateTable ();
 			
 			table.Rows.Add (TraceData.AltRow ("Requests to the Application"));
 			table.Rows.Add (TraceData.SubHeadRow ("No", "Time of Request",
 							"File", "Status Code", "Verb", "&nbsp;"));
 
 			if (manager.TraceData != null) {
-				for (int i=0; i<manager.ItemCount; i++) {
-					int item = i + 1;
-					TraceData d = manager.TraceData [i];
+				for (var i=0; i<manager.ItemCount; i++) {
+					var item = i + 1;
+					var d = manager.TraceData [i];
 					TraceData.RenderAltRow (table, i, item.ToString (), d.RequestTime.ToString (),
 							d.RequestPath, d.StatusCode.ToString (), d.RequestType,
 							"<a href=\"Trace.axd?id=" + item + "\" class=\"tinylink\">" +
@@ -156,13 +156,13 @@ namespace System.Web.Handlers
 
 		void RenderHeader (HtmlTextWriter output, string dir)
 		{
-			Table table = TraceData.CreateTable ();
-			TableRow row1 = new TableRow ();
-			TableRow row2 = new TableRow ();
-			TableCell cell1 = new TableCell ();
-			TableCell cell2 = new TableCell ();
-			TableCell cell3 = new TableCell ();
-			TableCell cell4 = new TableCell ();
+			var table = TraceData.CreateTable ();
+			var row1 = new TableRow ();
+			var row2 = new TableRow ();
+			var cell1 = new TableCell ();
+			var cell2 = new TableCell ();
+			var cell3 = new TableCell ();
+			var cell4 = new TableCell ();
 			
 			cell1.Text = "<h1>Application Trace</h1>";
 			cell2.Text = "[ <a href=\"Trace.axd?clear=1\" class=\"link\">clear current trace</a> ]";

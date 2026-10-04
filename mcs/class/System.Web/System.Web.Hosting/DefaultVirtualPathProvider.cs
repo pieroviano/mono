@@ -56,7 +56,7 @@ namespace System.Web.Hosting {
 			if (String.IsNullOrEmpty (virtualDir))
 				throw new ArgumentNullException ("virtualDir");
 
-			string phys_path = HostingEnvironment.MapPath (virtualDir);
+			var phys_path = HostingEnvironment.MapPath (virtualDir);
 			return Directory.Exists (phys_path);
 		}
 
@@ -65,7 +65,7 @@ namespace System.Web.Hosting {
 			if (String.IsNullOrEmpty (virtualPath))
 				throw new ArgumentNullException ("virtualPath");
 
-			string phys_path = HostingEnvironment.MapPath (virtualPath);
+			var phys_path = HostingEnvironment.MapPath (virtualPath);
 			return File.Exists (phys_path);
 		}
 
@@ -97,7 +97,7 @@ namespace System.Web.Hosting {
 			return new DefaultVirtualFile (virtualPath);
 		}
 
-		public override string GetFileHash (string virtualPath, IEnumerable virtualPathDependencies)
+		public override string GetFileHash (string? virtualPath, IEnumerable? virtualPathDependencies)
 		{
 			if (virtualPath == null || virtualPathDependencies == null)
 				throw new NullReferenceException ();

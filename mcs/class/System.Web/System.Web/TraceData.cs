@@ -170,7 +170,7 @@ namespace System.Web
 			set { status_code = value; }
 		}
 
-		public void Write (string category, string msg, Exception error, bool Warning)
+		public void Write (string category, string? msg, Exception? error, bool Warning)
 		{
 			double time;
 			double time_from_last;
@@ -196,12 +196,12 @@ namespace System.Web
 						   Warning));
 		}
 
-		static string HtmlEncode (string s)
+		static string HtmlEncode (string? s)
 		{
 			if (s == null)
 				return "";
 
-			string res = HttpUtility.HtmlEncode (s);
+			var res = HttpUtility.HtmlEncode (s);
 			res = res.Replace ("\n", "<br>");
 			return res.Replace (" ", "&nbsp;");
 		}
@@ -243,13 +243,13 @@ namespace System.Web
 			return s == null ? 0 : (int) s;
 		}
 
-		static int GetViewStateSize (Control ctrl, object vs)
+		static int GetViewStateSize (Control ctrl, object? vs)
 		{
 			if (vs == null)
 				return 0;
 
-			StringWriter sr = new StringWriter ();
-			LosFormatter fmt = new LosFormatter ();
+			var sr = new StringWriter ();
+			var fmt = new LosFormatter ();
 			fmt.Serialize (sr, vs);
 			return sr.GetStringBuilder ().Length;
 		}
@@ -292,7 +292,7 @@ namespace System.Web
 		
 		void RenderRequestDetails (HtmlTextWriter output)
 		{
-			Table table = CreateTable ();
+			var table = CreateTable ();
 			
 			table.Rows.Add (AltRow ("Request Details:"));
 			table.Rows.Add (InfoRow2 ("Session Id:", session_id,
@@ -306,30 +306,30 @@ namespace System.Web
 		
 		void RenderTraceInfo (HtmlTextWriter output)
 		{
-			Table table = CreateTable ();
+			var table = CreateTable ();
 			
 			table.Rows.Add (AltRow ("Trace Information"));
 			table.Rows.Add (SubHeadRow ("Category", "Message", "From First(s)", "From Lasts(s)"));
 			
-			int pos = 0;
+			var pos = 0;
 			IEnumerable<InfoTraceData> enumerable = info;
 
 			if (TraceMode == TraceMode.SortByCategory) {
-				List<InfoTraceData> list = new List<InfoTraceData> (info);
+				var list = new List<InfoTraceData> (info);
 				list.Sort (delegate (InfoTraceData x, InfoTraceData y) { return String.Compare (x.Category, y.Category, StringComparison.Ordinal); });
 				enumerable = list;
 			}
 
-			foreach (InfoTraceData i in enumerable)
+			foreach (var i in enumerable)
 				RenderTraceInfoRow (table, i, pos++);
 			table.RenderControl (output);
 		}
 		
 		void RenderControlTree (HtmlTextWriter output)
 		{
-			Table table = CreateTable ();
+			var table = CreateTable ();
 			
-			int page_vs_size = page == null ? 0 : GetViewStateSize (page, page.GetSavedViewState ());
+			var page_vs_size = page == null ? 0 : GetViewStateSize (page, page.GetSavedViewState ());
 			table.Rows.Add (AltRow ("Control Tree"));
 			table.Rows.Add (SubHeadRow ("Control Id", "Type",
 						"Render Size Bytes (including children)",
@@ -338,20 +338,20 @@ namespace System.Web
 						,"ControlState Size (excluding children)"
 							));
 			
-			int pos = 0;
-			foreach (ControlTraceData r in control_data)
+			var pos = 0;
+			foreach (var r in control_data)
 				RenderControlTraceDataRow (table, r, pos++);
 			table.RenderControl (output);
 		}
 
-		void RenderControlTraceDataRow (Table table, ControlTraceData r, int pos)
+		void RenderControlTraceDataRow (Table table, ControlTraceData? r, int pos)
 		{
 			if (r == null)
 				return;
 			
-			int depth = r.Depth;
-			string prefix = String.Empty;
-			for (int i=0; i<depth; i++)
+			var depth = r.Depth;
+			var prefix = String.Empty;
+			for (var i=0; i<depth; i++)
 				prefix += "&nbsp;&nbsp;&nbsp;&nbsp;";
 			RenderAltRow (table, pos, prefix + r.ControlId,
 				      r.Type.ToString (), r.RenderSize.ToString (),
@@ -360,57 +360,57 @@ namespace System.Web
 		
 		void RenderCookies (HtmlTextWriter output)
 		{
-			Table table = CreateTable ();
+			var table = CreateTable ();
 			
 			table.Rows.Add (AltRow ("Cookies Collection"));
 			table.Rows.Add (SubHeadRow ("Name", "Value", "Size"));
 			
-			int pos = 0;
-			foreach (NameValueTraceData r in cookie_data)
+			var pos = 0;
+			foreach (var r in cookie_data)
 				RenderCookieDataRow (table, r, pos++);
 			
 			table.RenderControl (output);
 		}
 
-		void RenderCookieDataRow (Table table, NameValueTraceData r, int pos)
+		void RenderCookieDataRow (Table table, NameValueTraceData? r, int pos)
 		{
 			if (r == null)
 				return;
 			
-			int length = r.Name.Length + (r.Value == null ? 0 : r.Value.Length);
+			var length = r.Name.Length + (r.Value == null ? 0 : r.Value.Length);
 			RenderAltRow (table, pos++, r.Name, r.Value, length.ToString ());
 		}
 		
 		void RenderHeaders (HtmlTextWriter output)
 		{
-			Table table = CreateTable ();
+			var table = CreateTable ();
 			
 			table.Rows.Add (AltRow ("Headers Collection"));
 			table.Rows.Add (SubHeadRow ("Name", "Value"));
 			
-			int pos = 0;
-			foreach (NameValueTraceData r in header_data)
+			var pos = 0;
+			foreach (var r in header_data)
 				RenderAltRow (table, pos++, r.Name, r.Value);
 			table.RenderControl (output);
 		}
 		
 		void RenderServerVars (HtmlTextWriter output)
 		{
-			Table table = CreateTable ();
+			var table = CreateTable ();
 			
 			table.Rows.Add (AltRow ("Server Variables"));
 			table.Rows.Add (SubHeadRow ("Name", "Value"));
 			
-			int pos = 0;
-			foreach (NameValueTraceData r in servervar_data)
+			var pos = 0;
+			foreach (var r in servervar_data)
 				RenderAltRow (table, pos++, r.Name, r.Value);
 			table.RenderControl (output);
 		}
 
 		internal static TableRow AltRow (string title)
 		{
-			TableRow row = new TableRow ();
-			TableHeaderCell header = new TableHeaderCell ();
+			var row = new TableRow ();
+			var header = new TableHeaderCell ();
 			header.CssClass = "alt";
 			header.HorizontalAlign = HorizontalAlign.Left;
 			header.Attributes [" colspan"] = "10";
@@ -420,7 +420,7 @@ namespace System.Web
 			return row;
 		}
 		
-		void RenderTraceInfoRow (Table table, InfoTraceData i, int pos)
+		void RenderTraceInfoRow (Table table, InfoTraceData? i, int pos)
 		{
 			if (i == null)
 				return;
@@ -450,9 +450,9 @@ namespace System.Web
 	   
 		internal static TableRow SubHeadRow (params string[] cells)
 		{
-			TableRow row = new TableRow ();
-			foreach (string s in cells) {
-				TableHeaderCell cell = new TableHeaderCell ();
+			var row = new TableRow ();
+			foreach (var s in cells) {
+				var cell = new TableHeaderCell ();
 				cell.Text = s;
 				row.Cells.Add (cell);
 			}
@@ -465,9 +465,9 @@ namespace System.Web
 		
 		internal static TableRow RenderAltRow (Table table, int pos, params string[] cells)
 		{
-			TableRow row = new TableRow ();
-			foreach (string s in cells) {
-				TableCell cell = new TableCell ();
+			var row = new TableRow ();
+			foreach (var s in cells) {
+				var cell = new TableCell ();
 				cell.Text = s;
 				row.Cells.Add (cell);
 		   }
@@ -481,11 +481,11 @@ namespace System.Web
 	   
 		TableRow InfoRow2 (string title1, string info1, string title2, string info2)
 		{
-			TableRow row = new TableRow ();
-			TableHeaderCell header1 = new TableHeaderCell ();
-			TableHeaderCell header2 = new TableHeaderCell ();
-			TableCell cell1 = new TableCell ();
-			TableCell cell2 = new TableCell ();
+			var row = new TableRow ();
+			var header1 = new TableHeaderCell ();
+			var header2 = new TableHeaderCell ();
+			var cell1 = new TableCell ();
+			var cell2 = new TableCell ();
 			
 			header1.Text = title1;
 			header2.Text = title2;
@@ -504,7 +504,7 @@ namespace System.Web
 		
 		internal static Table CreateTable ()
 		{
-			Table table = new Table ();
+			var table = new Table ();
 			
 			table.Width = Unit.Percentage (100);
 			table.CellSpacing = 0;

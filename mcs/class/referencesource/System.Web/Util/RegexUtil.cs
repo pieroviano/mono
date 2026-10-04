@@ -12,7 +12,7 @@ namespace System.Web.Util {
         // since asp.net doesn't have control of the regex pattern string and it is possible 
         // to take more than 2 sec to match a string, give developer option to set timeout value
         public static bool IsMatch(string stringToMatch, string pattern, RegexOptions regOption, int? timeoutInMillsec) {            
-            int timeout = GetRegexTimeout(timeoutInMillsec);
+            var timeout = GetRegexTimeout(timeoutInMillsec);
 
             if (timeout > 0 || timeoutInMillsec.HasValue) {
                 return Regex.IsMatch(stringToMatch, pattern, regOption, TimeSpan.FromMilliseconds((double)timeout));
@@ -22,7 +22,7 @@ namespace System.Web.Util {
         }
 
         public static Match Match(string stringToMatch, string pattern, RegexOptions regOption, int? timeoutInMillsec) {
-            int timeout = GetRegexTimeout(timeoutInMillsec);
+            var timeout = GetRegexTimeout(timeoutInMillsec);
 
             if (timeout > 0 || timeoutInMillsec.HasValue) {
                 return Regex.Match(stringToMatch, pattern, regOption, TimeSpan.FromMilliseconds((double)timeout));
@@ -32,7 +32,7 @@ namespace System.Web.Util {
         }
 
         public static Regex CreateRegex(string pattern, RegexOptions option, int? timeoutInMillsec) {
-            int timeout = GetRegexTimeout(timeoutInMillsec);
+            var timeout = GetRegexTimeout(timeoutInMillsec);
 
             if (timeout > 0 || timeoutInMillsec.HasValue) {
                 return new Regex(pattern, option, TimeSpan.FromMilliseconds((double)timeout));
@@ -51,7 +51,7 @@ namespace System.Web.Util {
         private static bool IsRegexTimeoutSetInAppDomain {
             get {
                 if (!_isRegexTimeoutSetInAppDomain.HasValue) {
-                    bool timeoutSetInAppDomain = false;
+                    var timeoutSetInAppDomain = false;
                     try {
                         timeoutSetInAppDomain = AppDomain.CurrentDomain.GetData("REGEX_DEFAULT_MATCH_TIMEOUT") != null;
                     } catch {
@@ -63,7 +63,7 @@ namespace System.Web.Util {
         }
 
         private static int GetRegexTimeout(int? timeoutInMillsec) {
-            int timeout = -1;
+            var timeout = -1;
 
             // here is the logic for using timeout in regex
             // 1. if the caller sets a timeout value, then we use it(this may cause Regex throw ArgumentOutOfRangeException, 

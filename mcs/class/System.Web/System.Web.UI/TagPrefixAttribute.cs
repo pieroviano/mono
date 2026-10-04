@@ -39,8 +39,8 @@ namespace System.Web.UI {
 		string namespaceName;
 		string tagPrefix;
 		
-		public TagPrefixAttribute (string namespaceName,
-					   string tagPrefix)
+		public TagPrefixAttribute (string? namespaceName,
+					   string? tagPrefix)
 		{
 			if ((namespaceName == null) || (namespaceName.Length == 0))
 				throw new ArgumentNullException ("namespaceName");

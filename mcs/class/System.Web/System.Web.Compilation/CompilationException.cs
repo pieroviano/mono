@@ -127,7 +127,7 @@ namespace System.Web.Compilation
 
 					if (firstError != null) {
 						errmsg = firstError.ToString ();
-						int idx = errmsg.IndexOf (" : error ");
+						var idx = errmsg.IndexOf (" : error ");
 						if (idx > -1)
 							errmsg = errmsg.Substring (idx + 9);
 					} else
@@ -145,7 +145,7 @@ namespace System.Web.Compilation
 		public override int [] ErrorLines {
 			get {
 				if (errorLines == null && errors != null) {
-					ArrayList list = new ArrayList ();
+					var list = new ArrayList ();
 					foreach (CompilerError err in errors) {
 						if (err.IsWarning)
 							continue;

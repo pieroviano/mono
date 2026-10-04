@@ -86,7 +86,7 @@ namespace Mono.Web.Util
 		{
 			_value = nav.GetAttribute ("value", String.Empty);
 
-			XPathNodeIterator iter = nav.Select ("./*");
+			var iter = nav.Select ("./*");
 			XPathNavigator cur;
 
 			_contents = new List <SettingsMappingWhatContents> ();

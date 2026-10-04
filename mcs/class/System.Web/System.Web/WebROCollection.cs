@@ -63,7 +63,7 @@ namespace System.Web
 
 		public override string ToString ()
 		{
-			StringBuilder result = new StringBuilder ();
+			var result = new StringBuilder ();
 			foreach (string key in AllKeys) {
 				if (result.Length > 0)
 					result.Append ('&');

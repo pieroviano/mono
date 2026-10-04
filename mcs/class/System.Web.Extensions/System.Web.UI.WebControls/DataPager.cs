@@ -110,7 +110,7 @@ namespace System.Web.UI.WebControls
 			// create the list only once anyway.
 			_createPagerFieldsRunning = true;
 			
-			ControlCollection controls = Controls;
+			var controls = Controls;
 			controls.Clear ();
 
 			DataPagerFieldItem control;
@@ -136,9 +136,9 @@ namespace System.Web.UI.WebControls
 
 		protected virtual IPageableItemContainer FindPageableItemContainer ()
 		{
-			string pagedControlID = PagedControlID;
+			var pagedControlID = PagedControlID;
 			IPageableItemContainer ret = null;
-			Page page = Page;
+			var page = Page;
 			Control container;
 			
 			if (page != null && !String.IsNullOrEmpty (pagedControlID)) {
@@ -218,7 +218,7 @@ namespace System.Web.UI.WebControls
 				return;
 
 			base.LoadViewState (state [0]);
-			object myState = state [1];
+			var myState = state [1];
 			if (myState != null)
 				((IStateManager) Fields).LoadViewState (myState);
 		}
@@ -228,7 +228,7 @@ namespace System.Web.UI.WebControls
 			DataPagerFieldCommandEventArgs args = e as DataPagerFieldCommandEventArgs;
 
 			if (args != null) {
-				DataPagerFieldItem item = args.Item;
+				var item = args.Item;
 				DataPagerField field = item != null ? item.PagerField : null;
 				
 				if (field != null) {
@@ -256,7 +256,7 @@ namespace System.Web.UI.WebControls
 		protected internal override void OnInit (EventArgs e)
 		{
 			base.OnInit (e);
-			Page page = Page;
+			var page = Page;
 			if (page != null)
 				page.RegisterRequiresControlState (this);
 			
@@ -297,7 +297,7 @@ namespace System.Web.UI.WebControls
 				// Adjust the container's start row index to the new maximum rows
 				// count, but do not touch our index - we aren't a "view", so we
 				// don't want/need to change the start index.
-				int tmp = _startRowIndex - _maximumRows;
+				var tmp = _startRowIndex - _maximumRows;
 				if (tmp < 0 || tmp >= _totalRowCount)
 					tmp = 0;
 
@@ -336,7 +336,7 @@ namespace System.Web.UI.WebControls
 
 		protected internal override object SaveControlState ()
 		{
-			object[] ret = new object [CSTATE_COUNT];
+			var ret = new object [CSTATE_COUNT];
 
 			ret [CSTATE_BASE_STATE] = base.SaveControlState ();
 			ret [CSTATE_TOTAL_ROW_COUNT] = _totalRowCount <= 0 ? 0 : _totalRowCount;

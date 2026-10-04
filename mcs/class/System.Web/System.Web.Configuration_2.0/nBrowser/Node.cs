@@ -170,8 +170,8 @@ namespace System.Web.Configuration.nBrowser
 			//I know not all of these will be used but enough will
 			Identification = new System.Web.Configuration.nBrowser.Identification[node.ChildNodes.Count];
 
-			int i = -1;
-			for (int a = 0;a <= node.ChildNodes.Count - 1;a++)
+			var i = -1;
+			for (var a = 0;a <= node.ChildNodes.Count - 1;a++)
 			{
 				switch (node.ChildNodes[a].NodeType)
 				{
@@ -181,8 +181,8 @@ namespace System.Web.Configuration.nBrowser
 						continue;
 				}
 
-				string patterngroup = string.Empty;
-				string patternname = string.Empty;
+				var patterngroup = string.Empty;
+				var patternname = string.Empty;
 
 				if (string.Compare(node.ChildNodes[a].Name, "userAgent", true, System.Globalization.CultureInfo.CurrentCulture) == 0)
 				{
@@ -225,8 +225,8 @@ namespace System.Web.Configuration.nBrowser
 			//I know not all of these will be used but enough will
 			Capture = new System.Web.Configuration.nBrowser.Identification[node.ChildNodes.Count];
 
-			int i = -1;
-			for (int a = 0;a <= node.ChildNodes.Count - 1;a++)
+			var i = -1;
+			for (var a = 0;a <= node.ChildNodes.Count - 1;a++)
 			{
 				switch (node.ChildNodes[a].NodeType)
 				{
@@ -236,9 +236,9 @@ namespace System.Web.Configuration.nBrowser
 						continue;
 				}
 
-				string pattern = string.Empty;
-				string patterngroup = string.Empty;
-				string patternname = string.Empty;
+				var pattern = string.Empty;
+				var patterngroup = string.Empty;
+				var patternname = string.Empty;
 
 				if (node.ChildNodes[a].Name == "userAgent")
 				{
@@ -263,15 +263,15 @@ namespace System.Web.Configuration.nBrowser
 		{
 			Capabilities = new System.Collections.Specialized.NameValueCollection(node.ChildNodes.Count, StringComparer.OrdinalIgnoreCase);
 
-			for (int a = 0;a <= node.ChildNodes.Count - 1;a++)
+			for (var a = 0;a <= node.ChildNodes.Count - 1;a++)
 			{
 				if (node.ChildNodes[a].NodeType == System.Xml.XmlNodeType.Comment)
 				{
 					continue;
 				}
-				string name = string.Empty;
-				string value = string.Empty;
-				for (int b = 0;b <= node.ChildNodes[a].Attributes.Count - 1;b++)
+				var name = string.Empty;
+				var value = string.Empty;
+				for (var b = 0;b <= node.ChildNodes[a].Attributes.Count - 1;b++)
 				{
 					switch (node.ChildNodes[a].Attributes[b].Name)
 					{
@@ -296,7 +296,7 @@ namespace System.Web.Configuration.nBrowser
 		private void ProcessControlAdapters(System.Xml.XmlNode node)
 		{
 			Adapter = new System.Collections.Specialized.NameValueCollection();
-			for (int b = 0;b <= node.Attributes.Count - 1;b++)
+			for (var b = 0;b <= node.Attributes.Count - 1;b++)
 			{
 				switch (node.Attributes[b].Name)
 				{
@@ -305,7 +305,7 @@ namespace System.Web.Configuration.nBrowser
 						break;
 				}
 			}
-			for (int a = 0;a <= node.ChildNodes.Count - 1;a++)
+			for (var a = 0;a <= node.ChildNodes.Count - 1;a++)
 			{
 				if (node.ChildNodes[a].NodeType == System.Xml.XmlNodeType.Comment)
 				{
@@ -316,9 +316,9 @@ namespace System.Web.Configuration.nBrowser
 					continue;
 				}
 				System.Xml.XmlNode x = node.ChildNodes[a];
-				string controlType = string.Empty;
-				string adapterType = string.Empty;
-				for (int i = 0;i <= x.Attributes.Count - 1;i++)
+				var controlType = string.Empty;
+				var adapterType = string.Empty;
+				for (var i = 0;i <= x.Attributes.Count - 1;i++)
 				{
 					if (string.Compare(x.Attributes[i].Name, "controlType", true, System.Globalization.CultureInfo.CurrentCulture) == 0)
 					{
@@ -347,15 +347,15 @@ namespace System.Web.Configuration.nBrowser
 		{
 			sampleHeaders = new System.Collections.Specialized.NameValueCollection(node.ChildNodes.Count);
 
-			for (int a = 0;a <= node.ChildNodes.Count - 1;a++)
+			for (var a = 0;a <= node.ChildNodes.Count - 1;a++)
 			{
 				if (node.ChildNodes[a].NodeType == System.Xml.XmlNodeType.Comment)
 				{
 					continue;
 				}
-				string name = string.Empty;
-				string value = string.Empty;
-				for (int b = 0;b <= node.ChildNodes[a].Attributes.Count - 1;b++)
+				var name = string.Empty;
+				var value = string.Empty;
+				for (var b = 0;b <= node.ChildNodes[a].Attributes.Count - 1;b++)
 				{
 					switch (node.ChildNodes[a].Attributes[b].Name)
 					{
@@ -425,7 +425,7 @@ namespace System.Web.Configuration.nBrowser
 			//cases where there are no attributes really well. Also it doesn't care
 			//about the order in witch the attributes are found either
 			//-------------------------------------------------------------------------
-			for (int a = 0;a <= xmlNode.Attributes.Count - 1;a++)
+			for (var a = 0;a <= xmlNode.Attributes.Count - 1;a++)
 			{
 				//Reason I am not using a switch here because I do not have the ability
 				//to make sure the items are in the same upper/lower case as I am expecting
@@ -444,7 +444,7 @@ namespace System.Web.Configuration.nBrowser
 				}
 			}
 
-			for (int a = 0;a <= xmlNode.ChildNodes.Count - 1;a++)
+			for (var a = 0;a <= xmlNode.ChildNodes.Count - 1;a++)
 			{
 				//Reason I am not using a switch here because I do not have the ability
 				//to make sure the items are in the same upper/lower case as I am expecting
@@ -481,7 +481,7 @@ namespace System.Web.Configuration.nBrowser
 		/// 
 		/// </summary>
 		/// <param name="child"></param>
-		public void AddChild(Node child)
+		public void AddChild(Node? child)
 		{
 			if (child == null)
 			{
@@ -502,7 +502,7 @@ namespace System.Web.Configuration.nBrowser
 		/// 
 		/// </summary>
 		/// <param name="child"></param>
-		public void RemoveChild(Node child)
+		public void RemoveChild(Node? child)
 		{
 			if (child == null)
 			{
@@ -522,9 +522,9 @@ namespace System.Web.Configuration.nBrowser
 				
 		private Type FindType(string typeName)
 		{
-			foreach (System.Reflection.Assembly a in System.AppDomain.CurrentDomain.GetAssemblies())
+			foreach (var a in System.AppDomain.CurrentDomain.GetAssemblies())
 			{
-				string fullTypeName = typeName + "," + a.FullName;
+				var fullTypeName = typeName + "," + a.FullName;
 				Type t = System.Type.GetType(fullTypeName); // case-sensitive
 				if (t != null)
 					return t;
@@ -549,8 +549,8 @@ namespace System.Web.Configuration.nBrowser
 		{
 			// The real work is done in ProcessSubtree.  This method just ensures that matchList is restored
 			// to its original state before returning.
-			int origMatchListCount = matchList.Count;
-			bool matched = ProcessSubtree(header, result, matchList);
+			var origMatchListCount = matchList.Count;
+			var matched = ProcessSubtree(header, result, matchList);
 			if (matchList.Count > origMatchListCount)
 				matchList.RemoveRange(origMatchListCount, matchList.Count-origMatchListCount);
 			return matched;
@@ -598,7 +598,7 @@ namespace System.Web.Configuration.nBrowser
 			if (Adapter != null)
 			{
 				LookupAdapterTypes();
-				for (int i = 0;i <= Adapter.Count - 1;i++)
+				for (var i = 0;i <= Adapter.Count - 1;i++)
 				{
 					result.AddAdapter(AdapterControlTypes [i], AdapterTypes [i]);
 				}
@@ -624,7 +624,7 @@ namespace System.Web.Configuration.nBrowser
 				//----------------------------------------------------------------------
 				//Adds all the sucessfull Capture matches to the matchList
 				//----------------------------------------------------------------------
-				for (int i = 0;i <= Capture.Length - 1;i++)
+				for (var i = 0;i <= Capture.Length - 1;i++)
 				{
 					//shouldn't happen often, the null should
 					//signal the end of the list, I keep procssing
@@ -658,7 +658,7 @@ namespace System.Web.Configuration.nBrowser
 				//browser matches the criteria, now its a mater of updating
 				//the results with the new Capabilties listed.
 				//----------------------------------------------------------------------
-				for (int i = 0;i <= Capabilities.Count - 1;i++)
+				for (var i = 0;i <= Capabilities.Count - 1;i++)
 				{
 					//----------------------------------------------------------------------
 					//We need to further process these Capabilities to 
@@ -674,7 +674,7 @@ namespace System.Web.Configuration.nBrowser
 					//and only the newest one (most recent matches) are the ones
 					//we want to insert.
 					//----------------------------------------------------------------------
-					for (int a = matchList.Count - 1; a >= 0 && v != null && v.Length > 0 &&  v.IndexOf('$') > -1; a--)
+					for (var a = matchList.Count - 1; a >= 0 && v != null && v.Length > 0 &&  v.IndexOf('$') > -1; a--)
 					{
 						// Don't do substitution if the match has no groups or was a nonMatch
 						if (matchList[a].Groups.Count == 0 || !matchList[a].Success)
@@ -708,10 +708,10 @@ namespace System.Web.Configuration.nBrowser
 			//Run the Default Children after the Parent Node is finished with 
 			//what it is doing
 			//----------------------------------------------------------------------
-			for (int i = 0;i <= DefaultChildren.Count - 1;i++)
+			for (var i = 0;i <= DefaultChildren.Count - 1;i++)
 			{
-				string key = DefaultChildrenKeys[i];
-				Node node = DefaultChildren[key];
+				var key = DefaultChildrenKeys[i];
+				var node = DefaultChildren[key];
 				if (node.NameType == NodeType.DefaultBrowser)
 				{
 					node.Process(header, result, matchList);
@@ -725,19 +725,19 @@ namespace System.Web.Configuration.nBrowser
 			//----------------------------------------------------------------------
 			//According to the msdn2 documentation Gateways are suppost to be
 			//all processed first. before the browser objects.
-			for (int i = 0;i <= Children.Count - 1;i++)
+			for (var i = 0;i <= Children.Count - 1;i++)
 			{
-				string key = ChildrenKeys[i];
-				Node node = Children[key];
+				var key = ChildrenKeys[i];
+				var node = Children[key];
 				if (node.NameType == NodeType.Gateway)
 				{
 					node.Process(header, result, matchList);
 				}
 			}
-			for (int i = 0;i <= Children.Count - 1;i++)
+			for (var i = 0;i <= Children.Count - 1;i++)
 			{
-				string key = ChildrenKeys[i];
-				Node node = Children[key];
+				var key = ChildrenKeys[i];
+				var node = Children[key];
 				if (node.NameType == NodeType.Browser 
 				    && node.Process(header, result, matchList))
 					break;
@@ -776,7 +776,7 @@ namespace System.Web.Configuration.nBrowser
 			System.Diagnostics.Trace.WriteLine(string.Format("{0}[{1}]", ("[" + this.Id + "]").PadRight(45), this.ParentId));
 #endif
 			
-			for (int i = 0;i <= Identification.Length - 1;i++)
+			for (var i = 0;i <= Identification.Length - 1;i++)
 			{
 
 				//shouldn't happen often, the null should
@@ -786,7 +786,7 @@ namespace System.Web.Configuration.nBrowser
 				{
 					continue;
 				}
-				string v = string.Empty;
+				var v = string.Empty;
 				if (string.Compare(Identification[i].Group, "header", true, System.Globalization.CultureInfo.CurrentCulture) == 0)
 				{
 					v = header[Identification[i].Name];
@@ -801,7 +801,7 @@ namespace System.Web.Configuration.nBrowser
 				{
 					v = string.Empty;
 				}
-				Match m = Identification[i].GetMatch(v);
+				var m = Identification[i].GetMatch(v);
 				//----------------------------------------------------------------------
 				//we exit this method return the orginal Result back to  the calling method.
 				//----------------------------------------------------------------------
@@ -842,7 +842,7 @@ namespace System.Web.Configuration.nBrowser
 					AdapterControlTypes = new Type [Adapter.Count];
 				if (AdapterTypes == null)
 					AdapterTypes = new Type [Adapter.Count];
-				for (int i = 0;i <= Adapter.Count - 1;i++) {
+				for (var i = 0;i <= Adapter.Count - 1;i++) {
 					if (AdapterControlTypes [i] == null)
 						AdapterControlTypes [i] = FindType (Adapter.GetKey (i));
 					if (AdapterTypes [i] == null)
@@ -876,7 +876,7 @@ namespace System.Web.Configuration.nBrowser
 				xmlwriter.WriteRaw(System.Environment.NewLine);
 			}
 
-			string f = this.FileName;
+			var f = this.FileName;
 			xmlwriter.WriteStartElement(this.NameType.ToString());
 			xmlwriter.WriteAttributeString("FileName", f);
 			xmlwriter.WriteAttributeString("ID", this.Id);
@@ -886,30 +886,30 @@ namespace System.Web.Configuration.nBrowser
 			{
 				position++;
 			}
-			for (int i = 0;i <= DefaultChildren.Count - 1;i++)
+			for (var i = 0;i <= DefaultChildren.Count - 1;i++)
 			{
-				string key = (string)DefaultChildrenKeys[i];
-				Node node = DefaultChildren[key];
+				var key = (string)DefaultChildrenKeys[i];
+				var node = DefaultChildren[key];
 				if (node.NameType == nBrowser.NodeType.DefaultBrowser)
 				{
 					node.Tree(xmlwriter, position);
 				}
 			}
 
-			for (int i = 0;i <= Children.Count - 1;i++)
+			for (var i = 0;i <= Children.Count - 1;i++)
 			{
-				string key = (string)ChildrenKeys[i];
-				Node node = Children[key];
+				var key = (string)ChildrenKeys[i];
+				var node = Children[key];
 				if (node.NameType == nBrowser.NodeType.Gateway)
 				{
 					node.Tree(xmlwriter, position);
 				}
 			}
 
-			for (int i = 0;i <= Children.Count - 1;i++)
+			for (var i = 0;i <= Children.Count - 1;i++)
 			{
-				string key = (string)ChildrenKeys[i];
-				Node node = Children[key];
+				var key = (string)ChildrenKeys[i];
+				var node = Children[key];
 				if (node.NameType == nBrowser.NodeType.Browser)
 				{
 					node.Tree(xmlwriter, position);
@@ -931,7 +931,7 @@ namespace System.Web.Configuration.nBrowser
 		{
 			if (Identification != null)
 			{
-				for (int i = 0;i <= Identification.Length - 1;i++)
+				for (var i = 0;i <= Identification.Length - 1;i++)
 				{
 					if (Identification[i] == null)
 					{
@@ -948,7 +948,7 @@ namespace System.Web.Configuration.nBrowser
 			}
 			if (Capture != null)
 			{
-				for (int i = 0;i <= Capture.Length - 1;i++)
+				for (var i = 0;i <= Capture.Length - 1;i++)
 				{
 					if (Capture[i] == null)
 					{
@@ -963,30 +963,30 @@ namespace System.Web.Configuration.nBrowser
 					}
 				}
 			}
-			for (int i = 0;i <= DefaultChildren.Count - 1;i++)
+			for (var i = 0;i <= DefaultChildren.Count - 1;i++)
 			{
-				string key = (string)DefaultChildrenKeys[i];
-				Node node = DefaultChildren[key];
+				var key = (string)DefaultChildrenKeys[i];
+				var node = DefaultChildren[key];
 				if (node.NameType == nBrowser.NodeType.DefaultBrowser)
 				{
 					list = node.HeaderNames(list);
 				}
 			}
 
-			for (int i = 0;i <= Children.Count - 1;i++)
+			for (var i = 0;i <= Children.Count - 1;i++)
 			{
-				string key = (string)ChildrenKeys[i];
-				Node node = Children[key];
+				var key = (string)ChildrenKeys[i];
+				var node = Children[key];
 				if (node.NameType == nBrowser.NodeType.Gateway)
 				{
 					list = node.HeaderNames(list);
 				}
 			}
 
-			for (int i = 0;i <= Children.Count - 1;i++)
+			for (var i = 0;i <= Children.Count - 1;i++)
 			{
-				string key = (string)ChildrenKeys[i];
-				Node node = Children[key];
+				var key = (string)ChildrenKeys[i];
+				var node = Children[key];
 				if (node.NameType == nBrowser.NodeType.Browser)
 				{
 					list = node.HeaderNames(list);
@@ -1009,12 +1009,12 @@ namespace System.Web.Configuration.nBrowser
 					Capabilities[capName] = n.Capabilities[capName];
 			}
 			
-			int newLength = 0;
+			var newLength = 0;
 			if (Capture != null)
 				newLength += Capture.Length;
 			if (n.Capture != null)
 				newLength += n.Capture.Length;
-			Identification[] newCapture = new Identification[newLength];
+			var newCapture = new Identification[newLength];
 			if (Capture != null)
 				Array.Copy(Capture, 0, newCapture, 0, Capture.Length);
 			if (n.Capture != null)

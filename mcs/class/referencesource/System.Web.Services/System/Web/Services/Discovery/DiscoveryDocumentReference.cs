@@ -65,7 +65,7 @@ namespace System.Web.Services.Discovery {
         [XmlIgnore]
         public override string DefaultFilename {
             get {
-                string filename = FilenameFromUrl(Url);
+                var filename = FilenameFromUrl(Url);
                 return Path.ChangeExtension(filename, ".disco");        // [Microsoft] change default extension
             }
         }
@@ -79,7 +79,7 @@ namespace System.Web.Services.Discovery {
             get {
                 if (ClientProtocol == null)
                     throw new InvalidOperationException(Res.GetString(Res.WebMissingClientProtocol));
-                object document = ClientProtocol.Documents[Url];
+                var document = ClientProtocol.Documents[Url];
                 if (document == null) {
                     Resolve();
                     document = ClientProtocol.Documents[Url];
@@ -127,22 +127,22 @@ namespace System.Web.Services.Discovery {
         /// or from a stream. Does not
         /// </devdoc>
         private static DiscoveryDocument GetDocumentNoParse(ref string url, DiscoveryClientProtocol client) {
-            DiscoveryDocument d = (DiscoveryDocument) client.Documents[url];
+            var d = (DiscoveryDocument) client.Documents[url];
             if (d != null) {
                 return d;
             }
 
             string contentType = null;
 
-            Stream stream = client.Download(ref url, ref contentType);
+            var stream = client.Download(ref url, ref contentType);
             try {
-                XmlTextReader reader = new XmlTextReader(new StreamReader(stream, RequestResponseUtils.GetEncoding(contentType)));
+                var reader = new XmlTextReader(new StreamReader(stream, RequestResponseUtils.GetEncoding(contentType)));
                 reader.WhitespaceHandling = WhitespaceHandling.Significant;
                 reader.XmlResolver = null;
                 reader.DtdProcessing = DtdProcessing.Prohibit;
                 if (!DiscoveryDocument.CanRead(reader)) {
                     // there is no discovery document at this location
-                    ArgumentException exception = new ArgumentException(Res.GetString(Res.WebInvalidFormat));
+                    var exception = new ArgumentException(Res.GetString(Res.WebInvalidFormat));
                     throw new InvalidOperationException(Res.GetString(Res.WebMissingDocument, url), exception);
                 }
                 return DiscoveryDocument.Read(reader);
@@ -160,9 +160,9 @@ namespace System.Web.Services.Discovery {
             DiscoveryDocument document = null;
 
             if (ContentType.IsHtml(contentType)) {
-                string newRef = LinkGrep.SearchForLink(stream);
+                var newRef = LinkGrep.SearchForLink(stream);
                 if (newRef != null) {
-                    string newUrl = UriToString(Url, newRef);
+                    var newUrl = UriToString(Url, newRef);
                     document = GetDocumentNoParse(ref newUrl, ClientProtocol);
                     Url = newUrl;
                 }
@@ -171,7 +171,7 @@ namespace System.Web.Services.Discovery {
             }
 
             if (document == null) { // probably xml...
-                XmlTextReader reader = new XmlTextReader(new StreamReader(stream, RequestResponseUtils.GetEncoding(contentType)));
+                var reader = new XmlTextReader(new StreamReader(stream, RequestResponseUtils.GetEncoding(contentType)));
                 reader.XmlResolver = null;
                 reader.WhitespaceHandling = WhitespaceHandling.Significant;
                 reader.DtdProcessing = DtdProcessing.Prohibit;
@@ -183,16 +183,16 @@ namespace System.Web.Services.Discovery {
                     // check out the processing instructions before the first tag.  if any of them
                     // match the form specified in the DISCO spec, save the href.
                     stream.Position = 0;
-                    XmlTextReader newReader = new XmlTextReader(new StreamReader(stream, RequestResponseUtils.GetEncoding(contentType)));
+                    var newReader = new XmlTextReader(new StreamReader(stream, RequestResponseUtils.GetEncoding(contentType)));
                     newReader.XmlResolver = null;
                     newReader.DtdProcessing = DtdProcessing.Prohibit;
                     while (newReader.NodeType != XmlNodeType.Element) {
                         if (newReader.NodeType == XmlNodeType.ProcessingInstruction) {
                             // manually parse the PI contents since XmlTextReader won't automatically do it
-                            StringBuilder sb = new StringBuilder("<pi ");
+                            var sb = new StringBuilder("<pi ");
                             sb.Append(newReader.Value);
                             sb.Append("/>");
-                            XmlTextReader piReader = new XmlTextReader(new StringReader(sb.ToString()));
+                            var piReader = new XmlTextReader(new StringReader(sb.ToString()));
                             piReader.XmlResolver = null;
                             piReader.DtdProcessing = DtdProcessing.Prohibit;
                             piReader.Read();
@@ -205,7 +205,7 @@ namespace System.Web.Services.Discovery {
                                 // we got a PI with the right attributes
 
                                 // there is a link to a discovery document. follow it after fully qualifying it.
-                                string newUrl = UriToString(Url, href);
+                                var newUrl = UriToString(Url, href);
                                 document = GetDocumentNoParse(ref newUrl, ClientProtocol);
                                 Url = newUrl;
                                 break;
@@ -231,9 +231,9 @@ namespace System.Web.Services.Discovery {
             ClientProtocol.References[Url] = this;
             ClientProtocol.Documents[Url] = document;
 
-            foreach (object o in document.References) {
+            foreach (var o in document.References) {
                 if (o is DiscoveryReference) {
-                    DiscoveryReference r = (DiscoveryReference) o;
+                    var r = (DiscoveryReference) o;
                     if (r.Url.Length == 0) {
                         throw new InvalidOperationException(Res.GetString(Res.WebEmptyRef, r.GetType().FullName, Url));
                     }
@@ -279,7 +279,7 @@ namespace System.Web.Services.Discovery {
                 return;
             }
 
-            foreach (object o in Document.References) {
+            foreach (var o in Document.References) {
                 DiscoveryDocumentReference r = o as DiscoveryDocumentReference;
                 if (r == null)
                     continue;

@@ -52,14 +52,14 @@ namespace System.Web.UI.WebControls
 
 					switch (Type) {
 						case ValidationDataType.Date:
-							DateTimeFormatInfo dateTimeFormat = CultureInfo.CurrentCulture.DateTimeFormat;
-							string pattern = dateTimeFormat.ShortDatePattern;
-							string dateorder = (pattern.StartsWith ("y", true, Helpers.InvariantCulture) ? "ymd" : (pattern.StartsWith ("m", true, Helpers.InvariantCulture) ? "mdy" : "dmy"));
+							var dateTimeFormat = CultureInfo.CurrentCulture.DateTimeFormat;
+							var pattern = dateTimeFormat.ShortDatePattern;
+							var dateorder = (pattern.StartsWith ("y", true, Helpers.InvariantCulture) ? "ymd" : (pattern.StartsWith ("m", true, Helpers.InvariantCulture) ? "mdy" : "dmy"));
 							RegisterExpandoAttribute (ClientID, "dateorder", dateorder);
 							RegisterExpandoAttribute (ClientID, "cutoffyear", dateTimeFormat.Calendar.TwoDigitYearMax.ToString ());
 							break;
 						case ValidationDataType.Currency:
-							NumberFormatInfo numberFormat = CultureInfo.CurrentCulture.NumberFormat;
+							var numberFormat = CultureInfo.CurrentCulture.NumberFormat;
 							RegisterExpandoAttribute (ClientID, "decimalchar", numberFormat.CurrencyDecimalSeparator, true);
 							RegisterExpandoAttribute (ClientID, "groupchar", numberFormat.CurrencyGroupSeparator, true);
 							RegisterExpandoAttribute (ClientID, "digits", numberFormat.CurrencyDecimalDigits.ToString());
@@ -106,16 +106,16 @@ namespace System.Web.UI.WebControls
 		protected static string GetDateElementOrder ()
 		{
 			// I hope there's a better way to implement this...
-			string pattern = Thread.CurrentThread.CurrentCulture.DateTimeFormat.ShortDatePattern;
-			StringBuilder order = new StringBuilder();
-			bool seen_date = false;
-			bool seen_year = false;
-			bool seen_month = false;
+			var pattern = Thread.CurrentThread.CurrentCulture.DateTimeFormat.ShortDatePattern;
+			var order = new StringBuilder();
+			var seen_date = false;
+			var seen_year = false;
+			var seen_month = false;
 
 			pattern = pattern.ToLower (Helpers.InvariantCulture);
 
-			for (int i = 0; i < pattern.Length; i ++) {
-				char c = pattern[ i ];
+			for (var i = 0; i < pattern.Length; i ++) {
+				var c = pattern[ i ];
 				if (c != 'm' && c != 'd' && c != 'y')
 					continue;
 
@@ -139,8 +139,8 @@ namespace System.Web.UI.WebControls
 			/* This is an implementation that matches the
 			 * docs on msdn, but MS doesn't seem to go by
 			 * their docs (at least in 1.0). */
-			int cutoff = CutoffYear;
-			int twodigitcutoff = cutoff % 100;
+			var cutoff = CutoffYear;
+			var twodigitcutoff = cutoff % 100;
 
 			if (shortYear <= twodigitcutoff)
 				return cutoff - twodigitcutoff + shortYear;
@@ -198,7 +198,7 @@ namespace System.Web.UI.WebControls
 			if (!Convert(rightText, type, cultureInvariantRightText, out ro))
 				return true;
 
-			int comp = ((IComparable)lo).CompareTo((IComparable)ro);
+			var comp = ((IComparable)lo).CompareTo((IComparable)ro);
 
 			switch (op) {
 				case ValidationCompareOperator.Equal:

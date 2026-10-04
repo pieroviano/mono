@@ -274,7 +274,7 @@ namespace System.Web.UI.WebControls
 		
 		public override void InitializeCell (DataControlFieldCell cell, DataControlCellType cellType, DataControlRowState rowState, int rowIndex)
 		{
-			string index = rowIndex.ToString ();
+			var index = rowIndex.ToString ();
 			
 			if (cellType == DataControlCellType.DataCell) {
 				if ((rowState & DataControlRowState.Edit) != 0) {
@@ -317,7 +317,7 @@ namespace System.Web.UI.WebControls
 		
 		Control CreateButton (string text, string image, string command, string arg)
 		{
-			IDataControlButton c = DataControlButton.CreateButton (ButtonType, Control, text, image, command, arg, false);
+			var c = DataControlButton.CreateButton (ButtonType, Control, text, image, command, arg, false);
 			if (CausesValidation) {
 				if (command == DataControlCommands.UpdateCommandName || command == DataControlCommands.InsertCommandName) {
 					c.Container = null;
@@ -331,7 +331,7 @@ namespace System.Web.UI.WebControls
 		void AddSeparator (DataControlFieldCell cell)
 		{
 			if (cell.Controls.Count > 0) {
-				Literal lit = new Literal ();
+				var lit = new Literal ();
 				lit.Text = "&nbsp;";
 				cell.Controls.Add (lit);
 			}
@@ -345,7 +345,7 @@ namespace System.Web.UI.WebControls
 		protected override void CopyProperties (DataControlField newField)
 		{
 			base.CopyProperties (newField);
-			CommandField field = (CommandField) newField;
+			var field = (CommandField) newField;
 			field.CancelImageUrl = CancelImageUrl;
 			field.CancelText = CancelText;
 			field.DeleteImageUrl = DeleteImageUrl;

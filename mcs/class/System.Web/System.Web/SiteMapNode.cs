@@ -93,7 +93,7 @@ namespace System.Web {
 
 		public virtual bool HasChildNodes {
 			get {
-				SiteMapNodeCollection childNodes = ChildNodes;
+				var childNodes = ChildNodes;
 				return childNodes != null && childNodes.Count > 0;
 			}
 		}
@@ -109,7 +109,7 @@ namespace System.Web {
 		
 		void GetAllNodesRecursive(SiteMapNodeCollection c)
 		{
-			SiteMapNodeCollection childNodes = this.ChildNodes;
+			var childNodes = this.ChildNodes;
 
 			if (childNodes != null && childNodes.Count > 0) {
 				c.AddRange (childNodes);
@@ -121,7 +121,7 @@ namespace System.Web {
 		
 		public virtual bool IsDescendantOf (SiteMapNode node)
 		{
-			for (SiteMapNode n = ParentNode; n != null; n = n.ParentNode)
+			for (var n = ParentNode; n != null; n = n.ParentNode)
 				if (n == node) return true; 
 
 			return false; 
@@ -133,7 +133,7 @@ namespace System.Web {
 				if (siblings == null)
 					return null; 
 				
-				int pos = siblings.IndexOf (this);
+				var pos = siblings.IndexOf (this);
 				if (pos >= 0 && pos < siblings.Count - 1)
 					return (SiteMapNode) siblings [pos + 1]; 
 				
@@ -147,7 +147,7 @@ namespace System.Web {
 				if (siblings == null)
 					return null; 
 				
-				int pos = siblings.IndexOf (this);
+				var pos = siblings.IndexOf (this);
 				if (pos > 0 && pos < siblings.Count)
 					return (SiteMapNode) siblings [pos - 1]; 
 				
@@ -159,7 +159,7 @@ namespace System.Web {
 			get {
 				if (parent != null) return parent;
 				
-				SiteMapProvider provider = this.provider;
+				var provider = this.provider;
 				
 				do {
 					parent = provider.GetParentNode (this);
@@ -179,7 +179,7 @@ namespace System.Web {
 		public virtual SiteMapNodeCollection ChildNodes {
 			get {
 				if (provider.SecurityTrimmingEnabled) {
-					IPrincipal p = HttpContext.Current.User;
+					var p = HttpContext.Current.User;
 					if ((user == null && user != p) || user != null && user != p) {
 						user = p;
 						childNodes = provider.GetChildNodes (this);
@@ -207,7 +207,7 @@ namespace System.Web {
 			}
 		}
 		
-		protected string GetExplicitResourceString (string attributeName, string defaultValue, bool throwIfNotFound)
+		protected string GetExplicitResourceString (string attributeName, string? defaultValue, bool throwIfNotFound)
 		{
 			if (attributeName == null)
 				throw new ArgumentNullException ("attributeName");
@@ -216,7 +216,7 @@ namespace System.Web {
 				string[] values = resourceKeys.GetValues (attributeName);
 				if (values != null && values.Length == 2) {
 					try {
-						object o = HttpContext.GetGlobalResourceObject (values [0], values [1]);
+						var o = HttpContext.GetGlobalResourceObject (values [0], values [1]);
 						if (o is string)
 							return (string) o;
 					}
@@ -236,12 +236,12 @@ namespace System.Web {
 			if (attributeName == null)
 				throw new ArgumentNullException ("attributeName");
 
-			string resourceKey = ResourceKey;
+			var resourceKey = ResourceKey;
 			if (String.IsNullOrEmpty (resourceKey))
 				return null;
 
 			try {
-				object o = HttpContext.GetGlobalResourceObject (provider.ResourceKey, resourceKey + "." + attributeName);
+				var o = HttpContext.GetGlobalResourceObject (provider.ResourceKey, resourceKey + "." + attributeName);
 				if (o is string)
 					return (string) o;
 			} catch (MissingManifestResourceException) {
@@ -254,7 +254,7 @@ namespace System.Web {
 		{
 			get {
 				if (provider.EnableLocalization) {
-					string val = GetImplicitResourceString (key);
+					var val = GetImplicitResourceString (key);
 					if (val == null)
 						val = GetExplicitResourceString (key, null, true);
 					if (val != null)
@@ -282,7 +282,7 @@ namespace System.Web {
 		
 		public virtual SiteMapNode Clone (bool cloneParentNodes)
 		{
-			SiteMapNode node = new SiteMapNode ();
+			var node = new SiteMapNode ();
 			node.provider = provider;
 			node.key = key;
 			node.url = url;
@@ -317,7 +317,7 @@ namespace System.Web {
 				if (roles.Count != node.roles.Count)
 					return false;
 
-				foreach (object role in roles)
+				foreach (var role in roles)
 					if (!node.roles.Contains (role)) return false;
 			}
 			if (attributes == null || node.attributes == null) {

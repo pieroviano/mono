@@ -87,9 +87,9 @@ namespace System.Web.UI.WebControls
 		#endregion	// Public Instance Properties
 
 		#region Protected Instance Methods
-		protected override void AddAttributesToRender(HtmlTextWriter writer)
+		protected override void AddAttributesToRender(HtmlTextWriter? writer)
 		{
-			Page page = Page;
+			var page = Page;
 			if (page != null)
 				page.VerifyRenderingInServerForm (this);
 
@@ -102,7 +102,7 @@ namespace System.Web.UI.WebControls
 				SelectedIndex = 1;
 
 			if (AutoPostBack) {
-				string onchange = page != null ? page.ClientScript.GetPostBackEventReference (GetPostBackOptions (), true) : String.Empty;
+				var onchange = page != null ? page.ClientScript.GetPostBackEventReference (GetPostBackOptions (), true) : String.Empty;
 				onchange = String.Concat ("setTimeout('", onchange.Replace ("\\", "\\\\").Replace ("'", "\\'"), "', 0)");
 				writer.AddAttribute (HtmlTextWriterAttribute.Onchange, BuildScriptAttribute ("onchange", onchange));
 			}
@@ -112,14 +112,14 @@ namespace System.Web.UI.WebControls
 
 		PostBackOptions GetPostBackOptions ()
 		{
-			PostBackOptions options = new PostBackOptions (this);
+			var options = new PostBackOptions (this);
 			options.ActionUrl = null;
 			options.ValidationGroup = null;
 			options.Argument = String.Empty;
 			options.RequiresJavaScriptProtocol = false;
 			options.ClientSubmit = true;
 
-			Page page = Page;
+			var page = Page;
 			options.PerformValidation = CausesValidation && page != null && page.AreValidatorsUplevel (ValidationGroup);
 			if (options.PerformValidation)
 				options.ValidationGroup = ValidationGroup;
@@ -142,7 +142,7 @@ namespace System.Web.UI.WebControls
 		protected virtual bool LoadPostData (string postDataKey, NameValueCollection postCollection)
 		{
 			EnsureDataBound ();
-			int index = Items.IndexOf(postCollection[postDataKey]);
+			var index = Items.IndexOf(postCollection[postDataKey]);
 			ValidateEvent (postDataKey, postCollection [postDataKey]);
 			if (index != this.SelectedIndex) {
 				SelectedIndex = index;
@@ -155,7 +155,7 @@ namespace System.Web.UI.WebControls
 		protected virtual void RaisePostDataChangedEvent ()
 		{
 			if (CausesValidation) {
-				Page page = Page;
+				var page = Page;
 				if (page != null)
 					page.Validate (ValidationGroup);
 			}

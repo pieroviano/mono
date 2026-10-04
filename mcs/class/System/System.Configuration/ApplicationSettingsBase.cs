@@ -122,7 +122,7 @@ namespace System.Configuration {
 			Context.CurrentSettings = this;
 			/* ew.. this needs to be more efficient */
 			foreach (SettingsProvider provider in Providers) {
-				SettingsPropertyValueCollection cache = new SettingsPropertyValueCollection ();
+				var cache = new SettingsPropertyValueCollection ();
 
 				foreach (SettingsPropertyValue val in PropertyValues) {
 					if (val.Property.Provider == provider)
@@ -159,7 +159,7 @@ namespace System.Configuration {
 
 		private SettingsPropertyCollection GetPropertiesForProvider (SettingsProvider provider)
 		{
-           SettingsPropertyCollection properties = new SettingsPropertyCollection ();
+           var properties = new SettingsPropertyCollection ();
            foreach (SettingsProperty sp in Properties) {
                if (sp.Provider == provider) {
                    properties.Add(sp);
@@ -207,7 +207,7 @@ namespace System.Configuration {
 					if (context == null) {
 						context = new SettingsContext ();
 						context ["SettingsKey"] = "";
-						Type type = GetType ();
+						var type = GetType ();
 						context ["GroupName"] = type.FullName;
 						context ["SettingsClassType"] = type;
 					}
@@ -222,7 +222,7 @@ namespace System.Configuration {
 
 		void CacheValuesByProvider (SettingsProvider provider)
 		{
-			SettingsPropertyCollection col = new SettingsPropertyCollection ();
+			var col = new SettingsPropertyCollection ();
 
 			foreach (SettingsProperty p in Properties) {
 				if (p.Provider == provider)
@@ -230,7 +230,7 @@ namespace System.Configuration {
 			}
 
 			if (col.Count > 0) {
-				SettingsPropertyValueCollection vals = provider.GetPropertyValues (Context, col);
+				var vals = provider.GetPropertyValues (Context, col);
 				foreach (SettingsPropertyValue prop in vals) {
 					if (PropertyValues [prop.Name] != null)
 						PropertyValues [prop.Name].PropertyValue = prop.PropertyValue;
@@ -248,7 +248,7 @@ namespace System.Configuration {
 
 		object GetPropertyValue (string propertyName)
 		{
-			SettingsProperty prop = Properties [ propertyName ];
+			var prop = Properties [ propertyName ];
 
 			if (prop == null)
 				throw new SettingsPropertyNotFoundException (propertyName);
@@ -274,7 +274,7 @@ namespace System.Configuration {
 				return GetPropertyValue (propertyName);
 			}
 			set {
-				SettingsProperty prop = Properties [ propertyName ];
+				var prop = Properties [ propertyName ];
 
 				if (prop == null)
 					throw new SettingsPropertyNotFoundException (propertyName);
@@ -290,7 +290,7 @@ namespace System.Configuration {
 				if (PropertyValues [ propertyName ] == null)
 					CacheValuesByProvider (prop.Provider);
 
-				SettingChangingEventArgs changing_args = new SettingChangingEventArgs (propertyName,
+				var changing_args = new SettingChangingEventArgs (propertyName,
 												       GetType().FullName,
 												       settingsKey,
 												       value,
@@ -321,8 +321,8 @@ namespace System.Configuration {
 
 						properties = new SettingsPropertyCollection ();
 
-						Type this_type = GetType();
-						SettingsProviderAttribute[] provider_attrs = (SettingsProviderAttribute[])this_type.GetCustomAttributes (typeof (SettingsProviderAttribute), false);;
+						var this_type = GetType();
+						var provider_attrs = (SettingsProviderAttribute[])this_type.GetCustomAttributes (typeof (SettingsProviderAttribute), false);;
 						if (provider_attrs != null && provider_attrs.Length != 0) {
 							Type provider_type = Type.GetType (provider_attrs[0].ProviderTypeName);
 							SettingsProvider provider = (SettingsProvider) Activator.CreateInstance (provider_type);
@@ -333,9 +333,9 @@ namespace System.Configuration {
 							}
 						}
 
-						PropertyInfo[] type_props = this_type.GetProperties ();
-						foreach (PropertyInfo prop in type_props) { // only public properties
-							SettingAttribute[] setting_attrs = (SettingAttribute[])prop.GetCustomAttributes (typeof (SettingAttribute), false);
+						var type_props = this_type.GetProperties ();
+						foreach (var prop in type_props) { // only public properties
+							var setting_attrs = (SettingAttribute[])prop.GetCustomAttributes (typeof (SettingAttribute), false);
 							if (setting_attrs == null || setting_attrs.Length == 0)
 								continue;
 							CreateSettingsProperty (prop, properties, ref local_provider);
@@ -350,13 +350,13 @@ namespace System.Configuration {
 			}
 		}
 
-		void CreateSettingsProperty (PropertyInfo prop, SettingsPropertyCollection properties, ref SettingsProvider local_provider)
+		void CreateSettingsProperty (PropertyInfo prop, SettingsPropertyCollection properties, ref SettingsProvider? local_provider)
 		{
-			SettingsAttributeDictionary dict = new SettingsAttributeDictionary ();
+			var dict = new SettingsAttributeDictionary ();
 			SettingsProvider provider = null;
 			object defaultValue = null;
-			SettingsSerializeAs serializeAs = SettingsSerializeAs.String;
-			bool explicitSerializeAs = false;
+			var serializeAs = SettingsSerializeAs.String;
+			var explicitSerializeAs = false;
 
 			foreach (Attribute a in prop.GetCustomAttributes (false)) {
 				/* the attributes we handle natively here */
@@ -396,14 +396,14 @@ namespace System.Configuration {
 				// property type then the only other option left is for the string to 
 				// be XML.
 				//
-				TypeConverter converter = TypeDescriptor.GetConverter (prop.PropertyType);
+				var converter = TypeDescriptor.GetConverter (prop.PropertyType);
 				if (converter != null && 
 				    (!converter.CanConvertFrom (typeof (string)) || 
 				     !converter.CanConvertTo (typeof (string))))
 					serializeAs = SettingsSerializeAs.Xml;
 			}
 
-			SettingsProperty setting =
+			var setting =
 				new SettingsProperty (prop.Name, prop.PropertyType, provider, false /* XXX */,
 						      defaultValue /* XXX always a string? */, serializeAs, dict,
 						      false, false);
@@ -425,7 +425,7 @@ namespace System.Configuration {
 			if (provider != null) {
 				/* make sure we're using the same instance of a
 				   given provider across multiple properties */
-				SettingsProvider p = Providers[provider.Name];
+				var p = Providers[provider.Name];
 				if (p != null)
 					setting.Provider = p;
 			}

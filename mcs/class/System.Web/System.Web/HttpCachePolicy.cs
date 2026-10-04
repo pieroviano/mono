@@ -312,7 +312,7 @@ namespace System.Web
 
 		internal void SetHeaders (HttpResponse response, NameValueCollection headers)
 		{
-			bool noCache = false;
+			var noCache = false;
 			string cc = null;
 
 			switch (Cacheability) {
@@ -344,7 +344,7 @@ namespace System.Web
 					cc = String.Concat (cc, ", max-age=", ((long) MaxAge.TotalSeconds).ToString ());
 
 				if (have_expire_date) {
-					string expires = TimeUtil.ToUtcTimeString (expire_date);
+					var expires = TimeUtil.ToUtcTimeString (expire_date);
 					headers.Add ("Expires", expires);
 				}
 			}
@@ -371,7 +371,7 @@ namespace System.Web
 				headers.Add ("Last-Modified", TimeUtil.ToUtcTimeString (last_modified));
 
 			if (!vary_by_params.IgnoreParams) {
-				string vb = vary_by_params.GetResponseHeaderValue ();
+				var vb = vary_by_params.GetResponseHeaderValue ();
 				if (vb != null)
 					headers.Add ("Vary", vb);
 			}
@@ -379,19 +379,19 @@ namespace System.Web
 
 		void HeadersFromFileDependencies (HttpResponse response)
 		{
-			string [] fileDeps = response.FileDependencies;
+			var fileDeps = response.FileDependencies;
 
 			if (fileDeps == null || fileDeps.Length == 0)
 				return;
 
-			bool doEtag = etag != null && etag_from_file_dependencies;
+			var doEtag = etag != null && etag_from_file_dependencies;
 			if (!doEtag && !last_modified_from_file_dependencies)
 				return;
 
 			DateTime latest_mod = DateTime.MinValue, mod;
-			StringBuilder etagsb = new StringBuilder ();
+			var etagsb = new StringBuilder ();
 			
-			foreach (string f in fileDeps) {
+			foreach (var f in fileDeps) {
 				if (!File.Exists (f))
 					continue;
 				try {

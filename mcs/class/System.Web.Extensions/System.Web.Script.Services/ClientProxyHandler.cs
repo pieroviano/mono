@@ -51,8 +51,8 @@ namespace System.Web.Script.Services
 
 		public void ProcessRequest (HttpContext context)
 		{
-			HttpResponse response = context.Response;
-			object[] attributes = _type.GetCustomAttributes (typeof (ScriptServiceAttribute), true);
+			var response = context.Response;
+			var attributes = _type.GetCustomAttributes (typeof (ScriptServiceAttribute), true);
 			if (attributes.Length == 0) {
 				response.ContentType = "text/html";
 				throw new InvalidOperationException ("Only Web services with a [ScriptService] attribute on the class definition can be called from script.");

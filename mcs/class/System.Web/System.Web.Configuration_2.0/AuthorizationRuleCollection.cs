@@ -71,7 +71,7 @@ namespace System.Web.Configuration {
 
 		protected override object GetElementKey (ConfigurationElement element)
 		{
-			AuthorizationRule rule = (AuthorizationRule)element;
+			var rule = (AuthorizationRule)element;
 
 			return rule.Action.ToString();
 		}

@@ -21,27 +21,27 @@ namespace System.Web.Services.Protocols {
         Hashtable methods = new Hashtable();
 
         internal HttpServerType(Type type) : base(type) {
-            WebServicesSection config = WebServicesSection.Current;
-            Type[] returnWriterTypes = config.ReturnWriterTypes;
-            Type[] parameterReaderTypes = config.ParameterReaderTypes;
+            var config = WebServicesSection.Current;
+            var returnWriterTypes = config.ReturnWriterTypes;
+            var parameterReaderTypes = config.ParameterReaderTypes;
 
-            LogicalMethodInfo[] methodInfos = WebMethodReflector.GetMethods(type);
-            HttpServerMethod[] methods = new HttpServerMethod[methodInfos.Length];
+            var methodInfos = WebMethodReflector.GetMethods(type);
+            var methods = new HttpServerMethod[methodInfos.Length];
 
-            object[] initializersByType = new object[returnWriterTypes.Length];
-            for (int i = 0; i < initializersByType.Length; i++) {
+            var initializersByType = new object[returnWriterTypes.Length];
+            for (var i = 0; i < initializersByType.Length; i++) {
                 initializersByType[i] = MimeFormatter.GetInitializers(returnWriterTypes[i], methodInfos);
             }
 
-            for (int i = 0; i < methodInfos.Length; i++) {
-                LogicalMethodInfo methodInfo = methodInfos[i];
+            for (var i = 0; i < methodInfos.Length; i++) {
+                var methodInfo = methodInfos[i];
                 HttpServerMethod method = null;
                 if (methodInfo.ReturnType == typeof(void)) {
                     method = new HttpServerMethod();
                 }
                 else {
-                    for (int j = 0; j < returnWriterTypes.Length; j++) {
-                        object[] initializers = (object[])initializersByType[j];
+                    for (var j = 0; j < returnWriterTypes.Length; j++) {
+                        var initializers = (object[])initializersByType[j];
                         if (initializers[i] != null) {
                             method = new HttpServerMethod();
                             method.writerInitializer = initializers[i];
@@ -57,19 +57,19 @@ namespace System.Web.Services.Protocols {
             }
 
             initializersByType = new object[parameterReaderTypes.Length];
-            for (int i = 0; i < initializersByType.Length; i++) {
+            for (var i = 0; i < initializersByType.Length; i++) {
                 initializersByType[i] = MimeFormatter.GetInitializers(parameterReaderTypes[i], methodInfos);
             }
 
-            for (int i = 0; i < methodInfos.Length; i++) {
-                HttpServerMethod method = methods[i];
+            for (var i = 0; i < methodInfos.Length; i++) {
+                var method = methods[i];
                 if (method == null) continue;
-                LogicalMethodInfo methodInfo = methodInfos[i];
+                var methodInfo = methodInfos[i];
                 if (methodInfo.InParameters.Length > 0) {
 
-                    int count = 0;
-                    for (int j = 0; j < parameterReaderTypes.Length; j++) {
-                        object[] initializers = (object[])initializersByType[j];
+                    var count = 0;
+                    for (var j = 0; j < parameterReaderTypes.Length; j++) {
+                        var initializers = (object[])initializersByType[j];
                         if (initializers[i] != null) {
                             count++;
                         }
@@ -81,8 +81,8 @@ namespace System.Web.Services.Protocols {
                         method.readerTypes = new Type[count];
                         method.readerInitializers = new object[count];
                         count = 0;
-                        for (int j = 0; j < parameterReaderTypes.Length; j++) {
-                            object[] initializers = (object[])initializersByType[j];
+                        for (var j = 0; j < parameterReaderTypes.Length; j++) {
+                            var initializers = (object[])initializersByType[j];
                             if (initializers[i] != null) {
                                 method.readerTypes[count] = parameterReaderTypes[j];
                                 method.readerInitializers[count] = initializers[i];
@@ -93,10 +93,10 @@ namespace System.Web.Services.Protocols {
                 }
             }
 
-            for (int i = 0; i < methods.Length; i++) {
-                HttpServerMethod method = methods[i];
+            for (var i = 0; i < methods.Length; i++) {
+                var method = methods[i];
                 if (method != null) {
-                    WebMethodAttribute methodAttribute = method.methodInfo.MethodAttribute;
+                    var methodAttribute = method.methodInfo.MethodAttribute;
                     method.name = methodAttribute.MessageName;
                     if (method.name.Length == 0) method.name = method.methodInfo.Name;
                     this.methods.Add(method.name, method);
@@ -139,7 +139,7 @@ namespace System.Web.Services.Protocols {
         internal override bool Initialize() {
             // The derived class better check the verb!
 
-            string methodName = Request.PathInfo.Substring(1);   // Skip leading '/'
+            var methodName = Request.PathInfo.Substring(1);   // Skip leading '/'
 
             if (null == (serverType = (HttpServerType)GetFromCache(typeof(HttpServerProtocol), Type))
                 && null == (serverType = (HttpServerType)GetFromCache(typeof(HttpServerProtocol), Type, true)))
@@ -149,7 +149,7 @@ namespace System.Web.Services.Protocols {
                     if (null == (serverType = (HttpServerType)GetFromCache(typeof(HttpServerProtocol), Type))
                         && null == (serverType = (HttpServerType)GetFromCache(typeof(HttpServerProtocol), Type, true)))
                     {
-                        bool excludeSchemeHostPortFromCachingKey = this.IsCacheUnderPressure(typeof(HttpServerProtocol), Type);
+                        var excludeSchemeHostPortFromCachingKey = this.IsCacheUnderPressure(typeof(HttpServerProtocol), Type);
                         serverType = new HttpServerType(Type);
                         AddToCache(typeof(HttpServerProtocol), Type, serverType, excludeSchemeHostPortFromCachingKey);
                     }
@@ -164,7 +164,7 @@ namespace System.Web.Services.Protocols {
                 else {
                     // it's possible that the method name came in as UTF-8 but was mangled by IIS so we try it
                     // again as UTF8...
-                    string utf8MethodName = Encoding.UTF8.GetString(Encoding.Default.GetBytes(methodName));
+                    var utf8MethodName = Encoding.UTF8.GetString(Encoding.Default.GetBytes(methodName));
                     serverMethod = serverType.GetMethod(utf8MethodName);
                     if (serverMethod == null)
                         throw new InvalidOperationException(Res.GetString(Res.WebInvalidMethodName, methodName));
@@ -188,7 +188,7 @@ namespace System.Web.Services.Protocols {
         
         internal override object[] ReadParameters() {
             if (serverMethod.readerTypes == null) return new object[0];
-            for (int i = 0; i < serverMethod.readerTypes.Length; i++) {
+            for (var i = 0; i < serverMethod.readerTypes.Length; i++) {
                 if (!hasInputPayload) {
                     // only allow URL parameters if doesn't have payload
                     if (serverMethod.readerTypes[i] != typeof(UrlParameterReader)) continue;
@@ -197,10 +197,10 @@ namespace System.Web.Services.Protocols {
                     // don't allow URL params if has payload
                     if (serverMethod.readerTypes[i] == typeof(UrlParameterReader)) continue;
                 }
-                MimeParameterReader reader = (MimeParameterReader)MimeFormatter.CreateInstance(serverMethod.readerTypes[i], 
+                var reader = (MimeParameterReader)MimeFormatter.CreateInstance(serverMethod.readerTypes[i], 
                                                                                                serverMethod.readerInitializers[i]);
                 
-                object[] parameters = reader.Read(Request);
+                var parameters = reader.Read(Request);
                 if (parameters != null) return parameters;                                                                                    
             }
             if (!hasInputPayload)
@@ -211,7 +211,7 @@ namespace System.Web.Services.Protocols {
 
         internal override void WriteReturns(object[] returnValues, Stream outputStream) {
             if (serverMethod.writerType == null) return;
-            MimeReturnWriter writer = (MimeReturnWriter)MimeFormatter.CreateInstance(serverMethod.writerType,
+            var writer = (MimeReturnWriter)MimeFormatter.CreateInstance(serverMethod.writerType,
                                                                                      serverMethod.writerInitializer);
             writer.Write(Response, outputStream, returnValues[0]);
         }
@@ -222,7 +222,7 @@ namespace System.Web.Services.Protocols {
             Response.ContentType = ContentType.Compose("text/plain", Encoding.UTF8);
             SetHttpResponseStatusCode(Response, (int)HttpStatusCode.InternalServerError);
             Response.StatusDescription = HttpWorkerRequest.GetStatusDescription(Response.StatusCode);
-            StreamWriter writer = new StreamWriter(outputStream, new UTF8Encoding(false));
+            var writer = new StreamWriter(outputStream, new UTF8Encoding(false));
             if (System.Web.Services.Configuration.WebServicesSection.Current.Diagnostics.SuppressReturningExceptions) {
                 writer.WriteLine(Res.GetString(Res.WebSuppressedExceptionMessage));
             }
@@ -235,10 +235,10 @@ namespace System.Web.Services.Protocols {
 
         internal static bool AreUrlParametersSupported(LogicalMethodInfo methodInfo) {
             if (methodInfo.OutParameters.Length > 0) return false;
-            ParameterInfo[] parameters = methodInfo.InParameters;
-            for (int i = 0; i < parameters.Length; i++) {
-                ParameterInfo parameter = parameters[i];
-                Type parameterType = parameter.ParameterType;
+            var parameters = methodInfo.InParameters;
+            for (var i = 0; i < parameters.Length; i++) {
+                var parameter = parameters[i];
+                var parameterType = parameter.ParameterType;
                 if (parameterType.IsArray) {
                     if (!ScalarFormatter.IsTypeSupported(parameterType.GetElementType())) 
                         return false;

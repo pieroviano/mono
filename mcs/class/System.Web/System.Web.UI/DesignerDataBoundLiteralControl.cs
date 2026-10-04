@@ -61,7 +61,7 @@ namespace System.Web.UI
 			return new EmptyControlCollection (this);
 		}
 
-		protected override void LoadViewState (object savedState)
+		protected override void LoadViewState (object? savedState)
 		{
 			if (savedState != null)
 				text = (string) savedState;

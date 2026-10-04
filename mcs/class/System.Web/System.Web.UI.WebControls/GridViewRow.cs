@@ -94,7 +94,7 @@ namespace System.Web.UI.WebControls
 				return true;
 			
 			if (e is CommandEventArgs) {
-				GridViewCommandEventArgs args = new GridViewCommandEventArgs (this, source, (CommandEventArgs)e);
+				var args = new GridViewCommandEventArgs (this, source, (CommandEventArgs)e);
 				RaiseBubbleEvent (source, args);
 				return true;
 			}

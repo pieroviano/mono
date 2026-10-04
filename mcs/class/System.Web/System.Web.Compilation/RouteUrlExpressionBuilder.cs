@@ -68,7 +68,7 @@ namespace System.Web.Compilation
 			var ret = new CodeMethodInvokeExpression ();
 			ret.Method = new CodeMethodReferenceExpression (new CodeTypeReferenceExpression (typeof (RouteUrlExpressionBuilder)), "GetRouteUrl");
 
-			CodeExpressionCollection parameters = ret.Parameters;
+			var parameters = ret.Parameters;
 			parameters.Add (new CodeThisReferenceExpression ());
 			parameters.Add (new CodePrimitiveExpression (entry.Expression));
 
@@ -98,13 +98,13 @@ namespace System.Web.Compilation
 			if (routeValues == null)
 				throw new NullReferenceException (".NET emulation (routeValues == null)");
 
-			string[] parts = expression.Split (expressionSplitChars);
-			foreach (string part in parts) {
-				string[] keyval = part.Split (keyValueSplitChars);
+			var parts = expression.Split (expressionSplitChars);
+			foreach (var part in parts) {
+				var keyval = part.Split (keyValueSplitChars);
 				if (keyval.Length != 2)
 					return false;
 
-				string key = keyval [0].Trim ();
+				var key = keyval [0].Trim ();
 				if (key == String.Empty)
 					return false;
 

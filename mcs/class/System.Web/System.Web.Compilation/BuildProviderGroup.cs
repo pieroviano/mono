@@ -81,7 +81,7 @@ namespace System.Web.Compilation
 				} else
 					NamePrefix = "App_Web";
 
-				CompilerType ct = BuildManager.GetDefaultCompilerTypeForLanguage (bp.LanguageName, null);
+				var ct = BuildManager.GetDefaultCompilerTypeForLanguage (bp.LanguageName, null);
 				if (ct != null)
 					CompilerType = ct;
 			}

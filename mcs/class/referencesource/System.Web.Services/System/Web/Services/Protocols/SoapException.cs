@@ -186,7 +186,7 @@ namespace System.Web.Services.Protocols {
         }
 
         protected SoapException(SerializationInfo info, StreamingContext context) : base(info, context) {
-            IDictionary list = base.Data;
+            var list = base.Data;
             code = (XmlQualifiedName)list["code"];
             actor = (string)list["actor"];
             role = (string)list["role"];
@@ -275,7 +275,7 @@ namespace System.Web.Services.Protocols {
 
         [SecurityPermissionAttribute(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
         public override void GetObjectData(SerializationInfo info, StreamingContext context) {
-            IDictionary list = Data;
+            var list = Data;
             list["code"] = Code;
             list["actor"] = Actor;
             list["role"] = Role;

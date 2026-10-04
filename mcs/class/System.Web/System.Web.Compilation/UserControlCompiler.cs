@@ -45,7 +45,7 @@ namespace System.Web.Compilation
 
 		public static Type CompileUserControlType (UserControlParser parser)
 		{
-			UserControlCompiler pc = new UserControlCompiler (parser);
+			var pc = new UserControlCompiler (parser);
 			return pc.GetCompiledType ();
 		}
 
@@ -65,7 +65,7 @@ namespace System.Web.Compilation
 		{
 			CodeAttributeDeclaration cad;
 			cad = new CodeAttributeDeclaration ("System.Web.UI.PartialCachingAttribute");
-			CodeAttributeArgumentCollection arguments = cad.Arguments;
+			var arguments = cad.Arguments;
 			
 			AddPrimitiveArgument (arguments, parser.OutputCacheDuration);
 			AddPrimitiveArgument (arguments, parser.OutputCacheVaryByParam);

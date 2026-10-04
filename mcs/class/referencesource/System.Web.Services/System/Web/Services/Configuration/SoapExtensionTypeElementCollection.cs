@@ -106,7 +106,7 @@ namespace System.Web.Services.Configuration
                 {
                     throw new ArgumentNullException("key");
                 }
-                SoapExtensionTypeElement retval = (SoapExtensionTypeElement)this.BaseGet(key);
+                var retval = (SoapExtensionTypeElement)this.BaseGet(key);
                 if (retval == null)
                 {
                     throw new System.Collections.Generic.KeyNotFoundException(

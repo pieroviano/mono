@@ -46,7 +46,7 @@ namespace System.Web.UI.WebControls
 			
 		public string Name { get; private set; }
 			
-		public NamedCssStyleCollection (string name)
+		public NamedCssStyleCollection (string? name)
 		{
 			if (name == null)
 				name = String.Empty;
@@ -54,31 +54,31 @@ namespace System.Web.UI.WebControls
 			Name = name;
 		}
 
-		public NamedCssStyleCollection CopyFrom (CssStyleCollection coll)
+		public NamedCssStyleCollection CopyFrom (CssStyleCollection? coll)
 		{
 			if (coll == null)
 				return this;
 
-			CssStyleCollection collection = Collection;
+			var collection = Collection;
 			foreach (string key in coll.Keys)
 				collection.Add (key, coll [key]);
 
 			return this;
 		}
 
-		public NamedCssStyleCollection Add (HtmlTextWriterStyle key, string value)
+		public NamedCssStyleCollection Add (HtmlTextWriterStyle key, string? value)
 		{
 			Collection.Add (key, value);
 			return this;
 		}
 
-		public NamedCssStyleCollection Add (string key, string value)
+		public NamedCssStyleCollection Add (string key, string? value)
 		{
 			Collection.Add (key, value);
 			return this;
 		}
 
-		public NamedCssStyleCollection Add (Style style)
+		public NamedCssStyleCollection Add (Style? style)
 		{
 			if (style != null)
 				CopyFrom (style.GetStyleAttributes (null));

@@ -36,7 +36,7 @@ namespace System.Web.Services.Protocols {
                         element.SetAttribute(Soap.Attribute.MustUnderstand, Soap12.Namespace, "1");
                     }
                     element.RemoveAttribute(Soap.Attribute.MustUnderstand, Soap.Namespace);
-                    string actor = InternalActor;
+                    var actor = InternalActor;
                     if (actor != null && actor.Length != 0) {
                         element.SetAttribute(Soap12.Attribute.Role, Soap12.Namespace, actor);
                     }
@@ -49,7 +49,7 @@ namespace System.Web.Services.Protocols {
                         element.SetAttribute(Soap.Attribute.MustUnderstand, Soap.Namespace, "1");
                     }
                     element.RemoveAttribute(Soap.Attribute.MustUnderstand, Soap12.Namespace);
-                    string actor = InternalActor;
+                    var actor = InternalActor;
                     if (actor != null && actor.Length != 0) {
                         element.SetAttribute(Soap.Attribute.Actor, Soap.Namespace, actor);
                     }
@@ -73,7 +73,7 @@ namespace System.Web.Services.Protocols {
             get {
                 if (element == null) return base.InternalMustUnderstand;
 
-                string elementMustUnderstand = GetElementAttribute(Soap.Attribute.MustUnderstand, Soap.Namespace, element);
+                var elementMustUnderstand = GetElementAttribute(Soap.Attribute.MustUnderstand, Soap.Namespace, element);
                 if (elementMustUnderstand == null) {
                     elementMustUnderstand = GetElementAttribute(Soap.Attribute.MustUnderstand, Soap12.Namespace, element);
                     if (elementMustUnderstand == null)
@@ -108,7 +108,7 @@ namespace System.Web.Services.Protocols {
             get {
                 if (element == null) return base.InternalActor;
 
-                string elementActor = GetElementAttribute(Soap.Attribute.Actor, Soap.Namespace, element);
+                var elementActor = GetElementAttribute(Soap.Attribute.Actor, Soap.Namespace, element);
                 if (elementActor == null) {
                     elementActor = GetElementAttribute(Soap12.Attribute.Role, Soap12.Namespace, element);
                     if (elementActor == null) 
@@ -133,7 +133,7 @@ namespace System.Web.Services.Protocols {
             get {
                 if (element == null) return base.InternalRelay;
 
-                string elementRelay = GetElementAttribute(Soap12.Attribute.Relay, Soap12.Namespace, element);
+                var elementRelay = GetElementAttribute(Soap12.Attribute.Relay, Soap12.Namespace, element);
                 if (elementRelay == null) 
                     return false;
 
@@ -159,7 +159,7 @@ namespace System.Web.Services.Protocols {
             }
         }
 
-        private string GetElementAttribute(string name, string ns, XmlElement element) {
+        private string GetElementAttribute(string name, string ns, XmlElement? element) {
             if (element == null)
                 return null;
             if (element.Prefix.Length == 0 && element.NamespaceURI == ns) {

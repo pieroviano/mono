@@ -42,7 +42,7 @@ namespace System.Configuration
 		}
 
 		[MonoTODO]
-		public override void Add (ProviderBase provider)
+		public override void Add (ProviderBase? provider)
 		{
 			base.Add (provider);
 		}

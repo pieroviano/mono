@@ -54,7 +54,7 @@ namespace System.Web.UI.WebControls
 		[WebCategory ("Appearance")]
 		public virtual string AlternateText {
 			get {
-				string s = (string) ViewState ["AlternateText"];
+				var s = (string) ViewState ["AlternateText"];
 				return (s == null) ? String.Empty : s;
 			}
 			set {
@@ -86,7 +86,7 @@ namespace System.Web.UI.WebControls
 		[WebCategory ("Layout")]
 		public virtual ImageAlign ImageAlign {
 			get {
-				object o = ViewState ["ImageAlign"];
+				var o = ViewState ["ImageAlign"];
 				return (o == null) ? ImageAlign.NotSet : (ImageAlign) o;
 			}
 			set {
@@ -107,7 +107,7 @@ namespace System.Web.UI.WebControls
 		[WebCategory ("Appearance")]
 		public virtual string ImageUrl {
 			get {
-				string s = (string) ViewState ["ImageUrl"];
+				var s = (string) ViewState ["ImageUrl"];
 				return (s == null) ? String.Empty : s;
 			}
 			set {
@@ -126,7 +126,7 @@ namespace System.Web.UI.WebControls
 		[WebCategory ("Accessibility")]
 		public virtual string DescriptionUrl {
 			get {
-				string s = (string) ViewState ["DescriptionUrl"];
+				var s = (string) ViewState ["DescriptionUrl"];
 				return (s == null) ? String.Empty : s;
 			}
 			set {
@@ -142,7 +142,7 @@ namespace System.Web.UI.WebControls
 		[WebCategory ("Accessibility")]
 		public virtual bool GenerateEmptyAlternateText {
 			get {
-				object o = ViewState ["GenerateEmptyAlternateText"];
+				var o = ViewState ["GenerateEmptyAlternateText"];
 				return (o == null) ? false : (bool) o;
 			}
 			set { ViewState ["GenerateEmptyAlternateText"] = value; }
@@ -155,7 +155,7 @@ namespace System.Web.UI.WebControls
 			base.AddAttributesToRender (writer);
 			// src is always present, even if empty, in 2.0
 			writer.AddAttribute (HtmlTextWriterAttribute.Src, ResolveClientUrl (ImageUrl));
-			string s = AlternateText;
+			var s = AlternateText;
 			if ((s.Length > 0) || GenerateEmptyAlternateText)
 				writer.AddAttribute (HtmlTextWriterAttribute.Alt, s);
 			s = DescriptionUrl;

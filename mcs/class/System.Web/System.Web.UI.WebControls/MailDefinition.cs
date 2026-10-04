@@ -112,7 +112,7 @@ namespace System.Web.UI.WebControls
 				else
 					filePath = HttpContext.Current.Request.MapPath (VirtualPathUtility.Combine (owner.TemplateSourceDirectory, BodyFileName));
 
-				using (StreamReader sr = new StreamReader (filePath)) {
+				using (var sr = new StreamReader (filePath)) {
 					bodyText = sr.ReadToEnd ();
 				}
 			}
@@ -127,7 +127,7 @@ namespace System.Web.UI.WebControls
 			if (owner == null)
 				throw new ArgumentNullException ("owner");
 
-			MailMessage msg = new MailMessage ();
+			var msg = new MailMessage ();
 
 			if (CC.Length > 0)
 				msg.CC.Add(CC);
@@ -140,7 +140,7 @@ namespace System.Web.UI.WebControls
 			if (From.Length > 0)
 				msg.From = new MailAddress (From);
 			else {
-				SmtpSection smtpSection = (SmtpSection) WebConfigurationManager.GetSection ("system.net/mailSettings/smtp");
+				var smtpSection = (SmtpSection) WebConfigurationManager.GetSection ("system.net/mailSettings/smtp");
 				if (smtpSection != null) {
 					if (string.IsNullOrEmpty (smtpSection.From))
 						throw new HttpException ("A from e-mail address must be specified in the From property or the system.net/mailSettings/smtp config section");
@@ -149,8 +149,8 @@ namespace System.Web.UI.WebControls
 				}
 			}
 
-			string [] recipientsArr = recipients.Split (',');
-			for (int i = 0; i < recipientsArr.Length; i++)
+			var recipientsArr = recipients.Split (',');
+			for (var i = 0; i < recipientsArr.Length; i++)
 				msg.To.Add (recipientsArr [i]);
 
 			foreach (DictionaryEntry d in replacements)
@@ -161,7 +161,7 @@ namespace System.Web.UI.WebControls
 
 		#region IStateManager Members
 
-		void IStateManager.LoadViewState (object state)
+		void IStateManager.LoadViewState (object? state)
 		{
 			_bag.LoadViewState (state);
 		}

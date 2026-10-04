@@ -93,7 +93,7 @@ namespace System.Web.Hosting {
 
 		void InitializePaths ()
 		{
-			int idx = page.IndexOf ('/');
+			var idx = page.IndexOf ('/');
 			if (idx >= 0) {
 				path_info = page.Substring (idx);
 				page = page.Substring (0, idx);
@@ -105,7 +105,7 @@ namespace System.Web.Hosting {
 		public override string MachineConfigPath {
 			get {
 				if (hosted) {
-					string path = ICalls.GetMachineConfigPath ();
+					var path = ICalls.GetMachineConfigPath ();
 					if (SecurityManager.SecurityEnabled && (path != null) && (path.Length > 0)) {
 						new FileIOPermission (FileIOPermissionAccess.PathDiscovery, path).Demand (); 
 					}
@@ -118,7 +118,7 @@ namespace System.Web.Hosting {
 		public override string MachineInstallDirectory {
 			get {
 				if (hosted) {
-					string path = ICalls.GetMachineInstallDirectory ();
+					var path = ICalls.GetMachineInstallDirectory ();
 					if (SecurityManager.SecurityEnabled && (path != null) && (path.Length > 0)) {
 						new FileIOPermission (FileIOPermissionAccess.PathDiscovery, path).Demand (); 
 					}
@@ -154,7 +154,7 @@ namespace System.Web.Hosting {
 
 		public override string GetFilePath ()
 		{
-			string result = UrlUtils.Combine (app_virtual_dir, page);
+			var result = UrlUtils.Combine (app_virtual_dir, page);
 			if (result == "") 
 				return app_virtual_dir == "/" ? app_virtual_dir : app_virtual_dir + "/"; 
 
@@ -170,7 +170,7 @@ namespace System.Web.Hosting {
 			else
 				local_page = page;
 			
-			string path = Path.Combine (app_physical_dir, local_page);
+			var path = Path.Combine (app_physical_dir, local_page);
 			if (SecurityManager.SecurityEnabled && (path != null) && (path.Length > 0)) {
 				new FileIOPermission (FileIOPermissionAccess.PathDiscovery, path).Demand (); 
 			}
@@ -210,7 +210,7 @@ namespace System.Web.Hosting {
 		public override string GetRawUrl ()
 		{
 			if (raw_url == null){
-				string q = ((query == null || query == "") ? "" : "?" + query);
+				var q = ((query == null || query == "") ? "" : "?" + query);
 				raw_url = UrlUtils.Combine (app_virtual_dir, page);
 				if (path_info != "") {
 					raw_url += "/" + path_info + q;
@@ -249,7 +249,7 @@ namespace System.Web.Hosting {
 			return IntPtr.Zero;
 		}
 
-		public override string MapPath (string path)
+		public override string MapPath (string? path)
 		{
 			if (!hosted)
 				return null;
@@ -259,7 +259,7 @@ namespace System.Web.Hosting {
 			if (!path.StartsWith (app_virtual_dir))
 				throw new ArgumentNullException ("path is not rooted in the virtual directory");
 
-			string rest = path.Substring (app_virtual_dir.Length);
+			var rest = path.Substring (app_virtual_dir.Length);
 			if (rest.Length > 0 && rest [0] == '/')
 				rest = rest.Substring (1);
 			if (Path.DirectorySeparatorChar != '/') // for windows suport

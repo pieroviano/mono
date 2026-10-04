@@ -58,7 +58,7 @@ namespace System.Web.UI
 			if (String.IsNullOrEmpty (ControlID))
 				throw new InvalidOperationException ();
 
-			Control nc = Owner.NamingContainer;
+			var nc = Owner.NamingContainer;
 			Control c = null;
 			do {
 				c = nc.FindControl (ControlID);

@@ -112,7 +112,7 @@ namespace System.Resources
 			handler = new FileRefHandler (fileRef);
 		}
 
-		internal ResXDataNode (string name, object value, Point position)
+		internal ResXDataNode (string name, object? value, Point position)
 		{
 			if (name == null)
 				throw new ArgumentNullException ("name");
@@ -120,7 +120,7 @@ namespace System.Resources
 			if (name.Length == 0)
 				throw new ArgumentException ("name");
 
-			Type type = (value == null) ? typeof (object) : value.GetType ();
+			var type = (value == null) ? typeof (object) : value.GetType ();
 			if ((value != null) && !type.IsSerializable) {
 				throw new InvalidOperationException (String.Format ("'{0}' of type '{1}' cannot be added" 
 				                                                    + " because it is not serializable", 
@@ -134,7 +134,7 @@ namespace System.Resources
 
 		internal ResXDataNode (string nameAtt, string mimeTypeAtt, string typeAtt, 
 		                       string dataString, string commentString, Point position, 
-		                       string basePath)
+		                       string? basePath)
 		{
 
 			name = nameAtt;
@@ -155,7 +155,7 @@ namespace System.Resources
 				} else if (typeAtt.StartsWith ("System.Byte[], mscorlib")) { 
 					handler = new ByteArrayFromResXHandler (dataString);
 				} else if (typeAtt.StartsWith ("System.Resources.ResXFileRef, System.Windows.Forms")) {
-					ResXFileRef newFileRef = BuildFileRef (dataString, basePath);
+					var newFileRef = BuildFileRef (dataString, basePath);
 					handler = new FileRefHandler (newFileRef);
 					this.fileRef = newFileRef;
 				} else {
@@ -194,23 +194,23 @@ namespace System.Resources
 			return handler.GetValue (typeResolver);
 		}
 		//FIXME: .net doesnt instantiate encoding at this stage
-		ResXFileRef BuildFileRef (string dataString, string basePath)
+		ResXFileRef BuildFileRef (string dataString, string? basePath)
 		{
 			ResXFileRef fr;
 
-			string[] parts = ResXFileRef.Parse (dataString);
+			var parts = ResXFileRef.Parse (dataString);
 
 			if (parts.Length < 2)
 				throw new ArgumentException ("ResXFileRef cannot be generated");
 
-			string fileName = parts[0];
+			var fileName = parts[0];
 			if (basePath != null) 
 				fileName = Path.Combine (basePath, parts[0]);
 
-			string typeName = parts[1];
+			var typeName = parts[1];
 
 			if (parts.Length == 3) {
-				Encoding encoding = Encoding.GetEncoding(parts[2]);
+				var encoding = Encoding.GetEncoding(parts[2]);
 				fr = new ResXFileRef (fileName, typeName, encoding);
 			} else
 				fr = new ResXFileRef (fileName, typeName);

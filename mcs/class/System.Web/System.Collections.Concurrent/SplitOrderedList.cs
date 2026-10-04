@@ -109,10 +109,10 @@ namespace System.Collections.Concurrent
 			}
 		}
 
-		public T InsertOrUpdate (uint key, TKey subKey, Func<T> addGetter, Func<T, T> updateGetter)
+		public T InsertOrUpdate (uint key, TKey subKey, Func<T>? addGetter, Func<T, T> updateGetter)
 		{
 			Node current;
-			bool result = InsertInternal (key, subKey, default (T), addGetter, out current);
+			var result = InsertInternal (key, subKey, default (T), addGetter, out current);
 
 			if (result)
 				return current.Data;
@@ -137,18 +137,18 @@ namespace System.Collections.Concurrent
 			return InsertInternal (key, subKey, data, null, out current);
 		}
 
-		public T InsertOrGet (uint key, TKey subKey, T data, Func<T> dataCreator)
+		public T InsertOrGet (uint key, TKey subKey, T data, Func<T>? dataCreator)
 		{
 			Node current;
 			InsertInternal (key, subKey, data, dataCreator, out current);
 			return current.Data;
 		}
 
-		bool InsertInternal (uint key, TKey subKey, T data, Func<T> dataCreator, out Node current)
+		bool InsertInternal (uint key, TKey subKey, T data, Func<T>? dataCreator, out Node current)
 		{
-			Node node = new Node ().Init (ComputeRegularKey (key), subKey, data);
+			var node = new Node ().Init (ComputeRegularKey (key), subKey, data);
 
-			uint b = key % (uint)size;
+			var b = key % (uint)size;
 			Node bucket;
 
 			if ((bucket = GetBucket (b)) == null)
@@ -157,7 +157,7 @@ namespace System.Collections.Concurrent
 			if (!ListInsert (node, bucket, out current, dataCreator))
 				return false;
 
-			int csize = size;
+			var csize = size;
 			if (Interlocked.Increment (ref count) / csize > MaxLoad && (csize & 0x40000000) == 0)
 				Interlocked.CompareExchange (ref size, 2 * csize, csize);
 
@@ -169,7 +169,7 @@ namespace System.Collections.Concurrent
 		public bool Find (uint key, TKey subKey, out T data)
 		{
 			Node node;
-			uint b = key % (uint)size;
+			var b = key % (uint)size;
 			data = default (T);
 			Node bucket;
 
@@ -187,7 +187,7 @@ namespace System.Collections.Concurrent
 		public bool CompareExchange (uint key, TKey subKey, T data, Func<T, bool> check)
 		{
 			Node node;
-			uint b = key % (uint)size;
+			var b = key % (uint)size;
 			Node bucket;
 
 			if ((bucket = GetBucket (b)) == null)
@@ -206,7 +206,7 @@ namespace System.Collections.Concurrent
 
 		public bool Delete (uint key, TKey subKey, out T data)
 		{
-			uint b = key % (uint)size;
+			var b = key % (uint)size;
 			Node bucket;
 
 			if ((bucket = GetBucket (b)) == null)
@@ -221,7 +221,7 @@ namespace System.Collections.Concurrent
 
 		public IEnumerator<T> GetEnumerator ()
 		{
-			Node node = head.Next;
+			var node = head.Next;
 
 			while (node != tail) {
 				while (node.Marked || (node.Key & 1) == 0) {
@@ -237,13 +237,13 @@ namespace System.Collections.Concurrent
 		Node InitializeBucket (uint b)
 		{
 			Node current;
-			uint parent = GetParent (b);
+			var parent = GetParent (b);
 			Node bucket;
 
 			if ((bucket = GetBucket (parent)) == null)
 				bucket = InitializeBucket (parent);
 
-			Node dummy = new Node ().Init (ComputeDummyKey (b));
+			var dummy = new Node ().Init (ComputeDummyKey (b));
 			if (!ListInsert (dummy, bucket, out current, null))
 				return current;
 
@@ -323,8 +323,8 @@ namespace System.Collections.Concurrent
 			Node leftNodeNext = null, rightNode = null;
 
 			do {
-				Node t = h;
-				Node tNext = t.Next;
+				var t = h;
+				var tNext = t.Next;
 				do {
 					if (!tNext.Marked) {
 						left = t;
@@ -385,9 +385,9 @@ namespace System.Collections.Concurrent
 			return true;
 		}
 		
-		bool ListInsert (Node newNode, Node startPoint, out Node current, Func<T> dataCreator)
+		bool ListInsert (Node newNode, Node startPoint, out Node current, Func<T>? dataCreator)
 		{
-			ulong key = newNode.Key;
+			var key = newNode.Key;
 			Node rightNode = null, leftNode = null;
 			
 			do {
@@ -432,7 +432,7 @@ namespace System.Collections.Concurrent
 
 			public void EnterReadLock ()
 			{
-				SpinWait sw = new SpinWait ();
+				var sw = new SpinWait ();
 				do {
 					while ((rwlock & (RwWrite | RwWait)) > 0)
 						sw.SpinOnce ();
@@ -451,9 +451,9 @@ namespace System.Collections.Concurrent
 
 			public void EnterWriteLock ()
 			{
-				SpinWait sw = new SpinWait ();
+				var sw = new SpinWait ();
 				do {
-					int state = rwlock;
+					var state = rwlock;
 					if (state < RwWrite) {
 						if (Interlocked.CompareExchange (ref rwlock, RwWrite, state) == state)
 							return;

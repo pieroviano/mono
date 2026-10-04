@@ -39,13 +39,13 @@ namespace System.Web.Services.Protocols {
         }
 
         internal static MatchType Reflect(Type type) {
-            MatchType matchType = new MatchType();
+            var matchType = new MatchType();
             matchType.type = type;
 
-            MemberInfo[] memberInfos = type.GetMembers(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
-            ArrayList list = new ArrayList();
-            for (int i = 0; i < memberInfos.Length; i++) {
-                MatchMember member = MatchMember.Reflect(memberInfos[i]);
+            var memberInfos = type.GetMembers(BindingFlags.DeclaredOnly | BindingFlags.Public | BindingFlags.Instance);
+            var list = new ArrayList();
+            for (var i = 0; i < memberInfos.Length; i++) {
+                var member = MatchMember.Reflect(memberInfos[i]);
                 if (member != null) list.Add(member);
             }
             matchType.fields = (MatchMember[])list.ToArray(typeof(MatchMember));
@@ -54,7 +54,7 @@ namespace System.Web.Services.Protocols {
 
         internal object Match(string text) {
             object target = Activator.CreateInstance(type);
-            for (int i = 0; i < fields.Length; i++)
+            for (var i = 0; i < fields.Length; i++)
                 fields[i].Match(target, text);
             return target;
         }
@@ -77,15 +77,15 @@ namespace System.Web.Services.Protocols {
         }
 
         object MatchString(string text) {
-            Match m = regex.Match(text);
-            Type fieldType = memberInfo is FieldInfo ? ((FieldInfo)memberInfo).FieldType : ((PropertyInfo)memberInfo).PropertyType;
+            var m = regex.Match(text);
+            var fieldType = memberInfo is FieldInfo ? ((FieldInfo)memberInfo).FieldType : ((PropertyInfo)memberInfo).PropertyType;
             if (fieldType.IsArray) {
-                ArrayList matches = new ArrayList();
-                int matchCount = 0;
+                var matches = new ArrayList();
+                var matchCount = 0;
                 while (m.Success && matchCount < maxRepeats) {
                     if (m.Groups.Count <= group) 
                         throw BadGroupIndexException(group, memberInfo.Name, m.Groups.Count - 1);
-                    Group g = m.Groups[group];
+                    var g = m.Groups[group];
                     foreach (Capture c in g.Captures) {
                         matches.Add(text.Substring(c.Index, c.Length));
                     }
@@ -98,11 +98,11 @@ namespace System.Web.Services.Protocols {
                 if (m.Success) {
                     if (m.Groups.Count <= group) 
                         throw BadGroupIndexException(group, memberInfo.Name, m.Groups.Count - 1);
-                    Group g = m.Groups[group];
+                    var g = m.Groups[group];
                     if (g.Captures.Count > 0) {
                         if (g.Captures.Count <= capture) 
                             throw BadCaptureIndexException(capture, memberInfo.Name, g.Captures.Count - 1);
-                        Capture c = g.Captures[capture];
+                        var c = g.Captures[capture];
                         return text.Substring(c.Index, c.Length);
                     }
                 }
@@ -111,15 +111,15 @@ namespace System.Web.Services.Protocols {
         }
 
         object MatchClass(string text) {
-            Match m = regex.Match(text);
-            Type fieldType = memberInfo is FieldInfo ? ((FieldInfo)memberInfo).FieldType : ((PropertyInfo)memberInfo).PropertyType;
+            var m = regex.Match(text);
+            var fieldType = memberInfo is FieldInfo ? ((FieldInfo)memberInfo).FieldType : ((PropertyInfo)memberInfo).PropertyType;
             if (fieldType.IsArray) {
-                ArrayList matches = new ArrayList();
-                int matchCount = 0;
+                var matches = new ArrayList();
+                var matchCount = 0;
                 while (m.Success && matchCount < maxRepeats) {
                     if (m.Groups.Count <= group) 
                         throw BadGroupIndexException(group, memberInfo.Name, m.Groups.Count - 1);
-                    Group g = m.Groups[group];
+                    var g = m.Groups[group];
                     foreach (Capture c in g.Captures) {
                         matches.Add(matchType.Match(text.Substring(c.Index, c.Length)));
                     }
@@ -132,11 +132,11 @@ namespace System.Web.Services.Protocols {
                 if (m.Success) {
                     if (m.Groups.Count <= group) 
                         throw BadGroupIndexException(group, memberInfo.Name, m.Groups.Count - 1);
-                    Group g = m.Groups[group];
+                    var g = m.Groups[group];
                     if (g.Captures.Count > 0) {
                         if (g.Captures.Count <= capture) 
                             throw BadCaptureIndexException(capture, memberInfo.Name, g.Captures.Count - 1);
-                        Capture c = g.Captures[capture];
+                        var c = g.Captures[capture];
                         return matchType.Match(text.Substring(c.Index, c.Length));
                     }
                 }
@@ -155,7 +155,7 @@ namespace System.Web.Services.Protocols {
         internal static MatchMember Reflect(MemberInfo memberInfo) {
             Type memberType = null;
             if (memberInfo is PropertyInfo) {
-                PropertyInfo propertyInfo = (PropertyInfo)memberInfo;
+                var propertyInfo = (PropertyInfo)memberInfo;
                 if (!propertyInfo.CanRead)
                     return null;
                 // 
@@ -165,13 +165,13 @@ namespace System.Web.Services.Protocols {
                 MethodInfo getMethod = propertyInfo.GetGetMethod();
                 if (getMethod.IsStatic) 
                     return null;
-                ParameterInfo[] parameters = getMethod.GetParameters();
+                var parameters = getMethod.GetParameters();
                 if (parameters.Length > 0) 
                     return null;
                 memberType = propertyInfo.PropertyType;
             }
             if (memberInfo is FieldInfo) {
-                FieldInfo fieldInfo = (FieldInfo)memberInfo;
+                var fieldInfo = (FieldInfo)memberInfo;
                 if (!fieldInfo.IsPublic) 
                     return null;
                 if (fieldInfo.IsStatic)
@@ -180,10 +180,10 @@ namespace System.Web.Services.Protocols {
                     return null;
                 memberType = fieldInfo.FieldType;
             }
-            object[] attrs = memberInfo.GetCustomAttributes(typeof(MatchAttribute), false);
+            var attrs = memberInfo.GetCustomAttributes(typeof(MatchAttribute), false);
             if (attrs.Length == 0) return null;
-            MatchAttribute attr = (MatchAttribute)attrs[0];
-            MatchMember member = new MatchMember();
+            var attr = (MatchAttribute)attrs[0];
+            var member = new MatchMember();
             member.regex = new Regex(attr.Pattern, RegexOptions.Singleline | (attr.IgnoreCase ? RegexOptions.IgnoreCase | RegexOptions.CultureInvariant : 0));
             member.group = attr.Group;
             member.capture = attr.Capture;

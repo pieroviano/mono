@@ -114,7 +114,7 @@ namespace System.Web
 			return w.GetLastError ();
 		}
 
-		public override string HtmlDecode (string s)
+		public override string HtmlDecode (string? s)
 		{
 			return w.HtmlDecode (s);
 		}
@@ -124,7 +124,7 @@ namespace System.Web
 			w.HtmlDecode (s, output);
 		}
 
-		public override string HtmlEncode (string s)
+		public override string HtmlEncode (string? s)
 		{
 			return w.HtmlEncode (s);
 		}
@@ -134,7 +134,7 @@ namespace System.Web
 			w.HtmlEncode (s, output);
 		}
 
-		public override string MapPath (string path)
+		public override string MapPath (string? path)
 		{
 			return w.MapPath (path);
 		}
@@ -175,27 +175,27 @@ namespace System.Web
 			throw new NotImplementedException ();
 		}
 
-		public override string UrlDecode (string s)
+		public override string UrlDecode (string? s)
 		{
 			return w.UrlDecode (s);
 		}
 
-		public override void UrlDecode (string s, TextWriter output)
+		public override void UrlDecode (string? s, TextWriter output)
 		{
 			w.UrlDecode (s, output);
 		}
 
-		public override string UrlEncode (string s)
+		public override string UrlEncode (string? s)
 		{
 			return w.UrlEncode (s);
 		}
 
-		public override void UrlEncode (string s, TextWriter output)
+		public override void UrlEncode (string? s, TextWriter output)
 		{
 			w.UrlEncode (s, output);
 		}
 
-		public override string UrlPathEncode (string s)
+		public override string UrlPathEncode (string? s)
 		{
 			return w.UrlPathEncode (s);
 		}

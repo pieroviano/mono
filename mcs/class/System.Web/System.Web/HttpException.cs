@@ -148,14 +148,14 @@ namespace System.Web
 		public string GetHtmlErrorMessage ()
 		{
 			var values = new ExceptionPageTemplateValues ();
-			ExceptionPageTemplate template = PageTemplate;
+			var template = PageTemplate;
 
 			try {
 				values.Add (ExceptionPageTemplate.Template_RuntimeVersionInformationName, RuntimeHelpers.MonoVersion);
 				values.Add (ExceptionPageTemplate.Template_AspNetVersionInformationName, Environment.Version.ToString ());
 				
-				HttpContext ctx = HttpContext.Current;
-				ExceptionPageTemplateType pageType = ExceptionPageTemplateType.Standard;
+				var ctx = HttpContext.Current;
+				var pageType = ExceptionPageTemplateType.Standard;
 
 				if (ctx != null && ctx.IsCustomErrorEnabled) {
 					if (http_code != 404 && http_code != 403) {
@@ -164,7 +164,7 @@ namespace System.Web
 					} else
 						FillDefaultErrorValues (false, false, null, values);
 				} else {
-					Exception ex = GetBaseException ();
+					var ex = GetBaseException ();
 					if (ex == null)
 						ex = this;
 
@@ -303,8 +303,8 @@ namespace System.Web
 
 		void FillHtmlizedErrorValues (ExceptionPageTemplateValues values, HtmlizedException exc, ref ExceptionPageTemplateType pageType)
 		{
-			bool isParseException = exc is ParseException;
-			bool isCompileException = (!isParseException && exc is CompilationException);
+			var isParseException = exc is ParseException;
+			var isCompileException = (!isParseException && exc is CompilationException);
 			values.Add (ExceptionPageTemplate.Template_PageTitleName, HtmlEncode (exc.Title));
 			values.Add (ExceptionPageTemplate.Template_DescriptionName, HtmlEncode (exc.Description));
 			values.Add (ExceptionPageTemplate.Template_StackTraceName, HtmlEncode (exc.StackTrace));
@@ -322,7 +322,7 @@ namespace System.Web
 			values.Add (ExceptionPageTemplate.Template_HtmlizedExceptionOriginName, origin);
 			if (exc.FileText != null) {
 				pageType |= ExceptionPageTemplateType.SourceError;
-				StringBuilder shortSource = new StringBuilder ();
+				var shortSource = new StringBuilder ();
 				StringBuilder longSource;
 				
 				if (isCompileException)
@@ -338,10 +338,10 @@ namespace System.Web
 				else
 					values.Add (ExceptionPageTemplate.Template_HtmlizedExceptionSourceFileName, FormatSourceFile (exc.FileName));
 				if (isParseException || isCompileException) {
-					int[] errorLines = exc.ErrorLines;
-					int numErrors = errorLines != null ? errorLines.Length : 0;
+					var errorLines = exc.ErrorLines;
+					var numErrors = errorLines != null ? errorLines.Length : 0;
 					var lines = new StringBuilder ();
-					for (int i = 0; i < numErrors; i++) {
+					for (var i = 0; i < numErrors; i++) {
 						if (i > 0)
 							lines.Append (", ");
 						lines.Append (errorLines [i]);
@@ -353,12 +353,12 @@ namespace System.Web
 
 			if (isCompileException) {
 				CompilationException cex = exc as CompilationException;
-				StringCollection output = cex.CompilerOutput;
+				var output = cex.CompilerOutput;
 
 				if (output != null && output.Count > 0) {
 					pageType |= ExceptionPageTemplateType.CompilerOutput;
 					var sb = new StringBuilder ();
-					bool first = true;
+					var first = true;
 					foreach (string s in output) {
 						sb.Append (HtmlEncode (s));
 						if (first) {
@@ -382,7 +382,7 @@ namespace System.Web
 			values.Add (ExceptionPageTemplate.Template_DetailsName, "To enable the details of this specific error message to be viewable, please create a &lt;customErrors&gt; tag within a &quot;web.config&quot; configuration file located in the root directory of the current web application. This &lt;customErrors&gt; tag should then have its &quot;mode&quot; attribute set to &quot;Off&quot;.");
 		}
 		
-		void FillDefaultErrorValues (bool showTrace, bool showExceptionType, Exception baseEx, ExceptionPageTemplateValues values)
+		void FillDefaultErrorValues (bool showTrace, bool showExceptionType, Exception? baseEx, ExceptionPageTemplateValues values)
 		{
 			if (baseEx == null)
 				baseEx = this;
@@ -391,7 +391,7 @@ namespace System.Web
 			values.Add (ExceptionPageTemplate.Template_ExceptionTypeName, showExceptionType ? baseEx.GetType ().ToString () : "Runtime error");
 			values.Add (ExceptionPageTemplate.Template_ExceptionMessageName, http_code == 404 ? "The resource cannot be found." : HtmlEncode (baseEx.Message));
 
-			string tmp = http_code != 0 ? "HTTP " + http_code + "." : String.Empty;
+			var tmp = http_code != 0 ? "HTTP " + http_code + "." : String.Empty;
 			values.Add (ExceptionPageTemplate.Template_DescriptionName, tmp + (http_code == 404 ? ERROR_404_DESCRIPTION : HtmlEncode (Description)));
 
 			if (!String.IsNullOrEmpty (resource_name))
@@ -426,11 +426,11 @@ namespace System.Web
 			if (String.IsNullOrEmpty (s))
 				return s;
 
-			string res = HttpUtility.HtmlEncode (s);
+			var res = HttpUtility.HtmlEncode (s);
 			return res.Replace ("\r\n", "<br />");
 		}
 
-		string FormatSourceFile (string filename)
+		string FormatSourceFile (string? filename)
 		{
 			if (filename == null || filename.Length == 0)
 				return String.Empty;
@@ -441,7 +441,7 @@ namespace System.Web
 			return HttpUtility.HtmlEncode (filename);
 		}
 		
-		static void FormatSource (StringBuilder builder, StringBuilder longVersion, HtmlizedException e)
+		static void FormatSource (StringBuilder builder, StringBuilder? longVersion, HtmlizedException e)
 		{
 			if (e is CompilationException)
 				WriteCompilationSource (builder, longVersion, e);
@@ -449,19 +449,19 @@ namespace System.Web
 				WritePageSource (builder, e);
 		}
 
-		static void WriteCompilationSource (StringBuilder builder, StringBuilder longVersion, HtmlizedException e)
+		static void WriteCompilationSource (StringBuilder builder, StringBuilder? longVersion, HtmlizedException e)
 		{
-			int [] a = e.ErrorLines;
+			var a = e.ErrorLines;
 			string s;
-			int line = 0;
-			int index = 0;
-			int errline = 0;
+			var line = 0;
+			var index = 0;
+			var errline = 0;
 
 			if (a != null && a.Length > 0)
 				errline = a [0];
 
-			int begin = errline - 2;
-			int end = errline + 2;
+			var begin = errline - 2;
+			var end = errline + 2;
 
 			if (begin < 0)
 				begin = 0;
@@ -500,11 +500,11 @@ namespace System.Web
 		static void WritePageSource (StringBuilder builder, HtmlizedException e)
 		{
 			string s;
-			int line = 0;
-			int beginerror = e.ErrorLines [0];
-			int enderror = e.ErrorLines [1];
-			int begin = beginerror - 2;
-			int end = enderror + 2;
+			var line = 0;
+			var beginerror = e.ErrorLines [0];
+			var enderror = e.ErrorLines [1];
+			var begin = beginerror - 2;
+			var end = enderror + 2;
 			if (begin <= 0)
 				begin = 1;
 			

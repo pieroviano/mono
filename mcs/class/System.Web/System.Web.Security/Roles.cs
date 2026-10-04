@@ -74,17 +74,17 @@ namespace System.Web.Security {
 		public static void DeleteCookie ()
 		{
 			if (CacheRolesInCookie) {
-				HttpContext context = HttpContext.Current;
+				var context = HttpContext.Current;
 				if (context == null)
 					throw new HttpException ("Context is null.");
 
-				HttpResponse response = context.Response;
+				var response = context.Response;
 				if (response == null)
 					throw new HttpException ("Response is null.");
 
-				HttpCookieCollection cc = response.Cookies;
+				var cc = response.Cookies;
 				cc.Remove (CookieName);
-				HttpCookie expiration_cookie = new HttpCookie (CookieName, "");
+				var expiration_cookie = new HttpCookie (CookieName, "");
 				expiration_cookie.Expires = new DateTime (1999, 10, 12);
 				expiration_cookie.Path = CookiePath;
 				cc.Add (expiration_cookie);
@@ -224,7 +224,7 @@ namespace System.Web.Security {
 		
 		public static RoleProvider Provider {
 			get {
-				RoleProvider p = Providers [config.DefaultProvider];
+				var p = Providers [config.DefaultProvider];
 				if (p == null)
 					throw new ConfigurationErrorsException ("Default Role Provider could not be found: Cannot instantiate provider: '" + config.DefaultProvider + "'.");
 				return p;
@@ -235,7 +235,7 @@ namespace System.Web.Security {
 			get {
 				CheckEnabled ();
 				if (providersCollection == null) {
-					RoleProviderCollection providersCollectionTmp = new RoleProviderCollection ();
+					var providersCollectionTmp = new RoleProviderCollection ();
 					ProvidersHelper.InstantiateProviders (config.Providers, providersCollectionTmp, typeof (RoleProvider));
 					providersCollection = providersCollectionTmp;
 				}

@@ -63,7 +63,7 @@ namespace System.Web.Services.Description {
                 ReflectionContext[Method] = soapMethod;
                 soapMethod.portType = Binding != null ? Binding.Type : null;
             }
-            WebMethodAttribute methodAttr = Method.MethodAttribute;
+            var methodAttr = Method.MethodAttribute;
 
             OperationBinding.Extensions.Add(CreateSoapOperationBinding(soapMethod.rpc ? SoapBindingStyle.Rpc : SoapBindingStyle.Document, soapMethod.action));
 
@@ -85,7 +85,7 @@ namespace System.Web.Services.Description {
             AllowExtensionsToReflectDescription();
         }
 
-        void CreateHeaderMessages(string methodName, SoapBindingUse use, XmlMembersMapping inHeaderMappings, XmlMembersMapping outHeaderMappings, SoapReflectedHeader[] headers, bool rpc) {
+        void CreateHeaderMessages(string methodName, SoapBindingUse use, XmlMembersMapping inHeaderMappings, XmlMembersMapping? outHeaderMappings, SoapReflectedHeader[] headers, bool rpc) {
             // 
             if (use == SoapBindingUse.Encoded) {
                 SoapExporter.ExportMembersMapping(inHeaderMappings, false);
@@ -98,10 +98,10 @@ namespace System.Web.Services.Description {
                     SchemaExporter.ExportMembersMapping(outHeaderMappings);
             }
 
-            CodeIdentifiers identifiers = new CodeIdentifiers();
+            var identifiers = new CodeIdentifiers();
             int inCount = 0, outCount = 0;
-            for (int i = 0; i < headers.Length; i++) {
-                SoapReflectedHeader soapHeader = headers[i];
+            for (var i = 0; i < headers.Length; i++) {
+                var soapHeader = headers[i];
                 if (!soapHeader.custom) continue;
                 
                 XmlMemberMapping member;
@@ -114,13 +114,13 @@ namespace System.Web.Services.Description {
                     member = outHeaderMappings[outCount++];
                 }
 
-                MessagePart part = new MessagePart();
+                var part = new MessagePart();
                 part.Name = member.XsdElementName;
                 if (use == SoapBindingUse.Encoded)
                     part.Type = new XmlQualifiedName(member.TypeName, member.TypeNamespace);
                 else
                     part.Element = new XmlQualifiedName(member.XsdElementName, member.Namespace);
-                Message message = new Message();
+                var message = new Message();
                 message.Name = identifiers.AddUnique(methodName + part.Name, message);
                 message.Parts.Add(part);
                 HeaderMessages.Add(message);
@@ -142,7 +142,7 @@ namespace System.Web.Services.Description {
         }
 
         void CreateMessage(bool rpc, SoapBindingUse use, SoapParameterStyle paramStyle, Message message, MessageBinding messageBinding, XmlMembersMapping members) {
-            bool wrapped = paramStyle != SoapParameterStyle.Bare;
+            var wrapped = paramStyle != SoapParameterStyle.Bare;
 
             if (use == SoapBindingUse.Encoded)
                 CreateEncodedMessage(message, messageBinding, members, wrapped && !rpc);
@@ -154,15 +154,15 @@ namespace System.Web.Services.Description {
             SoapExporter.ExportMembersMapping(members, wrapped);
 
             if (wrapped) {
-                MessagePart part = new MessagePart();
+                var part = new MessagePart();
                 part.Name = "parameters";
                 part.Type = new XmlQualifiedName(members.TypeName, members.TypeNamespace);
                 message.Parts.Add(part);
             }
             else {
-                for (int i = 0; i < members.Count; i++) {
-                    XmlMemberMapping member = members[i];
-                    MessagePart part = new MessagePart();
+                for (var i = 0; i < members.Count; i++) {
+                    var member = members[i];
+                    var part = new MessagePart();
                     part.Name = member.XsdElementName;
                     part.Type = new XmlQualifiedName(member.TypeName, member.TypeNamespace);
                     message.Parts.Add(part);
@@ -174,8 +174,8 @@ namespace System.Web.Services.Description {
 
         void CreateLiteralMessage(Message message, MessageBinding messageBinding, XmlMembersMapping members, bool wrapped, bool rpc) {
             if (members.Count == 1 && members[0].Any && members[0].ElementName.Length == 0 && !wrapped) {
-                string typeName = SchemaExporter.ExportAnyType(members[0].Namespace);
-                MessagePart part = new MessagePart();
+                var typeName = SchemaExporter.ExportAnyType(members[0].Namespace);
+                var part = new MessagePart();
                 part.Name = members[0].MemberName;
                 part.Type = new XmlQualifiedName(typeName, members[0].Namespace);
                 message.Parts.Add(part);
@@ -183,15 +183,15 @@ namespace System.Web.Services.Description {
             else {
                 SchemaExporter.ExportMembersMapping(members, !rpc);
                 if (wrapped) {
-                    MessagePart part = new MessagePart();
+                    var part = new MessagePart();
                     part.Name = "parameters";
                     part.Element = new XmlQualifiedName(members.XsdElementName, members.Namespace);
                     message.Parts.Add(part);
                 }
                 else {
-                    for (int i = 0; i < members.Count; i++) {
-                        XmlMemberMapping member = members[i];
-                        MessagePart part = new MessagePart();
+                    for (var i = 0; i < members.Count; i++) {
+                        var member = members[i];
+                        var part = new MessagePart();
                         if (rpc) {
                             // Generate massage part with the type attribute
                             if (member.TypeName == null || member.TypeName.Length == 0) {
@@ -212,9 +212,9 @@ namespace System.Web.Services.Description {
         }
 
         static string[] GetParameterOrder(LogicalMethodInfo methodInfo) {
-            ParameterInfo[] parameters = methodInfo.Parameters;
-            string[] parameterOrder = new string[parameters.Length];
-            for (int i = 0; i < parameters.Length; i++) {
+            var parameters = methodInfo.Parameters;
+            var parameterOrder = new string[parameters.Length];
+            for (var i = 0; i < parameters.Length; i++) {
                 parameterOrder[i] = parameters[i].Name;
             }
             return parameterOrder;
@@ -240,43 +240,43 @@ namespace System.Web.Services.Description {
 
         void AllowExtensionsToReflectMethod() {
             if (extensions == null) {
-                TypeElementCollection extensionTypes = WebServicesSection.Current.SoapExtensionReflectorTypes;
+                var extensionTypes = WebServicesSection.Current.SoapExtensionReflectorTypes;
                 extensions = new SoapExtensionReflector[extensionTypes.Count];
-                for (int i = 0; i < extensions.Length; i++) {
+                for (var i = 0; i < extensions.Length; i++) {
                     SoapExtensionReflector extension = (SoapExtensionReflector)Activator.CreateInstance(extensionTypes[i].Type);
                     extension.ReflectionContext = this;
                     extensions[i] = extension;
                 }
             }
-            foreach (SoapExtensionReflector extension in extensions) {
+            foreach (var extension in extensions) {
                 extension.ReflectMethod();
             }
         }
 
         void AllowExtensionsToReflectDescription() {
             if (extensions == null) {
-                TypeElementCollection extensionTypes = WebServicesSection.Current.SoapExtensionReflectorTypes;
+                var extensionTypes = WebServicesSection.Current.SoapExtensionReflectorTypes;
                 extensions = new SoapExtensionReflector[extensionTypes.Count];
-                for (int i = 0; i < extensions.Length; i++) {
+                for (var i = 0; i < extensions.Length; i++) {
                     SoapExtensionReflector extension = (SoapExtensionReflector)Activator.CreateInstance(extensionTypes[i].Type);
                     extension.ReflectionContext = this;
                     extensions[i] = extension;
                 }
             }
-            foreach (SoapExtensionReflector extension in extensions) {
+            foreach (var extension in extensions) {
                 extension.ReflectDescription();
             }
         }
 
         protected virtual SoapBinding CreateSoapBinding(SoapBindingStyle style) {
-            SoapBinding soapBinding = new SoapBinding();
+            var soapBinding = new SoapBinding();
             soapBinding.Transport = SoapBinding.HttpTransport;
             soapBinding.Style = style;
             return soapBinding;
         }
 
         protected virtual SoapAddressBinding CreateSoapAddressBinding(string serviceUrl) {
-            SoapAddressBinding soapAddress = new SoapAddressBinding();
+            var soapAddress = new SoapAddressBinding();
             soapAddress.Location = serviceUrl;
             if (this.UriFixups != null)
             {
@@ -289,14 +289,14 @@ namespace System.Web.Services.Description {
         }
 
         protected virtual SoapOperationBinding CreateSoapOperationBinding(SoapBindingStyle style, string action) {
-            SoapOperationBinding soapOperation = new SoapOperationBinding();
+            var soapOperation = new SoapOperationBinding();
             soapOperation.SoapAction = action;
             soapOperation.Style = style;
             return soapOperation;
         }
 
         protected virtual SoapBodyBinding CreateSoapBodyBinding(SoapBindingUse use, string ns) {
-            SoapBodyBinding soapBodyBinding = new SoapBodyBinding();
+            var soapBodyBinding = new SoapBodyBinding();
             soapBodyBinding.Use = use;
             if (use == SoapBindingUse.Encoded)
                 soapBodyBinding.Encoding = Soap.Encoding;
@@ -309,7 +309,7 @@ namespace System.Web.Services.Description {
         }
 
         protected virtual SoapHeaderBinding CreateSoapHeaderBinding(XmlQualifiedName message, string partName, string ns, SoapBindingUse use) {
-            SoapHeaderBinding soapHeaderBinding = new SoapHeaderBinding();
+            var soapHeaderBinding = new SoapHeaderBinding();
             soapHeaderBinding.Message = message;
             soapHeaderBinding.Part = partName;
             soapHeaderBinding.Use = use;

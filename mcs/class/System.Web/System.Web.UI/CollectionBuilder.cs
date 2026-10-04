@@ -43,7 +43,7 @@ namespace System.Web.UI
 		{
 		}
 
-		public override void AppendLiteralString (string s)
+		public override void AppendLiteralString (string? s)
 		{
 			if (s != null && s.Trim ().Length > 0)
 				throw new HttpException ("Literal content not allowed for " + ControlType);
@@ -51,15 +51,15 @@ namespace System.Web.UI
 
 		public override Type GetChildControlType (string tagName, IDictionary attribs)
 		{
-			Type t = Root.GetChildControlType (tagName, attribs);
+			var t = Root.GetChildControlType (tagName, attribs);
 			if (possibleElementTypes != null) {
-                               bool foundMatchingType = false;
-                               for (int i = 0; i < possibleElementTypes.Length && !foundMatchingType; ++i)
+                               var foundMatchingType = false;
+                               for (var i = 0; i < possibleElementTypes.Length && !foundMatchingType; ++i)
                                        foundMatchingType = possibleElementTypes[i].IsAssignableFrom (t);
                                
                                if (!foundMatchingType) {
-                                       StringBuilder possibleTypesString = new StringBuilder ();
-                                       for (int i = 0; i < possibleElementTypes.Length; i++) {
+                                       var possibleTypesString = new StringBuilder ();
+                                       for (var i = 0; i < possibleElementTypes.Length; i++) {
                                                if (i != 0)
                                                        possibleTypesString.Append (", ");
                                                possibleTypesString.Append (possibleElementTypes[i]);
@@ -71,9 +71,9 @@ namespace System.Web.UI
 			return t;
 		}
 
-		public override void Init (TemplateParser parser,
+		public override void Init (TemplateParser? parser,
 					   ControlBuilder parentBuilder,
-					   Type type,
+					   Type? type,
 					   string tagName,
 					   string id,
 					   IDictionary attribs)
@@ -83,10 +83,10 @@ namespace System.Web.UI
 			PropertyInfo prop = parentBuilder.ControlType.GetProperty (tagName, FlagsNoCase);
 			SetControlType (prop.PropertyType);
 
-			MemberInfo[] mems = ControlType.GetMember ("Item", MemberTypes.Property, FlagsNoCase & ~BindingFlags.IgnoreCase);
+			var mems = ControlType.GetMember ("Item", MemberTypes.Property, FlagsNoCase & ~BindingFlags.IgnoreCase);
 			if (mems.Length > 0) {
                                possibleElementTypes = new Type [mems.Length];
-                               for (int i = 0; i < mems.Length; ++i)
+                               for (var i = 0; i < mems.Length; ++i)
                                        possibleElementTypes [i] = ((PropertyInfo)mems [i]).PropertyType;
 			} else
 				throw new HttpException ("Collection of type '" + ControlType + "' does not have an indexer.");

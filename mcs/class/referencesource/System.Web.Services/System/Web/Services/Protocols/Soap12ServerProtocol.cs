@@ -42,7 +42,7 @@ namespace System.Web.Services.Protocols {
         }
         
         internal override SoapServerMethod RouteRequest() {
-            string action = ContentType.GetAction(ServerProtocol.Request.ContentType);
+            var action = ContentType.GetAction(ServerProtocol.Request.ContentType);
 
             SoapServerMethod method = null;
             bool duplicateAction = false, duplicateRequestElement = false;
@@ -62,7 +62,7 @@ namespace System.Web.Services.Protocols {
                 }
             }
 
-            XmlQualifiedName requestElement = XmlQualifiedName.Empty;
+            var requestElement = XmlQualifiedName.Empty;
             if (method == null) {
                 // try request element
                 requestElement = GetRequestElement();
@@ -105,7 +105,7 @@ namespace System.Web.Services.Protocols {
             return method;
         }
 
-        internal override void WriteFault(XmlWriter writer, SoapException soapException, HttpStatusCode statusCode) {
+        internal override void WriteFault(XmlWriter writer, SoapException? soapException, HttpStatusCode statusCode) {
             if (statusCode != HttpStatusCode.InternalServerError)
                 return;
             if (soapException == null)
@@ -135,11 +135,11 @@ namespace System.Web.Services.Protocols {
             writer.WriteEndElement(); // </Reason>
             
             // Only write an actor element if the actor was specified (it's optional for end-points)
-            string actor = soapException.Actor;
+            var actor = soapException.Actor;
             if (actor.Length > 0)
                 writer.WriteElementString(Soap12.Element.FaultNode, Soap12.Namespace, actor);
 
-            string role = soapException.Role;
+            var role = soapException.Role;
             if (role.Length > 0)
                 writer.WriteElementString(Soap12.Element.FaultRole, Soap12.Namespace, role);
 
@@ -160,7 +160,7 @@ namespace System.Web.Services.Protocols {
             writer.Flush();
         }
 
-        private static void WriteFaultCodeValue(XmlWriter writer, XmlQualifiedName code, SoapFaultSubCode subcode) {
+        private static void WriteFaultCodeValue(XmlWriter writer, XmlQualifiedName? code, SoapFaultSubCode? subcode) {
             if (code == null) return;
             writer.WriteStartElement(Soap12.Element.FaultCodeValue, Soap12.Namespace);
             if (code.Namespace != null && code.Namespace.Length > 0 && writer.LookupPrefix(code.Namespace) == null)

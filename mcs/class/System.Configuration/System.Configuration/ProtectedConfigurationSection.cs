@@ -70,7 +70,7 @@ namespace System.Configuration
 			XmlDocument doc = new ConfigurationXmlDocument ();
 			doc.LoadXml (clearXml);
 
-			XmlNode encryptedNode = protectionProvider.Encrypt (doc.DocumentElement);
+			var encryptedNode = protectionProvider.Encrypt (doc.DocumentElement);
 
 			return encryptedNode.OuterXml;
 		}
@@ -80,7 +80,7 @@ namespace System.Configuration
 			XmlDocument doc = new ConfigurationXmlDocument ();
 			doc.InnerXml = encryptedXml;
 
-			XmlNode decryptedNode = protectionProvider.Decrypt (doc.DocumentElement);
+			var decryptedNode = protectionProvider.Decrypt (doc.DocumentElement);
 
 			return decryptedNode.OuterXml;
 		}

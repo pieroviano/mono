@@ -47,7 +47,7 @@ namespace System.Web.Compilation
 		
 		protected override SimpleWebHandlerParser Parse ()
 		{
-			SimpleWebHandlerParser parser = Parser;
+			var parser = Parser;
 			
 			if (_parsed)
 				return parser;
@@ -56,19 +56,19 @@ namespace System.Web.Compilation
 			return parser;
 		}
 
-		protected override void GenerateCode (AssemblyBuilder assemblyBuilder, SimpleWebHandlerParser parser, BaseCompiler compiler)
+		protected override void GenerateCode (AssemblyBuilder? assemblyBuilder, SimpleWebHandlerParser? parser, BaseCompiler compiler)
 		{
 			if (assemblyBuilder == null || parser == null)
 				return;
 			
-			string programCode = parser.Program.Trim ();
+			var programCode = parser.Program.Trim ();
 			if (String.IsNullOrEmpty (programCode)) {
 				_needLoadFromBin = true;
 				return;
 			}
 			
 			_needLoadFromBin = false;
-			using (TextWriter writer = assemblyBuilder.CreateCodeFile (this))
+			using (var writer = assemblyBuilder.CreateCodeFile (this))
 				writer.WriteLine (programCode);
 		}
 
@@ -77,7 +77,7 @@ namespace System.Web.Compilation
 			return parser.GetTypeFromBin (parser.ClassName);
 		}
 		
-		protected override string GetClassType (BaseCompiler compiler, SimpleWebHandlerParser parser)
+		protected override string GetClassType (BaseCompiler compiler, SimpleWebHandlerParser? parser)
 		{
 			if (parser != null)
 				return parser.ClassName;
@@ -85,7 +85,7 @@ namespace System.Web.Compilation
 			return null;
 		}
 		
-		protected override ICollection GetParserDependencies (SimpleWebHandlerParser parser)
+		protected override ICollection GetParserDependencies (SimpleWebHandlerParser? parser)
 		{
 			if (parser != null)
 				return parser.Dependencies;
@@ -93,7 +93,7 @@ namespace System.Web.Compilation
 			return null;
 		}
 		
-		protected override string GetParserLanguage (SimpleWebHandlerParser parser)
+		protected override string GetParserLanguage (SimpleWebHandlerParser? parser)
 		{
 			if (parser != null)
 				return parser.Language;
@@ -116,19 +116,19 @@ namespace System.Web.Compilation
 			return new WebServiceCompiler (parser);
 		}
 
-		protected override List <string> GetReferencedAssemblies (SimpleWebHandlerParser parser)
+		protected override List <string> GetReferencedAssemblies (SimpleWebHandlerParser? parser)
 		{
 			if (parser == null)
 				return null;
 			
-			ArrayList al = parser.Assemblies;
+			var al = parser.Assemblies;
 			if (al == null || al.Count == 0)
 				return null;
 
-			List <string> ret = new List <string> ();
+			var ret = new List <string> ();
 			string loc;
 			
-			foreach (object o in al) {
+			foreach (var o in al) {
 				loc = o as string;
 				if (loc == null)
 					continue;

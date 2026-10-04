@@ -64,7 +64,7 @@ namespace System.Web.Script.Serialization
 		{
 			_typeResolver = resolver;
 
-			ScriptingJsonSerializationSection section = (ScriptingJsonSerializationSection) ConfigurationManager.GetSection ("system.web.extensions/scripting/webServices/jsonSerialization");
+			var section = (ScriptingJsonSerializationSection) ConfigurationManager.GetSection ("system.web.extensions/scripting/webServices/jsonSerialization");
 			if (section == null) {
 				_maxJsonLength = 2097152;
 				_recursionLimit = 100;
@@ -73,7 +73,7 @@ namespace System.Web.Script.Serialization
 				_recursionLimit = section.RecursionLimit;
 
 				if (registerConverters) {
-					ConvertersCollection converters = section.Converters;
+					var converters = section.Converters;
 					if (converters != null && converters.Count > 0) {
 						var cvtlist = new List <JavaScriptConverter> ();
 						Type type;
@@ -122,7 +122,7 @@ namespace System.Web.Script.Serialization
 			get { return _typeResolver; }
 		}
 		
-		public T ConvertToType<T> (object obj) {
+		public T ConvertToType<T> (object? obj) {
 			if (obj == null)
 				return default (T);
 
@@ -130,7 +130,7 @@ namespace System.Web.Script.Serialization
 		}
 
 		public
-		object ConvertToType (object obj, Type targetType)
+		object ConvertToType (object? obj, Type? targetType)
 		{
 			if (obj == null)
 				return null;
@@ -139,7 +139,7 @@ namespace System.Web.Script.Serialization
 				if (targetType == null)
 					obj = EvaluateDictionary ((IDictionary<string, object>) obj);
 				else {
-					JavaScriptConverter converter = GetConverter (targetType);
+					var converter = GetConverter (targetType);
 					if (converter != null)
 						return converter.Deserialize (
 							EvaluateDictionary ((IDictionary<string, object>) obj),
@@ -154,7 +154,7 @@ namespace System.Web.Script.Serialization
 			if (targetType == null)
 				return obj;
 
-			Type sourceType = obj.GetType ();
+			var sourceType = obj.GetType ();
 			if (targetType.IsAssignableFrom (sourceType))
 				return obj;
 
@@ -164,7 +164,7 @@ namespace System.Web.Script.Serialization
 				else
 					return Enum.ToObject (targetType, obj);
 
-			TypeConverter c = TypeDescriptor.GetConverter (targetType);
+			var c = TypeDescriptor.GetConverter (targetType);
 			if (c.CanConvertFrom (sourceType)) {
 				if (obj is string)
 					return c.ConvertFromInvariantString ((string) obj);
@@ -182,7 +182,7 @@ namespace System.Web.Script.Serialization
 					if(String.IsNullOrEmpty ((String)obj))
 						return null;
 				} else if (c.CanConvertFrom (typeof (string))) {
-					TypeConverter objConverter = TypeDescriptor.GetConverter (obj);
+					var objConverter = TypeDescriptor.GetConverter (obj);
 					string s = objConverter.ConvertToInvariantString (obj);
 					return c.ConvertFromInvariantString (s);
 				}
@@ -195,8 +195,8 @@ namespace System.Web.Script.Serialization
 			return ConvertToType<T> (DeserializeObjectInternal(input));
 		}
 
-		public object Deserialize (string input, Type targetType) {
-			object obj = DeserializeObjectInternal (input);
+		public object Deserialize (string input, Type? targetType) {
+			var obj = DeserializeObjectInternal (input);
 
 			if (obj == null) return null;
 
@@ -220,8 +220,8 @@ namespace System.Web.Script.Serialization
 		}
 
 		static object EvaluateList (ArrayList e, bool convertListToArray) {
-			ArrayList list = new ArrayList ();
-			foreach (object value in e)
+			var list = new ArrayList ();
+			foreach (var value in e)
 				list.Add (Evaluate (value, convertListToArray));
 
 			return convertListToArray ? (object) list.ToArray () : list;
@@ -232,8 +232,8 @@ namespace System.Web.Script.Serialization
 		}
 
 		static IDictionary<string, object> EvaluateDictionary (IDictionary<string, object> dict, bool convertListToArray) {
-			Dictionary<string, object> d = new Dictionary<string, object> (StringComparer.Ordinal);
-			foreach (KeyValuePair<string, object> entry in dict) {
+			var d = new Dictionary<string, object> (StringComparer.Ordinal);
+			foreach (var entry in dict) {
 				d.Add (entry.Key, Evaluate (entry.Value, convertListToArray));
 			}
 
@@ -243,7 +243,7 @@ namespace System.Web.Script.Serialization
 		static readonly Type typeofObject = typeof(object);
 		static readonly Type typeofGenList = typeof (List<>);
 
-		object ConvertToList (ArrayList col, Type type) {
+		object ConvertToList (ArrayList col, Type? type) {
 			Type elementType = null;
 			if (type != null && type.HasElementType)
 				elementType = type.GetElementType ();
@@ -256,7 +256,7 @@ namespace System.Web.Script.Serialization
 				list = (IList) Activator.CreateInstance (type, true);
 			else if (ReflectionUtils.IsAssignable (type, typeofGenList)) {
 				if (type.IsGenericType) {
-					Type [] genArgs = type.GetGenericArguments ();
+					var genArgs = type.GetGenericArguments ();
 					elementType = genArgs [0];
 					// generic list
 					list = (IList) Activator.CreateInstance (typeofGenList.MakeGenericType (genArgs));
@@ -273,7 +273,7 @@ namespace System.Web.Script.Serialization
 			if (elementType == null)
 				elementType = typeof (object);
 
-			foreach (object value in col)
+			foreach (var value in col)
 				list.Add (ConvertToType (value, elementType));
 
 			if (type != null && type.IsArray)
@@ -293,12 +293,12 @@ namespace System.Web.Script.Serialization
 
 			if (type.IsGenericType) {
 				if (type.GetGenericTypeDefinition ().IsAssignableFrom (typeof (IDictionary <,>))) {
-					Type[] arguments = type.GetGenericArguments ();
+					var arguments = type.GetGenericArguments ();
 					if (arguments == null || arguments.Length != 2 || (arguments [0] != typeof (object) && arguments [0] != typeof (string)))
 						throw new InvalidOperationException (
 							"Type '" + type + "' is not not supported for serialization/deserialization of a dictionary, keys must be strings or objects.");
 					if (type.IsAbstract) {
-						Type dictType = typeof (Dictionary <,>);
+						var dictType = typeof (Dictionary <,>);
 						type = dictType.MakeGenericType (arguments [0], arguments [1]);
 					}
 				}
@@ -307,24 +307,24 @@ namespace System.Web.Script.Serialization
 			
 			object target = Activator.CreateInstance (type, true);
 
-			foreach (KeyValuePair<string, object> entry in dict) {
-				object value = entry.Value;
+			foreach (var entry in dict) {
+				var value = entry.Value;
 				if (target is IDictionary) {
-					Type valueType = ReflectionUtils.GetTypedDictionaryValueType (type);
+					var valueType = ReflectionUtils.GetTypedDictionaryValueType (type);
 					if (value != null && valueType == typeof (System.Object))
 						valueType = value.GetType ();
 					
 					((IDictionary) target).Add (entry.Key, ConvertToType (value, valueType));
 					continue;
 				}
-				MemberInfo [] memberCollection = type.GetMember (entry.Key, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
+				var memberCollection = type.GetMember (entry.Key, BindingFlags.Public | BindingFlags.Instance | BindingFlags.IgnoreCase);
 				if (memberCollection == null || memberCollection.Length == 0) {
 					//must evaluate value
 					Evaluate (value);
 					continue;
 				}
 
-				MemberInfo member = memberCollection [0];
+				var member = memberCollection [0];
 
 				if (!ReflectionUtils.CanSetMemberValue (member)) {
 					//must evaluate value
@@ -332,7 +332,7 @@ namespace System.Web.Script.Serialization
 					continue;
 				}
 
-				Type memberType = ReflectionUtils.GetMemberUnderlyingType (member);
+				var memberType = ReflectionUtils.GetMemberUnderlyingType (member);
 
 				if (memberType.IsInterface) {
 					if (memberType.IsGenericType)
@@ -352,7 +352,7 @@ namespace System.Web.Script.Serialization
 
 		Type ResolveGenericInterfaceToType (Type type)
 		{
-			Type[] genericArgs = type.GetGenericArguments ();
+			var genericArgs = type.GetGenericArguments ();
 			
 			if (ReflectionUtils.IsSubClass (type, typeof (IDictionary <,>)))
 				return typeof (Dictionary <,>).MakeGenericType (genericArgs);
@@ -389,7 +389,7 @@ namespace System.Web.Script.Serialization
 		}
 		
 		public object DeserializeObject (string input) {
-			object obj = Evaluate (DeserializeObjectInternal (input), true);
+			var obj = Evaluate (DeserializeObjectInternal (input), true);
 			IDictionary dictObj = obj as IDictionary;
 			if (dictObj != null && dictObj.Contains(SerializedTypeNameKey)){
 				if (_typeResolver == null) {
@@ -420,9 +420,9 @@ namespace System.Web.Script.Serialization
 
 		internal JavaScriptConverter GetConverter (Type type) {
 			if (_converterList != null)
-				for (int i = 0; i < _converterList.Count; i++) {
-					foreach (JavaScriptConverter converter in _converterList [i])
-						foreach (Type supportedType in converter.SupportedTypes)
+				for (var i = 0; i < _converterList.Count; i++) {
+					foreach (var converter in _converterList [i])
+						foreach (var supportedType in converter.SupportedTypes)
 							if (supportedType.IsAssignableFrom (type))
 								return converter;
 				}
@@ -430,17 +430,17 @@ namespace System.Web.Script.Serialization
 			return null;
 		}
 
-		public string Serialize (object obj) {
-			StringBuilder b = new StringBuilder ();
+		public string Serialize (object? obj) {
+			var b = new StringBuilder ();
 			Serialize (obj, b);
 			return b.ToString ();
 		}
 
-		public void Serialize (object obj, StringBuilder output) {
+		public void Serialize (object? obj, StringBuilder output) {
 			Json.Serialize (obj, this, output);
 		}
 
-		internal void Serialize (object obj, TextWriter output) {
+		internal void Serialize (object? obj, TextWriter output) {
 			Json.Serialize (obj, this, output);
 		}
 	}

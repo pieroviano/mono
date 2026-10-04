@@ -57,7 +57,7 @@ namespace System.Web.Compilation
 		{
 			base.CreateStaticFields ();
 			
-			CodeMemberField fld = new CodeMemberField (typeof (object), "__fileDependencies");
+			var fld = new CodeMemberField (typeof (object), "__fileDependencies");
 			fld.Attributes = MemberAttributes.Private | MemberAttributes.Static;
 			fld.InitExpression = new CodePrimitiveExpression (null);
 			mainClass.Members.Add (fld);
@@ -70,10 +70,10 @@ namespace System.Web.Compilation
 			}
 		}
 		
-		protected override void CreateConstructor (CodeStatementCollection localVars,
-							   CodeStatementCollection trueStmt)
+		protected override void CreateConstructor (CodeStatementCollection? localVars,
+							   CodeStatementCollection? trueStmt)
 		{
-			MainDirectiveAttribute <string> masterPageFile = pageParser.MasterPageFile;
+			var masterPageFile = pageParser.MasterPageFile;
 			if (masterPageFile != null && !masterPageFile.IsExpression)
 				// This is here just to trigger master page build, so that its type
 				// is available when compiling the page itself.
@@ -99,8 +99,8 @@ namespace System.Web.Compilation
 				localVars.Add (new CodeAssignStatement (prop, ct));
 			}
 
-			List <string> deps = pageParser.Dependencies;
-			int depsCount = deps != null ? deps.Count : 0;
+			var deps = pageParser.Dependencies;
+			var depsCount = deps != null ? deps.Count : 0;
 			
 			if (depsCount > 0) {
 				if (localVars == null)
@@ -115,7 +115,7 @@ namespace System.Web.Compilation
 						"dependencies")
 				);
 
-				CodeVariableReferenceExpression dependencies = new CodeVariableReferenceExpression ("dependencies");
+				var dependencies = new CodeVariableReferenceExpression ("dependencies");
 				trueStmt.Add (
 					new CodeAssignStatement (dependencies, new CodeArrayCreateExpression (typeof (string), depsCount))
 				);
@@ -123,14 +123,14 @@ namespace System.Web.Compilation
 				CodeArrayIndexerExpression arrayIndex;
 				object o;
 				
-				for (int i = 0; i < depsCount; i++) {
+				for (var i = 0; i < depsCount; i++) {
 					o = deps [i];
 					arrayIndex = new CodeArrayIndexerExpression (dependencies, new CodeExpression[] {new CodePrimitiveExpression (i)});
 					assign = new CodeAssignStatement (arrayIndex, new CodePrimitiveExpression (o));
 					trueStmt.Add (assign);
 				}
 				
-				CodeMethodInvokeExpression getDepsCall = new CodeMethodInvokeExpression (
+				var getDepsCall = new CodeMethodInvokeExpression (
 					thisRef,
 					"GetWrappedFileDependencies",
 					new CodeExpression[] {dependencies}
@@ -172,11 +172,11 @@ namespace System.Web.Compilation
 
 		void CreateGetTypeHashCode () 
 		{
-			CodeMemberMethod method = new CodeMemberMethod ();
+			var method = new CodeMemberMethod ();
 			method.ReturnType = intRef;
 			method.Name = "GetTypeHashCode";
 			method.Attributes = MemberAttributes.Public | MemberAttributes.Override;
-			Random rnd = new Random (pageParser.InputFile.GetHashCode ());
+			var rnd = new Random (pageParser.InputFile.GetHashCode ());
 			method.Statements.Add (new CodeMethodReturnStatement (new CodePrimitiveExpression (rnd.Next ())));
 			mainClass.Members.Add (method);
 		}
@@ -185,7 +185,7 @@ namespace System.Web.Compilation
 		{
 			// Put short circuit types here
 			if (valueType == typeof (TimeSpan)) {
-				CodeMethodReferenceExpression mref = new CodeMethodReferenceExpression (
+				var mref = new CodeMethodReferenceExpression (
 					new CodeTypeReferenceExpression (typeof (TimeSpan)),
 					"Parse");
 
@@ -203,13 +203,13 @@ namespace System.Web.Compilation
 			return new CodeAssignStatement (new CodePropertyReferenceExpression (owner, name), rhs);
 		}
 		
-		static CodeAssignStatement CreatePropertyAssign (CodeExpression owner, string name, object value)
+		static CodeAssignStatement CreatePropertyAssign (CodeExpression owner, string name, object? value)
 		{
 			CodeExpression rhs;
 			if (value == null || value is string)
 				rhs = new CodePrimitiveExpression (value);
 			else {
-				Type vt = value.GetType ();
+				var vt = value.GetType ();
 
 				if (vt.IsPrimitive)
 					rhs = new CodePrimitiveExpression (value);
@@ -220,12 +220,12 @@ namespace System.Web.Compilation
 			return CreatePropertyAssign (owner, name, rhs);
 		}
 
-		static CodeAssignStatement CreatePropertyAssign (string name, object value)
+		static CodeAssignStatement CreatePropertyAssign (string name, object? value)
 		{
 			return CreatePropertyAssign (thisRef, name, value);
 		}
 
-		void AssignPropertyWithExpression <T> (CodeMemberMethod method, string name, MainDirectiveAttribute <T> value, ILocation location)
+		void AssignPropertyWithExpression <T> (CodeMemberMethod method, string name, MainDirectiveAttribute <T>? value, ILocation? location)
 		{
 			if (value == null)
 				return;
@@ -246,17 +246,17 @@ namespace System.Web.Compilation
 			method.Statements.Add (AddLinePragma (assign, location));
 		}
 		
-		void AddStatementsFromDirective (ControlBuilder builder, CodeMemberMethod method, ILocation location)
+		void AddStatementsFromDirective (ControlBuilder builder, CodeMemberMethod method, ILocation? location)
 		{
 			AssignPropertyWithExpression <string> (method, "ResponseEncoding", pageParser.ResponseEncoding, location);
 			AssignPropertyWithExpression <int> (method, "CodePage", pageParser.CodePage, location);
 			AssignPropertyWithExpression <int> (method, "LCID", pageParser.LCID, location);
 
-			string contentType = pageParser.ContentType;
+			var contentType = pageParser.ContentType;
 			if (contentType != null)
 				method.Statements.Add (AddLinePragma (CreatePropertyAssign ("ContentType", contentType), location));
 
-			string culture = pageParser.Culture;
+			var culture = pageParser.Culture;
 			if (culture != null)
 				method.Statements.Add (AddLinePragma (CreatePropertyAssign ("Culture", culture), location));
 
@@ -264,34 +264,34 @@ namespace System.Web.Compilation
 			if (culture != null)
 				method.Statements.Add (AddLinePragma (CreatePropertyAssign ("UICulture", culture), location));
 
-			string errorPage = pageParser.ErrorPage;
+			var errorPage = pageParser.ErrorPage;
 			if (errorPage != null)
 				method.Statements.Add (AddLinePragma (CreatePropertyAssign ("ErrorPage", errorPage), location));
 
                         if (pageParser.HaveTrace) {
-                                CodeAssignStatement stmt = new CodeAssignStatement ();
+                                var stmt = new CodeAssignStatement ();
                                 stmt.Left = new CodePropertyReferenceExpression (thisRef, "TraceEnabled");
                                 stmt.Right = new CodePrimitiveExpression (pageParser.Trace);
                                 method.Statements.Add (AddLinePragma (stmt, location));
                         }
 
                         if (pageParser.TraceMode != TraceMode.Default) {
-                                CodeAssignStatement stmt = new CodeAssignStatement ();
-                                CodeTypeReferenceExpression tm = new CodeTypeReferenceExpression ("System.Web.TraceMode");
+                                var stmt = new CodeAssignStatement ();
+                                var tm = new CodeTypeReferenceExpression ("System.Web.TraceMode");
                                 stmt.Left = new CodePropertyReferenceExpression (thisRef, "TraceModeValue");
                                 stmt.Right = new CodeFieldReferenceExpression (tm, pageParser.TraceMode.ToString ());
                                 method.Statements.Add (AddLinePragma (stmt, location));
                         }
 
                         if (pageParser.NotBuffer) {
-                                CodeAssignStatement stmt = new CodeAssignStatement ();
+                                var stmt = new CodeAssignStatement ();
                                 stmt.Left = new CodePropertyReferenceExpression (thisRef, "Buffer");
                                 stmt.Right = new CodePrimitiveExpression (false);
                                 method.Statements.Add (AddLinePragma (stmt, location));
                         }
 
 			if (!pageParser.EnableEventValidation) {
-                                CodeAssignStatement stmt = new CodeAssignStatement ();
+                                var stmt = new CodeAssignStatement ();
                                 CodePropertyReferenceExpression prop;
                                 prop = new CodePropertyReferenceExpression (thisRef, "EnableEventValidation");
 				stmt.Left = prop;
@@ -300,7 +300,7 @@ namespace System.Web.Compilation
 			}
 
 			if (pageParser.MaintainScrollPositionOnPostBack) {
-				CodeAssignStatement stmt = new CodeAssignStatement ();
+				var stmt = new CodeAssignStatement ();
 				CodePropertyReferenceExpression prop;
                                 prop = new CodePropertyReferenceExpression (thisRef, "MaintainScrollPositionOnPostBack");
 				stmt.Left = prop;
@@ -320,10 +320,10 @@ namespace System.Web.Compilation
 		{
 			base.AddStatementsToInitMethodTop (builder, method);
 			
-			ILocation directiveLocation = pageParser.DirectiveLocation;
+			var directiveLocation = pageParser.DirectiveLocation;
 			AddStatementsFromDirective (builder, method, directiveLocation);
 
-			CodeArgumentReferenceExpression ctrlVar = new CodeArgumentReferenceExpression("__ctrl");
+			var ctrlVar = new CodeArgumentReferenceExpression("__ctrl");
 			if (pageParser.EnableViewStateMacSet)
 				method.Statements.Add (AddLinePragma (CreatePropertyAssign (ctrlVar, "EnableViewStateMac", pageParser.EnableViewStateMacSet), directiveLocation));
 
@@ -341,12 +341,12 @@ namespace System.Web.Compilation
 				method.Statements.Add (AddLinePragma (CreatePropertyAssign (ctrlVar, "AsyncTimeout",
 											    TimeSpan.FromSeconds (pageParser.AsyncTimeout)), directiveLocation));
 
-			CodeMethodInvokeExpression expr = new CodeMethodInvokeExpression (thisRef, "InitializeCulture");
+			var expr = new CodeMethodInvokeExpression (thisRef, "InitializeCulture");
 			method.Statements.Add (AddLinePragma (new CodeExpressionStatement (expr), directiveLocation));
 		}
 		protected override void AddStatementsToInitMethodBottom (ControlBuilder builder, CodeMemberMethod method)
 		{
-			ILocation directiveLocation = pageParser.DirectiveLocation;
+			var directiveLocation = pageParser.DirectiveLocation;
 			AssignPropertyWithExpression <string> (method, "MetaDescription", pageParser.MetaDescription, directiveLocation);
 			AssignPropertyWithExpression <string> (method, "MetaKeywords", pageParser.MetaKeywords, directiveLocation);
 		}
@@ -361,11 +361,11 @@ namespace System.Web.Compilation
 		{
 			base.AppendStatementsToFrameworkInitialize (method);
 
-			List <string> deps = pageParser.Dependencies;
-			int depsCount = deps != null ? deps.Count : 0;
+			var deps = pageParser.Dependencies;
+			var depsCount = deps != null ? deps.Count : 0;
 
 			if (depsCount > 0) {
-				CodeFieldReferenceExpression fileDependencies = GetMainClassFieldReferenceExpression ("__fileDependencies");
+				var fileDependencies = GetMainClassFieldReferenceExpression ("__fileDependencies");
 
 				method.Statements.Add (
 					new CodeMethodInvokeExpression (
@@ -377,13 +377,13 @@ namespace System.Web.Compilation
 			}
 
 			if (pageParser.OutputCache) {
-				CodeMethodReferenceExpression init = new CodeMethodReferenceExpression (thisRef, "InitOutputCache");
-				CodeMethodInvokeExpression invoke = new CodeMethodInvokeExpression (init, GetMainClassFieldReferenceExpression ("__outputCacheSettings"));
+				var init = new CodeMethodReferenceExpression (thisRef, "InitOutputCache");
+				var invoke = new CodeMethodInvokeExpression (init, GetMainClassFieldReferenceExpression ("__outputCacheSettings"));
 				method.Statements.Add (invoke);
 			}
 
 			if (pageParser.ValidateRequest) {
-				CodeMethodInvokeExpression expr = new CodeMethodInvokeExpression ();
+				var expr = new CodeMethodInvokeExpression ();
                                 CodePropertyReferenceExpression prop;
                                 prop = new CodePropertyReferenceExpression (thisRef, "Request");
 				expr.Method = new CodeMethodReferenceExpression (prop, "ValidateInput");
@@ -421,7 +421,7 @@ namespace System.Web.Compilation
 				)
 			);
 			
-			TemplateParser.OutputCacheParsedParams parsed = pageParser.OutputCacheParsedParameters;
+			var parsed = pageParser.OutputCacheParsedParameters;
 			if ((parsed & TemplateParser.OutputCacheParsedParams.CacheProfile) != 0)
 				statements.Add (AssignOutputCacheParameter (localSettings, "CacheProfile", pageParser.OutputCacheCacheProfile));
 			statements.Add (AssignOutputCacheParameter (localSettings, "Duration", pageParser.OutputCacheDuration));
@@ -441,7 +441,7 @@ namespace System.Web.Compilation
 				statements.Add (AssignOutputCacheParameter (localSettings, "VaryByHeader", pageParser.OutputCacheVaryByHeader));
 			statements.Add (AssignOutputCacheParameter (localSettings, "VaryByParam", pageParser.OutputCacheVaryByParam));
 
-			CodeFieldReferenceExpression outputCacheSettings = GetMainClassFieldReferenceExpression ("__outputCacheSettings");
+			var outputCacheSettings = GetMainClassFieldReferenceExpression ("__outputCacheSettings");
 			statements.Add (new CodeAssignStatement (outputCacheSettings, localSettings));
 			
 			var cond = new CodeConditionStatement (
@@ -456,12 +456,12 @@ namespace System.Web.Compilation
 			method.Statements.Add (cond);
 		}
 
-		void CreateStronglyTypedProperty (Type type, string name)
+		void CreateStronglyTypedProperty (Type? type, string name)
 		{
 			if (type == null)
 				return;
 			
-			CodeMemberProperty mprop = new CodeMemberProperty ();
+			var mprop = new CodeMemberProperty ();
 			mprop.Name = name;
 			mprop.Type = new CodeTypeReference (type);
 			mprop.Attributes = MemberAttributes.Public | MemberAttributes.New;
@@ -491,7 +491,7 @@ namespace System.Web.Compilation
 
 		void CreateAsyncMethods ()
 		{
-			CodeMemberMethod method = new CodeMemberMethod ();
+			var method = new CodeMemberMethod ();
 			CodeParameterDeclarationExpression arg;
 			CodeMethodInvokeExpression invoke;
 
@@ -560,7 +560,7 @@ namespace System.Web.Compilation
 		
 		public static Type CompilePageType (PageParser pageParser)
 		{
-			PageCompiler compiler = new PageCompiler (pageParser);
+			var compiler = new PageCompiler (pageParser);
 			return compiler.GetCompiledType ();
 		}
 	}

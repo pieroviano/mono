@@ -18,7 +18,7 @@
             set;
         }
 
-        public BoundUrl Bind(RouteValueDictionary currentValues, RouteValueDictionary values, RouteValueDictionary defaultValues, RouteValueDictionary constraints) {
+        public BoundUrl Bind(RouteValueDictionary? currentValues, RouteValueDictionary? values, RouteValueDictionary? defaultValues, RouteValueDictionary? constraints) {
             if (currentValues == null) {
                 currentValues = new RouteValueDictionary();
             }
@@ -31,10 +31,10 @@
 
 
             // The set of values we should be using when generating the URL in this route
-            RouteValueDictionary acceptedValues = new RouteValueDictionary();
+            var acceptedValues = new RouteValueDictionary();
 
             // Keep track of which new values have been used
-            HashSet<string> unusedNewValues = new HashSet<string>(values.Keys, StringComparer.OrdinalIgnoreCase);
+            var unusedNewValues = new HashSet<string>(values.Keys, StringComparer.OrdinalIgnoreCase);
 
 
             // Step 1: Get the list of values we're going to try to use to match and generate this URL
@@ -46,16 +46,16 @@
             // values should then be a="1", b="9", c=<no value>.
             ForEachParameter(PathSegments, delegate(ParameterSubsegment parameterSubsegment) {
                 // If it's a parameter subsegment, examine the current value to see if it matches the new value
-                string parameterName = parameterSubsegment.ParameterName;
+                var parameterName = parameterSubsegment.ParameterName;
 
                 object newParameterValue;
-                bool hasNewParameterValue = values.TryGetValue(parameterName, out newParameterValue);
+                var hasNewParameterValue = values.TryGetValue(parameterName, out newParameterValue);
                 if (hasNewParameterValue) {
                     unusedNewValues.Remove(parameterName);
                 }
 
                 object currentParameterValue;
-                bool hasCurrentParameterValue = currentValues.TryGetValue(parameterName, out currentParameterValue);
+                var hasCurrentParameterValue = currentValues.TryGetValue(parameterName, out currentParameterValue);
 
                 if (hasNewParameterValue && hasCurrentParameterValue) {
                     if (!RoutePartsEqual(currentParameterValue, newParameterValue)) {
@@ -89,9 +89,9 @@
 
             // Add all current values that aren't in the URL at all
             foreach (var currentValue in currentValues) {
-                string parameterName = currentValue.Key;
+                var parameterName = currentValue.Key;
                 if (!acceptedValues.ContainsKey(parameterName)) {
-                    ParameterSubsegment parameterSubsegment = GetParameterSubsegment(PathSegments, parameterName);
+                    var parameterSubsegment = GetParameterSubsegment(PathSegments, parameterName);
                     if (parameterSubsegment == null) {
                         acceptedValues.Add(parameterName, currentValue.Value);
                     }
@@ -114,7 +114,7 @@
 
 
             // All required parameters in this URL must have values from somewhere (i.e. the accepted values)
-            bool hasAllRequiredValues = ForEachParameter(PathSegments, delegate(ParameterSubsegment parameterSubsegment) {
+            var hasAllRequiredValues = ForEachParameter(PathSegments, delegate(ParameterSubsegment parameterSubsegment) {
                 object defaultValue;
                 if (IsParameterRequired(parameterSubsegment, defaultValues, out defaultValue)) {
                     if (!acceptedValues.ContainsKey(parameterSubsegment.ParameterName)) {
@@ -131,7 +131,7 @@
             }
 
             // All other default values must match if they are explicitly defined in the new values
-            RouteValueDictionary otherDefaultValues = new RouteValueDictionary(defaultValues);
+            var otherDefaultValues = new RouteValueDictionary(defaultValues);
             ForEachParameter(PathSegments, delegate(ParameterSubsegment parameterSubsegment) {
                 otherDefaultValues.Remove(parameterSubsegment.ParameterName);
                 return true;
@@ -152,14 +152,14 @@
 
             // Step 2: If the route is a match generate the appropriate URL
 
-            StringBuilder url = new StringBuilder();
-            StringBuilder pendingParts = new StringBuilder();
+            var url = new StringBuilder();
+            var pendingParts = new StringBuilder();
 
-            bool pendingPartsAreAllSafe = false;
-            bool blockAllUrlAppends = false;
+            var pendingPartsAreAllSafe = false;
+            var blockAllUrlAppends = false;
 
-            for (int i = 0; i < PathSegments.Count; i++) {
-                PathSegment pathSegment = PathSegments[i]; // parsedRouteUrlPart
+            for (var i = 0; i < PathSegments.Count; i++) {
+                var pathSegment = PathSegments[i]; // parsedRouteUrlPart
 
                 if (pathSegment is SeparatorPathSegment) {
                     if (pendingPartsAreAllSafe) {
@@ -202,9 +202,9 @@
                         // used a value for {p1}, we have to output the entire segment up to the next "/".
                         // Otherwise we could end up with the partial segment "v1" instead of the entire
                         // segment "v1-v2.xml".
-                        bool addedAnySubsegments = false;
+                        var addedAnySubsegments = false;
 
-                        foreach (PathSubsegment subsegment in contentPathSegment.Subsegments) {
+                        foreach (var subsegment in contentPathSegment.Subsegments) {
                             LiteralSubsegment literalSubsegment = subsegment as LiteralSubsegment;
                             if (literalSubsegment != null) {
                                 // If it's a literal we hold on to it until we are sure we need to add it
@@ -232,7 +232,7 @@
 
                                     // If it's a parameter, get its value
                                     object acceptedParameterValue;
-                                    bool hasAcceptedParameterValue = acceptedValues.TryGetValue(parameterSubsegment.ParameterName, out acceptedParameterValue);
+                                    var hasAcceptedParameterValue = acceptedValues.TryGetValue(parameterSubsegment.ParameterName, out acceptedParameterValue);
                                     if (hasAcceptedParameterValue) {
                                         unusedNewValues.Remove(parameterSubsegment.ParameterName);
                                     }
@@ -312,8 +312,8 @@
             // Add remaining new values as query string parameters to the URL
             if (unusedNewValues.Count > 0) {
                 // Generate the query string
-                bool firstParam = true;
-                foreach (string unusedNewValue in unusedNewValues) {
+                var firstParam = true;
+                foreach (var unusedNewValue in unusedNewValues) {
                     object value;
                     if (acceptedValues.TryGetValue(unusedNewValue, out value)) {
                         url.Append(firstParam ? '?' : '&');
@@ -336,8 +336,8 @@
         }
 
         private static bool ForEachParameter(IList<PathSegment> pathSegments, Func<ParameterSubsegment, bool> action) {
-            for (int i = 0; i < pathSegments.Count; i++) {
-                PathSegment pathSegment = pathSegments[i];
+            for (var i = 0; i < pathSegments.Count; i++) {
+                var pathSegment = pathSegments[i];
 
                 if (pathSegment is SeparatorPathSegment) {
                     // We only care about parameter subsegments, so skip this
@@ -346,7 +346,7 @@
                 else {
                     ContentPathSegment contentPathSegment = pathSegment as ContentPathSegment;
                     if (contentPathSegment != null) {
-                        foreach (PathSubsegment subsegment in contentPathSegment.Subsegments) {
+                        foreach (var subsegment in contentPathSegment.Subsegments) {
                             LiteralSubsegment literalSubsegment = subsegment as LiteralSubsegment;
                             if (literalSubsegment != null) {
                                 // We only care about parameter subsegments, so skip this
@@ -377,7 +377,7 @@
         private static ParameterSubsegment GetParameterSubsegment(IList<PathSegment> pathSegments, string parameterName) {
             ParameterSubsegment foundParameterSubsegment = null;
 
-            bool continueProcessing = ForEachParameter(pathSegments, delegate(ParameterSubsegment parameterSubsegment) {
+            var continueProcessing = ForEachParameter(pathSegments, delegate(ParameterSubsegment parameterSubsegment) {
                 if (String.Equals(parameterName, parameterSubsegment.ParameterName, StringComparison.OrdinalIgnoreCase)) {
                     foundParameterSubsegment = parameterSubsegment;
                     return false;
@@ -399,7 +399,7 @@
             return !defaultValues.TryGetValue(parameterSubsegment.ParameterName, out defaultValue);
         }
 
-        private static bool IsRoutePartNonEmpty(object routePart) {
+        private static bool IsRoutePartNonEmpty(object? routePart) {
             string routePartString = routePart as string;
             if (routePartString != null) {
                 return (routePartString.Length > 0);
@@ -407,28 +407,28 @@
             return (routePart != null);
         }
 
-        public RouteValueDictionary Match(string virtualPath, RouteValueDictionary defaultValues) {
-            IList<string> requestPathSegments = RouteParser.SplitUrlToPathSegmentStrings(virtualPath);
+        public RouteValueDictionary Match(string virtualPath, RouteValueDictionary? defaultValues) {
+            var requestPathSegments = RouteParser.SplitUrlToPathSegmentStrings(virtualPath);
 
             if (defaultValues == null) {
                 defaultValues = new RouteValueDictionary();
             }
 
-            RouteValueDictionary matchedValues = new RouteValueDictionary();
+            var matchedValues = new RouteValueDictionary();
 
             // This flag gets set once all the data in the URL has been parsed through, but
             // the route we're trying to match against still has more parts. At this point
             // we'll only continue matching separator characters and parameters that have
             // default values.
-            bool ranOutOfStuffToParse = false;
+            var ranOutOfStuffToParse = false;
 
             // This value gets set once we start processing a catchall parameter (if there is one
             // at all). Once we set this value we consume all remaining parts of the URL into its
             // parameter value.
-            bool usedCatchAllParameter = false;
+            var usedCatchAllParameter = false;
 
-            for (int i = 0; i < PathSegments.Count; i++) {
-                PathSegment pathSegment = PathSegments[i];
+            for (var i = 0; i < PathSegments.Count; i++) {
+                var pathSegment = PathSegments[i];
 
                 if (requestPathSegments.Count <= i) {
                     ranOutOfStuffToParse = true;
@@ -470,7 +470,7 @@
                 if (PathSegments.Count < requestPathSegments.Count) {
                     // If we've already gone through all the parts defined in the route but the URL
                     // still contains more content, check that the remaining content is all separators.
-                    for (int i = PathSegments.Count; i < requestPathSegments.Count; i++) {
+                    for (var i = PathSegments.Count; i < requestPathSegments.Count; i++) {
                         if (!RouteParser.IsSeparator(requestPathSegments[i])) {
                             return null;
                         }
@@ -491,7 +491,7 @@
         }
 
         private void MatchCatchAll(ContentPathSegment contentPathSegment, IEnumerable<string> remainingRequestSegments, RouteValueDictionary defaultValues, RouteValueDictionary matchedValues) {
-            string remainingRequest = String.Join(String.Empty, remainingRequestSegments.ToArray());
+            var remainingRequest = String.Join(String.Empty, remainingRequestSegments.ToArray());
 
             ParameterSubsegment catchAllSegment = contentPathSegment.Subsegments[0] as ParameterSubsegment;
 
@@ -535,14 +535,14 @@
 
             // Find last literal segment and get its last index in the string
 
-            int lastIndex = requestPathSegment.Length;
-            int indexOfLastSegmentUsed = routeSegment.Subsegments.Count - 1;
+            var lastIndex = requestPathSegment.Length;
+            var indexOfLastSegmentUsed = routeSegment.Subsegments.Count - 1;
 
             ParameterSubsegment parameterNeedsValue = null; // Keeps track of a parameter segment that is pending a value
             LiteralSubsegment lastLiteral = null; // Keeps track of the left-most literal we've encountered
 
             while (indexOfLastSegmentUsed >= 0) {
-                int newLastIndex = lastIndex;
+                var newLastIndex = lastIndex;
 
                 ParameterSubsegment parameterSubsegment = routeSegment.Subsegments[indexOfLastSegmentUsed] as ParameterSubsegment;
                 if (parameterSubsegment != null) {
@@ -554,7 +554,7 @@
                     if (literalSubsegment != null) {
                         lastLiteral = literalSubsegment;
 
-                        int startIndex = lastIndex - 1;
+                        var startIndex = lastIndex - 1;
                         // If we have a pending parameter subsegment, we must leave at least one character for that
                         if (parameterNeedsValue != null) {
                             startIndex--;
@@ -564,7 +564,7 @@
                             return false;
                         }
 
-                        int indexOfLiteral = requestPathSegment.LastIndexOf(literalSubsegment.Literal, startIndex, StringComparison.OrdinalIgnoreCase);
+                        var indexOfLiteral = requestPathSegment.LastIndexOf(literalSubsegment.Literal, startIndex, StringComparison.OrdinalIgnoreCase);
                         if (indexOfLiteral == -1) {
                             // If we couldn't find this literal index, this segment cannot match
                             return false;
@@ -614,7 +614,7 @@
                         }
                     }
 
-                    string parameterValueString = requestPathSegment.Substring(parameterStartIndex, parameterTextLength);
+                    var parameterValueString = requestPathSegment.Substring(parameterStartIndex, parameterTextLength);
 
                     if (String.IsNullOrEmpty(parameterValueString)) {
                         // If we're here that means we have a segment that contains multiple sub-segments.
@@ -644,7 +644,7 @@
             return (lastIndex == 0) || (routeSegment.Subsegments[0] is ParameterSubsegment);
         }
 
-        private static bool RoutePartsEqual(object a, object b) {
+        private static bool RoutePartsEqual(object? a, object? b) {
             string sa = a as string;
             string sb = b as string;
             if (sa != null && sb != null) {
@@ -665,7 +665,7 @@
 
         // Dev10 601636 Work around Uri.EscapeUriString not encoding #,&
         private static string UrlEncode(string str) {
-            string escape = Uri.EscapeUriString(str);
+            var escape = Uri.EscapeUriString(str);
             return Regex.Replace(escape, "([#;?:@&=+$,])", new MatchEvaluator(EscapeReservedCharacters));
         }
     }

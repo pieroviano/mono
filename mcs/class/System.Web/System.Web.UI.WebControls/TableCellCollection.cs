@@ -65,7 +65,7 @@ namespace System.Web.UI.WebControls {
 
 		public int Add (TableCell cell)
 		{
-			int index = cc.IndexOf (cell);
+			var index = cc.IndexOf (cell);
 			if (index < 0) {
 				cc.Add (cell);
 				index = cc.Count;
@@ -81,7 +81,7 @@ namespace System.Web.UI.WebControls {
 
 		public void AddRange (TableCell[] cells)
 		{
-			foreach (TableCell td in cells) {
+			foreach (var td in cells) {
 				if (cc.IndexOf (td) < 0)
 					cc.Add (td);
 			}
@@ -97,7 +97,7 @@ namespace System.Web.UI.WebControls {
 			cc.CopyTo (array, index);
 		}
 
-		public int GetCellIndex (TableCell cell)
+		public int GetCellIndex (TableCell? cell)
 		{
 			return cc.IndexOf (cell);
 		}
@@ -107,7 +107,7 @@ namespace System.Web.UI.WebControls {
 			return cc.GetEnumerator ();
 		}
 
-		public void Remove (TableCell cell)
+		public void Remove (TableCell? cell)
 		{
 			cc.Remove (cell);
 		}

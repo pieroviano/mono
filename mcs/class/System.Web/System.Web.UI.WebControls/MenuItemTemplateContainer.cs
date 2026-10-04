@@ -52,7 +52,7 @@ namespace System.Web.UI.WebControls
 			if (command == null)
 				return false;
 
-			MenuEventArgs menuArgs = new MenuEventArgs ((MenuItem) DataItem, source, command);
+			var menuArgs = new MenuEventArgs ((MenuItem) DataItem, source, command);
 			RaiseBubbleEvent (this, menuArgs);
 			return true;
 		}

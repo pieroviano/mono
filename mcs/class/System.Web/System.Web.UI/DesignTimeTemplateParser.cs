@@ -39,7 +39,7 @@ namespace System.Web.UI {
 		[SecurityPermission (SecurityAction.Demand, ControlThread = true, UnmanagedCode = true)]
 		public static Control ParseControl (DesignTimeParseData data)
 		{
-			TemplateParser NewParser = InitParser (data);
+			var NewParser = InitParser (data);
 			NewParser.RootBuilder.Text = data.ParseText;
 			if (NewParser.RootBuilder.Children == null)
 				return null;
@@ -51,7 +51,7 @@ namespace System.Web.UI {
 		[SecurityPermission (SecurityAction.Demand, ControlThread = true, UnmanagedCode = true)]
 		public static ITemplate ParseTemplate (DesignTimeParseData data)
 		{
-			TemplateParser NewParser = InitParser (data);
+			var NewParser = InitParser (data);
 			NewParser.RootBuilder.Text = data.ParseText;
 			return NewParser.RootBuilder;
 		}

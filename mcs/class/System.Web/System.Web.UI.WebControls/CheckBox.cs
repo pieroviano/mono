@@ -178,14 +178,14 @@ namespace System.Web.UI.WebControls
 			get { return (this.UniqueID); }
 		}
 		
-		protected override void LoadViewState (object savedState)
+		protected override void LoadViewState (object? savedState)
 		{
 			if (savedState == null) {
 				base.LoadViewState (null);
 				return;
 			}
 
-			Triplet saved = (Triplet) savedState;
+			var saved = (Triplet) savedState;
 			base.LoadViewState (saved.First);
 
 			if (saved.Second != null) {
@@ -207,7 +207,7 @@ namespace System.Web.UI.WebControls
 
 		protected override object SaveViewState ()
 		{
-			object baseView = base.SaveViewState ();
+			var baseView = base.SaveViewState ();
 			object inputAttrView = null;
 			object labelAttrView = null;
 
@@ -235,7 +235,7 @@ namespace System.Web.UI.WebControls
 		protected internal override void OnPreRender (EventArgs e)
 		{
 			base.OnPreRender (e);
-			Page page = Page;
+			var page = Page;
 			
 			if (page != null && IsEnabled) {
 				page.RegisterRequiresPostBack (this);
@@ -282,11 +282,11 @@ namespace System.Web.UI.WebControls
 		bool AddAttributesForSpan (HtmlTextWriter writer)
 		{
 			if (HasAttributes) {
-				AttributeCollection attributes = Attributes;
-				ICollection k = attributes.Keys;
-				string [] keys = new string [k.Count];
+				var attributes = Attributes;
+				var k = attributes.Keys;
+				var keys = new string [k.Count];
 				k.CopyTo (keys, 0);
-				foreach (string key in keys) {
+				foreach (var key in keys) {
 					if (!IsInputOrCommonAttr (key))
 						continue;
 					if (common_attrs == null)
@@ -306,14 +306,14 @@ namespace System.Web.UI.WebControls
 
 		protected internal override void Render (HtmlTextWriter writer)
 		{
-			Page page = Page;
+			var page = Page;
 			if (page != null) {
 				page.VerifyRenderingInServerForm (this);
 				page.ClientScript.RegisterForEventValidation (UniqueID);
 			}
 			
-			bool need_span = ControlStyleCreated && !ControlStyle.IsEmpty;
-			bool enabled = IsEnabled;
+			var need_span = ControlStyleCreated && !ControlStyle.IsEmpty;
+			var enabled = IsEnabled;
 			if (!enabled) {
 				if (!RenderingCompatibilityLessThan40)
 					ControlStyle.PrependCssClass (DisabledCssClass);
@@ -327,7 +327,7 @@ namespace System.Web.UI.WebControls
 				ControlStyle.AddAttributesToRender (writer, this);
 			}
 			
-			string tt = ToolTip;
+			var tt = ToolTip;
 			if (tt != null && tt.Length > 0){
 				writer.AddAttribute ("title", tt);
 				need_span = true;
@@ -339,7 +339,7 @@ namespace System.Web.UI.WebControls
 			if (need_span)
 				writer.RenderBeginTag (HtmlTextWriterTag.Span);
 
-			TextAlign align = TextAlign;
+			var align = TextAlign;
 			if (align == TextAlign.Right) {
 				RenderInput (writer, enabled);
 				RenderLabel (writer);
@@ -357,7 +357,7 @@ namespace System.Web.UI.WebControls
 			if (ClientID != null && ClientID.Length > 0)
 				w.AddAttribute (HtmlTextWriterAttribute.Id, ClientID);
 			w.AddAttribute (HtmlTextWriterAttribute.Type, render_type);
-			string nameAttr = NameAttribute;
+			var nameAttr = NameAttribute;
 			if (nameAttr != null && nameAttr.Length > 0)
 				w.AddAttribute (HtmlTextWriterAttribute.Name, nameAttr);
 			InternalAddAttributesToRender (w, enabled);
@@ -367,8 +367,8 @@ namespace System.Web.UI.WebControls
 				w.AddAttribute (HtmlTextWriterAttribute.Checked, "checked", false);
 
 			if (AutoPostBack) {
-				Page page = Page;
-				string onclick = page != null ? page.ClientScript.GetPostBackEventReference (GetPostBackOptions (), true) : String.Empty;
+				var page = Page;
+				var onclick = page != null ? page.ClientScript.GetPostBackEventReference (GetPostBackOptions (), true) : String.Empty;
 				onclick = String.Concat ("setTimeout('", onclick.Replace ("\\", "\\\\").Replace ("'", "\\'"), "', 0)");
 				if (common_attrs != null && common_attrs ["onclick"] != null) {
 					onclick = ClientScriptManager.EnsureEndsWithSemicolon (common_attrs ["onclick"]) + onclick;
@@ -396,7 +396,7 @@ namespace System.Web.UI.WebControls
 
 		void RenderLabel (HtmlTextWriter w)
 		{
-			string text = Text;
+			var text = Text;
 			if (text.Length > 0) {
 				if (labelAttributes != null)
 					labelAttributes.AddAttributes (w);
@@ -413,7 +413,7 @@ namespace System.Web.UI.WebControls
 				return false;
 
 			string postedValue = postCollection[postDataKey];
-			bool postedBool = ((postedValue != null) &&
+			var postedBool = ((postedValue != null) &&
 					   (postedValue.Length > 0));
 			
 			if (Checked != postedBool) {
@@ -428,7 +428,7 @@ namespace System.Web.UI.WebControls
 		{
 			ValidateEvent (UniqueID, String.Empty);
 			if (CausesValidation) {
-				Page page = Page;
+				var page = Page;
 				if (page != null)
 					page.Validate (ValidationGroup);
 			}
@@ -448,14 +448,14 @@ namespace System.Web.UI.WebControls
 
 		PostBackOptions GetPostBackOptions ()
 		{
-			PostBackOptions options = new PostBackOptions (this);
+			var options = new PostBackOptions (this);
 			options.ActionUrl = null;
 			options.ValidationGroup = null;
 			options.Argument = String.Empty;
 			options.RequiresJavaScriptProtocol = false;
 			options.ClientSubmit = true;
 
-			Page page = Page;
+			var page = Page;
 			options.PerformValidation = CausesValidation && page != null && page.AreValidatorsUplevel (ValidationGroup);
 			if (options.PerformValidation)
 				options.ValidationGroup = ValidationGroup;

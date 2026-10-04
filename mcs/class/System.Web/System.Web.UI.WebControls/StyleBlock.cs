@@ -56,7 +56,7 @@ namespace System.Web.UI.WebControls
 			this.stylePrefix = stylePrefix;
 		}
 
-		public NamedCssStyleCollection RegisterStyle (string name = null)
+		public NamedCssStyleCollection RegisterStyle (string? name = null)
 		{
 			if (name == null)
 				name = String.Empty;
@@ -64,7 +64,7 @@ namespace System.Web.UI.WebControls
 			return GetStyle (name);
 		}
 		
-		public NamedCssStyleCollection RegisterStyle (Style style, string name = null)
+		public NamedCssStyleCollection RegisterStyle (Style style, string? name = null)
 		{
 			if (style == null)
 				throw new ArgumentNullException ("style");
@@ -72,18 +72,18 @@ namespace System.Web.UI.WebControls
 			if (name == null)
 				name = String.Empty;
 
-			NamedCssStyleCollection cssStyle = GetStyle (name);
+			var cssStyle = GetStyle (name);
 			cssStyle.CopyFrom (style.GetStyleAttributes (null));
 
 			return cssStyle;
 		}
 
-		public NamedCssStyleCollection RegisterStyle (HtmlTextWriterStyle key, string value, string styleName = null)
+		public NamedCssStyleCollection RegisterStyle (HtmlTextWriterStyle key, string? value, string? styleName = null)
 		{
 			if (styleName == null)
 				styleName = String.Empty;
 
-			NamedCssStyleCollection style = GetStyle (styleName);
+			var style = GetStyle (styleName);
 			style.Add (key, value);
 
 			return style;
@@ -91,7 +91,7 @@ namespace System.Web.UI.WebControls
 		
 		NamedCssStyleCollection GetStyle (string name)
 		{
-			List <NamedCssStyleCollection> cssStyles = CssStyles;
+			var cssStyles = CssStyles;
 			NamedCssStyleCollection style;
 
 			if (!cssStyleIndex.TryGetValue (name, out style)) {

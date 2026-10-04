@@ -47,7 +47,7 @@ namespace System.Web.UI
 
 		public override string ClientID {
 			get {
-				string clientId = base.ClientID;
+				var clientId = base.ClientID;
 				if (String.IsNullOrEmpty (clientId))
 					return String.Format ("{0}${1}", ElementID, Name);
 				return clientId;
@@ -73,7 +73,7 @@ namespace System.Web.UI
 		}
 
 		static string GetNameFromType (string Type) {
-			int lastIndex = Type.LastIndexOf ('.') + 1;
+			var lastIndex = Type.LastIndexOf ('.') + 1;
 			if (lastIndex > 0 && lastIndex < Type.Length)
 				return Type.Substring (lastIndex);
 

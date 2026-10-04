@@ -143,7 +143,7 @@ namespace System.Web.UI.WebControls
 
 		protected ArrayList DataKeysArray {
 			get {
-				ArrayList keys = (ArrayList) ViewState ["DataKeys"];
+				var keys = (ArrayList) ViewState ["DataKeys"];
 				if (keys == null) {
 					keys = new ArrayList ();
 					ViewState ["DataKeys"] = keys;
@@ -187,7 +187,7 @@ namespace System.Web.UI.WebControls
 					OnDataPropertyChanged ();
 
 				} else {
-					string msg = Locale.GetText ("Invalid data source. This requires an object implementing {0} or {1}.",
+					var msg = Locale.GetText ("Invalid data source. This requires an object implementing {0} or {1}.",
 								     "IEnumerable", "IListSource");
 					throw new ArgumentException (msg);
 				}
@@ -340,7 +340,7 @@ namespace System.Web.UI.WebControls
 			if (boundDataSource == null)
 				ConnectToDataSource ();
 
-			DataSourceView dsv = boundDataSource.GetView (String.Empty);
+			var dsv = boundDataSource.GetView (String.Empty);
 			dsv.Select (SelectArguments, new DataSourceViewSelectCallback (SelectCallback));
 			return data;
 		}
@@ -373,7 +373,7 @@ namespace System.Web.UI.WebControls
 		protected internal override void OnInit (EventArgs e)
 		{
 			base.OnInit (e);
-			Page page = Page;
+			var page = Page;
 			if (page != null) {
 				page.PreLoad += new EventHandler (OnPagePreLoad);
 
@@ -398,7 +398,7 @@ namespace System.Web.UI.WebControls
 		
 		void Initialize ()
 		{
-			Page page = Page;
+			var page = Page;
 			if (page != null) {
 				if (!page.IsPostBack || (IsViewStateEnabled && !IsDataBound))
 					RequiresDataBinding = true;
@@ -480,7 +480,7 @@ namespace System.Web.UI.WebControls
 				if (boundDataSource == null)
 					throw new HttpException (Locale.GetText ("Coulnd't find a DataSource named '{0}'.", DataSourceID));
 			}
-			DataSourceView dsv = boundDataSource.GetView (String.Empty);
+			var dsv = boundDataSource.GetView (String.Empty);
 			dsv.DataSourceViewChanged += new EventHandler (OnDataSourceViewChanged);
 		}
 	}

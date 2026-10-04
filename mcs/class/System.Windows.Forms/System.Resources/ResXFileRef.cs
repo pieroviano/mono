@@ -64,11 +64,11 @@ namespace System.Resources {
 					return null;
 				}
 
-				string [] parts = ResXFileRef.Parse ((string) value);
+				var parts = ResXFileRef.Parse ((string) value);
 				if (parts.Length == 1)
 					throw new ArgumentException ("value");
 
-				string filename = parts [0];
+				var filename = parts [0];
 				if (Path.DirectorySeparatorChar == '/')
 					filename = filename.Replace ("\\", "/");
 
@@ -86,7 +86,7 @@ namespace System.Resources {
 					}
 				}
 
-				using (FileStream file = new FileStream (filename, FileMode.Open, FileAccess.Read, FileShare.Read)) {
+				using (var file = new FileStream (filename, FileMode.Open, FileAccess.Read, FileShare.Read)) {
 					buffer = new byte [file.Length];
 					file.Read(buffer, 0, (int) file.Length);
 				}
@@ -95,7 +95,7 @@ namespace System.Resources {
 					return buffer;
 
 				if (type == typeof (Bitmap) && Path.GetExtension (filename) == ".ico") {
-					MemoryStream ms = new MemoryStream (buffer);
+					var ms = new MemoryStream (buffer);
 					return new Icon (ms).ToBitmap ();
 				}
 
@@ -150,7 +150,7 @@ namespace System.Resources {
 		}
 
 		public override string ToString() {
-			StringBuilder sb = new StringBuilder ();
+			var sb = new StringBuilder ();
 			if (filename != null) {
 				sb.Append (filename);
 			}

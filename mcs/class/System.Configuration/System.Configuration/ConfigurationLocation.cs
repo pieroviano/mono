@@ -87,9 +87,9 @@ namespace System.Configuration {
 		{
 			if (configuration == null) {
 				if (!parentResolved) {
-					Configuration parentFile = parent.GetParentWithFile ();
+					var parentFile = parent.GetParentWithFile ();
 					if (parentFile != null) {
-						string parentRelativePath = parent.ConfigHost.GetConfigPathFromLocationSubPath (parent.LocationConfigPath, path);
+						var parentRelativePath = parent.ConfigHost.GetConfigPathFromLocationSubPath (parent.LocationConfigPath, path);
 						parent = parentFile.FindLocationConfiguration (parentRelativePath, parent);
 					}
 				}

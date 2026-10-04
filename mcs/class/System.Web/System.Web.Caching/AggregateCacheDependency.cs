@@ -51,8 +51,8 @@ namespace System.Web.Caching
 			if (dependencies.Length == 0)
 				return;
 			
-			bool somethingChanged = false;
-			foreach (CacheDependency dep in dependencies)
+			var somethingChanged = false;
+			foreach (var dep in dependencies)
 				if (dep == null || dep.IsUsed)
 					throw new InvalidOperationException ("Cache dependency already in use");
 				else if (!somethingChanged && dep != null && dep.HasChanged)
@@ -61,7 +61,7 @@ namespace System.Web.Caching
 			lock (dependenciesLock) {
 				if (this.dependencies == null)
 					this.dependencies = new List <CacheDependency> (dependencies.Length);
-				foreach (CacheDependency dep in dependencies)
+				foreach (var dep in dependencies)
 					if (dep != null)
 						dep.DependencyChanged += new EventHandler (OnAnyChanged);
 				
@@ -77,10 +77,10 @@ namespace System.Web.Caching
 			if (dependencies == null || dependencies.Count == 0)
 				return null;
 			
-			StringBuilder sb = new StringBuilder ();
+			var sb = new StringBuilder ();
 			lock (dependenciesLock) {
 				string depid = null;
-				foreach (CacheDependency dep in dependencies) {
+				foreach (var dep in dependencies) {
 					depid = dep.GetUniqueID ();
 					if (String.IsNullOrEmpty (depid))
 						return null;
@@ -102,7 +102,7 @@ namespace System.Web.Caching
 		internal override void DependencyDisposeInternal ()
 		{
 			if (dependencies != null && dependencies.Count > 0)
-				foreach (CacheDependency dep in dependencies)
+				foreach (var dep in dependencies)
 					dep.DependencyChanged -= new EventHandler (OnAnyChanged);
 		}
 		

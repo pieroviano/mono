@@ -40,7 +40,7 @@ namespace System.Web.UI.WebControls {
 
 		#region Public Instance Methods
 		public override System.ComponentModel.TypeConverter.StandardValuesCollection GetStandardValues(System.ComponentModel.ITypeDescriptorContext context) {
-			string[] values = new string[] { "_blank", "_parent", "_search", "_self", "_top"};
+			var values = new string[] { "_blank", "_parent", "_search", "_self", "_top"};
 			return new TypeConverter.StandardValuesCollection(values);
 		}
 

@@ -54,16 +54,16 @@ namespace System.Web.Security
 
 		void OnAuthorizeRequest (object sender, EventArgs args)
 		{
-			HttpApplication app = (HttpApplication) sender;
-			HttpContext context = app.Context;
+			var app = (HttpApplication) sender;
+			var context = app.Context;
 			if (context == null || context.SkipAuthorization)
 				return;
 
-			HttpRequest req = context.Request;
-			AuthorizationSection config = (AuthorizationSection) WebConfigurationManager.GetSection ("system.web/authorization", req.Path, context);
+			var req = context.Request;
+			var config = (AuthorizationSection) WebConfigurationManager.GetSection ("system.web/authorization", req.Path, context);
 			if (!config.IsValidUser (context.User, req.HttpMethod)) {
-				HttpException e = new HttpException (401, "Unauthorized");
-				HttpResponse response = context.Response;
+				var e = new HttpException (401, "Unauthorized");
+				var response = context.Response;
 				
 				response.StatusCode = 401;
 				response.Write (e.GetHtmlErrorMessage ());
@@ -71,9 +71,9 @@ namespace System.Web.Security
 			}
 		}
 
-		public static bool CheckUrlAccessForPrincipal (string virtualPath, IPrincipal user, string verb)
+		public static bool CheckUrlAccessForPrincipal (string virtualPath, IPrincipal? user, string verb)
 		{
-			AuthorizationSection config = (AuthorizationSection) WebConfigurationManager.GetSection ("system.web/authorization", virtualPath);
+			var config = (AuthorizationSection) WebConfigurationManager.GetSection ("system.web/authorization", virtualPath);
 
 			return config == null ? true : config.IsValidUser (user, verb);
 		}

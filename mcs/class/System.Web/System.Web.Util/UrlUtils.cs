@@ -43,11 +43,11 @@ namespace System.Web.Util {
 		// appRoot + SessionID + vpath
 		public static string InsertSessionId (string id, string path)
 		{
-			string dir = GetDirectory (path);
+			var dir = GetDirectory (path);
 			if (!dir.EndsWith ("/"))
 				dir += "/";
 
-			string appvpath = HttpRuntime.AppDomainAppVirtualPath;
+			var appvpath = HttpRuntime.AppDomainAppVirtualPath;
 			if (!appvpath.EndsWith ("/"))
 				appvpath += "/";
 
@@ -60,7 +60,7 @@ namespace System.Web.Util {
 			return Canonic (appvpath + "(" + id + ")/" + path);
 		}
 
-		public static string GetSessionId (string path)
+		public static string GetSessionId (string? path)
 		{
 #if TARGET_DOTNET
 			return null;
@@ -68,15 +68,15 @@ namespace System.Web.Util {
 			if (path == null)
 				return null;
 
-			string appvpath = HttpRuntime.AppDomainAppVirtualPath;
-			int appvpathlen = appvpath.Length;
+			var appvpath = HttpRuntime.AppDomainAppVirtualPath;
+			var appvpathlen = appvpath.Length;
 
 			if (path.Length <= appvpathlen)
 				return null;
 
 			path = path.Substring (appvpathlen);
 			
-			int len = path.Length;
+			var len = path.Length;
 			if (len == 0 || path [0] != '/') {
 				path = '/' + path;
 				len++;
@@ -90,7 +90,7 @@ namespace System.Web.Util {
 #endif
 		}
 
-		public static bool HasSessionId (string path)
+		public static bool HasSessionId (string? path)
 		{
 			if (path == null || path.Length < 5)
 				return false;
@@ -101,14 +101,14 @@ namespace System.Web.Util {
 		public static string RemoveSessionId (string base_path, string file_path)
 		{
 			// Caller did a GetSessionId first
-			int idx = base_path.IndexOf ("/(");
-			string dir = base_path.Substring (0, idx + 1);
+			var idx = base_path.IndexOf ("/(");
+			var dir = base_path.Substring (0, idx + 1);
 			if (!dir.EndsWith ("/"))
 				dir += "/";
 
 			idx = base_path.IndexOf (")/");
 			if (idx != -1 && base_path.Length > idx + 2) {
-				string dir2 = base_path.Substring (idx + 2);
+				var dir2 = base_path.Substring (idx + 2);
 				if (!dir2.EndsWith ("/"))
 					dir2 += "/";
 
@@ -118,12 +118,12 @@ namespace System.Web.Util {
 			return Canonic (dir + GetFile (file_path));
 		}
 
-		public static string Combine (string basePath, string relPath)
+		public static string Combine (string? basePath, string relPath)
 		{
 			if (relPath == null)
 				throw new ArgumentNullException ("relPath");
 
-			int rlength = relPath.Length;
+			var rlength = relPath.Length;
 			if (rlength == 0)
 				return "";
 
@@ -131,12 +131,12 @@ namespace System.Web.Util {
 			if (IsRooted (relPath))
 				return Canonic (relPath);
 
-			char first = relPath [0];
+			var first = relPath [0];
 			if (rlength < 3 || first == '~' || first == '/' || first == '\\') {
 				if (basePath == null || (basePath.Length == 1 && basePath [0] == '/'))
 					basePath = String.Empty;
 
-				string slash = (first == '/') ? "" : "/";
+				var slash = (first == '/') ? "" : "/";
 				if (first == '~') {
 					if (rlength == 1) {
 						relPath = "";
@@ -145,7 +145,7 @@ namespace System.Web.Util {
 						slash = "/";
 					}
 
-					string appvpath = HttpRuntime.AppDomainAppVirtualPath;
+					var appvpath = HttpRuntime.AppDomainAppVirtualPath;
 					if (appvpath.EndsWith ("/"))
 						slash = "";
 
@@ -168,15 +168,15 @@ namespace System.Web.Util {
 		
 		public static string Canonic (string path)
 		{
-			bool isRooted = IsRooted(path);
-			bool endsWithSlash = path.EndsWith("/");
-			string [] parts = path.Split (path_sep);
-			int end = parts.Length;
+			var isRooted = IsRooted(path);
+			var endsWithSlash = path.EndsWith("/");
+			var parts = path.Split (path_sep);
+			var end = parts.Length;
 			
-			int dest = 0;
+			var dest = 0;
 			
-			for (int i = 0; i < end; i++) {
-				string current = parts [i];
+			for (var i = 0; i < end; i++) {
+				var current = parts [i];
 
 				if (current.Length == 0)
 					continue;
@@ -202,7 +202,7 @@ namespace System.Web.Util {
 			if (dest == 0)
 				return "/";
 
-			string str = String.Join ("/", parts, 0, dest);
+			var str = String.Join ("/", parts, 0, dest);
 			str = RemoveDoubleSlashes (str);
 			if (isRooted)
 				str = "/" + str;
@@ -215,7 +215,7 @@ namespace System.Web.Util {
 		public static string GetDirectory (string url)
 		{
 			url = url.Replace('\\','/');
-			int last = url.LastIndexOf ('/');
+			var last = url.LastIndexOf ('/');
 
 			if (last > 0) {
 				if (last < url.Length)
@@ -230,8 +230,8 @@ namespace System.Web.Util {
 		{
 			// MS VirtualPathUtility removes duplicate '/'
 
-			int index = -1;
-			for (int i = 1; i < input.Length; i++)
+			var index = -1;
+			for (var i = 1; i < input.Length; i++)
 				if (input [i] == '/' && input [i - 1] == '/') {
 					index = i - 1;
 					break;
@@ -240,12 +240,12 @@ namespace System.Web.Util {
 			if (index == -1) // common case optimization
 				return input;
 
-			StringBuilder sb = new StringBuilder (input.Length);
+			var sb = new StringBuilder (input.Length);
 			sb.Append (input, 0, index);
 
-			for (int i = index; i < input.Length; i++) {
+			for (var i = index; i < input.Length; i++) {
 				if (input [i] == '/') {
-					int next = i + 1;
+					var next = i + 1;
 					if (next < input.Length && input [next] == '/')
 						continue;
 					sb.Append ('/');
@@ -261,7 +261,7 @@ namespace System.Web.Util {
 		public static string GetFile (string url)
 		{
 			url = url.Replace('\\','/');
-			int last = url.LastIndexOf ('/');
+			var last = url.LastIndexOf ('/');
 			if (last >= 0) {
 				if (url.Length == 1) // Empty file name instead of ArgumentOutOfRange
 					return "";
@@ -271,12 +271,12 @@ namespace System.Web.Util {
 			throw new ArgumentException (String.Format ("GetFile: `{0}' does not contain a /", url));
 		}
 		
-		public static bool IsRooted (string path)
+		public static bool IsRooted (string? path)
 		{
 			if (path == null || path.Length == 0)
 				return true;
 
-			char c = path [0];
+			var c = path [0];
 			if (c == '/' || c == '\\')
 				return true;
 
@@ -296,7 +296,7 @@ namespace System.Web.Util {
                                 return HttpRuntime.AppDomainAppVirtualPath;
 
                         if (path [1] == '/' || path [1] == '\\') {
-                                string appPath = HttpRuntime.AppDomainAppVirtualPath;
+                                var appPath = HttpRuntime.AppDomainAppVirtualPath;
                                 if (appPath.Length > 1) 
                                         return appPath + "/" + path.Substring (2);
                                 return "/" + path.Substring (2);
@@ -312,7 +312,7 @@ namespace System.Web.Util {
                                 return HttpRuntime.AppDomainAppPath;
 
                         if (path [1] == '/' || path [1] == '\\') {
-                                string appPath = HttpRuntime.AppDomainAppPath;
+                                var appPath = HttpRuntime.AppDomainAppPath;
                                 if (appPath.Length > 1)
                                         return appPath + "/" + path.Substring (2);
                                 return "/" + path.Substring (2);

@@ -199,12 +199,12 @@ namespace System.Web
 			w.RewritePath (path, rebaseClientPath);
 		}
 
-		public override void RewritePath (string filePath, string pathInfo, string queryString)
+		public override void RewritePath (string filePath, string? pathInfo, string? queryString)
 		{
 			w.RewritePath (filePath, pathInfo, queryString);
 		}
 
-		public override void RewritePath (string filePath, string pathInfo, string queryString, bool setClientFilePath)
+		public override void RewritePath (string filePath, string? pathInfo, string? queryString, bool setClientFilePath)
 		{
 			w.RewritePath (filePath, pathInfo, queryString, setClientFilePath);
 		}

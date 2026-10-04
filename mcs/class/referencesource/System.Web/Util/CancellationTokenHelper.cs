@@ -70,7 +70,7 @@ namespace System.Web.Util {
         // Disposes of the token.
         public void Dispose() {
             // Only allow a single call to Dispose.
-            int originalState = Interlocked.Exchange(ref _state, STATE_DISPOSING);
+            var originalState = Interlocked.Exchange(ref _state, STATE_DISPOSING);
             switch (originalState) {
                 case STATE_CREATED:
                 case STATE_CANCELED:
@@ -93,7 +93,7 @@ namespace System.Web.Util {
         }
 
         private static CancellationTokenHelper GetStaticDisposedHelper() {
-            CancellationTokenHelper helper = new CancellationTokenHelper(false);
+            var helper = new CancellationTokenHelper(false);
             helper.Dispose();
             return helper;
         }

@@ -67,13 +67,13 @@ namespace System.Resources {
 			return Type.GetType (typeString);
 		}
 
-		protected Type ResolveType (string typeString, AssemblyName [] assemblyNames) 
+		protected Type ResolveType (string typeString, AssemblyName []? assemblyNames) 
 		{
 			Type result = null;
 
 			if (assemblyNames != null) {
-				foreach (AssemblyName assem in assemblyNames) {
-						Assembly myAssembly = Assembly.Load (assem);
+				foreach (var assem in assemblyNames) {
+						var myAssembly = Assembly.Load (assem);
 						result = myAssembly.GetType (typeString, false);
 						if (result != null)
 							return result;
@@ -85,7 +85,7 @@ namespace System.Resources {
 			return result;
 		}
 
-		protected Type ResolveType (string typeString, ITypeResolutionService typeResolver) 
+		protected Type ResolveType (string typeString, ITypeResolutionService? typeResolver) 
 		{
 			Type result = null;
 

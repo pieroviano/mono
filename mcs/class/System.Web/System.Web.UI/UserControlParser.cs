@@ -52,7 +52,7 @@ namespace System.Web.UI
 			this.Dependencies = deps;
 		}
 
-		internal UserControlParser (VirtualPath virtualPath, string inputFile, HttpContext context, string type)
+		internal UserControlParser (VirtualPath virtualPath, string inputFile, HttpContext context, string? type)
 		{
 			VirtualPath = virtualPath;
 			Context = context;
@@ -89,7 +89,7 @@ namespace System.Web.UI
 		{
 			Context = context;
 
-			string fpath = context.Request.FilePath;
+			var fpath = context.Request.FilePath;
 			VirtualPath = new VirtualPath (fpath);
 			BaseVirtualDir = VirtualPathUtility.GetDirectory (fpath, false);
 
@@ -105,27 +105,27 @@ namespace System.Web.UI
 
 		internal static Type GetCompiledType (TextReader reader, int? inputHashCode, HttpContext context)
 		{
-			UserControlParser ucp = new UserControlParser (reader, inputHashCode, context);
+			var ucp = new UserControlParser (reader, inputHashCode, context);
 			return ucp.CompileIntoType ();
 		}
 		
 		internal static Type GetCompiledType (string virtualPath, string inputFile, List <string> deps, HttpContext context)
 		{
-			UserControlParser ucp = new UserControlParser (new VirtualPath (virtualPath), inputFile, deps, context);
+			var ucp = new UserControlParser (new VirtualPath (virtualPath), inputFile, deps, context);
 
 			return ucp.CompileIntoType ();
 		}
 
 		public static Type GetCompiledType (string virtualPath, string inputFile, HttpContext context)
 		{
-			UserControlParser ucp = new UserControlParser (new VirtualPath (virtualPath), inputFile, context);
+			var ucp = new UserControlParser (new VirtualPath (virtualPath), inputFile, context);
 
 			return ucp.CompileIntoType ();
 		}
 
 		internal override Type CompileIntoType ()
 		{
-			AspGenerator generator = new AspGenerator (this);
+			var generator = new AspGenerator (this);
 			return generator.GetCompiledType ();
 		}
 
@@ -145,7 +145,7 @@ namespace System.Web.UI
 
 		internal override Type DefaultBaseType {
 			get {
-				Type ret = PageParser.DefaultUserControlBaseType;
+				var ret = PageParser.DefaultUserControlBaseType;
 				if (ret == null)
 					return base.DefaultBaseType;
 

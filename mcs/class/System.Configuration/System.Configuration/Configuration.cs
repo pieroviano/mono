@@ -78,7 +78,7 @@ namespace System.Configuration {
 			this.configPath = parent.ConfigPath;
 		}
 		
-		internal Configuration (InternalConfigurationSystem system, string locationSubPath)
+		internal Configuration (InternalConfigurationSystem system, string? locationSubPath)
 		{
 			hasFile = true;
 			this.system = system;
@@ -98,21 +98,21 @@ namespace System.Configuration {
 		
 		internal Configuration FindLocationConfiguration (string relativePath, Configuration defaultConfiguration)
 		{
-			Configuration parentConfig = defaultConfiguration;
+			var parentConfig = defaultConfiguration;
 
 			if (!String.IsNullOrEmpty (LocationConfigPath)) {
-				Configuration parentFile = GetParentWithFile ();
+				var parentFile = GetParentWithFile ();
 				if (parentFile != null) {
-					string parentRelativePath = system.Host.GetConfigPathFromLocationSubPath (configPath, relativePath);
+					var parentRelativePath = system.Host.GetConfigPathFromLocationSubPath (configPath, relativePath);
 					parentConfig = parentFile.FindLocationConfiguration (parentRelativePath, defaultConfiguration);
 				}
 			}
 
-			string relConfigPath = configPath.Substring (1) + "/";
+			var relConfigPath = configPath.Substring (1) + "/";
 			if (relativePath.StartsWith (relConfigPath, StringComparison.Ordinal))
 				relativePath = relativePath.Substring (relConfigPath.Length);
 
-			ConfigurationLocation loc = Locations.FindBest (relativePath);
+			var loc = Locations.FindBest (relativePath);
 			if (loc == null)
 				return parentConfig;
 			
@@ -120,7 +120,7 @@ namespace System.Configuration {
 			return loc.OpenConfiguration ();
 		}
 		
-		internal void Init (IConfigSystem system, string configPath, Configuration parent)
+		internal void Init (IConfigSystem system, string configPath, Configuration? parent)
 		{
 			this.system = system;
 			this.configPath = configPath;
@@ -148,7 +148,7 @@ namespace System.Configuration {
 		
 		internal Configuration GetParentWithFile ()
 		{
-			Configuration parentFile = Parent;
+			var parentFile = Parent;
 			while (parentFile != null && !parentFile.HasFile)
 				parentFile = parentFile.Parent;
 			return parentFile;
@@ -168,7 +168,7 @@ namespace System.Configuration {
 
 		internal string GetLocationSubPath ()
 		{
-			Configuration confg = parent;
+			var confg = parent;
 			string path = null;
 			while (confg != null) {
 				path = confg.locationSubPath;
@@ -212,7 +212,7 @@ namespace System.Configuration {
 		public ContextInformation EvaluationContext {
 			get {
 				if (evaluationContext == null) {
-					object ctx = system.Host.CreateConfigurationContext (configPath, GetLocationSubPath() );
+					var ctx = system.Host.CreateConfigurationContext (configPath, GetLocationSubPath() );
 					evaluationContext = new ContextInformation (this, ctx);
 				}
 
@@ -253,12 +253,12 @@ namespace System.Configuration {
 		
 		public ConfigurationSection GetSection (string sectionName)
 		{
-			string[] parts = sectionName.Split ('/');
+			var parts = sectionName.Split ('/');
 			if (parts.Length == 1)
 				return Sections [parts[0]];
 
-			ConfigurationSectionGroup group = SectionGroups [parts[0]];
-			for (int n=1; group != null && n<parts.Length-1; n++)
+			var group = SectionGroups [parts[0]];
+			for (var n=1; group != null && n<parts.Length-1; n++)
 				group = group.SectionGroups [parts [n]];
 
 			if (group != null)
@@ -269,9 +269,9 @@ namespace System.Configuration {
 		
 		public ConfigurationSectionGroup GetSectionGroup (string sectionGroupName)
 		{
-			string[] parts = sectionGroupName.Split ('/');
-			ConfigurationSectionGroup group = SectionGroups [parts[0]];
-			for (int n=1; group != null && n<parts.Length; n++)
+			var parts = sectionGroupName.Split ('/');
+			var group = SectionGroups [parts[0]];
+			for (var n=1; group != null && n<parts.Length; n++)
 				group = group.SectionGroups [parts [n]];
 			return group;
 		}
@@ -282,10 +282,10 @@ namespace System.Configuration {
 			ConfigurationSection sec = data as ConfigurationSection;
 			if (sec != null || !createDefaultInstance) return sec;
 			
-			object secObj = config.CreateInstance ();
+			var secObj = config.CreateInstance ();
 			sec = secObj as ConfigurationSection;
 			if (sec == null) {
-				DefaultSection ds = new DefaultSection ();
+				var ds = new DefaultSection ();
 				ds.SectionHandler = secObj as IConfigurationSectionHandler;
 				sec = ds;
 			}
@@ -348,14 +348,14 @@ namespace System.Configuration {
 				throw new ConfigurationErrorsException ("The configuration section <" + name + "> cannot be defined inside a <location> element."); 
 
 			if (!system.Host.IsDefinitionAllowed (configPath, sec.SectionInformation.AllowDefinition, sec.SectionInformation.AllowExeDefinition)) {
-				object ctx = sec.SectionInformation.AllowExeDefinition != ConfigurationAllowExeDefinition.MachineToApplication ? (object) sec.SectionInformation.AllowExeDefinition : (object) sec.SectionInformation.AllowDefinition;
+				var ctx = sec.SectionInformation.AllowExeDefinition != ConfigurationAllowExeDefinition.MachineToApplication ? (object) sec.SectionInformation.AllowExeDefinition : (object) sec.SectionInformation.AllowDefinition;
 				throw new ConfigurationErrorsException ("The section <" + name + "> can't be defined in this configuration file (the allowed definition context is '" + ctx + "').");
 			}
 
 			if (sec.SectionInformation.Type == null)
 				sec.SectionInformation.Type = system.Host.GetConfigTypeName (sec.GetType ());
 
-			SectionInfo section = new SectionInfo (name, sec.SectionInformation);
+			var section = new SectionInfo (name, sec.SectionInformation);
 			section.StreamName = streamName;
 			section.ConfigHost = system.Host;
 			group.AddChild (section);
@@ -369,7 +369,7 @@ namespace System.Configuration {
 			if (sec.Type == null) sec.Type = system.Host.GetConfigTypeName (sec.GetType ());
 			sec.SetName (name);
 
-			SectionGroupInfo section = new SectionGroupInfo (name, sec.Type);
+			var section = new SectionGroupInfo (name, sec.Type);
 			section.StreamName = streamName;
 			section.ConfigHost = system.Host;
 			parentGroup.AddChild (section);
@@ -400,12 +400,12 @@ namespace System.Configuration {
 				return;
 			}
 
-			ConfigurationSaveEventHandler saveStart = SaveStart;
-			ConfigurationSaveEventHandler saveEnd = SaveEnd;
+			var saveStart = SaveStart;
+			var saveEnd = SaveEnd;
 			
 			object ctx = null;
 			Exception saveEx = null;
-			Stream stream = system.Host.OpenStreamForWrite (streamName, null, ref ctx);
+			var stream = system.Host.OpenStreamForWrite (streamName, null, ref ctx);
 			try {
 				if (saveStart != null)
 					saveStart (this, new ConfigurationSaveEventArgs (streamName, true, null, ctx));
@@ -449,7 +449,7 @@ namespace System.Configuration {
 
 		void Save (Stream stream, ConfigurationSaveMode mode, bool forceUpdateAll)
 		{
-			XmlTextWriter tw = new XmlTextWriter (new StreamWriter (stream));
+			var tw = new XmlTextWriter (new StreamWriter (stream));
 			tw.Formatting = Formatting.Indented;
 			try {
 				tw.WriteStartDocument ();

@@ -96,17 +96,17 @@ namespace System.Web.SessionState
 				connectionString = "Data Source=|DataDirectory|/ASPState.sqlite;Version=3";
 				dbProviderName = defaultDbFactoryTypeName;
 			} else {
-				string[] parts = connectionString.Split (';');
+				var parts = connectionString.Split (';');
 				var newCS = new List <string> ();
 				dbProviderName = null;
-				bool allowDb = sessionConfig.AllowCustomSqlDatabase;
+				var allowDb = sessionConfig.AllowCustomSqlDatabase;
 				
-				foreach (string p in parts) {
+				foreach (var p in parts) {
 					if (p.Trim ().Length == 0)
 						continue;
 					
 					if (p.StartsWith ("DbProviderName", StringComparison.OrdinalIgnoreCase)) {
-						int idx = p.IndexOf ('=');
+						var idx = p.IndexOf ('=');
 						if (idx < 0)
 							throw new ProviderException ("Invalid format for the 'DbProviderName' connection string parameter. Expected 'DbProviderName = value'.");
 
@@ -115,7 +115,7 @@ namespace System.Web.SessionState
 					}
 
 					if (!allowDb) {
-						string tmp = p.Trim ();
+						var tmp = p.Trim ();
 						if (tmp.StartsWith ("database", StringComparison.OrdinalIgnoreCase) ||
 						    tmp.StartsWith ("initial catalog", StringComparison.OrdinalIgnoreCase))
 							throw new ProviderException ("Specifying a custom database is not allowed. Set the allowCustomSqlDatabase attribute of the <system.web/sessionState> section to 'true' in order to use a custom database name.");
@@ -159,11 +159,11 @@ namespace System.Web.SessionState
 		{
 			DbCommand cmd;
 			DbCommand deleteCmd = null;
-			string sessItems = Serialize((SessionStateItemCollection)item.Items);
-			DbProviderFactory factory = ProviderFactory;
-			string appName = ApplicationName;
-			DbConnection conn = CreateConnection (factory);
-			DateTime now = DateTime.Now;			
+			var sessItems = Serialize((SessionStateItemCollection)item.Items);
+			var factory = ProviderFactory;
+			var appName = ApplicationName;
+			var conn = CreateConnection (factory);
+			var now = DateTime.Now;			
 			DbParameterCollection parameters;
 			
 			if (newItem) {	
@@ -213,19 +213,19 @@ namespace System.Web.SessionState
 			}
 		}
 
-		public override SessionStateStoreData GetItem (HttpContext context, string id, out bool locked, out TimeSpan lockAge,
+		public override SessionStateStoreData GetItem (HttpContext? context, string id, out bool locked, out TimeSpan lockAge,
 							       out object lockId, out SessionStateActions actionFlags)
 		{
 			return GetSessionStoreItem (false, context, id, out locked, out lockAge, out lockId, out actionFlags);
 		}
 
-		public override SessionStateStoreData GetItemExclusive (HttpContext context, string id, out bool locked,out TimeSpan lockAge,
+		public override SessionStateStoreData GetItemExclusive (HttpContext? context, string id, out bool locked,out TimeSpan lockAge,
 								       out object lockId, out SessionStateActions actionFlags)
 		{
 			return GetSessionStoreItem (true, context, id, out locked, out lockAge, out lockId, out actionFlags);
 		}
 
-		private SessionStateStoreData GetSessionStoreItem (bool lockRecord, HttpContext context, string id, out bool locked,
+		private SessionStateStoreData GetSessionStoreItem (bool lockRecord, HttpContext? context, string id, out bool locked,
 								   out TimeSpan lockAge, out object lockId, out SessionStateActions actionFlags)
 		{
 			SessionStateStoreData item = null;
@@ -234,18 +234,18 @@ namespace System.Web.SessionState
 			locked = false;
 			actionFlags = 0;
 
-			DbProviderFactory factory = ProviderFactory;
-			DbConnection conn = CreateConnection (factory);
-			string appName = ApplicationName;
+			var factory = ProviderFactory;
+			var conn = CreateConnection (factory);
+			var appName = ApplicationName;
 			DbCommand cmd = null;
 			DbDataReader reader = null;
 			DbParameterCollection parameters;
 			DateTime expires;
-			string serializedItems = String.Empty;
-			bool foundRecord = false;
-			bool deleteData = false;
-			int timeout = 0;
-			DateTime now = DateTime.Now;
+			var serializedItems = String.Empty;
+			var foundRecord = false;
+			var deleteData = false;
+			var timeout = 0;
+			var now = DateTime.Now;
 
 			try {
 				conn.Open();
@@ -331,7 +331,7 @@ namespace System.Web.SessionState
 			return item;
 		}
 
-		string Serialize (SessionStateItemCollection items)
+		string Serialize (SessionStateItemCollection? items)
 		{
 			GZipStream gzip = null;
 			Stream output;
@@ -362,7 +362,7 @@ namespace System.Web.SessionState
 			}
 		}
 
-		SessionStateStoreData Deserialize (HttpContext context, string serializedItems, int timeout)
+		SessionStateStoreData Deserialize (HttpContext? context, string serializedItems, int timeout)
 		{
 			MemoryStream ms = null;
 			Stream input;
@@ -398,12 +398,12 @@ namespace System.Web.SessionState
 
 		public override void ReleaseItemExclusive (HttpContext context, string id, object lockId)
 		{
-			DbProviderFactory factory = ProviderFactory;
-			DbConnection conn = CreateConnection (factory);
-			DbCommand cmd = CreateCommand (factory, conn,
+			var factory = ProviderFactory;
+			var conn = CreateConnection (factory);
+			var cmd = CreateCommand (factory, conn,
 						       "UPDATE Sessions SET Locked = 0, Expires = @Expires WHERE SessionId = @SessionId AND ApplicationName = @ApplicationName AND LockId = @LockId");
 
-			DbParameterCollection parameters = cmd.Parameters;
+			var parameters = cmd.Parameters;
 			
 			parameters.Add (CreateParameter <DateTime> (factory, "@Expires", DateTime.Now.AddMinutes(sessionConfig.Timeout.TotalMinutes)));
 			parameters.Add (CreateParameter <string> (factory, "@SessionId", id, 80));
@@ -422,12 +422,12 @@ namespace System.Web.SessionState
 
 		public override void RemoveItem (HttpContext context, string id, object lockId, SessionStateStoreData item)
 		{
-			DbProviderFactory factory = ProviderFactory;
-			DbConnection conn = CreateConnection (factory);
-			DbCommand cmd = CreateCommand (factory, conn,
+			var factory = ProviderFactory;
+			var conn = CreateConnection (factory);
+			var cmd = CreateCommand (factory, conn,
 						       "DELETE FROM Sessions WHERE SessionId = @SessionId AND ApplicationName = @ApplicationName AND LockId = @LockId");
 
-			DbParameterCollection parameters = cmd.Parameters;
+			var parameters = cmd.Parameters;
 			parameters.Add (CreateParameter <string> (factory, "@SessionId", id, 80));
 			parameters.Add (CreateParameter <string> (factory, "@ApplicationName", ApplicationName, 255));
 			parameters.Add (CreateParameter <int> (factory, "@LockId", (int)lockId));
@@ -444,13 +444,13 @@ namespace System.Web.SessionState
 
 		public override void CreateUninitializedItem (HttpContext context, string id, int timeout)
 		{
-			DbProviderFactory factory = ProviderFactory;
-			DbConnection conn = CreateConnection (factory);
-			DbCommand cmd = CreateCommand (factory, conn,
+			var factory = ProviderFactory;
+			var conn = CreateConnection (factory);
+			var cmd = CreateCommand (factory, conn,
 						       "INSERT INTO Sessions (SessionId, ApplicationName, Created, Expires, LockDate, LockId, Timeout, Locked, SessionItems, Flags) Values (@SessionId, @ApplicationName, @Created, @Expires, @LockDate, @LockId , @Timeout, @Locked, @SessionItems, @Flags)");
 
-			DateTime now = DateTime.Now;
-			DbParameterCollection parameters = cmd.Parameters;
+			var now = DateTime.Now;
+			var parameters = cmd.Parameters;
 			parameters.Add (CreateParameter <string> (factory, "@SessionId", id, 80));
 			parameters.Add (CreateParameter <string> (factory, "@ApplicationName", ApplicationName, 255));
 			parameters.Add (CreateParameter <DateTime> (factory, "@Created", now));
@@ -472,19 +472,19 @@ namespace System.Web.SessionState
 			}
 		}
 
-		public override SessionStateStoreData CreateNewStoreData (HttpContext context, int timeout)
+		public override SessionStateStoreData CreateNewStoreData (HttpContext? context, int timeout)
 		{
 			return new SessionStateStoreData (new SessionStateItemCollection (), SessionStateUtility.GetSessionStaticObjects (context), timeout);
 		}
 
 		public override void ResetItemTimeout (HttpContext context, string id)
 		{
-			DbProviderFactory factory = ProviderFactory;
-			DbConnection conn = CreateConnection (factory);
-			DbCommand cmd = CreateCommand (factory, conn,
+			var factory = ProviderFactory;
+			var conn = CreateConnection (factory);
+			var cmd = CreateCommand (factory, conn,
 						       "UPDATE Sessions SET Expires = @Expires WHERE SessionId = @SessionId AND ApplicationName = @ApplicationName");
 
-			DbParameterCollection parameters = cmd.Parameters;
+			var parameters = cmd.Parameters;
 			parameters.Add (CreateParameter <DateTime> (factory, "@Expires", DateTime.Now.AddMinutes (sessionConfig.Timeout.TotalMinutes)));
 			parameters.Add (CreateParameter <string> (factory, "@SessionId", id, 80));
 			parameters.Add (CreateParameter <string> (factory, "@ApplicationName", ApplicationName, 255));
@@ -534,7 +534,7 @@ namespace System.Web.SessionState
 		{
 			DbParameter param = factory.CreateParameter ();
 			param.ParameterName = name;
-			Type vt = typeof (ValueType);
+			var vt = typeof (ValueType);
 			
 			if (vt == typeof (string))
 				param.DbType = DbType.String;

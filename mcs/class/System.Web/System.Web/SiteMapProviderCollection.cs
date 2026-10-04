@@ -59,7 +59,7 @@ namespace System.Web {
 		
 		public void AddArray (SiteMapProvider[] providerArray)
 		{
-			foreach (SiteMapProvider p in providerArray)
+			foreach (var p in providerArray)
 				Add (p);
 		}
 		

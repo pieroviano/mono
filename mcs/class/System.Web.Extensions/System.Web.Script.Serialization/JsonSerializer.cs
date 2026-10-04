@@ -63,7 +63,7 @@ namespace System.Web.Script.Serialization
 			maxJsonLength = serializer.MaxJsonLength;
 		}
 
-		public void Serialize (object obj, StringBuilder output)
+		public void Serialize (object? obj, StringBuilder output)
 		{
 			if (output == null)
 				throw new ArgumentNullException ("output");
@@ -71,31 +71,31 @@ namespace System.Web.Script.Serialization
 			DoSerialize (obj, output);
 		}
 
-		public void Serialize (object obj, TextWriter output)
+		public void Serialize (object? obj, TextWriter output)
 		{
 			if (output == null)
 				throw new ArgumentNullException ("output");
 
-			StringBuilder sb = new StringBuilder ();
+			var sb = new StringBuilder ();
 			DoSerialize (obj, sb);
 			output.Write (sb.ToString ());
 		}
 
-		void DoSerialize (object obj, StringBuilder output)
+		void DoSerialize (object? obj, StringBuilder output)
 		{
 			recursionDepth = 0;
 			objectCache = new Dictionary <object, bool> ();
 			SerializeValue (obj, output);
 		}
 		
-		void SerializeValue (object obj, StringBuilder output)
+		void SerializeValue (object? obj, StringBuilder output)
 		{
 			recursionDepth++;
 			SerializeValueImpl (obj, output);
 			recursionDepth--;
 		}
 		
-		void SerializeValueImpl (object obj, StringBuilder output)
+		void SerializeValueImpl (object? obj, StringBuilder output)
 		{
 			if (recursionDepth > recursionLimit)
 				throw new ArgumentException ("Recursion limit has been exceeded while serializing object of type '{0}'", obj != null ? obj.GetType ().ToString () : "[null]");
@@ -105,10 +105,10 @@ namespace System.Web.Script.Serialization
 				return;
 			}
 
-			Type valueType = obj.GetType ();
-			JavaScriptConverter jsc = serializer.GetConverter (valueType);
+			var valueType = obj.GetType ();
+			var jsc = serializer.GetConverter (valueType);
 			if (jsc != null) {
-				IDictionary <string, object> result = jsc.Serialize (obj, serializer);
+				var result = jsc.Serialize (obj, serializer);
 
 				if (result == null) {
 					StringBuilderExtensions.AppendCount (output, maxJsonLength, "null");
@@ -116,7 +116,7 @@ namespace System.Web.Script.Serialization
 				}
 
 				if (typeResolver != null) {
-					string typeId = typeResolver.ResolveTypeId (valueType);
+					var typeId = typeResolver.ResolveTypeId (valueType);
 					if (!String.IsNullOrEmpty (typeId))
 						result [JavaScriptSerializer.SerializedTypeNameKey] = typeId;
 				}
@@ -125,7 +125,7 @@ namespace System.Web.Script.Serialization
 				return;
 			}
 
-			TypeCode typeCode = Type.GetTypeCode (valueType);
+			var typeCode = Type.GetTypeCode (valueType);
 			switch (typeCode) {
 				case TypeCode.String:
 					WriteValue (output, (string)obj);
@@ -191,14 +191,14 @@ namespace System.Web.Script.Serialization
 					throw new InvalidOperationException ("Circular reference detected.");
 				objectCache.Add (obj, true);
 
-				Type closedIDict = GetClosedIDictionaryBase(valueType);
+				var closedIDict = GetClosedIDictionaryBase(valueType);
 				if (closedIDict != null) {
 					if (serializeGenericDictionaryMethods == null)
 						serializeGenericDictionaryMethods = new Dictionary <Type, MethodInfo> ();
 
 					MethodInfo mi;
 					if (!serializeGenericDictionaryMethods.TryGetValue (closedIDict, out mi)) {
-						Type[] types = closedIDict.GetGenericArguments ();
+						var types = closedIDict.GetGenericArguments ();
 						mi = serializeGenericDictionary.MakeGenericMethod (types [0], types [1]);
 						serializeGenericDictionaryMethods.Add (closedIDict, mi);
 					}
@@ -229,7 +229,7 @@ namespace System.Web.Script.Serialization
 			if(t.IsGenericType && typeof (IDictionary <,>).IsAssignableFrom (t.GetGenericTypeDefinition ()))
 				return t;
 				
-			foreach(Type iface in t.GetInterfaces()) {
+			foreach(var iface in t.GetInterfaces()) {
 				if(iface.IsGenericType && typeof (IDictionary <,>).IsAssignableFrom (iface.GetGenericTypeDefinition ()))
 					return iface;
 			}
@@ -237,7 +237,7 @@ namespace System.Web.Script.Serialization
 			return null;
 		}
 
-		bool ShouldIgnoreMember (MemberInfo mi, out MethodInfo getMethod)
+		bool ShouldIgnoreMember (MemberInfo? mi, out MethodInfo getMethod)
 		{
 			getMethod = null;
 			if (mi == null)
@@ -296,9 +296,9 @@ namespace System.Web.Script.Serialization
 		{
 			StringBuilderExtensions.AppendCount (output, maxJsonLength, "{");
 
-			bool first = true;
+			var first = true;
 			if (typeResolver != null) {
-				string typeId = typeResolver.ResolveTypeId (type);
+				var typeId = typeResolver.ResolveTypeId (type);
 				if (!String.IsNullOrEmpty (typeId)) {
 					WriteDictionaryEntry (output, first, JavaScriptSerializer.SerializedTypeNameKey, typeId);
 					first = false;
@@ -317,7 +317,7 @@ namespace System.Web.Script.Serialization
 			MethodInfo getMethod;
 			string name;
 			
-			foreach (T mi in members) {
+			foreach (var mi in members) {
 				if (ShouldIgnoreMember (mi as MemberInfo, out getMethod))
 					continue;
 
@@ -336,8 +336,8 @@ namespace System.Web.Script.Serialization
 		void SerializeEnumerable (StringBuilder output, IEnumerable enumerable)
 		{
 			StringBuilderExtensions.AppendCount (output, maxJsonLength, "[");
-			bool first = true;
-			foreach (object value in enumerable) {
+			var first = true;
+			foreach (var value in enumerable) {
 				if (!first)
 					StringBuilderExtensions.AppendCount (output, maxJsonLength, ',');
 				SerializeValue (value, output);
@@ -351,7 +351,7 @@ namespace System.Web.Script.Serialization
 		void SerializeDictionary (StringBuilder output, IDictionary dict)
 		{
 			StringBuilderExtensions.AppendCount (output, maxJsonLength, "{");
-			bool first = true;
+			var first = true;
 			
 			foreach (DictionaryEntry entry in dict) {
 				WriteDictionaryEntry (output, first, entry.Key as string, entry.Value);
@@ -365,9 +365,9 @@ namespace System.Web.Script.Serialization
 		void SerializeGenericDictionary <TKey, TValue> (StringBuilder output, IDictionary <TKey, TValue> dict)
 		{
 			StringBuilderExtensions.AppendCount (output, maxJsonLength, "{");
-			bool first = true;
+			var first = true;
 			
-			foreach (KeyValuePair <TKey, TValue> kvp in dict) {
+			foreach (var kvp in dict) {
 				WriteDictionaryEntry (output, first, kvp.Key as string, kvp.Value);
 				if (first)
 					first = false;
@@ -376,7 +376,7 @@ namespace System.Web.Script.Serialization
 			StringBuilderExtensions.AppendCount (output, maxJsonLength, "}");
 		}
 
-		void WriteDictionaryEntry (StringBuilder output, bool skipComma, string key, object value)
+		void WriteDictionaryEntry (StringBuilder output, bool skipComma, string key, object? value)
 		{
 			if (key == null)
 				throw new InvalidOperationException ("Only dictionaries with keys convertible to string are supported.");
@@ -456,7 +456,7 @@ namespace System.Web.Script.Serialization
 			if (value < MinimumJavaScriptDate)
 				value = MinimumJavaScriptDate;
 
-			long ticks = (value.Ticks - InitialJavaScriptDateTicks) / (long)10000;
+			var ticks = (value.Ticks - InitialJavaScriptDateTicks) / (long)10000;
 			StringBuilderExtensions.AppendCount (output, maxJsonLength, "\"\\/Date(" + ticks + ")\\/\"");
 		}
 		
@@ -490,7 +490,7 @@ namespace System.Web.Script.Serialization
 			StringBuilderExtensions.AppendCount (output, maxJsonLength, "\"");
 
 			char c;
-			for (int i = 0; i < value.Length; i++) {
+			for (var i = 0; i < value.Length; i++) {
 				c = value [i];
 
 				switch (c) {
@@ -529,7 +529,7 @@ namespace System.Web.Script.Serialization
 							StringBuilderExtensions.AppendCount (output, maxJsonLength, c);
 						else {
 							output.Append("\\u00");
-							int intVal = (int) c;
+							var intVal = (int) c;
 							StringBuilderExtensions.AppendCount (output, maxJsonLength, (char) ('0' + (intVal >> 4)));
 							intVal &= 0xf;
 							StringBuilderExtensions.AppendCount (output, maxJsonLength, (char) (intVal < 10 ? '0' + intVal : 'a' + (intVal - 10)));

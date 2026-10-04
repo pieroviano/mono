@@ -38,7 +38,7 @@ namespace System.Web.Services.Description {
                     return;
                 }
             }
-            XmlSchemaImport newImport = new XmlSchemaImport();
+            var newImport = new XmlSchemaImport();
             newImport.Namespace = ns;
             schema.Includes.Add(newImport);
         }
@@ -71,7 +71,7 @@ namespace System.Web.Services.Description {
             return details;
         }
 
-        static string GetSchemaItem(XmlSchemaObject o, string ns, string details) {
+        static string GetSchemaItem(XmlSchemaObject? o, string? ns, string details) {
             if (o == null) {
                 return null;
             }
@@ -79,7 +79,7 @@ namespace System.Web.Services.Description {
                 o = o.Parent;
             }
             if (ns == null || ns.Length == 0) {
-                XmlSchemaObject tmp = o;
+                var tmp = o;
                 while (tmp.Parent != null) {
                     tmp = tmp.Parent;
                 }
@@ -95,9 +95,9 @@ namespace System.Web.Services.Description {
                 item = Res.GetString(Res.XmlSchemaNamedItem, ns, "group", ((XmlSchemaGroup)o).Name, details);
             }
             else if (o is XmlSchemaElement) {
-                XmlSchemaElement e = ((XmlSchemaElement)o);
+                var e = ((XmlSchemaElement)o);
                 if (e.Name == null || e.Name.Length == 0) {
-                    XmlQualifiedName parentName = GetParentName(o);
+                    var parentName = GetParentName(o);
                     // Element reference '{0}' declared in schema type '{1}' from namespace '{2}'
                     item = Res.GetString(Res.XmlSchemaElementReference, e.RefName.ToString(), parentName.Name, parentName.Namespace);
                 }
@@ -112,9 +112,9 @@ namespace System.Web.Services.Description {
                 item = Res.GetString(Res.XmlSchemaNamedItem, ns, "attributeGroup", ((XmlSchemaAttributeGroup)o).Name, details);
             }
             else if (o is XmlSchemaAttribute) {
-                XmlSchemaAttribute a = ((XmlSchemaAttribute)o);
+                var a = ((XmlSchemaAttribute)o);
                 if (a.Name == null || a.Name.Length == 0) {
-                    XmlQualifiedName parentName = GetParentName(o);
+                    var parentName = GetParentName(o);
                     // Attribure reference '{0}' declared in schema type '{1}' from namespace '{2}'
                     return Res.GetString(Res.XmlSchemaAttributeReference, a.RefName.ToString(), parentName.Name, parentName.Namespace);
                 }
@@ -124,12 +124,12 @@ namespace System.Web.Services.Description {
 
             }
             else if (o is XmlSchemaContent) {
-                XmlQualifiedName parentName = GetParentName(o);
+                var parentName = GetParentName(o);
                 // Check content definition of schema type '{0}' from namespace '{1}'. {2}
                 item = Res.GetString(Res.XmlSchemaContentDef, parentName.Name, parentName.Namespace, details);
             }
             else if (o is XmlSchemaExternal) {
-                string itemType = o is XmlSchemaImport ? "import" : o is XmlSchemaInclude ? "include" : o is XmlSchemaRedefine ? "redefine" : o.GetType().Name;
+                var itemType = o is XmlSchemaImport ? "import" : o is XmlSchemaInclude ? "include" : o is XmlSchemaRedefine ? "redefine" : o.GetType().Name;
                 item = Res.GetString(Res.XmlSchemaItem, ns, itemType, details);
             }
             else if (o is XmlSchema) {
@@ -145,7 +145,7 @@ namespace System.Web.Services.Description {
         internal static XmlQualifiedName GetParentName(XmlSchemaObject item) {
             while (item.Parent != null) {
                 if (item.Parent is XmlSchemaType) {
-                    XmlSchemaType type = (XmlSchemaType)item.Parent;
+                    var type = (XmlSchemaType)item.Parent;
                     if (type.Name != null && type.Name.Length != 0) {
                         return type.QualifiedName;
                     }

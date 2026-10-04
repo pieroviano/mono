@@ -52,7 +52,7 @@ namespace System.Configuration
 
 		internal static ProtectedConfigurationProvider GetProvider (string name, bool throwOnError)
 		{
-			ProtectedConfigurationProvider p = Providers[name];
+			var p = Providers[name];
 
 			if (p == null && throwOnError)
 				throw new Exception (String.Format ("The protection provider '{0}' was not found.", name));

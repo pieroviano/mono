@@ -98,7 +98,7 @@ namespace System.Web.UI
 			return pathOrName.Substring (0, pathOrName.Length - 2) + "debug.js";
 		}
 
-		internal static string GetScriptName (string releaseName, bool isDebugMode, string [] supportedUICultures, Assembly assembly, out WebResourceAttribute wra)
+		internal static string GetScriptName (string releaseName, bool isDebugMode, string []? supportedUICultures, Assembly? assembly, out WebResourceAttribute wra)
 		{
 			if (assembly != null)
 				VerifyAssemblyContainsResource (assembly, releaseName, out wra);
@@ -111,16 +111,16 @@ namespace System.Web.UI
 			if (releaseName.Length < 3 || !releaseName.EndsWith (".js", StringComparison.OrdinalIgnoreCase))
 				throw new InvalidOperationException (String.Format ("'{0}' is not a valid script path.  The path must end in '.js'.", releaseName));
 			
-			StringBuilder sb = new StringBuilder (releaseName);
+			var sb = new StringBuilder (releaseName);
 			sb.Length -= 3;
 			if (isDebugMode)
 				sb.Append (".debug");
-			string culture = Thread.CurrentThread.CurrentUICulture.Name;
+			var culture = Thread.CurrentThread.CurrentUICulture.Name;
 			if (supportedUICultures != null && Array.IndexOf<string> (supportedUICultures, culture) >= 0)
 				sb.AppendFormat (".{0}", culture);
 			sb.Append (".js");
 
-			string ret = sb.ToString ();
+			var ret = sb.ToString ();
 			WebResourceAttribute debugWra;
 			if (!CheckIfAssemblyContainsResource (assembly, ret, out debugWra))
 				return releaseName;
@@ -170,7 +170,7 @@ namespace System.Web.UI
 
 			public override int GetHashCode ()
 			{
-				int ret = 0;
+				var ret = 0;
 				if (Assembly != null)
 					ret ^= Assembly.GetHashCode ();
 				if (ResourceName != null)

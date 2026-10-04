@@ -57,20 +57,20 @@ namespace System.Web.Script.Services
 			}
 		}
 
-		public IDictionary <string, object> GetProfileDictionary (string[] properties)
+		public IDictionary <string, object> GetProfileDictionary (string[]? properties)
 		{
 			var ret = new Dictionary <string, object> ();
 
-			int len = properties != null ? properties.Length : 0;
+			var len = properties != null ? properties.Length : 0;
 			if (len <= 0)
 				return ret;
 
-			ProfileBase profile = HttpContext.Current.Profile;
+			var profile = HttpContext.Current.Profile;
 			string name;
 			int dot;
 			object value;
 			
-			for (int i = 0; i < len; i++) {
+			for (var i = 0; i < len; i++) {
 				name = properties [i];
 				dot = name.IndexOf ('.');
 				value = (dot > 0) ? profile.GetProfileGroup (name.Substring (0, dot)).GetPropertyValue (name.Substring (dot + 1)) : profile.GetPropertyValue (name);
@@ -86,15 +86,15 @@ namespace System.Web.Script.Services
 		}
 
 		[WebMethod ()]
-		public IDictionary<string, object> GetPropertiesForCurrentUser (string [] properties, bool authenticatedUserOnly) {
+		public IDictionary<string, object> GetPropertiesForCurrentUser (string []? properties, bool authenticatedUserOnly) {
 			if (properties == null)
 				return GetAllPropertiesForCurrentUser (authenticatedUserOnly);
 
-			string [] raProps = ScriptingProfileServiceSection.ReadAccessPropertiesNoCopy;
+			var raProps = ScriptingProfileServiceSection.ReadAccessPropertiesNoCopy;
 
 			List<string> list = null;
-			for (int i = 0; i < properties.Length; i++) {
-				string prop = properties [i];
+			for (var i = 0; i < properties.Length; i++) {
+				var prop = properties [i];
 				if (prop == null)
 					throw new ArgumentNullException ("properties[" + i + "]");
 
@@ -104,7 +104,7 @@ namespace System.Web.Script.Services
 				}
 				else if (list == null) {
 					list = new List<string> (properties.Length - 1);
-					for (int k = 0; k < i; k++)
+					for (var k = 0; k < i; k++)
 						list.Add (properties [k]);
 				}
 			}
@@ -113,21 +113,21 @@ namespace System.Web.Script.Services
 		}
 
 		[WebMethod ()]
-		public string [] SetPropertiesForCurrentUser (Dictionary<string, object> values, bool authenticatedUserOnly) {
+		public string [] SetPropertiesForCurrentUser (Dictionary<string, object>? values, bool authenticatedUserOnly) {
 			if (values == null)
 				return new string [] { };
 
-			string [] waProps = ScriptingProfileServiceSection.WriteAccessPropertiesNoCopy;
+			var waProps = ScriptingProfileServiceSection.WriteAccessPropertiesNoCopy;
 
-			List<string> list = new List<string> ();
-			ProfileBase profile = HttpContext.Current.Profile;
-			foreach (KeyValuePair<string, object> pair in values) {
+			var list = new List<string> ();
+			var profile = HttpContext.Current.Profile;
+			foreach (var pair in values) {
 				try {
-					string name = pair.Key;
+					var name = pair.Key;
 					if (!IsPropertyConfigured (waProps, name))
 						continue;
 
-					int dot = name.IndexOf ('.');
+					var dot = name.IndexOf ('.');
 					if (dot > 0)
 						profile.GetProfileGroup (name.Substring (0, dot))
 							.SetPropertyValue (name.Substring (dot + 1), pair.Value);
@@ -142,12 +142,12 @@ namespace System.Web.Script.Services
 			return list.ToArray ();
 		}
 
-		static bool IsPropertyConfigured (string [] configuredProperties, string propertyToCheck) {
+		static bool IsPropertyConfigured (string []? configuredProperties, string propertyToCheck) {
 			if (configuredProperties == null)
 				return false;
 
-			bool found = false;
-			for (int i = 0; !found && i < configuredProperties.Length; i++)
+			var found = false;
+			for (var i = 0; !found && i < configuredProperties.Length; i++)
 				found = configuredProperties [i].Equals (propertyToCheck, StringComparison.OrdinalIgnoreCase);
 
 			return found;

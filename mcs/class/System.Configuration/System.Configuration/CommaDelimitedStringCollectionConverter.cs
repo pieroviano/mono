@@ -40,17 +40,17 @@ namespace System.Configuration
 
 		public override object ConvertFrom (ITypeDescriptorContext ctx, CultureInfo ci, object data)
 		{
-			CommaDelimitedStringCollection col = new CommaDelimitedStringCollection ();
-			string[] datums = ((string)data).Split(',');
+			var col = new CommaDelimitedStringCollection ();
+			var datums = ((string)data).Split(',');
 
-			foreach (string datum in datums)
+			foreach (var datum in datums)
 				col.Add (datum.Trim());
 
 			col.UpdateStringHash ();
 			return col;
 		}
 
-		public override object ConvertTo (ITypeDescriptorContext ctx, CultureInfo ci, object value, Type type)
+		public override object ConvertTo (ITypeDescriptorContext ctx, CultureInfo ci, object? value, Type type)
 		{
 			if (value == null) return null;
 

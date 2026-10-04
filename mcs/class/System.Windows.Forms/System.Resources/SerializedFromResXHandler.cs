@@ -100,21 +100,21 @@ namespace System.Resources {
 				if (mime_type == ResXResourceWriter.SoapSerializedObjectMimeType) {
 					//FIXME: theres a test in the suite to check that a type converter converts from invariant string
 					//do i need to take the string culture into consideration here?
-					SoapFormatter soapF = new SoapFormatter ();
+					var soapF = new SoapFormatter ();
 					if (binder == null)
 						binder = new CustomBinder (typeResolver);
 					soapF.Binder = binder;
-					byte [] data = Convert.FromBase64String (dataString);
-					using (MemoryStream s = new MemoryStream (data)) {
+					var data = Convert.FromBase64String (dataString);
+					using (var s = new MemoryStream (data)) {
 						return soapF.Deserialize (s);
 					}
 				} else if (mime_type == ResXResourceWriter.BinSerializedObjectMimeType) {
-					BinaryFormatter binF = new BinaryFormatter ();
+					var binF = new BinaryFormatter ();
 					if (binder == null)
 						binder = new CustomBinder (typeResolver);
 					binF.Binder = binder;
-					byte [] data = Convert.FromBase64String (dataString);
-					using (MemoryStream s = new MemoryStream (data)) {
+					var data = Convert.FromBase64String (dataString);
+					using (var s = new MemoryStream (data)) {
 						return binF.Deserialize (s);
 					}
 				} else // invalid mime_type
@@ -141,7 +141,7 @@ namespace System.Resources {
 			{
 				Type typeToUse = null;
 
-				string typeString = String.Format("{0}, {1}", typeName, assemblyName);
+				var typeString = String.Format("{0}, {1}", typeName, assemblyName);
 
 				if (typeResolver != null)
 					typeToUse = typeResolver.GetType (typeString);

@@ -108,53 +108,53 @@ namespace System.Web
 				throw new ArgumentException ("Invalid path.");
 
 			string queryString = null;
-			int qmark = path.IndexOf ('?');
+			var qmark = path.IndexOf ('?');
 			if (qmark != -1) {
 				queryString = path.Substring (qmark + 1);
 				path = path.Substring (0, qmark);
 			}
 
-			string exePath = UrlUtils.Combine (context.Request.BaseVirtualDir, path);
-			bool cookieless = false;
+			var exePath = UrlUtils.Combine (context.Request.BaseVirtualDir, path);
+			var cookieless = false;
 			SessionStateSection config = WebConfigurationManager.GetWebApplicationSection ("system.web/sessionState") as SessionStateSection;
 			cookieless = SessionStateModule.IsCookieLess (context, config);
 			
 			if (cookieless)
 				exePath = UrlUtils.RemoveSessionId (VirtualPathUtility.GetDirectory (exePath), exePath);
 			
-			IHttpHandler handler = context.ApplicationInstance.GetHandler (context, exePath, true);
+			var handler = context.ApplicationInstance.GetHandler (context, exePath, true);
 			Execute (handler, writer, preserveForm, exePath, queryString, isTransfer, true);
 		}
 
-		internal void Execute (IHttpHandler handler, TextWriter writer, bool preserveForm, string exePath, string queryString, bool isTransfer, bool isInclude)
+		internal void Execute (IHttpHandler handler, TextWriter writer, bool preserveForm, string exePath, string? queryString, bool isTransfer, bool isInclude)
 		{
 			// If the target handler is not Page, the transfer must not occur.
 			// InTransit == true means we're being called from Transfer
-			bool is_static = (handler is StaticFileHandler);
+			var is_static = (handler is StaticFileHandler);
 			if (isTransfer && !(handler is Page) && !is_static)
 				throw new HttpException ("Transfer is only allowed to .aspx and static files");
 
-			HttpRequest request = context.Request;
-			string oldQuery = request.QueryStringRaw;
+			var request = context.Request;
+			var oldQuery = request.QueryStringRaw;
 			if (queryString != null) {
 				request.QueryStringRaw = queryString;
 			} else if (!preserveForm) {
 				request.QueryStringRaw = String.Empty;
 			}
 
-			HttpResponse response = context.Response;
+			var response = context.Response;
 			WebROCollection oldForm = request.Form as WebROCollection;
 			if (!preserveForm) {
 				request.SetForm (new WebROCollection ());
 			}
 
-			TextWriter output = writer;
+			var output = writer;
 			if (output == null)
 			 	output = response.Output;
 			
-			TextWriter previous = response.SetTextWriter (output);
-			string oldExePath = request.CurrentExecutionFilePath;
-			bool oldIsInclude = context.IsProcessingInclude;
+			var previous = response.SetTextWriter (output);
+			var oldExePath = request.CurrentExecutionFilePath;
+			var oldIsInclude = context.IsProcessingInclude;
 			try {
 				context.PushHandler (handler);
 				if (is_static) // Not sure if this should apply to Page too
@@ -166,8 +166,8 @@ namespace System.Web
 				if (!(handler is IHttpAsyncHandler)) {
 					handler.ProcessRequest (context);
 				} else {
-					IHttpAsyncHandler asyncHandler = (IHttpAsyncHandler) handler;
-					IAsyncResult ar = asyncHandler.BeginProcessRequest (context, null, null);
+					var asyncHandler = (IHttpAsyncHandler) handler;
+					var ar = asyncHandler.BeginProcessRequest (context, null, null);
 					WaitHandle asyncWaitHandle = ar != null ? ar.AsyncWaitHandle : null;
 					if (asyncWaitHandle != null)
 						asyncWaitHandle.WaitOne ();
@@ -199,7 +199,7 @@ namespace System.Web
 			return context.Error;
 		}
 
-		public string HtmlDecode (string s)
+		public string HtmlDecode (string? s)
 		{
 			return HttpUtility.HtmlDecode (s);
 		}
@@ -209,7 +209,7 @@ namespace System.Web
 			HttpUtility.HtmlDecode (s, output);
 		}
 
-		public string HtmlEncode (string s)
+		public string HtmlEncode (string? s)
 		{
 			return HttpUtility.HtmlEncode (s);
 		}
@@ -219,7 +219,7 @@ namespace System.Web
 			HttpUtility.HtmlEncode (s, output);
 		}
 
-		public string MapPath (string path)
+		public string MapPath (string? path)
 		{
 			return context.Request.MapPath (path);
 		}
@@ -277,11 +277,11 @@ namespace System.Web
 				throw new ArgumentNullException ("input");
 			if (input.Length < 1)
 				return new byte[0];
-			byte[] bytes = Encoding.ASCII.GetBytes (input);
-			int inputLength = input.Length - 1;
-			int equalsCount = (int)(((char)bytes[inputLength]) - 0x30);
-			char[] ret = new char[inputLength + equalsCount];
-			int i = 0;
+			var bytes = Encoding.ASCII.GetBytes (input);
+			var inputLength = input.Length - 1;
+			var equalsCount = (int)(((char)bytes[inputLength]) - 0x30);
+			var ret = new char[inputLength + equalsCount];
+			var i = 0;
 			for (; i < inputLength; i++) {
 				switch ((char)bytes[i]) {
 					case '-':
@@ -311,7 +311,7 @@ namespace System.Web
 				throw new ArgumentNullException ("input");
 			if (input.Length < 1)
 				return String.Empty;
-			string base64 = Convert.ToBase64String (input);
+			var base64 = Convert.ToBase64String (input);
 			int retlen;
 			if (base64 == null || (retlen = base64.Length) == 0)
 				return String.Empty;
@@ -326,14 +326,14 @@ namespace System.Web
 			// base64 string, and replaces them with a single digit
 			// that's the count of removed '=' characters (0 if none
 			// were removed)
-			int equalsCount = 0x30;
+			var equalsCount = 0x30;
 			while (retlen > 0 && base64[retlen - 1] == '=') {
 				equalsCount++;
 				retlen--;
 			}
-			char[] chars = new char[retlen + 1];
+			var chars = new char[retlen + 1];
 			chars[retlen] = (char)equalsCount;
-			for (int i = 0; i < retlen; i++) {
+			for (var i = 0; i < retlen; i++) {
 				switch (base64[i]) {
 					case '+':
 						chars[i] = '-';
@@ -351,42 +351,42 @@ namespace System.Web
 			return new string (chars);
 		}
 
-		public string UrlDecode (string s)
+		public string UrlDecode (string? s)
 		{
-			HttpRequest request = context.Request;
+			var request = context.Request;
 			if(request != null)
 				return HttpUtility.UrlDecode (s, request.ContentEncoding);
 			else
 				return HttpUtility.UrlDecode (s);
 		}
 
-		public void UrlDecode (string s, TextWriter output)
+		public void UrlDecode (string? s, TextWriter output)
 		{
 			if (s != null)
 				output.Write (UrlDecode (s));
 		}
 
-		public string UrlEncode (string s)
+		public string UrlEncode (string? s)
 		{
-			HttpResponse response = context.Response;
+			var response = context.Response;
 			if (response != null)
 				return HttpUtility.UrlEncode (s, response.ContentEncoding);
 			else
 				return HttpUtility.UrlEncode (s);
 		}
 
-		public void UrlEncode (string s, TextWriter output)
+		public void UrlEncode (string? s, TextWriter output)
 		{
 			if (s != null)
 				output.Write (UrlEncode (s));
 		}
 
-		public string UrlPathEncode (string s)
+		public string UrlPathEncode (string? s)
 		{
 			if (s == null)
 				return null;
 
-			int idx = s.IndexOf ('?');
+			var idx = s.IndexOf ('?');
 			string s2 = null;
 			if (idx != -1) {
 				s2 = s.Substring (0, idx);

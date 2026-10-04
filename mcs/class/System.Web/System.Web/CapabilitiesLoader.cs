@@ -56,7 +56,7 @@ namespace System.Web
 
 		public BrowserData (string pattern)
 		{
-			int norx = pattern.IndexOfAny (wildchars);
+			var norx = pattern.IndexOfAny (wildchars);
 			if (norx == -1) {
 				text = pattern;
 			} else {
@@ -129,7 +129,7 @@ namespace System.Web
 			return (string) data ["browser"];
 		}
 		
-		public bool IsMatch (string expression)
+		public bool IsMatch (string? expression)
 		{
 			if (expression == null || expression.Length == 0)
 				return false;
@@ -292,7 +292,7 @@ namespace System.Web
 			defaultCaps.Add ("type", "Unknown");
 		}
 		
-		public static Hashtable GetCapabilities (string userAgent)
+		public static Hashtable GetCapabilities (string? userAgent)
 		{
 			Init ();
 			if (userAgent != null)
@@ -332,8 +332,8 @@ namespace System.Web
 			lock (lockobj) {
 				if (loaded)
 					return;
-				string dir = HttpRuntime.MachineConfigurationDirectory;
-				string filepath = Path.Combine (dir, "browscap.ini");
+				var dir = HttpRuntime.MachineConfigurationDirectory;
+				var filepath = Path.Combine (dir, "browscap.ini");
 				if (!File.Exists (filepath)) {
 					// try removing the trailing version directory
 					dir = Path.GetDirectoryName (dir);
@@ -356,22 +356,22 @@ namespace System.Web
 			TextReader input = new StreamReader (File.OpenRead (filename));
 			using (input) {
 			string str;
-			Hashtable allhash = new Hashtable (StringComparer.OrdinalIgnoreCase);
-			int aux = 0;
-			ArrayList browserData = new ArrayList ();
+			var allhash = new Hashtable (StringComparer.OrdinalIgnoreCase);
+			var aux = 0;
+			var browserData = new ArrayList ();
 			while ((str = input.ReadLine ()) != null) {
 				if (str.Length == 0 || str [0] == ';')
 					continue;
 
-				string userAgent = str.Substring (1, str.Length - 2);
-				BrowserData data = new BrowserData (userAgent);
+				var userAgent = str.Substring (1, str.Length - 2);
+				var data = new BrowserData (userAgent);
 				ReadCapabilities (input, data);
 
 				/* Ignore default browser and file version information */
 				if (userAgent == "*" || userAgent == "GJK_Browscap_Version")
 					continue;
 
-				string key = data.GetBrowser ();
+				var key = data.GetBrowser ();
 				if (key == null || allhash.ContainsKey (key)) {
 					allhash.Add (aux++, data);
 					browserData.Add (data);
@@ -383,7 +383,7 @@ namespace System.Web
 
 			alldata = browserData;
 			foreach (BrowserData data in alldata) {
-				string pname = data.GetParentName ();
+				var pname = data.GetParentName ();
 				if (pname == null)
 					continue;
 

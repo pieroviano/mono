@@ -75,7 +75,7 @@ namespace System.Web.UI.WebControls
 		public override bool SupportsDisabledAttribute {
 			get { return RenderingCompatibilityLessThan40; }
 		}
-		protected override void LoadViewState (object savedState)
+		protected override void LoadViewState (object? savedState)
 		{
 			base.LoadViewState (savedState);
 
@@ -94,7 +94,7 @@ namespace System.Web.UI.WebControls
 			LiteralControl lc = obj as LiteralControl;
 
 			if (lc == null) {
-				string s = Text;
+				var s = Text;
 				if (s.Length != 0) {
 					Text = null;
 					Controls.Add (new LiteralControl (s));

@@ -89,8 +89,8 @@ namespace System.Web.Compilation
 			if (names.Count == 0)
 				return String.Empty;
 
-			int index = 0;
-			int valuesCount = values.Count;
+			var index = 0;
+			var valuesCount = values.Count;
 			foreach (Capture c in names) {
 				if (String.Compare (c.Value, name, StringComparison.OrdinalIgnoreCase) != 0) {
 					index++;
@@ -101,7 +101,7 @@ namespace System.Web.Compilation
 					return String.Empty;
 
 				if (isPath) {
-					string value = values [index].Value.Trim (directiveValueTrimChars);
+					var value = values [index].Value.Trim (directiveValueTrimChars);
 					if (String.IsNullOrEmpty (value))
 						return String.Empty;
 					
@@ -121,7 +121,7 @@ namespace System.Web.Compilation
 		
 		static void ExtractLanguage (string baseDirectory, CaptureCollection names, CaptureCollection values, TemplateBuildProvider bp)
 		{
-			string value = ExtractDirectiveAttribute (baseDirectory, "Language", names, values, false);
+			var value = ExtractDirectiveAttribute (baseDirectory, "Language", names, values, false);
 			if (String.IsNullOrEmpty (value))
 				return;
 
@@ -133,7 +133,7 @@ namespace System.Web.Compilation
 		static void ExtractPageOrMasterDependencies (string baseDirectory, CaptureCollection names, CaptureCollection values, TemplateBuildProvider bp)
 		{
 			ExtractLanguage (baseDirectory, names, values, bp);
-			string value = ExtractDirectiveAttribute (baseDirectory, "MasterPageFile", names, values);
+			var value = ExtractDirectiveAttribute (baseDirectory, "MasterPageFile", names, values);
 			if (!String.IsNullOrEmpty (value)) {
 				if (!bp.dependencies.ContainsKey (value))
 					bp.dependencies.Add (value, true);
@@ -144,11 +144,11 @@ namespace System.Web.Compilation
 
 		static void ExtractCodeBehind (string baseDirectory, CaptureCollection names, CaptureCollection values, TemplateBuildProvider bp)
 		{
-			string[] varray = new string [2];
+			var varray = new string [2];
 
 			varray [0] = ExtractDirectiveAttribute (baseDirectory, "CodeFile", names, values);
 			varray [1] = ExtractDirectiveAttribute (baseDirectory, "Src", names, values);
-			foreach (string value in varray) {
+			foreach (var value in varray) {
 				if (!String.IsNullOrEmpty (value)) {
 					if (!bp.dependencies.ContainsKey (value))
 						bp.dependencies.Add (value, true);
@@ -158,11 +158,11 @@ namespace System.Web.Compilation
 		
 		static void ExtractRegisterDependencies (string baseDirectory, CaptureCollection names, CaptureCollection values, TemplateBuildProvider bp)
 		{
-			string src = ExtractDirectiveAttribute (baseDirectory, "Src", names, values);
+			var src = ExtractDirectiveAttribute (baseDirectory, "Src", names, values);
 			if (String.IsNullOrEmpty (src))
 				return;
 			
-			string value = ExtractDirectiveAttribute (baseDirectory, "TagName", names, values);
+			var value = ExtractDirectiveAttribute (baseDirectory, "TagName", names, values);
 			if (String.IsNullOrEmpty (value))
 				return;
 
@@ -178,7 +178,7 @@ namespace System.Web.Compilation
 
 		static void ExtractPreviousPageTypeOrMasterTypeDependencies (string baseDirectory, CaptureCollection names, CaptureCollection values, TemplateBuildProvider bp)
 		{
-			string value = ExtractDirectiveAttribute (baseDirectory, "VirtualPath", names, values);
+			var value = ExtractDirectiveAttribute (baseDirectory, "VirtualPath", names, values);
 			if (String.IsNullOrEmpty (value))
 				return;
 
@@ -190,12 +190,12 @@ namespace System.Web.Compilation
 
 		static void ExtractReferenceDependencies (string baseDirectory, CaptureCollection names, CaptureCollection values, TemplateBuildProvider bp)
 		{
-			string control = ExtractDirectiveAttribute (baseDirectory, "Control", names, values);
-			string virtualPath = ExtractDirectiveAttribute (baseDirectory, "VirtualPath", names, values);
-			string page = ExtractDirectiveAttribute (baseDirectory, "Page", names, values);
-			bool controlEmpty = String.IsNullOrEmpty (control);
-			bool virtualPathEmpty = String.IsNullOrEmpty (virtualPath);
-			bool pageEmpty = String.IsNullOrEmpty (page);
+			var control = ExtractDirectiveAttribute (baseDirectory, "Control", names, values);
+			var virtualPath = ExtractDirectiveAttribute (baseDirectory, "VirtualPath", names, values);
+			var page = ExtractDirectiveAttribute (baseDirectory, "Page", names, values);
+			var controlEmpty = String.IsNullOrEmpty (control);
+			var virtualPathEmpty = String.IsNullOrEmpty (virtualPath);
+			var pageEmpty = String.IsNullOrEmpty (page);
 			
 			if (controlEmpty && virtualPathEmpty && pageEmpty)
 				return;
@@ -217,10 +217,10 @@ namespace System.Web.Compilation
 			bp.dependencies.Add (value, true);
 		}
 
-		IDictionary <string, bool> AddParsedDependencies (IDictionary <string, bool> dict)
+		IDictionary <string, bool> AddParsedDependencies (IDictionary <string, bool>? dict)
 		{
 			if (Parsed) {
-				List <string> deps = Parser.Dependencies;
+				var deps = Parser.Dependencies;
 				if (deps == null || deps.Count > 0)
 					return dict;
 				
@@ -250,24 +250,24 @@ namespace System.Web.Compilation
 			if (dependencies != null)
 				return AddParsedDependencies (dependencies);
 
-			string vpath = VirtualPath;
+			var vpath = VirtualPath;
 			if (String.IsNullOrEmpty (vpath))
 				return AddParsedDependencies (null);
 
-			VirtualPathProvider vpp = HostingEnvironment.VirtualPathProvider;
+			var vpp = HostingEnvironment.VirtualPathProvider;
 			if (!vpp.FileExists (vpath))
 				return AddParsedDependencies (null);
 			
-			VirtualFile vf = vpp.GetFile (vpath);
+			var vf = vpp.GetFile (vpath);
 			if (vf == null)
 				return AddParsedDependencies (null);
 
 			string input;
-			using (Stream st = vf.Open ()) {
+			using (var st = vf.Open ()) {
 				if (st == null || !st.CanRead)
 					return AddParsedDependencies (null);
 				
-				using (StreamReader sr = new StreamReader (st, WebEncoding.FileEncoding)) {
+				using (var sr = new StreamReader (st, WebEncoding.FileEncoding)) {
 					input = sr.ReadToEnd ();
 				}
 			}
@@ -275,7 +275,7 @@ namespace System.Web.Compilation
 			if (String.IsNullOrEmpty (input))
 				return AddParsedDependencies (null);
 
-			MatchCollection matches = AspGenerator.DirectiveRegex.Matches (input);
+			var matches = AspGenerator.DirectiveRegex.Matches (input);
 			if (matches == null || matches.Count == 0)
 				return AddParsedDependencies (null);
 			
@@ -284,7 +284,7 @@ namespace System.Web.Compilation
 			GroupCollection groups;
 			string directiveName;
 			ExtractDirectiveDependencies edd;
-			string baseDirectory = VirtualPathUtility.GetDirectory (vpath);
+			var baseDirectory = VirtualPathUtility.GetDirectory (vpath);
 			
 			foreach (Match match in matches) {
 				groups = match.Groups;
@@ -301,7 +301,7 @@ namespace System.Web.Compilation
 			return AddParsedDependencies (dependencies);
 		}
 		
-		protected override string GetClassType (BaseCompiler compiler, TemplateParser parser)
+		protected override string GetClassType (BaseCompiler? compiler, TemplateParser parser)
 		{
 			if (compiler != null)
 				return compiler.MainClassType;
@@ -309,7 +309,7 @@ namespace System.Web.Compilation
 			return null;
 		}
 		
-		protected override ICollection GetParserDependencies (TemplateParser parser)
+		protected override ICollection GetParserDependencies (TemplateParser? parser)
 		{
 			if (parser != null)
 				return parser.Dependencies;
@@ -317,7 +317,7 @@ namespace System.Web.Compilation
 			return null;
 		}
 		
-		protected override string GetParserLanguage (TemplateParser parser)
+		protected override string GetParserLanguage (TemplateParser? parser)
 		{
 			if (parser != null)
 				return parser.Language;
@@ -325,10 +325,10 @@ namespace System.Web.Compilation
 			return null;
 		}
 		
-		protected override string GetCodeBehindSource (TemplateParser parser)
+		protected override string GetCodeBehindSource (TemplateParser? parser)
 		{
 			if (parser != null) {
-				string codeBehind = parser.CodeBehindSource;
+				var codeBehind = parser.CodeBehindSource;
 				if (String.IsNullOrEmpty (codeBehind))
 					return null;				
 
@@ -338,7 +338,7 @@ namespace System.Web.Compilation
 			return null;
 		}
 		
-		protected override AspGenerator CreateAspGenerator (TemplateParser parser)
+		protected override AspGenerator CreateAspGenerator (TemplateParser? parser)
 		{
 			if (parser != null)
 				return new AspGenerator (parser);
@@ -346,17 +346,17 @@ namespace System.Web.Compilation
 			return null;
 		}
 
-		protected override List <string> GetReferencedAssemblies (TemplateParser parser)
+		protected override List <string> GetReferencedAssemblies (TemplateParser? parser)
 		{
 			if (parser == null)
 				return null;
 			
-			List <string> asms = parser.Assemblies;
+			var asms = parser.Assemblies;
 			if (asms == null || asms.Count == 0)
 				return null;
 
-			List <string> ret = new List <string> ();			
-			foreach (string loc in asms) {
+			var ret = new List <string> ();			
+			foreach (var loc in asms) {
 				if (String.IsNullOrEmpty (loc))
 					continue;
 

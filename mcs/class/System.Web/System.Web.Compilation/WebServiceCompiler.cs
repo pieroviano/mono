@@ -50,13 +50,13 @@ namespace System.Web.Compilation
 
 		public static Type CompileIntoType (SimpleWebHandlerParser wService)
 		{
-			WebServiceCompiler wsc = new WebServiceCompiler (wService);
+			var wsc = new WebServiceCompiler (wService);
 			return wsc.GetCompiledType ();
 		}
 
 		public override Type GetCompiledType ()
 		{
-			Type type = CachingCompiler.GetTypeFromCache (parser.PhysicalPath);
+			var type = CachingCompiler.GetTypeFromCache (parser.PhysicalPath);
 			if (type != null)
 				return type;
 
@@ -68,7 +68,7 @@ namespace System.Web.Compilation
 				return type;
 			}
 
-			string lang = parser.Language;
+			var lang = parser.Language;
 			string compilerOptions;
 			string tempdir;
 			int warningLevel;
@@ -85,7 +85,7 @@ namespace System.Web.Compilation
 			compilerParameters.CompilerOptions = compilerOptions;
 			compilerParameters.WarningLevel = warningLevel;
 
-			bool keepFiles = (Environment.GetEnvironmentVariable ("MONO_ASPNET_NODELETE") != null);
+			var keepFiles = (Environment.GetEnvironmentVariable ("MONO_ASPNET_NODELETE") != null);
 
 			TempFileCollection tempcoll;
 			tempcoll = new TempFileCollection (tempdir, keepFiles);
@@ -93,17 +93,17 @@ namespace System.Web.Compilation
 
 			inputFile = tempcoll.AddExtension (provider.FileExtension);
 			Stream st = File.OpenWrite (inputFile);
-			StreamWriter sw = new StreamWriter (st);
+			var sw = new StreamWriter (st);
 			sw.WriteLine (parser.Program);
 			sw.Close ();
 
-			string dllfilename = Path.GetFileName (tempcoll.AddExtension ("dll", true));
+			var dllfilename = Path.GetFileName (tempcoll.AddExtension ("dll", true));
 
 			compilerParameters.OutputAssembly = Path.Combine (DynamicDir (), dllfilename);
 
-			CompilerResults results = CachingCompiler.Compile (this);
+			var results = CachingCompiler.Compile (this);
 			CheckCompilerErrors (results);
-			Assembly assembly = results.CompiledAssembly;
+			var assembly = results.CompiledAssembly;
 			if (assembly == null) {
 				if (!File.Exists (compilerParameters.OutputAssembly))
 					throw new CompilationException (inputFile, results.Errors,

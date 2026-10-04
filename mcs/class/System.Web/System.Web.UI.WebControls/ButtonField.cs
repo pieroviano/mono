@@ -107,7 +107,7 @@ namespace System.Web.UI.WebControls
 			return base.Initialize (sortingEnabled, control);
 		}
 		
-		protected virtual string FormatDataTextValue (object dataTextValue)
+		protected virtual string FormatDataTextValue (object? dataTextValue)
 		{
 			if (DataTextFormatString.Length > 0)
 				return String.Format (DataTextFormatString, dataTextValue);
@@ -119,11 +119,11 @@ namespace System.Web.UI.WebControls
 		
 		public override void InitializeCell (DataControlFieldCell cell, DataControlCellType cellType, DataControlRowState rowState, int rowIndex)
 		{
-			string index = rowIndex.ToString ();
+			var index = rowIndex.ToString ();
 			
 			if (cellType == DataControlCellType.DataCell) {
 				
-				IDataControlButton btn = DataControlButton.CreateButton (ButtonType, Control, Text, ImageUrl, CommandName, index, false);
+				var btn = DataControlButton.CreateButton (ButtonType, Control, Text, ImageUrl, CommandName, index, false);
 
 				if (CausesValidation) {
 					btn.Container = null;
@@ -142,8 +142,8 @@ namespace System.Web.UI.WebControls
 		
 		void OnDataBindField (object sender, EventArgs e)
 		{
-			DataControlFieldCell cell = (DataControlFieldCell) sender;
-			IDataControlButton btn = (IDataControlButton) cell.Controls [0]; 
+			var cell = (DataControlFieldCell) sender;
+			var btn = (IDataControlButton) cell.Controls [0]; 
 			btn.Text = FormatDataTextValue (GetBoundValue (cell.BindingContainer));
 		}
 		
@@ -166,7 +166,7 @@ namespace System.Web.UI.WebControls
 		protected override void CopyProperties (DataControlField newField)
 		{
 			base.CopyProperties (newField);
-			ButtonField field = (ButtonField) newField;
+			var field = (ButtonField) newField;
 			field.CommandName = CommandName;
 			field.DataTextField = DataTextField;
 			field.DataTextFormatString = DataTextFormatString;

@@ -168,7 +168,7 @@ namespace System.Web.UI
 		internal override void LoadConfigDefaults ()
 		{
 			base.LoadConfigDefaults ();
-			PagesSection ps = PagesConfig;
+			var ps = PagesConfig;
 
 			notBuffer = !ps.Buffer;
 			enableSessionState = ps.EnableSessionState;
@@ -176,7 +176,7 @@ namespace System.Web.UI
 			smartNavigation = ps.SmartNavigation;
 			validateRequest = ps.ValidateRequest;
 
-			string value = ps.MasterPageFile;
+			var value = ps.MasterPageFile;
 			if (value.Length > 0)
 				masterPage = new MainDirectiveAttribute <string> (value, true);
 			
@@ -194,7 +194,7 @@ namespace System.Web.UI
 		
 		public static IHttpHandler GetCompiledPageInstance (string virtualPath, string inputFile, HttpContext context)
 		{
-			bool isFake = false;
+			var isFake = false;
 
 			if (!String.IsNullOrEmpty (inputFile))
 				isFake = !inputFile.StartsWith (HttpRuntime.AppDomainAppPath);
@@ -207,7 +207,7 @@ namespace System.Web.UI
 			// note: the 'enableSessionState' configuration property is
 			// processed in a case-sensitive manner while the page-level
 			// attribute is processed case-insensitive
-			string enabless = GetString (atts, "EnableSessionState", null);
+			var enabless = GetString (atts, "EnableSessionState", null);
 			if (enabless != null) {
 				if (String.Compare (enabless, "readonly", true, Helpers.InvariantCulture) == 0)
 					enableSessionState = PagesEnableSessionState.ReadOnly;
@@ -219,13 +219,13 @@ namespace System.Web.UI
 					ThrowParseException ("Invalid value for enableSessionState: " + enabless);
 			}
 
-			string value = GetString (atts, "CodePage", null);
+			var value = GetString (atts, "CodePage", null);
 			if (value != null) {
 				if (responseEncoding != null)
 					ThrowParseException ("CodePage and ResponseEncoding are mutually exclusive.");
 				
 				if (!BaseParser.IsExpression (value)) {
-					int cpval = -1;
+					var cpval = -1;
 
 					try {
 						cpval = (int) UInt32.Parse (value);
@@ -264,7 +264,7 @@ namespace System.Web.UI
 			value = GetString (atts, "LCID", null);
 			if (value != null) {
 				if (!BaseParser.IsExpression (value)) {
-					int parsedLcid = -1;
+					var parsedLcid = -1;
 					try {
 						parsedLcid = (int) UInt32.Parse (value);
 					} catch {
@@ -279,8 +279,8 @@ namespace System.Web.UI
 					}
 
 					if (ci.IsNeutralCulture) {
-						string suggestedCulture = SuggestCulture (ci.Name);
-						string fmt = "LCID attribute must be set to a non-neutral Culture.";
+						var suggestedCulture = SuggestCulture (ci.Name);
+						var fmt = "LCID attribute must be set to a non-neutral Culture.";
 						if (suggestedCulture != null) {
 							ThrowParseException (fmt + " Please try one of these: " +
 									     suggestedCulture);
@@ -307,8 +307,8 @@ namespace System.Web.UI
 				}
 
 				if (ci != null && ci.IsNeutralCulture) {
-					string suggestedCulture = SuggestCulture (culture);
-					string fmt = "Culture attribute must be set to a non-neutral Culture.";
+					var suggestedCulture = SuggestCulture (culture);
+					var fmt = "Culture attribute must be set to a non-neutral Culture.";
 					if (suggestedCulture != null)
 						ThrowParseException (fmt +
 								" Please try one of these: " + suggestedCulture);
@@ -328,8 +328,8 @@ namespace System.Web.UI
 				}
 
 				if (ci != null && ci.IsNeutralCulture) {
-					string suggestedCulture = SuggestCulture (uiculture);
-					string fmt = "UICulture attribute must be set to a non-neutral Culture.";
+					var suggestedCulture = SuggestCulture (uiculture);
+					var fmt = "UICulture attribute must be set to a non-neutral Culture.";
 					if (suggestedCulture != null)
 						ThrowParseException (fmt +
 								" Please try one of these: " + suggestedCulture);
@@ -338,16 +338,16 @@ namespace System.Web.UI
 				}
 			}
 
-			string tracestr = GetString (atts, "Trace", null);
+			var tracestr = GetString (atts, "Trace", null);
 			if (tracestr != null) {
 				haveTrace = true;
 				atts ["Trace"] = tracestr;
 				trace = GetBool (atts, "Trace", false);
 			}
 
-			string tracemodes = GetString (atts, "TraceMode", null);
+			var tracemodes = GetString (atts, "TraceMode", null);
 			if (tracemodes != null) {
-				bool valid = true;
+				var valid = true;
 				try {
 					tracemode = (TraceMode) Enum.Parse (typeof (TraceMode), tracemodes, false);
 				} catch {
@@ -366,7 +366,7 @@ namespace System.Web.UI
 				if (!BaseParser.IsExpression (value)) {
 					value = value.Trim ();
 					
-					ClientTargetSection sec = GetConfigSection <ClientTargetSection> ("system.web/clientTarget");
+					var sec = GetConfigSection <ClientTargetSection> ("system.web/clientTarget");
 					ClientTarget ct = null;
 				
 					if ((ct = sec.ClientTargets [value]) == null)
@@ -386,7 +386,7 @@ namespace System.Web.UI
 
 			notBuffer = !GetBool (atts, "Buffer", true);
 			async = GetBool (atts, "Async", false);
-			string asyncTimeoutVal = GetString (atts, "AsyncTimeout", null);
+			var asyncTimeoutVal = GetString (atts, "AsyncTimeout", null);
 			if (asyncTimeoutVal != null) {
 				try {
 					asyncTimeout = Int32.Parse (asyncTimeoutVal);
@@ -456,8 +456,8 @@ namespace System.Web.UI
 		
 		internal override void AddDirective (string directive, IDictionary atts)
 		{
-			bool isMasterType = String.Compare ("MasterType", directive, StringComparison.OrdinalIgnoreCase) == 0;
-			bool isPreviousPageType = isMasterType ? false : String.Compare ("PreviousPageType", directive,
+			var isMasterType = String.Compare ("MasterType", directive, StringComparison.OrdinalIgnoreCase) == 0;
+			var isPreviousPageType = isMasterType ? false : String.Compare ("PreviousPageType", directive,
 											 StringComparison.OrdinalIgnoreCase) == 0;
 
 			string typeName = null;
@@ -465,7 +465,7 @@ namespace System.Web.UI
 			Type type = null;
 			
 			if (isMasterType || isPreviousPageType) {
-				PageParserFilter pfilter = PageParserFilter;
+				var pfilter = PageParserFilter;
 				if (pfilter != null)
 					pfilter.PreprocessDirective (directive.ToLowerInvariant (), atts);
 				
@@ -504,7 +504,7 @@ namespace System.Web.UI
 		static string SuggestCulture (string culture)
 		{
 			string retval = null;
-			foreach (CultureInfo ci in CultureInfo.GetCultures (CultureTypes.SpecificCultures)) {
+			foreach (var ci in CultureInfo.GetCultures (CultureTypes.SpecificCultures)) {
 				if (ci.Name.StartsWith (culture))
 					retval += ci.Name + " ";
 			}
@@ -518,7 +518,7 @@ namespace System.Web.UI
 		
 		internal override Type CompileIntoType ()
 		{
-			AspGenerator generator = new AspGenerator (this);
+			var generator = new AspGenerator (this);
 			return generator.GetCompiledType ();
 		}
 
@@ -560,7 +560,7 @@ namespace System.Web.UI
 		}		
 		internal override Type DefaultBaseType {
 			get {
-				Type ret = DefaultPageBaseType;
+				var ret = DefaultPageBaseType;
 				if (ret == null)
 					return base.DefaultBaseType;
 
@@ -669,7 +669,7 @@ namespace System.Web.UI
 		internal Type PreviousPageType {
 			get {
 				if (previousPageType == null && !String.IsNullOrEmpty (previousPageVirtualPath)) {
-					string mappedPath = MapPath (previousPageVirtualPath);
+					var mappedPath = MapPath (previousPageVirtualPath);
 					previousPageType = GetCompiledPageType (previousPageVirtualPath, mappedPath, HttpContext.Current);
 				}
 				

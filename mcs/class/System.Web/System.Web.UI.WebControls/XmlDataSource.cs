@@ -108,17 +108,17 @@ namespace System.Web.UI.WebControls {
 		[MonoTODO ("schema")]
 		XmlDocument LoadXmlDocument ()
 		{
-			XmlDocument document = LoadFileOrData (DataFile, Data);
+			var document = LoadFileOrData (DataFile, Data);
 			if (String.IsNullOrEmpty (TransformFile) && String.IsNullOrEmpty (Transform))
 				return document;
 
-			XslTransform xslTransform = new XslTransform ();
-			XmlDocument xsl = LoadFileOrData (TransformFile, Transform);
+			var xslTransform = new XslTransform ();
+			var xsl = LoadFileOrData (TransformFile, Transform);
 			xslTransform.Load (xsl);
 
 			OnTransforming (EventArgs.Empty);
 
-			XmlDocument transofrResult = new XmlDocument ();
+			var transofrResult = new XmlDocument ();
 			transofrResult.Load (xslTransform.Transform (document, TransformArgumentList));
 
 			return transofrResult;
@@ -126,7 +126,7 @@ namespace System.Web.UI.WebControls {
 
 		XmlDocument LoadFileOrData (string filename, string data)
 		{
-			XmlDocument document = new XmlDocument ();
+			var document = new XmlDocument ();
 			if (!String.IsNullOrEmpty (filename)) {
 				Uri uri;
 				if (Uri.TryCreate (filename, UriKind.Absolute, out uri))
@@ -150,11 +150,11 @@ namespace System.Web.UI.WebControls {
 		string GetDataKey ()
 		{
 			if (String.IsNullOrEmpty (DataFile) && !String.IsNullOrEmpty (Data)) {
-				string key = CacheKeyContext;
+				var key = CacheKeyContext;
 				if (!String.IsNullOrEmpty (key))
 					return key;
 			}
-			Page page = Page;
+			var page = Page;
 			string p = page != null ? page.ToString () : "NullPage";
 			
 			return TemplateSourceDirectory + "_" + p + "_" + ID;
@@ -179,12 +179,12 @@ namespace System.Web.UI.WebControls {
 			if (DataCache == null)
 				return;
 
-			string dataKey = GetDataKey ();
+			var dataKey = GetDataKey ();
 			if (DataCache [dataKey] != null)
 				DataCache.Remove (dataKey);
 
-			DateTime absoluteExpiration = Cache.NoAbsoluteExpiration;
-			TimeSpan slidindExpiraion = Cache.NoSlidingExpiration;
+			var absoluteExpiration = Cache.NoAbsoluteExpiration;
+			var slidindExpiraion = Cache.NoSlidingExpiration;
 
 			if (CacheDuration > 0) {
 				if (CacheExpirationPolicy == DataSourceCacheExpiry.Absolute)

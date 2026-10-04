@@ -79,7 +79,7 @@ namespace System.Web.Services.Configuration
 				return;
 			}
 #endif
-            ContextInformation context = this.EvaluationContext;
+            var context = this.EvaluationContext;
             WebContext webContext = context.HostingContext as WebContext;
             if (webContext == null)
             {
@@ -89,7 +89,7 @@ namespace System.Web.Services.Configuration
             if (this.Href.Length == 0)
                 return;
 
-            string tempVirtualPath = webContext.Path;
+            var tempVirtualPath = webContext.Path;
             string path = null;
 
             // If the help page is not in the web app directory hierarchy (the case 
@@ -118,7 +118,7 @@ namespace System.Web.Services.Configuration
             this.needToValidateHref = true;
         }
 
-        protected override void Reset(ConfigurationElement parentElement)
+        protected override void Reset(ConfigurationElement? parentElement)
         {
             PartialTrustHelpers.FailIfInPartialTrustOutsideAspNet();
 
@@ -132,12 +132,12 @@ namespace System.Web.Services.Configuration
 				return;
 			}
 #endif
-            ContextInformation context = this.EvaluationContext;
+            var context = this.EvaluationContext;
             WebContext webContext = context.HostingContext as WebContext;
             if (webContext != null)
             {
-                string tempVirtualPath = webContext.Path;
-                bool isMachineConfig = tempVirtualPath == null;
+                var tempVirtualPath = webContext.Path;
+                var isMachineConfig = tempVirtualPath == null;
                 this.actualPath = parent.actualPath;
 
                 if (isMachineConfig)
@@ -167,7 +167,7 @@ namespace System.Web.Services.Configuration
         internal void SetDefaults()
         {
             PartialTrustHelpers.FailIfInPartialTrustOutsideAspNet();
-            HttpContext context = HttpContext.Current;
+            var context = HttpContext.Current;
             if (context != null)
             {
                 this.virtualPath = HostingEnvironment.ApplicationVirtualPath;
@@ -186,11 +186,11 @@ namespace System.Web.Services.Configuration
             this.needToValidateHref = true;
         }
 
-        static void CheckIOReadPermission(string path, string file) 
+        static void CheckIOReadPermission(string? path, string file) 
         {
             if (path == null)
                 return;
-            string fullPath = Path.GetFullPath(Path.Combine(path, file));
+            var fullPath = Path.GetFullPath(Path.Combine(path, file));
             new FileIOPermission(FileIOPermissionAccess.Read, fullPath).Demand();
         }
 

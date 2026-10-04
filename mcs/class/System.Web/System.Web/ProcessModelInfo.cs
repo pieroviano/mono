@@ -54,13 +54,13 @@ namespace System.Web {
 		[AspNetHostingPermission (SecurityAction.Demand, Level = AspNetHostingPermissionLevel.High)]
 		public static ProcessInfo GetCurrentProcessInfo ()
 		{
-			DateTime startTime = DateTime.Now;
-			TimeSpan age = TimeSpan.Zero;
-			int processID = 0;
-			int requestCount = 0;
-			ProcessStatus status = ProcessStatus.Terminated;
-			ProcessShutdownReason shutdownReason = ProcessShutdownReason.None;
-			int peakMemoryUsed = 0;
+			var startTime = DateTime.Now;
+			var age = TimeSpan.Zero;
+			var processID = 0;
+			var requestCount = 0;
+			var status = ProcessStatus.Terminated;
+			var shutdownReason = ProcessShutdownReason.None;
+			var peakMemoryUsed = 0;
 
 			return new ProcessInfo (startTime, age, processID, requestCount, status, shutdownReason, peakMemoryUsed);
 		}

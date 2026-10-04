@@ -66,7 +66,7 @@ namespace System.Configuration
 #if (CONFIGURATION_DEP)
 			/* ew.. this needs to be more efficient */
 			foreach (SettingsProvider provider in Providers) {
-				SettingsPropertyValueCollection cache = new SettingsPropertyValueCollection ();
+				var cache = new SettingsPropertyValueCollection ();
 
 				foreach (SettingsPropertyValue val in PropertyValues) {
 					if (val.Property.Provider == provider)

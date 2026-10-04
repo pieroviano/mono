@@ -63,7 +63,7 @@ namespace System.Web.UI {
         /// <internalonly/>
         /// <devdoc>
         /// </devdoc>
-        public override bool Equals(object obj) {
+        public override bool Equals(object? obj) {
             if (obj == this) {
                 return true;
             }

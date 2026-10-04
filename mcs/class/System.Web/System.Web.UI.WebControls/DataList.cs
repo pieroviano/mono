@@ -115,7 +115,7 @@ namespace System.Web.UI.WebControls
 		[WebCategory ("Misc")]
 		public virtual int EditItemIndex {
 			get {
-				object o = ViewState ["EditItemIndex"];
+				var o = ViewState ["EditItemIndex"];
 				return (o == null) ? -1 : (int) o;
 			}
 			set {
@@ -158,7 +158,7 @@ namespace System.Web.UI.WebControls
 		[WebCategory ("Misc")]
 		public virtual bool ExtractTemplateRows {
 			get {
-				object o = ViewState ["ExtractTemplateRows"];
+				var o = ViewState ["ExtractTemplateRows"];
 				return (o == null) ? false : (bool) o;
 			}
 			set { ViewState ["ExtractTemplateRows"] = value; }
@@ -276,7 +276,7 @@ namespace System.Web.UI.WebControls
 		[WebCategory ("Layout")]
 		public virtual int RepeatColumns {
 			get {
-				object o = ViewState ["RepeatColumns"];
+				var o = ViewState ["RepeatColumns"];
 				return (o == null) ? 0 : (int) o;
 			}
 			set { 
@@ -292,7 +292,7 @@ namespace System.Web.UI.WebControls
 		[WebCategory ("Layout")]
 		public virtual RepeatDirection RepeatDirection {
 			get {
-				object o = ViewState ["RepeatDirection"];
+				var o = ViewState ["RepeatDirection"];
 				return (o == null) ? RepeatDirection.Vertical : (RepeatDirection) o;
 			}
 			set { ViewState ["RepeatDirection"] = value; }
@@ -303,7 +303,7 @@ namespace System.Web.UI.WebControls
 		[WebCategory ("Layout")]
 		public virtual RepeatLayout RepeatLayout {
 			get {
-				object o = ViewState ["RepeatLayout"];
+				var o = ViewState ["RepeatLayout"];
 				return (o == null) ? RepeatLayout.Table : (RepeatLayout) o;
 			}
 			set {
@@ -319,7 +319,7 @@ namespace System.Web.UI.WebControls
 		[WebCategory ("Layout")]
 		public virtual int SelectedIndex {
 			get {
-				object o = ViewState ["SelectedIndex"];
+				var o = ViewState ["SelectedIndex"];
 				return (o == null) ? -1 : (int) o;
 			}
 			set {
@@ -404,7 +404,7 @@ namespace System.Web.UI.WebControls
 		[WebCategory ("Appearance")]
 		public virtual bool ShowFooter {
 			get {
-				object o = ViewState ["ShowFooter"];
+				var o = ViewState ["ShowFooter"];
 				return (o == null) ? true : (bool) o;
 			}
 			set { ViewState ["ShowFooter"] = value; }
@@ -415,7 +415,7 @@ namespace System.Web.UI.WebControls
 		[WebCategory ("Appearance")]
 		public virtual bool ShowHeader {
 			get {
-				object o = ViewState ["ShowHeader"];
+				var o = ViewState ["ShowHeader"];
 				return (o == null) ? true : (bool) o;
 			}
 			set { ViewState ["ShowHeader"] = value; }
@@ -428,7 +428,7 @@ namespace System.Web.UI.WebControls
 				if (DataKeyField.Length == 0)
 					throw new InvalidOperationException (Locale.GetText ("No DataKeyField present."));
 
-				int idx = SelectedIndex;
+				var idx = SelectedIndex;
 				if ((idx >= 0) && (idx < DataKeys.Count))
 					return DataKeys [idx];
 
@@ -455,10 +455,10 @@ namespace System.Web.UI.WebControls
 
 		void DoItem (int i, ListItemType t, object d, bool databind)
 		{
-			DataListItem itm = CreateItem (i, t);
+			var itm = CreateItem (i, t);
 			if (databind)
 				itm.DataItem = d;
-			DataListItemEventArgs e = new DataListItemEventArgs (itm);
+			var e = new DataListItemEventArgs (itm);
 			InitializeItem (itm);
 			
 			//
@@ -512,12 +512,12 @@ namespace System.Web.UI.WebControls
 				DoItem (-1, ListItemType.Header, null, useDataSource);
 
 			// items
-			int selected_index = SelectedIndex;
-			int edit_item_index = EditItemIndex;
+			var selected_index = SelectedIndex;
+			var edit_item_index = EditItemIndex;
 			ListItemType type;
 			if (ds != null) {
-				string key = DataKeyField;
-				foreach (object o in ds) {
+				var key = DataKeyField;
+				foreach (var o in ds) {
 					if (useDataSource && !String.IsNullOrEmpty (key))
 						keys.Add (DataBinder.GetPropertyValue (o, key));
 					type = ListItemType.Item;
@@ -532,7 +532,7 @@ namespace System.Web.UI.WebControls
 					idx++;
 				}
 			} else {
-				for (int i = 0; i < idx; i++) {
+				for (var i = 0; i < idx; i++) {
 					type = ListItemType.Item;
 					if (i == edit_item_index) 
 						type = ListItemType.EditItem;
@@ -554,7 +554,7 @@ namespace System.Web.UI.WebControls
 		protected override Style CreateControlStyle ()
 		{
 			// not kept (directly) in the DataList ViewState
-			TableStyle tableStyle = new TableStyle ();
+			var tableStyle = new TableStyle ();
 			tableStyle.CellSpacing = 0;
 			return tableStyle;
 		}
@@ -599,7 +599,7 @@ namespace System.Web.UI.WebControls
 
 		protected override void LoadViewState (object savedState)
 		{
-			object[] state = (object[]) savedState;
+			var state = (object[]) savedState;
 			base.LoadViewState (state [0]);
 			if (state [1] != null)
 				ItemStyle.LoadViewState (state [1]);
@@ -625,8 +625,8 @@ namespace System.Web.UI.WebControls
 			if (dlca == null)
 				return false;
 
-			string cn = dlca.CommandName;
-			CultureInfo inv = Helpers.InvariantCulture;
+			var cn = dlca.CommandName;
+			var inv = Helpers.InvariantCulture;
 
 			OnItemCommand (dlca);
 			if (String.Compare (cn, CancelCommandName, true, inv) == 0)
@@ -669,7 +669,7 @@ namespace System.Web.UI.WebControls
 		{
 			// EditItemIndex and SelectedIndex now use the Control State (i.e not the
 			// View State)
-			Page page = Page;
+			var page = Page;
 			if (page != null)
 				page.RegisterRequiresControlState (this);
 			base.OnInit (e);
@@ -769,7 +769,7 @@ namespace System.Web.UI.WebControls
 			if (Items.Count == 0)
 				return;			
 
-			RepeatInfo ri = new RepeatInfo ();
+			var ri = new RepeatInfo ();
 			ri.RepeatColumns = RepeatColumns;
 			ri.RepeatDirection = RepeatDirection;
 			ri.RepeatLayout = RepeatLayout;
@@ -791,7 +791,7 @@ for (int i=0; i < Items.Count; i++) {
 	Console.WriteLine ("{0}: Index {1}, Type {2}", i, dli.ItemIndex, dli.ItemType);
 }
 */
-			bool extract = ExtractTemplateRows;
+			var extract = ExtractTemplateRows;
 			if (extract) {
 				ri.OuterTableImplied = true;
 				writer.AddAttribute (HtmlTextWriterAttribute.Id, ClientID);
@@ -806,7 +806,7 @@ for (int i=0; i < Items.Count; i++) {
 
 		protected override object SaveViewState ()
 		{
-			object[] state = new object [9];
+			var state = new object [9];
 			state[0] = base.SaveViewState ();
 			if (itemStyle != null)
 				state [1] = itemStyle.SaveViewState ();
@@ -917,7 +917,7 @@ for (int i=0; i < Items.Count; i++) {
 		int IRepeatInfoUser.RepeatedItemCount {
 			get {
 				if (idx == -1) {
-					object o = ViewState ["Items"];
+					var o = ViewState ["Items"];
 					idx = (o == null) ? 0 : (int) o;
 				}
 				return idx;
@@ -964,7 +964,7 @@ for (int i=0; i < Items.Count; i++) {
 		// Header and Footer don't have a "real" index (-1)
 		DataListItem FindFirstItem (ListItemType itemType)
 		{
-			for (int i = 0; i < Controls.Count; i++) {
+			for (var i = 0; i < Controls.Count; i++) {
 				DataListItem item = (Controls [i] as DataListItem);
 				if ((item != null) && (item.ItemType == itemType))
 					return item;
@@ -975,7 +975,7 @@ for (int i=0; i < Items.Count; i++) {
 		// Both Type and Index must match (e.g. Separator)
 		DataListItem FindSpecificItem (ListItemType itemType, int repeatIndex)
 		{
-			for (int i = 0; i < Controls.Count; i++) {
+			for (var i = 0; i < Controls.Count; i++) {
 				DataListItem item = (Controls [i] as DataListItem);
 				if ((item != null) && (item.ItemType == itemType) && (item.ItemIndex == repeatIndex))
 					return item;
@@ -986,7 +986,7 @@ for (int i=0; i < Items.Count; i++) {
 		// we get call for Item even for AlternatingItem :(
 		DataListItem FindBestItem (int repeatIndex)
 		{
-			for (int i = 0; i < Controls.Count; i++) {
+			for (var i = 0; i < Controls.Count; i++) {
 				DataListItem item = (Controls [i] as DataListItem);
 				if ((item != null) && (item.ItemIndex == repeatIndex)) {
 					switch (item.ItemType) {
@@ -1027,11 +1027,11 @@ for (int i=0; i < Items.Count; i++) {
 			}
 
 			if (item != null) {
-				bool extract = ExtractTemplateRows;
-				bool table = (RepeatLayout == RepeatLayout.Table);
+				var extract = ExtractTemplateRows;
+				var table = (RepeatLayout == RepeatLayout.Table);
 				if (!table || extract) {
 					// sadly RepeatInfo doesn't support Style for RepeatLayout.Flow
-					Style s = (this as IRepeatInfoUser).GetItemStyle (itemType, repeatIndex);
+					var s = (this as IRepeatInfoUser).GetItemStyle (itemType, repeatIndex);
 					if (s != null)
 						item.ControlStyle.CopyFrom (s);
 				}

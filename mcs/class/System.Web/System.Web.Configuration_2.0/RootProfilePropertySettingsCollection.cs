@@ -63,7 +63,7 @@ namespace System.Web.Configuration
 			if (Count != col.Count)
 				return false;
 
-			for (int n = 0; n < Count; n++) {
+			for (var n = 0; n < Count; n++) {
 				if (!BaseGet (n).Equals (col.BaseGet (n)))
 					return false;
 			}
@@ -72,8 +72,8 @@ namespace System.Web.Configuration
 
 		public override int GetHashCode ()
 		{
-			int code = 0;
-			for (int n = 0; n < Count; n++)
+			var code = 0;
+			for (var n = 0; n < Count; n++)
 				code += BaseGet (n).GetHashCode ();
 			return code;
 		}
@@ -87,7 +87,7 @@ namespace System.Web.Configuration
 		protected override bool OnDeserializeUnrecognizedElement (string elementName, XmlReader reader)
 		{
 			if (elementName == "group") {
-				ProfileGroupSettings newSettings = new ProfileGroupSettings ();
+				var newSettings = new ProfileGroupSettings ();
 				newSettings.DoDeserialize (reader);
 				GroupSettings.AddNewSettings (newSettings);
 				
@@ -134,7 +134,7 @@ namespace System.Web.Configuration
 		{
 			base.Reset (parentElement);
 
-			RootProfilePropertySettingsCollection root = (RootProfilePropertySettingsCollection) parentElement;
+			var root = (RootProfilePropertySettingsCollection) parentElement;
 			if (root == null)
 				return;
 

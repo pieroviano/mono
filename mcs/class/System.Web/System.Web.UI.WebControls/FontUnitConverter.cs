@@ -58,7 +58,7 @@ namespace System.Web.UI.WebControls
 			return base.CanConvertTo (context, destinationType);
 		}
 
-		public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value) 
+		public override object ConvertFrom(ITypeDescriptorContext context, System.Globalization.CultureInfo? culture, object? value) 
 		{
 			string	s;
 
@@ -82,7 +82,7 @@ namespace System.Web.UI.WebControls
 			return FontUnit.Parse(s, culture);
 		}
 
-		public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo culture, object value, Type destinationType) 
+		public override object ConvertTo(ITypeDescriptorContext context, System.Globalization.CultureInfo? culture, object? value, Type destinationType) 
 		{
 			FontUnit	fu;
 
@@ -103,10 +103,10 @@ namespace System.Web.UI.WebControls
 
 		public override System.ComponentModel.TypeConverter.StandardValuesCollection GetStandardValues(ITypeDescriptorContext context) 
 		{
-			PropertyDescriptorCollection props = TypeDescriptor.GetProperties (typeof (FontUnit));
-			ArrayList vals = new ArrayList ();
+			var props = TypeDescriptor.GetProperties (typeof (FontUnit));
+			var vals = new ArrayList ();
                 
-			for (int i = 0; i < props.Count; i++)
+			for (var i = 0; i < props.Count; i++)
 				vals.Add (props [i].GetValue (null));
 			return new StandardValuesCollection (vals);
 		}

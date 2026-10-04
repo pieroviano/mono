@@ -82,14 +82,14 @@ namespace System.Web
 				names[0] = "*";
 			}
 			else {
-				int builtin_count = ((vary_by_accept ? 1 : 0)
+				var builtin_count = ((vary_by_accept ? 1 : 0)
 						     + (vary_by_user_agent ? 1 : 0)
 						     + (vary_by_user_charset ? 1 : 0)
 						     + (vary_by_user_language ? 1 : 0));
 
 				names = new string [fields.Count + builtin_count];
 
-				int i = 0;
+				var i = 0;
 				if (vary_by_accept) names[i++] = "Accept";
 				if (vary_by_user_agent) names[i++] = "User-Agent";
 				if (vary_by_user_charset) names[i++] = "Accept-Charset";

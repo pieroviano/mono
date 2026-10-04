@@ -86,8 +86,8 @@ namespace System.Web.Configuration {
 
 		public string[] AllKeys {
 			get {
-				string[] keys = new string[Count];
-				for (int i = 0; i < Count; i ++)
+				var keys = new string[Count];
+				for (var i = 0; i < Count; i ++)
 					keys[i] = this[i].Alias;
 				return keys;
 			}

@@ -75,7 +75,7 @@ namespace System.Web.Security {
 
 			string anonymousID = null;
 
-			HttpCookie cookie = app.Request.Cookies [Config.CookieName];
+			var cookie = app.Request.Cookies [Config.CookieName];
 			if (cookie != null && (cookie.Expires == DateTime.MinValue || cookie.Expires > DateTime.Now)) {
 				try {
 					anonymousID = Encoding.Unicode.GetString (Convert.FromBase64String (cookie.Value));
@@ -86,7 +86,7 @@ namespace System.Web.Security {
 			if (anonymousID == null) {
 				AnonymousIdentificationEventHandler eh = events [creatingEvent] as AnonymousIdentificationEventHandler;
 				if (eh != null) {
-					AnonymousIdentificationEventArgs e = new AnonymousIdentificationEventArgs (HttpContext.Current);
+					var e = new AnonymousIdentificationEventArgs (HttpContext.Current);
 					eh (this, e);
 
 					anonymousID = e.AnonymousID;
@@ -95,7 +95,7 @@ namespace System.Web.Security {
 				if (anonymousID == null)
 					anonymousID = Guid.NewGuid ().ToString ();
 
-				HttpCookie newCookie = new HttpCookie (Config.CookieName);
+				var newCookie = new HttpCookie (Config.CookieName);
 				newCookie.Path = app.Request.ApplicationPath;
 				newCookie.Expires = DateTime.Now + Config.CookieTimeout;
 				newCookie.Value = Convert.ToBase64String (Encoding.Unicode.GetBytes (anonymousID));

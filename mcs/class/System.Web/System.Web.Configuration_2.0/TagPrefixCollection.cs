@@ -66,7 +66,7 @@ namespace System.Web.Configuration
 
 		protected override object GetElementKey (ConfigurationElement element)
 		{
-			TagPrefixInfo info = (TagPrefixInfo)element;
+			var info = (TagPrefixInfo)element;
 			return String.Concat (info.TagPrefix, "-", info.TagName, "-", info.Source, "-", info.Namespace, "-", info.Assembly);
 		}
 

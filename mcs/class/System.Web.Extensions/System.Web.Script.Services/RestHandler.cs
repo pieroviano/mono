@@ -93,9 +93,9 @@ namespace System.Web.Script.Services
 		readonly LogicalTypeInfo.LogicalMethodInfo _logicalMethodInfo;
 
 		private RestHandler (HttpContext context, Type type, string filePath) {
-			LogicalTypeInfo logicalTypeInfo = LogicalTypeInfo.GetLogicalTypeInfo (type, filePath);
-			HttpRequest request = context.Request;
-			string methodName = request.PathInfo.Substring (1);
+			var logicalTypeInfo = LogicalTypeInfo.GetLogicalTypeInfo (type, filePath);
+			var request = context.Request;
+			var methodName = request.PathInfo.Substring (1);
 			if (logicalTypeInfo == null || String.IsNullOrEmpty(methodName))
 				ThrowInvalidOperationException (methodName);
 
@@ -112,8 +112,8 @@ namespace System.Web.Script.Services
 		static readonly Type IRequiresSessionStateType = typeof (IRequiresSessionState);
 		static readonly Type IReadOnlySessionStateType = typeof (IReadOnlySessionState);
 		public static IHttpHandler GetHandler (HttpContext context, Type type, string filePath) {
-			RestHandler handler = new RestHandler (context, type, filePath);
-			LogicalTypeInfo.LogicalMethodInfo mi = handler._logicalMethodInfo;
+			var handler = new RestHandler (context, type, filePath);
+			var mi = handler._logicalMethodInfo;
 			if (mi.MethodInfo.IsStatic) {
 				if (IRequiresSessionStateType.IsAssignableFrom (type))
 					return IReadOnlySessionStateType.IsAssignableFrom (type) ?
@@ -133,8 +133,8 @@ namespace System.Web.Script.Services
 		}
 		
 		public void ProcessRequest (HttpContext context) {
-			HttpRequest request = context.Request;
-			HttpResponse response = context.Response;
+			var request = context.Request;
+			var response = context.Response;
 			response.ContentType =
 				_logicalMethodInfo.ResponseFormat == ResponseFormat.Json ?
 				"application/json" : "text/xml";

@@ -62,7 +62,7 @@ namespace System.Web
 
 		internal string GetResponseHeaderValue ()
 		{
-			StringBuilder builder = new StringBuilder ();
+			var builder = new StringBuilder ();
 
 			foreach (string parm in parms.Keys) {
 				builder.Append (parm);

@@ -158,7 +158,7 @@ namespace System.Web.UI.WebControls
 
 		public virtual DataSourceView GetView (string viewName)
 		{
-			SiteMapNode node = GetStartNode (viewName);
+			var node = GetStartNode (viewName);
 			if (node == null)
 				return new SiteMapDataSourceView (this, viewName, SiteMapNodeCollection.EmptyList);
 			else if (ShowStartingNode)
@@ -167,9 +167,9 @@ namespace System.Web.UI.WebControls
 				return new SiteMapDataSourceView (this, viewName, node.ChildNodes);
 		}
 
-		protected override HierarchicalDataSourceView GetHierarchicalView (string viewPath)
+		protected override HierarchicalDataSourceView GetHierarchicalView (string? viewPath)
 		{
-			SiteMapNode node = GetStartNode (viewPath);
+			var node = GetStartNode (viewPath);
 			if (node == null)
 				return new SiteMapHierarchicalDataSourceView (SiteMapNodeCollection.EmptyList);
 			else if (ShowStartingNode || node == null)
@@ -179,20 +179,20 @@ namespace System.Web.UI.WebControls
 		}
 		
 		[MonoTODO ("handle StartNodeOffsets > 0")]
-		SiteMapNode GetStartNode (string viewPath)
+		SiteMapNode GetStartNode (string? viewPath)
 		{
 			SiteMapNode starting_node;
 
 			if (viewPath != null && viewPath.Length != 0) {
-				string url = MapUrl (StartingNodeUrl);
+				var url = MapUrl (StartingNodeUrl);
 				return Provider.FindSiteMapNode (url);
 			} else if (StartFromCurrentNode) {
 				if (StartingNodeUrl.Length != 0)
 					throw new InvalidOperationException ("StartingNodeUrl can't be set if StartFromCurrentNode is set to true.");
 				starting_node = SiteMap.CurrentNode;
 			} else if (StartingNodeUrl.Length != 0) {
-				string url = MapUrl (StartingNodeUrl);
-				SiteMapNode node = Provider.FindSiteMapNode (url);
+				var url = MapUrl (StartingNodeUrl);
+				var node = Provider.FindSiteMapNode (url);
 				if (node == null) throw new ArgumentException ("Can't find a site map node for the url: " + StartingNodeUrl);
 
 				starting_node = node;
@@ -210,8 +210,8 @@ namespace System.Web.UI.WebControls
 					starting_node = starting_node.ParentNode;
 				}
 			} else if (StartingNodeOffset > 0) {
-				List<SiteMapNode> pathCurrentToStartingNode = new List<SiteMapNode> ();
-				SiteMapNode tmpNode = Provider.CurrentNode;
+				var pathCurrentToStartingNode = new List<SiteMapNode> ();
+				var tmpNode = Provider.CurrentNode;
 				while (tmpNode != null && tmpNode != starting_node) {
 					pathCurrentToStartingNode.Insert (0, tmpNode);
 					tmpNode = tmpNode.ParentNode;

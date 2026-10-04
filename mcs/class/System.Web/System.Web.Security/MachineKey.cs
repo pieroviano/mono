@@ -43,11 +43,11 @@ namespace System.Web.Security
 			if (encodedData == null)
 				throw new ArgumentNullException ("encodedData");
 
-			int dlen = encodedData.Length;
+			var dlen = encodedData.Length;
 			if (dlen == 0 || dlen % 2 == 1)
 				throw new ArgumentException ("encodedData");
 
-			byte[] data = MachineKeySectionUtils.GetBytes (encodedData, dlen);
+			var data = MachineKeySectionUtils.GetBytes (encodedData, dlen);
 			if (data == null || data.Length == 0)
 				throw new ArgumentException ("encodedData");
 			
@@ -143,7 +143,7 @@ namespace System.Web.Security
 			var purposeBytes = GetHashed (purposeJoined);
 			var unprotected = MachineKeySectionUtils.Decrypt (config, protectedData);
 
-			for (int i = 0; i < purposeBytes.Length; i++) {
+			for (var i = 0; i < purposeBytes.Length; i++) {
 				if (purposeBytes [i] != unprotected [i])
 					throw new CryptographicException ();
 			}

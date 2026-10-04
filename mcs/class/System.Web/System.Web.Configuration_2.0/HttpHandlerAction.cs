@@ -174,17 +174,17 @@ namespace System.Web.Configuration
 			if (String.IsNullOrEmpty (pathToMatch))
 				return false;
 
-			bool result = false;
-			string[] handlerPaths = Path.Split (',');
-			int slash = pathToMatch.LastIndexOf ('/');
-			string origPathToMatch = pathToMatch;
+			var result = false;
+			var handlerPaths = Path.Split (',');
+			var slash = pathToMatch.LastIndexOf ('/');
+			var origPathToMatch = pathToMatch;
 			string noLeadingSlashPathToMatch = null;
 			
 			if (slash != -1)
 				pathToMatch = pathToMatch.Substring (slash);
 
 			SearchPattern sp = null;
-			foreach (string handlerPath in handlerPaths)
+			foreach (var handlerPath in handlerPaths)
 			{
 				if (handlerPath.Length == 0)
 					continue;
@@ -205,9 +205,9 @@ namespace System.Web.Configuration
 					if (handlerPath.IndexOf ('*') == -1)
 						if (handlerPath [0] != '/')
 						{
-							HttpContext ctx = HttpContext.Current;
+							var ctx = HttpContext.Current;
 							HttpRequest req = ctx != null ? ctx.Request : null;
-							string vpath = req != null ? req.BaseVirtualDir : HttpRuntime.AppDomainAppVirtualPath;
+							var vpath = req != null ? req.BaseVirtualDir : HttpRuntime.AppDomainAppVirtualPath;
 
 							if (vpath == "/")
 								vpath = String.Empty;
@@ -265,8 +265,8 @@ namespace System.Web.Configuration
 
 		static string AdjustPath (string pattern, string path)
 		{
-			int nslashes = 0;
-			foreach (char c in pattern)
+			var nslashes = 0;
+			foreach (var c in pattern)
 				if (c == '/')
 					nslashes++;
 

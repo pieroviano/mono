@@ -81,7 +81,7 @@ namespace Mono.Web.Util
 			_sectionTypeName = nav.GetAttribute ("sectionType", String.Empty);
 			_mapperTypeName = nav.GetAttribute ("mapperType", String.Empty);
 
-			EnumConverter cvt = new EnumConverter (typeof (SettingsMappingPlatform));
+			var cvt = new EnumConverter (typeof (SettingsMappingPlatform));
 			_platform = (SettingsMappingPlatform) cvt.ConvertFromInvariantString (nav.GetAttribute ("platform", String.Empty));
 
 			LoadContents (nav);
@@ -101,7 +101,7 @@ namespace Mono.Web.Util
     
 		void LoadContents (XPathNavigator nav)
 		{
-			XPathNodeIterator iter = nav.Select ("./what[string-length (@value) > 0]");
+			var iter = nav.Select ("./what[string-length (@value) > 0]");
 			_whats = new List <SettingsMappingWhat> ();
 			while (iter.MoveNext ())
 				_whats.Add (new SettingsMappingWhat (iter.Current));

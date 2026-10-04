@@ -111,8 +111,8 @@ namespace System.Web.UI.WebControls
 
 		protected internal override void Render (HtmlTextWriter writer)
 		{
-			Page page = Page;
-			string uniqueid = UniqueID;
+			var page = Page;
+			var uniqueid = UniqueID;
 			if (page != null)
 				page.ClientScript.RegisterForEventValidation (uniqueid);
 			

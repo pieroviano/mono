@@ -49,7 +49,7 @@ namespace System.Web.Configuration {
 
 		static BufferModeSettings ()
 		{
-			IntegerValidator iv = new IntegerValidator (1, Int32.MaxValue);
+			var iv = new IntegerValidator (1, Int32.MaxValue);
 			
 			maxBufferSizeProp = new ConfigurationProperty ("maxBufferSize", typeof (int), Int32.MaxValue,
 								       PropertyHelper.InfiniteIntConverter, iv,

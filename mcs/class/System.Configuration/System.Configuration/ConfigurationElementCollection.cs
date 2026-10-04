@@ -65,7 +65,7 @@ namespace System.Configuration
 
 		internal override void InitFromProperty (PropertyInformation propertyInfo)
 		{
-			ConfigurationCollectionAttribute colat = propertyInfo.Property.CollectionAttribute;
+			var colat = propertyInfo.Property.CollectionAttribute;
 	
 			if (colat == null)
 				colat = Attribute.GetCustomAttribute (propertyInfo.Type, typeof (ConfigurationCollectionAttribute)) as ConfigurationCollectionAttribute;
@@ -165,7 +165,7 @@ namespace System.Configuration
 				inheritedLimitIndex++;
 			}
 			else {
-				int old_index = IndexOfKey (GetElementKey (element));
+				var old_index = IndexOfKey (GetElementKey (element));
 				if (old_index >= 0) {
 					if (element.Equals (list [old_index]))
 						return;
@@ -211,15 +211,15 @@ namespace System.Configuration
 
 		protected internal ConfigurationElement BaseGet (object key)
 		{
-			int index = IndexOfKey (key);
+			var index = IndexOfKey (key);
 			if (index != -1) return (ConfigurationElement) list [index];
 			else return null;
 		}
 
 		protected internal object[] BaseGetAllKeys ()
 		{
-			object[] keys = new object [list.Count];
-			for (int n=0; n<list.Count; n++)
+			var keys = new object [list.Count];
+			for (var n=0; n<list.Count; n++)
 				keys [n] = BaseGetKey (n);
 			return keys;
 		}
@@ -239,7 +239,7 @@ namespace System.Configuration
 		
 		int IndexOfKey (object key)
 		{
-			for (int n=0; n<list.Count; n++) {
+			for (var n=0; n<list.Count; n++) {
 				if (CompareKeys (GetElementKey ((ConfigurationElement) list[n]), key))
 					return n;
 			}
@@ -262,7 +262,7 @@ namespace System.Configuration
 			if (IsReadOnly ())
 				throw new ConfigurationErrorsException ("Collection is read only.");
 				
-			int index = IndexOfKey (key);
+			var index = IndexOfKey (key);
 			if (index != -1) {
 				BaseRemoveAt (index);
 				modified = true;
@@ -311,7 +311,7 @@ namespace System.Configuration
 			return CreateNewElement ();
 		}
 		
-		ConfigurationElement CreateNewElementInternal (string elementName)
+		ConfigurationElement CreateNewElementInternal (string? elementName)
 		{
 			ConfigurationElement elem;
 			if (elementName == null)
@@ -329,7 +329,7 @@ namespace System.Configuration
 			if (GetType() != other.GetType()) return false;
 			if (Count != other.Count) return false;
 			
-			for (int n=0; n<Count; n++) {
+			for (var n=0; n<Count; n++) {
 				if (!BaseGet (n).Equals (other.BaseGet (n)))
 					return false;
 			}
@@ -340,8 +340,8 @@ namespace System.Configuration
 
 		public override int GetHashCode ()
 		{
-			int code = 0;
-			for (int n=0; n<Count; n++)
+			var code = 0;
+			for (var n=0; n<Count; n++)
 				code += BaseGet (n).GetHashCode ();
 			return code;
 		}
@@ -371,7 +371,7 @@ namespace System.Configuration
 			if (modified)
 				return true;
 
-			for (int n=0; n<list.Count; n++) {
+			for (var n=0; n<list.Count; n++) {
 				ConfigurationElement elem = (ConfigurationElement) list [n];
 				if (!elem.IsModified ())
 					continue;
@@ -393,9 +393,9 @@ namespace System.Configuration
 			var parent = (ConfigurationElementCollection)parentElement;
 			base.PrepareSave (parentElement, mode);
 
-			for (int n=0; n<list.Count; n++) {
+			for (var n=0; n<list.Count; n++) {
 				ConfigurationElement elem = (ConfigurationElement) list [n];
-				object key = GetElementKey (elem);
+				var key = GetElementKey (elem);
 				ConfigurationElement pitem = parent != null ? parent.BaseGet (key) as ConfigurationElement : null;
 
 				elem.PrepareSave (pitem, mode);
@@ -409,9 +409,9 @@ namespace System.Configuration
 			if (mode == ConfigurationSaveMode.Full)
 				return list.Count > 0;
 
-			for (int n=0; n<list.Count; n++) {
+			for (var n=0; n<list.Count; n++) {
 				ConfigurationElement elem = (ConfigurationElement) list [n];
-				object key = GetElementKey (elem);
+				var key = GetElementKey (elem);
 				ConfigurationElement pitem = parent != null ? parent.BaseGet (key) as ConfigurationElement : null;
 
 				if (elem.HasValues (pitem, mode))
@@ -423,13 +423,13 @@ namespace System.Configuration
 
 		protected internal override void Reset (ConfigurationElement parentElement)
 		{
-			bool basic = IsBasic;
+			var basic = IsBasic;
 				
-			ConfigurationElementCollection parent = (ConfigurationElementCollection) parentElement;
-			for (int n=0; n<parent.Count; n++)
+			var parent = (ConfigurationElementCollection) parentElement;
+			for (var n=0; n<parent.Count; n++)
 			{
-				ConfigurationElement parentItem = parent.BaseGet (n);
-				ConfigurationElement item = CreateNewElementInternal (null);
+				var parentItem = parent.BaseGet (n);
+				var item = CreateNewElementInternal (null);
 				item.Reset (parentItem);
 				BaseAdd (item);
 				
@@ -449,7 +449,7 @@ namespace System.Configuration
 		protected internal override void ResetModified ()
 		{
 			modified = false;
-			for (int n=0; n<list.Count; n++) {
+			for (var n=0; n<list.Count; n++) {
 				ConfigurationElement elem = (ConfigurationElement) list [n];
 				elem.ResetModified ();
 			}
@@ -467,11 +467,11 @@ namespace System.Configuration
 				return base.SerializeElement (writer, serializeCollectionKey);
 			}
 			
-			bool wroteData = false;
+			var wroteData = false;
 			
 			if (IsBasic)
 			{
-				for (int n=0; n<list.Count; n++) {
+				for (var n=0; n<list.Count; n++) {
 					ConfigurationElement elem = (ConfigurationElement) list [n];
 					if (ElementName != string.Empty)
 						wroteData = elem.SerializeToXmlElement (writer, ElementName) || wroteData;
@@ -487,7 +487,7 @@ namespace System.Configuration
 				}
 				
 				if (removed != null) {
-					for (int n=0; n<removed.Count; n++) {
+					for (var n=0; n<removed.Count; n++) {
 						writer.WriteStartElement (removeElementName);
 						((ConfigurationElement)removed[n]).SerializeElement (writer, true);
 						writer.WriteEndElement ();
@@ -495,7 +495,7 @@ namespace System.Configuration
 					wroteData = wroteData || removed.Count > 0;
 				}
 				
-				for (int n=0; n<list.Count; n++) {
+				for (var n=0; n<list.Count; n++) {
 					ConfigurationElement elem = (ConfigurationElement) list [n];
 					elem.SerializeToXmlElement (writer, addElementName);
 				}
@@ -536,15 +536,15 @@ namespace System.Configuration
 					return true;
 				}
 				else if (elementName == removeElementName) {
-					ConfigurationElement elem = CreateNewElementInternal (null);
-					ConfigurationRemoveElement removeElem = new ConfigurationRemoveElement (elem, this);
+					var elem = CreateNewElementInternal (null);
+					var removeElem = new ConfigurationRemoveElement (elem, this);
 					removeElem.DeserializeElement (reader, true);
 					BaseRemove (removeElem.KeyValue);
 					modified = false;
 					return true;
 				}
 				else if (elementName == addElementName) {
-					ConfigurationElement elem = CreateNewElementInternal (null);
+					var elem = CreateNewElementInternal (null);
 					elem.DeserializeElement (reader, false);
 					BaseAdd (elem);
 					modified = false;
@@ -557,14 +557,14 @@ namespace System.Configuration
 		
 		protected internal override void Unmerge (ConfigurationElement sourceElement, ConfigurationElement parentElement, ConfigurationSaveMode saveMode)
 		{
-			ConfigurationElementCollection source = (ConfigurationElementCollection) sourceElement;
-			ConfigurationElementCollection parent = (ConfigurationElementCollection) parentElement;
+			var source = (ConfigurationElementCollection) sourceElement;
+			var parent = (ConfigurationElementCollection) parentElement;
 			
-			for (int n=0; n<source.Count; n++) {
-				ConfigurationElement sitem = source.BaseGet (n);
-				object key = source.GetElementKey (sitem);
+			for (var n=0; n<source.Count; n++) {
+				var sitem = source.BaseGet (n);
+				var key = source.GetElementKey (sitem);
 				ConfigurationElement pitem = parent != null ? parent.BaseGet (key) as ConfigurationElement : null;
-				ConfigurationElement nitem = CreateNewElementInternal (null);
+				var nitem = CreateNewElementInternal (null);
 				if (pitem != null && saveMode != ConfigurationSaveMode.Full) {
 					nitem.Unmerge (sitem, pitem, saveMode);
 					if (nitem.HasValues (pitem, saveMode))
@@ -578,9 +578,9 @@ namespace System.Configuration
 			if (saveMode == ConfigurationSaveMode.Full)
 				EmitClear = true;
 			else if (parent != null) {
-				for (int n=0; n<parent.Count; n++) {
-					ConfigurationElement pitem = parent.BaseGet (n);
-					object key = parent.GetElementKey (pitem);
+				for (var n=0; n<parent.Count; n++) {
+					var pitem = parent.BaseGet (n);
+					var key = parent.GetElementKey (pitem);
 					if (source.IndexOfKey (key) == -1) {
 						if (removed == null) removed = new ArrayList ();
 						removed.Add (pitem);

@@ -212,7 +212,7 @@ namespace System.Web.Services {
         }
         */
 
-        internal static WebMethodAttribute GetAttribute(MethodInfo implementation, MethodInfo declaration) {
+        internal static WebMethodAttribute GetAttribute(MethodInfo implementation, MethodInfo? declaration) {
             WebMethodAttribute declAttribute = null;
             WebMethodAttribute implAttribute = null;
             object[] attrs;
@@ -237,7 +237,7 @@ namespace System.Web.Services {
                 throw new InvalidOperationException(Res.GetString(Res.ContractOverride, implementation.Name, implementation.DeclaringType.FullName, declaration.DeclaringType.FullName, declaration.ToString(), "WebMethod.MessageName"));
             }
             // merge two attributes
-            WebMethodAttribute attribute = new WebMethodAttribute(implAttribute.EnableSessionSpecified ? implAttribute.EnableSession : declAttribute.EnableSession);
+            var attribute = new WebMethodAttribute(implAttribute.EnableSessionSpecified ? implAttribute.EnableSession : declAttribute.EnableSession);
             attribute.TransactionOption = implAttribute.TransactionOptionSpecified ? implAttribute.TransactionOption : declAttribute.TransactionOption;
             attribute.CacheDuration = implAttribute.CacheDurationSpecified ? implAttribute.CacheDuration : declAttribute.CacheDuration;
             attribute.BufferResponse = implAttribute.BufferResponseSpecified ? implAttribute.BufferResponse : declAttribute.BufferResponse;
@@ -248,13 +248,13 @@ namespace System.Web.Services {
         // Find the MethodInfo of the interface method from the implemented method
         internal static MethodInfo FindInterfaceMethodInfo(Type type, string signature)
         {
-            Type[] interfaces = type.GetInterfaces();
+            var interfaces = type.GetInterfaces();
             // Foreach type get the interface map and then search each TargetMethod
             // till we find the right one. Once found return the corresponding interface method 
-            foreach (Type i in interfaces) {
-                InterfaceMapping map = type.GetInterfaceMap(i);
-                MethodInfo[] targetMethods = map.TargetMethods;
-                for (int j = 0; j < targetMethods.Length; j++) {
+            foreach (var i in interfaces) {
+                var map = type.GetInterfaceMap(i);
+                var targetMethods = map.TargetMethods;
+                for (var j = 0; j < targetMethods.Length; j++) {
                     if (targetMethods[j].ToString() == signature) {
                         return map.InterfaceMethods[j];
                     }
@@ -267,22 +267,22 @@ namespace System.Web.Services {
             if (type.IsInterface) {
                 throw new InvalidOperationException(Res.GetString(Res.NeedConcreteType, type.FullName));
             }
-            ArrayList list = new ArrayList();
-            MethodInfo[] methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
-            Hashtable unique = new Hashtable();
-            Hashtable methodInfos = new Hashtable();
-            for (int i = 0; i < methods.Length; i++) {
+            var list = new ArrayList();
+            var methods = type.GetMethods(BindingFlags.Public | BindingFlags.Instance | BindingFlags.NonPublic);
+            var unique = new Hashtable();
+            var methodInfos = new Hashtable();
+            for (var i = 0; i < methods.Length; i++) {
                 Type declaringType = methods[i].DeclaringType;
                 if (declaringType == typeof(object))
                     continue;
                 if (declaringType == typeof(WebService))
                     continue;
                 string signature = methods[i].ToString();
-                MethodInfo declaration = FindInterfaceMethodInfo(declaringType, signature);
+                var declaration = FindInterfaceMethodInfo(declaringType, signature);
                 WebServiceBindingAttribute binding = null;
                 
                 if (declaration != null) {
-                    object[] attrs = declaration.DeclaringType.GetCustomAttributes(typeof(WebServiceBindingAttribute), false);
+                    var attrs = declaration.DeclaringType.GetCustomAttributes(typeof(WebServiceBindingAttribute), false);
                     if (attrs.Length > 0) {
                         if (attrs.Length > 1)
                             throw new ArgumentException(Res.GetString(Res.OnlyOneWebServiceBindingAttributeMayBeSpecified1, declaration.DeclaringType.FullName), "type");
@@ -298,11 +298,11 @@ namespace System.Web.Services {
                 else if (!methods[i].IsPublic) {
                     continue;
                 }
-                WebMethodAttribute attribute = WebMethodReflector.GetAttribute(methods[i], declaration);
+                var attribute = WebMethodReflector.GetAttribute(methods[i], declaration);
                 if (attribute == null)
                     continue;
 
-                WebMethod webMethod = new WebMethod(declaration, binding, attribute);
+                var webMethod = new WebMethod(declaration, binding, attribute);
                 methodInfos.Add(methods[i], webMethod);
                 MethodInfo method = (MethodInfo)unique[signature];
                 if (method == null) {
@@ -320,8 +320,8 @@ namespace System.Web.Services {
         }
 
         internal static void IncludeTypes(LogicalMethodInfo[] methods, XmlReflectionImporter importer) {
-            for (int i = 0; i < methods.Length; i++) {
-                LogicalMethodInfo method = methods[i];
+            for (var i = 0; i < methods.Length; i++) {
+                var method = methods[i];
                 IncludeTypes(method, importer);
             }
         }

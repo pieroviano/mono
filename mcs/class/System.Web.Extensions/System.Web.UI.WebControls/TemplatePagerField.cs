@@ -73,7 +73,7 @@ namespace System.Web.UI.WebControls
 
 		public override void CreateDataPagers (DataPagerFieldItem container, int startRowIndex, int maximumRows, int totalRowCount, int fieldIndex)
 		{
-			ITemplate pagerTemplate = PagerTemplate;
+			var pagerTemplate = PagerTemplate;
 			if (pagerTemplate == null)
 				return;
 
@@ -91,11 +91,11 @@ namespace System.Web.UI.WebControls
 			if (args == null)
 				return;
 			
-			DataPager pager = DataPager;
+			var pager = DataPager;
 			var eventArgs = new DataPagerCommandEventArgs (this, pager.TotalRowCount, e, args.Item);
 			OnPagerCommand (eventArgs);
 
-			int newStartRowIndex = eventArgs.NewStartRowIndex;
+			var newStartRowIndex = eventArgs.NewStartRowIndex;
 			if (newStartRowIndex < 0)
 				return;
 

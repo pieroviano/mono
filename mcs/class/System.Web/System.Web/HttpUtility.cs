@@ -50,12 +50,12 @@ namespace System.Web {
 		{
 			public override string ToString ()
 			{
-				int count = Count;
+				var count = Count;
 				if (count == 0)
 					return "";
-				StringBuilder sb = new StringBuilder ();
+				var sb = new StringBuilder ();
 				string [] keys = AllKeys;
-				for (int i = 0; i < count; i++) {
+				for (var i = 0; i < count; i++) {
 					sb.AppendFormat ("{0}={1}&", keys [i], UrlEncode (this [keys [i]]));
 				}
 				if (sb.Length > 0)
@@ -82,7 +82,7 @@ namespace System.Web {
 			HttpEncoder.Current.HtmlAttributeEncode (s, output);
 		}
 	
-		public static string HtmlAttributeEncode (string s) 
+		public static string HtmlAttributeEncode (string? s) 
 		{
 			if (s == null)
 				return null;
@@ -93,7 +93,7 @@ namespace System.Web {
 			}
 		}
 	
-		public static string UrlDecode (string str) 
+		public static string UrlDecode (string? str) 
 		{
 			return UrlDecode(str, Encoding.UTF8);
 		}
@@ -106,13 +106,13 @@ namespace System.Web {
 		static void WriteCharBytes (IList buf, char ch, Encoding e)
 		{
 			if (ch > 255) {
-				foreach (byte b in e.GetBytes (new char[] { ch }))
+				foreach (var b in e.GetBytes (new char[] { ch }))
 					buf.Add (b);
 			} else
 				buf.Add ((byte)ch);
 		}
 		
-		public static string UrlDecode (string str, Encoding e)
+		public static string UrlDecode (string? str, Encoding? e)
 		{
 			if (null == str) 
 				return null;
@@ -128,7 +128,7 @@ namespace System.Web {
 			int xchar;
 			char ch;
 			
-			for (int i = 0; i < len; i++) {
+			for (var i = 0; i < len; i++) {
 				ch = str [i];
 				if (ch == '%' && i + 2 < len && str [i + 1] != '%') {
 					if (str [i + 1] == 'u' && i + 5 < len) {
@@ -154,13 +154,13 @@ namespace System.Web {
 					WriteCharBytes (bytes, ch, e);
 			}
 			
-			byte[] buf = bytes.ToArray ();
+			var buf = bytes.ToArray ();
 			bytes = null;
 			return e.GetString (buf);
 			
 		}
 	
-		public static string UrlDecode (byte [] bytes, Encoding e)
+		public static string UrlDecode (byte []? bytes, Encoding e)
 		{
 			if (bytes == null)
 				return null;
@@ -170,7 +170,7 @@ namespace System.Web {
 
 		static int GetInt (byte b)
 		{
-			char c = (char) b;
+			var c = (char) b;
 			if (c >= '0' && c <= '9')
 				return c - '0';
 
@@ -185,10 +185,10 @@ namespace System.Web {
 
 		static int GetChar (byte [] bytes, int offset, int length)
 		{
-			int value = 0;
-			int end = length + offset;
-			for (int i = offset; i < end; i++) {
-				int current = GetInt (bytes [i]);
+			var value = 0;
+			var end = length + offset;
+			for (var i = offset; i < end; i++) {
+				var current = GetInt (bytes [i]);
 				if (current == -1)
 					return -1;
 				value = (value << 4) + current;
@@ -199,14 +199,14 @@ namespace System.Web {
 
 		static int GetChar (string str, int offset, int length)
 		{
-			int val = 0;
-			int end = length + offset;
-			for (int i = offset; i < end; i++) {
-				char c = str [i];
+			var val = 0;
+			var end = length + offset;
+			for (var i = offset; i < end; i++) {
+				var c = str [i];
 				if (c > 127)
 					return -1;
 
-				int current = GetInt ((byte) c);
+				var current = GetInt ((byte) c);
 				if (current == -1)
 					return -1;
 				val = (val << 4) + current;
@@ -215,7 +215,7 @@ namespace System.Web {
 			return val;
 		}
 		
-		public static string UrlDecode (byte [] bytes, int offset, int count, Encoding e)
+		public static string UrlDecode (byte []? bytes, int offset, int count, Encoding e)
 		{
 			if (bytes == null)
 				return null;
@@ -231,12 +231,12 @@ namespace System.Web {
 			if (count < 0 || offset + count > bytes.Length)
 				throw new ArgumentOutOfRangeException ("count");
 
-			StringBuilder output = new StringBuilder ();
-			MemoryStream acc = new MemoryStream ();
+			var output = new StringBuilder ();
+			var acc = new MemoryStream ();
 
-			int end = count + offset;
+			var end = count + offset;
 			int xchar;
-			for (int i = offset; i < end; i++) {
+			for (var i = offset; i < end; i++) {
 				if (bytes [i] == '%' && i + 2 < count && bytes [i + 1] != '%') {
 					if (bytes [i + 1] == (byte) 'u' && i + 5 < end) {
 						if (acc.Length > 0) {
@@ -276,7 +276,7 @@ namespace System.Web {
 			return output.ToString ();
 		}
 	
-		public static byte [] UrlDecodeToBytes (byte [] bytes)
+		public static byte [] UrlDecodeToBytes (byte []? bytes)
 		{
 			if (bytes == null)
 				return null;
@@ -284,12 +284,12 @@ namespace System.Web {
 			return UrlDecodeToBytes (bytes, 0, bytes.Length);
 		}
 
-		public static byte [] UrlDecodeToBytes (string str)
+		public static byte [] UrlDecodeToBytes (string? str)
 		{
 			return UrlDecodeToBytes (str, Encoding.UTF8);
 		}
 
-		public static byte [] UrlDecodeToBytes (string str, Encoding e)
+		public static byte [] UrlDecodeToBytes (string? str, Encoding e)
 		{
 			if (str == null)
 				return null;
@@ -300,28 +300,28 @@ namespace System.Web {
 			return UrlDecodeToBytes (e.GetBytes (str));
 		}
 
-		public static byte [] UrlDecodeToBytes (byte [] bytes, int offset, int count)
+		public static byte [] UrlDecodeToBytes (byte []? bytes, int offset, int count)
 		{
 			if (bytes == null)
 				return null;
 			if (count == 0)
 				return new byte [0];
 
-			int len = bytes.Length;
+			var len = bytes.Length;
 			if (offset < 0 || offset >= len)
 				throw new ArgumentOutOfRangeException("offset");
 
 			if (count < 0 || offset > len - count)
 				throw new ArgumentOutOfRangeException("count");
 
-			MemoryStream result = new MemoryStream ();
-			int end = offset + count;
-			for (int i = offset; i < end; i++){
-				char c = (char) bytes [i];
+			var result = new MemoryStream ();
+			var end = offset + count;
+			for (var i = offset; i < end; i++){
+				var c = (char) bytes [i];
 				if (c == '+') {
 					c = ' ';
 				} else if (c == '%' && i < end - 2) {
-					int xchar = GetChar (bytes, i + 1, 2);
+					var xchar = GetChar (bytes, i + 1, 2);
 					if (xchar != -1) {
 						c = (char) xchar;
 						i += 2;
@@ -333,12 +333,12 @@ namespace System.Web {
 			return result.ToArray ();
 		}
 
-		public static string UrlEncode(string str) 
+		public static string UrlEncode(string? str) 
 		{
 			return UrlEncode(str, Encoding.UTF8);
 		}
 	
-		public static string UrlEncode (string str, Encoding e) 
+		public static string UrlEncode (string? str, Encoding e) 
 		{
 			if (str == null)
 				return null;
@@ -346,10 +346,10 @@ namespace System.Web {
 			if (str == String.Empty)
 				return String.Empty;
 
-			bool needEncode = false;
-			int len = str.Length;
-			for (int i = 0; i < len; i++) {
-				char c = str [i];
+			var needEncode = false;
+			var len = str.Length;
+			for (var i = 0; i < len; i++) {
+				var c = str [i];
 				if ((c < '0') || (c < 'A' && c > '9') || (c > 'Z' && c < 'a') || (c > 'z')) {
 					if (HttpEncoder.NotEncoded (c))
 						continue;
@@ -363,12 +363,12 @@ namespace System.Web {
 				return str;
 
 			// avoided GetByteCount call
-			byte [] bytes = new byte[e.GetMaxByteCount(str.Length)];
-			int realLen = e.GetBytes (str, 0, str.Length, bytes, 0);
+			var bytes = new byte[e.GetMaxByteCount(str.Length)];
+			var realLen = e.GetBytes (str, 0, str.Length, bytes, 0);
 			return Encoding.ASCII.GetString (UrlEncodeToBytes (bytes, 0, realLen));
 		}
 	  
-		public static string UrlEncode (byte [] bytes)
+		public static string UrlEncode (byte []? bytes)
 		{
 			if (bytes == null)
 				return null;
@@ -379,7 +379,7 @@ namespace System.Web {
 			return Encoding.ASCII.GetString (UrlEncodeToBytes (bytes, 0, bytes.Length));
 		}
 
-		public static string UrlEncode (byte [] bytes, int offset, int count)
+		public static string UrlEncode (byte []? bytes, int offset, int count)
 		{
 			if (bytes == null)
 				return null;
@@ -390,12 +390,12 @@ namespace System.Web {
 			return Encoding.ASCII.GetString (UrlEncodeToBytes (bytes, offset, count));
 		}
 
-		public static byte [] UrlEncodeToBytes (string str)
+		public static byte [] UrlEncodeToBytes (string? str)
 		{
 			return UrlEncodeToBytes (str, Encoding.UTF8);
 		}
 
-		public static byte [] UrlEncodeToBytes (string str, Encoding e)
+		public static byte [] UrlEncodeToBytes (string? str, Encoding e)
 		{
 			if (str == null)
 				return null;
@@ -403,11 +403,11 @@ namespace System.Web {
 			if (str.Length == 0)
 				return new byte [0];
 
-			byte [] bytes = e.GetBytes (str);
+			var bytes = e.GetBytes (str);
 			return UrlEncodeToBytes (bytes, 0, bytes.Length);
 		}
 
-		public static byte [] UrlEncodeToBytes (byte [] bytes)
+		public static byte [] UrlEncodeToBytes (byte []? bytes)
 		{
 			if (bytes == null)
 				return null;
@@ -418,14 +418,14 @@ namespace System.Web {
 			return UrlEncodeToBytes (bytes, 0, bytes.Length);
 		}
 
-		public static byte [] UrlEncodeToBytes (byte [] bytes, int offset, int count)
+		public static byte [] UrlEncodeToBytes (byte []? bytes, int offset, int count)
 		{
 			if (bytes == null)
 				return null;
 			return HttpEncoder.Current.UrlEncode (bytes, offset, count);
 		}
 
-		public static string UrlEncodeUnicode (string str)
+		public static string UrlEncodeUnicode (string? str)
 		{
 			if (str == null)
 				return null;
@@ -433,7 +433,7 @@ namespace System.Web {
 			return Encoding.ASCII.GetString (UrlEncodeUnicodeToBytes (str));
 		}
 
-		public static byte [] UrlEncodeUnicodeToBytes (string str)
+		public static byte [] UrlEncodeUnicodeToBytes (string? str)
 		{
 			if (str == null)
 				return null;
@@ -441,8 +441,8 @@ namespace System.Web {
 			if (str.Length == 0)
 				return new byte [0];
 
-			MemoryStream result = new MemoryStream (str.Length);
-			foreach (char c in str){
+			var result = new MemoryStream (str.Length);
+			foreach (var c in str){
 				HttpEncoder.UrlEncodeChar (c, result, true);
 			}
 			return result.ToArray ();
@@ -453,7 +453,7 @@ namespace System.Web {
 		/// </summary>
 		/// <param name="s">The HTML string to decode. </param>
 		/// <returns>The decoded text.</returns>
-		public static string HtmlDecode (string s) 
+		public static string HtmlDecode (string? s) 
 		{
 			if (s == null)
 				return null;
@@ -480,7 +480,7 @@ namespace System.Web {
 			}
 		}
 
-		public static string HtmlEncode (string s)
+		public static string HtmlEncode (string? s)
 		{
 			if (s == null)
 				return null;
@@ -506,7 +506,7 @@ namespace System.Web {
 				HttpEncoder.Current.HtmlEncode (s, output);
 			}
 		}
-		public static string HtmlEncode (object value)
+		public static string HtmlEncode (object? value)
 		{
 			if (value == null)
 				return null;
@@ -530,10 +530,10 @@ namespace System.Web {
 			if (String.IsNullOrEmpty (value))
 				return addDoubleQuotes ? "\"\"" : String.Empty;
 
-			int len = value.Length;
-			bool needEncode = false;
+			var len = value.Length;
+			var needEncode = false;
 			char c;
-			for (int i = 0; i < len; i++) {
+			for (var i = 0; i < len; i++) {
 				c = value [i];
 
 				if (c >= 0 && c <= 31 || c == 34 || c == 39 || c == 60 || c == 62 || c == 92) {
@@ -549,7 +549,7 @@ namespace System.Web {
 			if (addDoubleQuotes)
 				sb.Append ('"');
 
-			for (int i = 0; i < len; i++) {
+			for (var i = 0; i < len; i++) {
 				c = value [i];
 				if (c >= 0 && c <= 7 || c == 11 || c >= 14 && c <= 31 || c == 39 || c == 60 || c == 62)
 					sb.AppendFormat ("\\u{0:x4}", (int)c);
@@ -603,7 +603,7 @@ namespace System.Web {
 			return ParseQueryString (query, Encoding.UTF8);
 		}
 
-		public static NameValueCollection ParseQueryString (string query, Encoding encoding)
+		public static NameValueCollection ParseQueryString (string query, Encoding? encoding)
 		{
 			if (query == null)
 				throw new ArgumentNullException ("query");
@@ -619,18 +619,18 @@ namespace System.Web {
 			return result;
 		}
 
-		internal static void ParseQueryString (string query, Encoding encoding, NameValueCollection result)
+		internal static void ParseQueryString (string query, Encoding? encoding, NameValueCollection result)
 		{
 			if (query.Length == 0)
 				return;
 
-			string decoded = HtmlDecode (query);
-			int decodedLength = decoded.Length;
-			int namePos = 0;
-			bool first = true;
+			var decoded = HtmlDecode (query);
+			var decodedLength = decoded.Length;
+			var namePos = 0;
+			var first = true;
 			while (namePos <= decodedLength) {
 				int valuePos = -1, valueEnd = -1;
-				for (int q = namePos; q < decodedLength; q++) {
+				for (var q = namePos; q < decodedLength; q++) {
 					if (valuePos == -1 && decoded [q] == '=') {
 						valuePos = q + 1;
 					} else if (decoded [q] == '&') {

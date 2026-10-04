@@ -47,7 +47,7 @@ namespace System.Web.UI.WebControls
 	    [DefaultValueAttribute ("")]
 		public string Coordinates {
 			get {
-				object o = ViewState ["Coordinates"];
+				var o = ViewState ["Coordinates"];
 				return o != null ? (string) o : string.Empty;
 			}
 			set {

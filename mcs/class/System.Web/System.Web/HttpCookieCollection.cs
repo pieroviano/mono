@@ -41,7 +41,7 @@ namespace System.Web
 		private bool auto_fill = false;
 
 		[Obsolete ("Don't use this constructor, use the (bool, bool) one, as it's more clear what it does")]
-		internal HttpCookieCollection (HttpResponse Response, bool ReadOnly) : base (StringComparer.OrdinalIgnoreCase)
+		internal HttpCookieCollection (HttpResponse? Response, bool ReadOnly) : base (StringComparer.OrdinalIgnoreCase)
 		{
 			auto_fill = Response != null;
 			IsReadOnly = ReadOnly;
@@ -58,16 +58,16 @@ namespace System.Web
 			if (String.IsNullOrEmpty (cookies))
 				return;
 
-			string[] cookie_components = cookies.Split (';');
-			foreach (string kv in cookie_components) {
-				int pos = kv.IndexOf ('=');
+			var cookie_components = cookies.Split (';');
+			foreach (var kv in cookie_components) {
+				var pos = kv.IndexOf ('=');
 				if (pos == -1) {
 					/* XXX ugh */
 					continue;
 				}
 				else {
-					string key = kv.Substring (0, pos);
-					string val = kv.Substring (pos+1);
+					var key = kv.Substring (0, pos);
+					var val = kv.Substring (pos+1);
 
 					Add (new HttpCookie (key.Trim (), val.Trim()));
 				}
@@ -147,7 +147,7 @@ namespace System.Web
 
 		public string[] AllKeys {
 			get {
-				string[] keys = new string [Keys.Count];
+				var keys = new string [Keys.Count];
 				((ICollection)Keys).CopyTo (keys, 0);
 				return keys;
 			}

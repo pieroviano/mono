@@ -65,7 +65,7 @@ namespace System.Web.Configuration {
 			}
 		}
 
-		public override object ConvertTo (ITypeDescriptorContext ctx, CultureInfo ci, object value, Type type)
+		public override object ConvertTo (ITypeDescriptorContext ctx, CultureInfo ci, object? value, Type type)
 		{
 			if ((value == null) || (value.GetType () != typeof (MachineKeyValidation)))
 				throw new ArgumentException (InvalidValue);

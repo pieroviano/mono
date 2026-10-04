@@ -99,8 +99,8 @@ namespace System.Web.UI.WebControls
 		public PropertyDescriptorCollection GetProperties()
 		{
 			if (node.Attributes != null) {
-				PropertyDescriptor[] props = new PropertyDescriptor [node.Attributes.Count];
-				for (int n=0; n<props.Length; n++)
+				var props = new PropertyDescriptor [node.Attributes.Count];
+				for (var n=0; n<props.Length; n++)
 					props [n] = new XmlDataSourcePropertyDescriptor (node.Attributes [n].Name, node.IsReadOnly);
 				return new PropertyDescriptorCollection (props);
 			} else

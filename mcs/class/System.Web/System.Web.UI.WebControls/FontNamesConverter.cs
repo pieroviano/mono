@@ -70,7 +70,7 @@ namespace System.Web.UI.WebControls {
 				names = namelist.Split(new char[] { ',' });
 
 				count = names.Length;
-				for (int i = 0; i < count; i++) 
+				for (var i = 0; i < count; i++) 
 				{
 					names[i] = names[i].Trim();
 				}

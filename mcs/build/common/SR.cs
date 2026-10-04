@@ -22,7 +22,7 @@ static partial class SR
 		return name;
 	}
 
-	internal static string Format(string resourceFormat, params object[] args)
+	internal static string Format(string resourceFormat, params object[]? args)
 	{
 		if (args != null) {
 			return string.Format (CultureInfo.InvariantCulture, resourceFormat, args);

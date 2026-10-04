@@ -89,7 +89,7 @@ namespace System.Web.UI.WebControls
 		[ThemeableAttribute (false)]
 		public virtual string Answer {
 			get {
-				object o = ViewState ["Answer"];
+				var o = ViewState ["Answer"];
 				return (o == null) ? String.Empty : (string) o;
 			}
 			set {
@@ -103,7 +103,7 @@ namespace System.Web.UI.WebControls
 		[LocalizableAttribute (true)]
 		public virtual string AnswerLabelText {
 			get {
-				object o = ViewState ["AnswerLabelText"];
+				var o = ViewState ["AnswerLabelText"];
 				return (o == null) ? Locale.GetText ("Security Answer:") : (string) o;
 			}
 			set {
@@ -117,7 +117,7 @@ namespace System.Web.UI.WebControls
 		[LocalizableAttribute (true)]
 		public virtual string AnswerRequiredErrorMessage {
 			get {
-				object o = ViewState ["AnswerRequiredErrorMessage"];
+				var o = ViewState ["AnswerRequiredErrorMessage"];
 				return (o == null) ? Locale.GetText ("Security answer is required.") : (string) o;
 			}
 			set {
@@ -132,7 +132,7 @@ namespace System.Web.UI.WebControls
 		[ThemeableAttribute (false)]
 		public virtual bool AutoGeneratePassword {
 			get {
-				object o = ViewState ["AutoGeneratePassword"];
+				var o = ViewState ["AutoGeneratePassword"];
 				return (o == null) ? false : (bool) o;
 			}
 			set { ViewState ["AutoGeneratePassword"] = value; }
@@ -143,7 +143,7 @@ namespace System.Web.UI.WebControls
 		public CompleteWizardStep CompleteStep {
 			get {
 				if (_completeWizardStep == null) {
-					for (int i = 0; i < WizardSteps.Count; i++)
+					for (var i = 0; i < WizardSteps.Count; i++)
 						if (WizardSteps [i] is CompleteWizardStep) {
 							_completeWizardStep = (CompleteWizardStep) WizardSteps [i];
 
@@ -158,7 +158,7 @@ namespace System.Web.UI.WebControls
 		[LocalizableAttribute (true)]
 		public virtual string CompleteSuccessText {
 			get {
-				object o = ViewState ["CompleteSuccessText"];
+				var o = ViewState ["CompleteSuccessText"];
 				return (o == null) ? Locale.GetText ("Your account has been successfully created.") : (string) o;
 			}
 			set {
@@ -193,7 +193,7 @@ namespace System.Web.UI.WebControls
 		[LocalizableAttribute (true)]
 		public virtual string ConfirmPasswordCompareErrorMessage {
 			get {
-				object o = ViewState ["ConfirmPasswordCompareErrorMessage"];
+				var o = ViewState ["ConfirmPasswordCompareErrorMessage"];
 				return (o == null) ? Locale.GetText ("The Password and Confirmation Password must match.") : (string) o;
 			}
 			set {
@@ -207,7 +207,7 @@ namespace System.Web.UI.WebControls
 		[LocalizableAttribute (true)]
 		public virtual string ConfirmPasswordLabelText {
 			get {
-				object o = ViewState ["ConfirmPasswordLabelText"];
+				var o = ViewState ["ConfirmPasswordLabelText"];
 				return (o == null) ? Locale.GetText ("Confirm Password:") : (string) o;
 			}
 			set {
@@ -221,7 +221,7 @@ namespace System.Web.UI.WebControls
 		[LocalizableAttribute (true)]
 		public virtual string ConfirmPasswordRequiredErrorMessage {
 			get {
-				object o = ViewState ["ConfirmPasswordRequiredErrorMessage"];
+				var o = ViewState ["ConfirmPasswordRequiredErrorMessage"];
 				return (o == null) ? Locale.GetText ("Confirm Password is required.") : (string) o;
 			}
 			set {
@@ -264,7 +264,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValue (ButtonType.Button)]
 		public virtual ButtonType ContinueButtonType {
 			get {
-				object v = ViewState ["ContinueButtonType"];
+				var v = ViewState ["ContinueButtonType"];
 				return v != null ? (ButtonType) v : ButtonType.Button;
 			}
 			set {
@@ -278,7 +278,7 @@ namespace System.Web.UI.WebControls
 		[ThemeableAttribute (false)]
 		public virtual string ContinueDestinationPageUrl {
 			get {
-				object o = ViewState ["ContinueDestinationPageUrl"];
+				var o = ViewState ["ContinueDestinationPageUrl"];
 				return (o == null) ? "" : (string) o;
 			}
 			set {
@@ -321,7 +321,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValue (ButtonType.Button)]
 		public virtual ButtonType CreateUserButtonType {
 			get {
-				object v = ViewState ["CreateUserButtonType"];
+				var v = ViewState ["CreateUserButtonType"];
 				return v != null ? (ButtonType) v : ButtonType.Button;
 			}
 			set { ViewState ["CreateUserButtonType"] = value; }
@@ -332,7 +332,7 @@ namespace System.Web.UI.WebControls
 		public CreateUserWizardStep CreateUserStep {
 			get {
 				if (_createUserWizardStep == null) {
-					for (int i = 0; i < WizardSteps.Count; i++)
+					for (var i = 0; i < WizardSteps.Count; i++)
 						if (WizardSteps [i] is CreateUserWizardStep) {
 							_createUserWizardStep = (CreateUserWizardStep) WizardSteps [i];
 
@@ -348,7 +348,7 @@ namespace System.Web.UI.WebControls
 		[ThemeableAttribute (false)]
 		public virtual bool DisableCreatedUser {
 			get {
-				object o = ViewState ["DisableCreatedUser"];
+				var o = ViewState ["DisableCreatedUser"];
 				return (o == null) ? false : (bool) o;
 			}
 			set { ViewState ["DisableCreatedUser"] = value; }
@@ -366,7 +366,7 @@ namespace System.Web.UI.WebControls
 		[LocalizableAttribute (true)]
 		public virtual string DuplicateEmailErrorMessage {
 			get {
-				object o = ViewState ["DuplicateEmailErrorMessage"];
+				var o = ViewState ["DuplicateEmailErrorMessage"];
 				return (o == null) ? Locale.GetText ("The e-mail address that you entered is already in use. Please enter a different e-mail address.") : (string) o;
 			}
 			set {
@@ -380,7 +380,7 @@ namespace System.Web.UI.WebControls
 		[LocalizableAttribute (true)]
 		public virtual string DuplicateUserNameErrorMessage {
 			get {
-				object o = ViewState ["DuplicateUserNameErrorMessage"];
+				var o = ViewState ["DuplicateUserNameErrorMessage"];
 				return (o == null) ? Locale.GetText ("Please enter a different user name.") : (string) o;
 			}
 			set {
@@ -396,7 +396,7 @@ namespace System.Web.UI.WebControls
 		[Editor ("System.Web.UI.Design.ImageUrlEditor, " + Consts.AssemblySystem_Design, "System.Drawing.Design.UITypeEditor, " + Consts.AssemblySystem_Drawing)]
 		public virtual string EditProfileIconUrl {
 			get {
-				object o = ViewState ["EditProfileIconUrl"];
+				var o = ViewState ["EditProfileIconUrl"];
 				return (o == null) ? String.Empty : (string) o;
 			}
 			set {
@@ -411,7 +411,7 @@ namespace System.Web.UI.WebControls
 		[LocalizableAttribute (true)]
 		public virtual string EditProfileText {
 			get {
-				object o = ViewState ["EditProfileText"];
+				var o = ViewState ["EditProfileText"];
 				return (o == null) ? String.Empty : (string) o;
 			}
 			set {
@@ -427,7 +427,7 @@ namespace System.Web.UI.WebControls
 		[Editor ("System.Web.UI.Design.UrlEditor, " + Consts.AssemblySystem_Design, "System.Drawing.Design.UITypeEditor, " + Consts.AssemblySystem_Drawing)]
 		public virtual string EditProfileUrl {
 			get {
-				object o = ViewState ["EditProfileUrl"];
+				var o = ViewState ["EditProfileUrl"];
 				return (o == null) ? String.Empty : (string) o;
 			}
 			set {
@@ -441,7 +441,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValue ("")]
 		public virtual string Email {
 			get {
-				object o = ViewState ["Email"];
+				var o = ViewState ["Email"];
 				return (o == null) ? String.Empty : (string) o;
 			}
 			set {
@@ -455,7 +455,7 @@ namespace System.Web.UI.WebControls
 		[LocalizableAttribute (true)]
 		public virtual string EmailLabelText {
 			get {
-				object o = ViewState ["EmailLabelText"];
+				var o = ViewState ["EmailLabelText"];
 				return (o == null) ? Locale.GetText ("E-mail:") : (string) o;
 			}
 			set {
@@ -468,7 +468,7 @@ namespace System.Web.UI.WebControls
 
 		public virtual string EmailRegularExpression {
 			get {
-				object o = ViewState ["EmailRegularExpression"];
+				var o = ViewState ["EmailRegularExpression"];
 				return (o == null) ? String.Empty : (string) o;
 			}
 			set {
@@ -481,7 +481,7 @@ namespace System.Web.UI.WebControls
 
 		public virtual string EmailRegularExpressionErrorMessage {
 			get {
-				object o = ViewState ["EmailRegularExpressionErrorMessage"];
+				var o = ViewState ["EmailRegularExpressionErrorMessage"];
 				return (o == null) ? Locale.GetText ("Please enter a different e-mail.") : (string) o;
 			}
 			set {
@@ -495,7 +495,7 @@ namespace System.Web.UI.WebControls
 		[LocalizableAttribute (true)]
 		public virtual string EmailRequiredErrorMessage {
 			get {
-				object o = ViewState ["EmailRequiredErrorMessage"];
+				var o = ViewState ["EmailRequiredErrorMessage"];
 				return (o == null) ? Locale.GetText ("E-mail is required.") : (string) o;
 			}
 			set {
@@ -526,7 +526,7 @@ namespace System.Web.UI.WebControls
 		[Editor ("System.Web.UI.Design.ImageUrlEditor, " + Consts.AssemblySystem_Design, "System.Drawing.Design.UITypeEditor, " + Consts.AssemblySystem_Drawing)]
 		public virtual string HelpPageIconUrl {
 			get {
-				object o = ViewState ["HelpPageIconUrl"];
+				var o = ViewState ["HelpPageIconUrl"];
 				return (o == null) ? String.Empty : (string) o;
 			}
 			set {
@@ -541,7 +541,7 @@ namespace System.Web.UI.WebControls
 		[LocalizableAttribute (true)]
 		public virtual string HelpPageText {
 			get {
-				object o = ViewState ["HelpPageText"];
+				var o = ViewState ["HelpPageText"];
 				return (o == null) ? String.Empty : (string) o;
 			}
 			set {
@@ -557,7 +557,7 @@ namespace System.Web.UI.WebControls
 		[Editor ("System.Web.UI.Design.UrlEditor, " + Consts.AssemblySystem_Design, "System.Drawing.Design.UITypeEditor, " + Consts.AssemblySystem_Drawing)]
 		public virtual string HelpPageUrl {
 			get {
-				object o = ViewState ["HelpPageUrl"];
+				var o = ViewState ["HelpPageUrl"];
 				return (o == null) ? String.Empty : (string) o;
 			}
 			set {
@@ -587,7 +587,7 @@ namespace System.Web.UI.WebControls
 		[LocalizableAttribute (true)]
 		public virtual string InstructionText {
 			get {
-				object o = ViewState ["InstructionText"];
+				var o = ViewState ["InstructionText"];
 				return (o == null) ? String.Empty : (string) o;
 			}
 			set {
@@ -616,7 +616,7 @@ namespace System.Web.UI.WebControls
 		[LocalizableAttribute (true)]
 		public virtual string InvalidAnswerErrorMessage {
 			get {
-				object o = ViewState ["InvalidAnswerErrorMessage"];
+				var o = ViewState ["InvalidAnswerErrorMessage"];
 				return (o == null) ? Locale.GetText ("Please enter a different security answer.") : (string) o;
 			}
 			set {
@@ -630,7 +630,7 @@ namespace System.Web.UI.WebControls
 		[LocalizableAttribute (true)]
 		public virtual string InvalidEmailErrorMessage {
 			get {
-				object o = ViewState ["InvalidEmailErrorMessage"];
+				var o = ViewState ["InvalidEmailErrorMessage"];
 				return (o == null) ? Locale.GetText ("Please enter a valid e-mail address.") : (string) o;
 			}
 			set {
@@ -645,7 +645,7 @@ namespace System.Web.UI.WebControls
 		[LocalizableAttribute (true)]
 		public virtual string InvalidPasswordErrorMessage {
 			get {
-				object o = ViewState ["InvalidPasswordErrorMessage"];
+				var o = ViewState ["InvalidPasswordErrorMessage"];
 				return (o == null) ? Locale.GetText ("Password length minimum: {0}. Non-alphanumeric characters required: {1}.") : (string) o;
 			}
 			set {
@@ -659,7 +659,7 @@ namespace System.Web.UI.WebControls
 		[LocalizableAttribute (true)]
 		public virtual string InvalidQuestionErrorMessage {
 			get {
-				object o = ViewState ["InvalidQuestionErrorMessage"];
+				var o = ViewState ["InvalidQuestionErrorMessage"];
 				return (o == null) ? Locale.GetText ("Please enter a different security question.") : (string) o;
 			}
 			set {
@@ -689,7 +689,7 @@ namespace System.Web.UI.WebControls
 		[ThemeableAttribute (false)]
 		public virtual bool LoginCreatedUser {
 			get {
-				object o = ViewState ["LoginCreatedUser"];
+				var o = ViewState ["LoginCreatedUser"];
 				return (o == null) ? true : (bool) o;
 			}
 			set {
@@ -716,7 +716,7 @@ namespace System.Web.UI.WebControls
 		[ThemeableAttribute (false)]
 		public virtual string MembershipProvider {
 			get {
-				object o = ViewState ["MembershipProvider"];
+				var o = ViewState ["MembershipProvider"];
 				return (o == null) ? String.Empty : (string) o;
 			}
 			set {
@@ -762,7 +762,7 @@ namespace System.Web.UI.WebControls
 		[LocalizableAttribute (true)]
 		public virtual string PasswordHintText {
 			get {
-				object o = ViewState ["PasswordHintText"];
+				var o = ViewState ["PasswordHintText"];
 				return (o == null) ? String.Empty : (string) o;
 			}
 			set {
@@ -776,7 +776,7 @@ namespace System.Web.UI.WebControls
 		[LocalizableAttribute (true)]
 		public virtual string PasswordLabelText {
 			get {
-				object o = ViewState ["PasswordLabelText"];
+				var o = ViewState ["PasswordLabelText"];
 				return (o == null) ? Locale.GetText ("Password:") : (string) o;
 			}
 			set {
@@ -789,7 +789,7 @@ namespace System.Web.UI.WebControls
 
 		public virtual string PasswordRegularExpression {
 			get {
-				object o = ViewState ["PasswordRegularExpression"];
+				var o = ViewState ["PasswordRegularExpression"];
 				return (o == null) ? String.Empty : (string) o;
 			}
 			set {
@@ -802,7 +802,7 @@ namespace System.Web.UI.WebControls
 
 		public virtual string PasswordRegularExpressionErrorMessage {
 			get {
-				object o = ViewState ["PasswordRegularExpressionErrorMessage"];
+				var o = ViewState ["PasswordRegularExpressionErrorMessage"];
 				return (o == null) ? Locale.GetText ("Please enter a different password.") : (string) o;
 			}
 			set {
@@ -816,7 +816,7 @@ namespace System.Web.UI.WebControls
 		[LocalizableAttribute (true)]
 		public virtual string PasswordRequiredErrorMessage {
 			get {
-				object o = ViewState ["PasswordRequiredErrorMessage"];
+				var o = ViewState ["PasswordRequiredErrorMessage"];
 				return (o == null) ? Locale.GetText ("Password is required.") : (string) o;
 			}
 			set {
@@ -832,7 +832,7 @@ namespace System.Web.UI.WebControls
 		[ThemeableAttribute (false)]
 		public virtual string Question {
 			get {
-				object o = ViewState ["Question"];
+				var o = ViewState ["Question"];
 				return (o == null) ? String.Empty : (string) o;
 			}
 			set {
@@ -846,7 +846,7 @@ namespace System.Web.UI.WebControls
 		[LocalizableAttribute (true)]
 		public virtual string QuestionLabelText {
 			get {
-				object o = ViewState ["QuestionLabelText"];
+				var o = ViewState ["QuestionLabelText"];
 				return (o == null) ? Locale.GetText ("Security Question:") : (string) o;
 			}
 			set {
@@ -860,7 +860,7 @@ namespace System.Web.UI.WebControls
 		[LocalizableAttribute (true)]
 		public virtual string QuestionRequiredErrorMessage {
 			get {
-				object o = ViewState ["QuestionRequiredErrorMessage"];
+				var o = ViewState ["QuestionRequiredErrorMessage"];
 				return (o == null) ? Locale.GetText ("Security question is required.") : (string) o;
 			}
 			set {
@@ -875,7 +875,7 @@ namespace System.Web.UI.WebControls
 		[ThemeableAttribute (false)]
 		public virtual bool RequireEmail {
 			get {
-				object o = ViewState ["RequireEmail"];
+				var o = ViewState ["RequireEmail"];
 				return (o == null) ? true : (bool) o;
 			}
 			set {
@@ -887,7 +887,7 @@ namespace System.Web.UI.WebControls
 		[MonoTODO ("doesnt work")]
 		public override string SkipLinkText {
 			get {
-				object o = ViewState ["SkipLinkText"];
+				var o = ViewState ["SkipLinkText"];
 				return (o == null) ? String.Empty : (string) o;
 			}
 			set {
@@ -931,7 +931,7 @@ namespace System.Web.UI.WebControls
 		[LocalizableAttribute (true)]
 		public virtual string UnknownErrorMessage {
 			get {
-				object o = ViewState ["UnknownErrorMessage"];
+				var o = ViewState ["UnknownErrorMessage"];
 				return (o == null) ? Locale.GetText ("Your account was not created. Please try again.") : (string) o;
 			}
 			set {
@@ -945,7 +945,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValue ("")]
 		public virtual string UserName {
 			get {
-				object o = ViewState ["UserName"];
+				var o = ViewState ["UserName"];
 				return (o == null) ? String.Empty : (string) o;
 			}
 			set {
@@ -959,7 +959,7 @@ namespace System.Web.UI.WebControls
 		[LocalizableAttribute (true)]
 		public virtual string UserNameLabelText {
 			get {
-				object o = ViewState ["UserNameLabelText"];
+				var o = ViewState ["UserNameLabelText"];
 				return (o == null) ? Locale.GetText ("User Name:") : (string) o;
 			}
 			set {
@@ -973,7 +973,7 @@ namespace System.Web.UI.WebControls
 		[LocalizableAttribute (true)]
 		public virtual string UserNameRequiredErrorMessage {
 			get {
-				object o = ViewState ["UserNameRequiredErrorMessage"];
+				var o = ViewState ["UserNameRequiredErrorMessage"];
 				return (o == null) ? Locale.GetText ("User Name is required.") : (string) o;
 			}
 			set {
@@ -1060,7 +1060,7 @@ namespace System.Web.UI.WebControls
 
 		void InstantiateCompleteWizardStep (CompleteWizardStep step)
 		{
-			CompleteStepContainer contentTemplateContainer = new CompleteStepContainer (this);
+			var contentTemplateContainer = new CompleteStepContainer (this);
 			if (step.ContentTemplate != null)
 				step.ContentTemplate.InstantiateIn (contentTemplateContainer.InnerCell);
 			else {
@@ -1072,7 +1072,7 @@ namespace System.Web.UI.WebControls
 			step.Controls.Clear ();
 			step.Controls.Add (contentTemplateContainer);
 
-			BaseWizardNavigationContainer customNavigationTemplateContainer = new BaseWizardNavigationContainer ();
+			var customNavigationTemplateContainer = new BaseWizardNavigationContainer ();
 			if (step.CustomNavigationTemplate != null) {
 				step.CustomNavigationTemplate.InstantiateIn (customNavigationTemplateContainer);
 				RegisterCustomNavigation (step, customNavigationTemplateContainer);
@@ -1082,7 +1082,7 @@ namespace System.Web.UI.WebControls
 
 		void InstantiateCreateUserWizardStep (CreateUserWizardStep step)
 		{
-			CreateUserStepContainer contentTemplateContainer = new CreateUserStepContainer (this);
+			var contentTemplateContainer = new CreateUserStepContainer (this);
 			if (step.ContentTemplate != null)
 				step.ContentTemplate.InstantiateIn (contentTemplateContainer.InnerCell);
 			else {
@@ -1095,7 +1095,7 @@ namespace System.Web.UI.WebControls
 			step.Controls.Clear ();
 			step.Controls.Add (contentTemplateContainer);
 
-			CreateUserNavigationContainer customNavigationTemplateContainer = new CreateUserNavigationContainer (this);
+			var customNavigationTemplateContainer = new CreateUserNavigationContainer (this);
 			if (step.CustomNavigationTemplate != null)
 				step.CustomNavigationTemplate.InstantiateIn (customNavigationTemplateContainer);
 			else {
@@ -1180,7 +1180,7 @@ namespace System.Web.UI.WebControls
 			throw new NotImplementedException ();
 		}
 
-		protected override bool OnBubbleEvent (object source, EventArgs e)
+		protected override bool OnBubbleEvent (object source, EventArgs? e)
 		{
 			CommandEventArgs args = e as CommandEventArgs;
 			if (e != null && args.CommandName == ContinueButtonCommandName) {
@@ -1237,7 +1237,7 @@ namespace System.Web.UI.WebControls
 		protected override void OnNextButtonClick (WizardNavigationEventArgs e)
 		{
 			if (ActiveStep == CreateUserStep) {
-				bool userCreated = CreateUser ();
+				var userCreated = CreateUser ();
 				if (!userCreated)
 					e.Cancel = true;
 				else
@@ -1269,14 +1269,14 @@ namespace System.Web.UI.WebControls
 			}
 		}
 
-		protected override void LoadViewState (object savedState)
+		protected override void LoadViewState (object? savedState)
 		{
 			if (savedState == null) {
 				base.LoadViewState (null);
 				return;
 			}
 
-			object [] states = (object []) savedState;
+			var states = (object []) savedState;
 			base.LoadViewState (states [0]);
 
 			if (states [1] != null)
@@ -1309,7 +1309,7 @@ namespace System.Web.UI.WebControls
 
 		protected override object SaveViewState ()
 		{
-			object [] state = new object [13];
+			var state = new object [13];
 			state [0] = base.SaveViewState ();
 
 			if (_textBoxStyle != null)
@@ -1337,7 +1337,7 @@ namespace System.Web.UI.WebControls
 			if (_mailDefinition != null)
 				state [12] = ((IStateManager) _mailDefinition).SaveViewState ();
 
-			for (int n = 0; n < state.Length; n++)
+			for (var n = 0; n < state.Length; n++)
 				if (state [n] != null)
 					return state;
 
@@ -1419,7 +1419,7 @@ namespace System.Web.UI.WebControls
 
 		void InitMemberShipProvider ()
 		{
-			string mp = MembershipProvider;
+			var mp = MembershipProvider;
 			_provider = (mp.Length == 0) ? _provider = Membership.Provider : Membership.Providers [mp];
 			if (_provider == null)
 				throw new HttpException (Locale.GetText ("No provider named '{0}' could be found.", mp));
@@ -1436,7 +1436,7 @@ namespace System.Web.UI.WebControls
 			OnCreatingUser (new LoginCancelEventArgs (false));
 
 			MembershipCreateStatus status;
-			MembershipUser newUser = MembershipProviderInternal.CreateUser (
+			var newUser = MembershipProviderInternal.CreateUser (
 				UserName, Password, Email, Question, Answer, !DisableCreatedUser, null, out status);
 
 			if ((newUser != null) && (status == MembershipCreateStatus.Success)) {
@@ -1485,7 +1485,7 @@ namespace System.Web.UI.WebControls
 			return false;
 		}
 
-		void SendPasswordByMail (MembershipUser user, string password)
+		void SendPasswordByMail (MembershipUser? user, string password)
 		{
 			if (user == null)
 				return;
@@ -1493,9 +1493,9 @@ namespace System.Web.UI.WebControls
 			if (_mailDefinition == null)
 				return;
 			
-			string messageText = "A new account has been created for you. Please go to the site and log in using the following information.\nUser Name: <%USERNAME%>\nPassword: <%PASSWORD%>";
+			var messageText = "A new account has been created for you. Please go to the site and log in using the following information.\nUser Name: <%USERNAME%>\nPassword: <%PASSWORD%>";
 
-			ListDictionary dictionary = new ListDictionary ();
+			var dictionary = new ListDictionary ();
 			dictionary.Add ("<%USERNAME%>", user.UserName);
 			dictionary.Add ("<%PASSWORD%>", password);
 
@@ -1509,14 +1509,14 @@ namespace System.Web.UI.WebControls
 			if (string.IsNullOrEmpty (message.Subject))
 				message.Subject = "Account information";
 
-			MailMessageEventArgs args = new MailMessageEventArgs (message);
+			var args = new MailMessageEventArgs (message);
 			OnSendingMail (args);
 
-			SmtpClient smtpClient = new SmtpClient ();
+			var smtpClient = new SmtpClient ();
 			try {
 				smtpClient.Send (message);
 			} catch (Exception e) {
-				SendMailErrorEventArgs mailArgs = new SendMailErrorEventArgs (e);
+				var mailArgs = new SendMailErrorEventArgs (e);
 				OnSendMailError (mailArgs);
 				if (!mailArgs.Handled)
 					throw e;
@@ -1525,7 +1525,7 @@ namespace System.Web.UI.WebControls
 
 		void Login ()
 		{
-			bool userValidated = MembershipProviderInternal.ValidateUser (UserName, Password);
+			var userValidated = MembershipProviderInternal.ValidateUser (UserName, Password);
 			if (userValidated)
 				FormsAuthentication.SetAuthCookie (UserName, false);
 		}
@@ -1556,7 +1556,7 @@ namespace System.Web.UI.WebControls
 
 			public void InstantiateIn (Control control)
 			{
-				Label b = new Label ();
+				var b = new Label ();
 				wizard.RegisterApplyStyle (b, wizard.SideBarButtonStyle);
 				control.Controls.Add (b);
 				control.DataBinding += Bound;
@@ -1566,8 +1566,8 @@ namespace System.Web.UI.WebControls
 			{
 				WizardStepBase step = DataBinder.GetDataItem (s) as WizardStepBase;
 				if (step != null) {
-					Control c = (Control) s;
-					Label b = (Label) c.Controls [0];
+					var c = (Control) s;
+					var b = (Label) c.Controls [0];
 					b.ID = SideBarButtonID;
 					b.Text = step.Title;
 				}
@@ -1589,7 +1589,7 @@ namespace System.Web.UI.WebControls
 			protected override void UpdateState ()
 			{
 				// previous
-				int previous = _createUserWizard.ActiveStepIndex - 1;
+				var previous = _createUserWizard.ActiveStepIndex - 1;
 				if (previous >= 0 && _createUserWizard.AllowNavigationToStep (previous))
 					UpdateNavButtonState (Wizard.StepPreviousButtonID + Wizard.StepPreviousButtonType, Wizard.StepPreviousButtonText, Wizard.StepPreviousButtonImageUrl, Wizard.StepPreviousButtonStyle);
 				else
@@ -1618,12 +1618,12 @@ namespace System.Web.UI.WebControls
 
 			public void InstantiateIn (Control container)
 			{
-				Table t = new Table ();
+				var t = new Table ();
 				t.CellPadding = 5;
 				t.CellSpacing = 5;
 				t.Width = Unit.Percentage (100);
 				t.Height = Unit.Percentage (100);
-				TableRow row = new TableRow ();
+				var row = new TableRow ();
 
 				AddButtonCell (row, _createUserWizard.CreateButtonSet (Wizard.StepPreviousButtonID, Wizard.MovePreviousCommandName, false, _createUserWizard.ID));
 				AddButtonCell (row, _createUserWizard.CreateButtonSet (Wizard.StepNextButtonID, Wizard.MoveNextCommandName, true, _createUserWizard.ID));
@@ -1635,9 +1635,9 @@ namespace System.Web.UI.WebControls
 
 			void AddButtonCell (TableRow row, params Control [] controls)
 			{
-				TableCell cell = new TableCell ();
+				var cell = new TableCell ();
 				cell.HorizontalAlign = HorizontalAlign.Right;
-				for (int i = 0; i < controls.Length; i++)
+				for (var i = 0; i < controls.Length; i++)
 					cell.Controls.Add (controls[i]);
 				row.Cells.Add (cell);
 			}
@@ -1657,7 +1657,7 @@ namespace System.Web.UI.WebControls
 
 			public Control UserNameTextBox {
 				get {
-					Control c = FindControl ("UserName");
+					var c = FindControl ("UserName");
 					if (c == null)
 						throw new HttpException ("CreateUserWizardStep.ContentTemplate does not contain an IEditableTextControl with ID UserName for the username.");
 
@@ -1666,7 +1666,7 @@ namespace System.Web.UI.WebControls
 			}
 			public Control PasswordTextBox {
 				get {
-					Control c = FindControl ("Password");
+					var c = FindControl ("Password");
 					if (c == null)
 						throw new HttpException ("CreateUserWizardStep.ContentTemplate does not contain an IEditableTextControl with ID Password for the new password, this is required if AutoGeneratePassword = true.");
 
@@ -1675,13 +1675,13 @@ namespace System.Web.UI.WebControls
 			}
 			public Control ConfirmPasswordTextBox {
 				get {
-					Control c = FindControl ("Password");
+					var c = FindControl ("Password");
 					return c;
 				}
 			}
 			public Control EmailTextBox {
 				get {
-					Control c = FindControl ("Email");
+					var c = FindControl ("Email");
 					if (c == null)
 						throw new HttpException ("CreateUserWizardStep.ContentTemplate does not contain an IEditableTextControl with ID Email for the e-mail, this is required if RequireEmail = true.");
 
@@ -1690,7 +1690,7 @@ namespace System.Web.UI.WebControls
 			}
 			public Control QuestionTextBox {
 				get {
-					Control c = FindControl ("Question");
+					var c = FindControl ("Question");
 					if (c == null)
 						throw new HttpException ("CreateUserWizardStep.ContentTemplate does not contain an IEditableTextControl with ID Question for the security question, this is required if your membership provider requires a question and answer.");
 
@@ -1699,7 +1699,7 @@ namespace System.Web.UI.WebControls
 			}
 			public Control AnswerTextBox {
 				get {
-					Control c = FindControl ("Answer");
+					var c = FindControl ("Answer");
 					if (c == null)
 						throw new HttpException ("CreateUserWizardStep.ContentTemplate does not contain an IEditableTextControl with ID Answer for the security answer, this is required if your membership provider requires a question and answer.");
 
@@ -1725,10 +1725,10 @@ namespace System.Web.UI.WebControls
 					((Table) InnerCell.Controls [0]).Rows [1].Cells [0].Text = _createUserWizard.InstructionText;
 
 				// Row #2
-				Label UserNameLabel = (Label) ((Table) InnerCell.Controls [0]).Rows [2].Cells [0].Controls [0];
+				var UserNameLabel = (Label) ((Table) InnerCell.Controls [0]).Rows [2].Cells [0].Controls [0];
 				UserNameLabel.Text = _createUserWizard.UserNameLabelText;
 
-				RequiredFieldValidator UserNameRequired = (RequiredFieldValidator) FindControl ("UserNameRequired");
+				var UserNameRequired = (RequiredFieldValidator) FindControl ("UserNameRequired");
 				UserNameRequired.ErrorMessage = _createUserWizard.UserNameRequiredErrorMessage;
 				UserNameRequired.ToolTip = _createUserWizard.UserNameRequiredErrorMessage;
 
@@ -1738,10 +1738,10 @@ namespace System.Web.UI.WebControls
 					((Table) InnerCell.Controls [0]).Rows [5].Visible = false;
 				} else {
 					// Row #3
-					Label PasswordLabel = (Label) ((Table) InnerCell.Controls [0]).Rows [3].Cells [0].Controls [0];
+					var PasswordLabel = (Label) ((Table) InnerCell.Controls [0]).Rows [3].Cells [0].Controls [0];
 					PasswordLabel.Text = _createUserWizard.PasswordLabelText;
 
-					RequiredFieldValidator PasswordRequired = (RequiredFieldValidator) FindControl ("PasswordRequired");
+					var PasswordRequired = (RequiredFieldValidator) FindControl ("PasswordRequired");
 					PasswordRequired.ErrorMessage = _createUserWizard.PasswordRequiredErrorMessage;
 					PasswordRequired.ToolTip = _createUserWizard.PasswordRequiredErrorMessage;
 
@@ -1752,20 +1752,20 @@ namespace System.Web.UI.WebControls
 						((Table) InnerCell.Controls [0]).Rows [4].Cells [1].Text = _createUserWizard.PasswordHintText;
 
 					// Row #5
-					Label ConfirmPasswordLabel = (Label) ((Table) InnerCell.Controls [0]).Rows [5].Cells [0].Controls [0];
+					var ConfirmPasswordLabel = (Label) ((Table) InnerCell.Controls [0]).Rows [5].Cells [0].Controls [0];
 					ConfirmPasswordLabel.Text = _createUserWizard.ConfirmPasswordLabelText;
 
-					RequiredFieldValidator ConfirmPasswordRequired = (RequiredFieldValidator) FindControl ("ConfirmPasswordRequired");
+					var ConfirmPasswordRequired = (RequiredFieldValidator) FindControl ("ConfirmPasswordRequired");
 					ConfirmPasswordRequired.ErrorMessage = _createUserWizard.ConfirmPasswordRequiredErrorMessage;
 					ConfirmPasswordRequired.ToolTip = _createUserWizard.ConfirmPasswordRequiredErrorMessage;
 				}
 
 				// Row #6
 				if (_createUserWizard.RequireEmail) {
-					Label EmailLabel = (Label) ((Table) InnerCell.Controls [0]).Rows [6].Cells [0].Controls [0];
+					var EmailLabel = (Label) ((Table) InnerCell.Controls [0]).Rows [6].Cells [0].Controls [0];
 					EmailLabel.Text = _createUserWizard.EmailLabelText;
 
-					RequiredFieldValidator EmailRequired = (RequiredFieldValidator) FindControl ("EmailRequired");
+					var EmailRequired = (RequiredFieldValidator) FindControl ("EmailRequired");
 					EmailRequired.ErrorMessage = _createUserWizard.EmailRequiredErrorMessage;
 					EmailRequired.ToolTip = _createUserWizard.EmailRequiredErrorMessage;
 				} else
@@ -1773,18 +1773,18 @@ namespace System.Web.UI.WebControls
 
 				if (_createUserWizard.QuestionAndAnswerRequired) {
 					// Row #7
-					Label QuestionLabel = (Label) ((Table) InnerCell.Controls [0]).Rows [7].Cells [0].Controls [0];
+					var QuestionLabel = (Label) ((Table) InnerCell.Controls [0]).Rows [7].Cells [0].Controls [0];
 					QuestionLabel.Text = _createUserWizard.QuestionLabelText;
 
-					RequiredFieldValidator QuestionRequired = (RequiredFieldValidator) FindControl ("QuestionRequired");
+					var QuestionRequired = (RequiredFieldValidator) FindControl ("QuestionRequired");
 					QuestionRequired.ErrorMessage = _createUserWizard.QuestionRequiredErrorMessage;
 					QuestionRequired.ToolTip = _createUserWizard.QuestionRequiredErrorMessage;
 
 					// Row #8
-					Label AnswerLabel = (Label) ((Table) InnerCell.Controls [0]).Rows [8].Cells [0].Controls [0];
+					var AnswerLabel = (Label) ((Table) InnerCell.Controls [0]).Rows [8].Cells [0].Controls [0];
 					AnswerLabel.Text = _createUserWizard.AnswerLabelText;
 
-					RequiredFieldValidator AnswerRequired = (RequiredFieldValidator) FindControl ("AnswerRequired");
+					var AnswerRequired = (RequiredFieldValidator) FindControl ("AnswerRequired");
 					AnswerRequired.ErrorMessage = _createUserWizard.AnswerRequiredErrorMessage;
 					AnswerRequired.ToolTip = _createUserWizard.AnswerRequiredErrorMessage;
 				} else {
@@ -1796,7 +1796,7 @@ namespace System.Web.UI.WebControls
 				if (_createUserWizard.AutoGeneratePassword)
 					((Table) InnerCell.Controls [0]).Rows [9].Visible = false;
 				else {
-					CompareValidator PasswordCompare = (CompareValidator) FindControl ("PasswordCompare");
+					var PasswordCompare = (CompareValidator) FindControl ("PasswordCompare");
 					PasswordCompare.ErrorMessage = _createUserWizard.ConfirmPasswordCompareErrorMessage;
 				}
 
@@ -1804,7 +1804,7 @@ namespace System.Web.UI.WebControls
 				if (_createUserWizard.AutoGeneratePassword || String.IsNullOrEmpty (_createUserWizard.PasswordRegularExpression))
 					((Table) InnerCell.Controls [0]).Rows [10].Visible = false;
 				else {
-					RegularExpressionValidator PasswordRegEx = (RegularExpressionValidator) FindControl ("PasswordRegEx");
+					var PasswordRegEx = (RegularExpressionValidator) FindControl ("PasswordRegEx");
 					PasswordRegEx.ValidationExpression = _createUserWizard.PasswordRegularExpression;
 					PasswordRegEx.ErrorMessage = _createUserWizard.PasswordRegularExpressionErrorMessage;
 				}
@@ -1813,7 +1813,7 @@ namespace System.Web.UI.WebControls
 				if (!_createUserWizard.RequireEmail || String.IsNullOrEmpty (_createUserWizard.EmailRegularExpression))
 					((Table) InnerCell.Controls [0]).Rows [11].Visible = false;
 				else {
-					RegularExpressionValidator EmailRegEx = (RegularExpressionValidator) FindControl ("EmailRegEx");
+					var EmailRegEx = (RegularExpressionValidator) FindControl ("EmailRegEx");
 					EmailRegEx.ErrorMessage = _createUserWizard.EmailRegularExpressionErrorMessage;
 					EmailRegEx.ValidationExpression = _createUserWizard.EmailRegularExpression;
 				}
@@ -1824,7 +1824,7 @@ namespace System.Web.UI.WebControls
 
 				// Row #13
 				// HelpPageIconUrl
-				Image img = (Image) ((Table) InnerCell.Controls [0]).Rows [13].Cells [0].Controls [0];
+				var img = (Image) ((Table) InnerCell.Controls [0]).Rows [13].Cells [0].Controls [0];
 				if (String.IsNullOrEmpty (_createUserWizard.HelpPageIconUrl))
 					img.Visible = false;
 				else {
@@ -1833,7 +1833,7 @@ namespace System.Web.UI.WebControls
 				}
 
 				// HelpPageText
-				HyperLink link = (HyperLink) ((Table) InnerCell.Controls [0]).Rows [13].Cells [0].Controls [1];
+				var link = (HyperLink) ((Table) InnerCell.Controls [0]).Rows [13].Cells [0].Controls [1];
 				if (String.IsNullOrEmpty (_createUserWizard.HelpPageText))
 					link.Visible = false;
 				else {
@@ -1853,12 +1853,12 @@ namespace System.Web.UI.WebControls
 				((RequiredFieldValidator) FindControl ("PasswordRequired")).Enabled = !_createUserWizard.AutoGeneratePassword;
 				((RequiredFieldValidator) FindControl ("ConfirmPasswordRequired")).Enabled = !_createUserWizard.AutoGeneratePassword;
 				((CompareValidator) FindControl ("PasswordCompare")).Enabled = !_createUserWizard.AutoGeneratePassword;
-				RegularExpressionValidator PasswordRegEx = (RegularExpressionValidator) FindControl ("PasswordRegEx");
+				var PasswordRegEx = (RegularExpressionValidator) FindControl ("PasswordRegEx");
 				PasswordRegEx.Enabled = !_createUserWizard.AutoGeneratePassword && !String.IsNullOrEmpty (_createUserWizard.PasswordRegularExpression);
 				PasswordRegEx.ValidationExpression = _createUserWizard.PasswordRegularExpression;
 
 				((RequiredFieldValidator) FindControl ("EmailRequired")).Enabled = _createUserWizard.RequireEmail;
-				RegularExpressionValidator EmailRegEx = (RegularExpressionValidator) FindControl ("EmailRegEx");
+				var EmailRegEx = (RegularExpressionValidator) FindControl ("EmailRegEx");
 				EmailRegEx.Enabled = _createUserWizard.RequireEmail && !String.IsNullOrEmpty (_createUserWizard.EmailRegularExpression);
 				EmailRegEx.ValidationExpression = _createUserWizard.EmailRegularExpression;
 
@@ -1878,11 +1878,11 @@ namespace System.Web.UI.WebControls
 
 			#region ITemplate Members
 
-			TableRow CreateRow (Control c0, Control c1, Control c2, Style s0, Style s1)
+			TableRow CreateRow (Control? c0, Control? c1, Control? c2, Style? s0, Style? s1)
 			{
-				TableRow row = new TableRow ();
-				TableCell cell0 = new TableCell ();
-				TableCell cell1 = new TableCell ();
+				var row = new TableRow ();
+				var cell0 = new TableCell ();
+				var cell1 = new TableCell ();
 
 				if (c0 != null)
 					cell0.Controls.Add (c0);
@@ -1910,7 +1910,7 @@ namespace System.Web.UI.WebControls
 
 			public void InstantiateIn (Control container)
 			{
-				Table table = new Table ();
+				var table = new Table ();
 				table.ControlStyle.Width = Unit.Percentage (100);
 				table.ControlStyle.Height = Unit.Percentage (100);
 
@@ -1921,14 +1921,14 @@ namespace System.Web.UI.WebControls
 				table.Controls.Add (CreateRow (null, null, null, _createUserWizard.InstructionTextStyle, null));
 
 				// Row #2
-				TextBox UserName = new TextBox ();
+				var UserName = new TextBox ();
 				UserName.ID = "UserName";
 				_createUserWizard.RegisterApplyStyle (UserName, _createUserWizard.TextBoxStyle);
 
-				Label UserNameLabel = new Label ();
+				var UserNameLabel = new Label ();
 				UserNameLabel.AssociatedControlID = "UserName";
 
-				RequiredFieldValidator UserNameRequired = new RequiredFieldValidator ();
+				var UserNameRequired = new RequiredFieldValidator ();
 				UserNameRequired.ID = "UserNameRequired";
 				// alternatively we can create only required validators
 				// and reinstantiate collection when relevant property changes
@@ -1941,15 +1941,15 @@ namespace System.Web.UI.WebControls
 				table.Controls.Add (CreateRow (UserNameLabel, UserName, UserNameRequired, _createUserWizard.LabelStyle, null));
 
 				// Row #3
-				TextBox Password = new TextBox ();
+				var Password = new TextBox ();
 				Password.ID = "Password";
 				Password.TextMode = TextBoxMode.Password;
 				_createUserWizard.RegisterApplyStyle (Password, _createUserWizard.TextBoxStyle);
 
-				Label PasswordLabel = new Label ();
+				var PasswordLabel = new Label ();
 				PasswordLabel.AssociatedControlID = "Password";
 
-				RequiredFieldValidator PasswordRequired = new RequiredFieldValidator ();
+				var PasswordRequired = new RequiredFieldValidator ();
 				PasswordRequired.ID = "PasswordRequired";
 				PasswordRequired.EnableViewState = false;
 				PasswordRequired.ControlToValidate = "Password";
@@ -1964,15 +1964,15 @@ namespace System.Web.UI.WebControls
 				table.Controls.Add (CreateRow (new LiteralControl (String.Empty), new LiteralControl (String.Empty), new LiteralControl (String.Empty), null, _createUserWizard.PasswordHintStyle));
 
 				// Row #5
-				TextBox ConfirmPassword = new TextBox ();
+				var ConfirmPassword = new TextBox ();
 				ConfirmPassword.ID = "ConfirmPassword";
 				ConfirmPassword.TextMode = TextBoxMode.Password;
 				_createUserWizard.RegisterApplyStyle (ConfirmPassword, _createUserWizard.TextBoxStyle);
 
-				Label ConfirmPasswordLabel = new Label ();
+				var ConfirmPasswordLabel = new Label ();
 				ConfirmPasswordLabel.AssociatedControlID = "ConfirmPassword";
 
-				RequiredFieldValidator ConfirmPasswordRequired = new RequiredFieldValidator ();
+				var ConfirmPasswordRequired = new RequiredFieldValidator ();
 				ConfirmPasswordRequired.ID = "ConfirmPasswordRequired";
 				ConfirmPasswordRequired.EnableViewState = false;
 				ConfirmPasswordRequired.ControlToValidate = "ConfirmPassword";
@@ -1983,14 +1983,14 @@ namespace System.Web.UI.WebControls
 				table.Controls.Add (CreateRow (ConfirmPasswordLabel, ConfirmPassword, ConfirmPasswordRequired, _createUserWizard.LabelStyle, null));
 
 				// Row #6
-				TextBox Email = new TextBox ();
+				var Email = new TextBox ();
 				Email.ID = "Email";
 				_createUserWizard.RegisterApplyStyle (Email, _createUserWizard.TextBoxStyle);
 
-				Label EmailLabel = new Label ();
+				var EmailLabel = new Label ();
 				EmailLabel.AssociatedControlID = "Email";
 
-				RequiredFieldValidator EmailRequired = new RequiredFieldValidator ();
+				var EmailRequired = new RequiredFieldValidator ();
 				EmailRequired.ID = "EmailRequired";
 				EmailRequired.EnableViewState = false;
 				EmailRequired.ControlToValidate = "Email";
@@ -2001,14 +2001,14 @@ namespace System.Web.UI.WebControls
 				table.Controls.Add (CreateRow (EmailLabel, Email, EmailRequired, _createUserWizard.LabelStyle, null));
 
 				// Row #7
-				TextBox Question = new TextBox ();
+				var Question = new TextBox ();
 				Question.ID = "Question";
 				_createUserWizard.RegisterApplyStyle (Question, _createUserWizard.TextBoxStyle);
 
-				Label QuestionLabel = new Label ();
+				var QuestionLabel = new Label ();
 				QuestionLabel.AssociatedControlID = "Question";
 
-				RequiredFieldValidator QuestionRequired = new RequiredFieldValidator ();
+				var QuestionRequired = new RequiredFieldValidator ();
 				QuestionRequired.ID = "QuestionRequired";
 				QuestionRequired.EnableViewState = false;
 				QuestionRequired.ControlToValidate = "Question";
@@ -2019,14 +2019,14 @@ namespace System.Web.UI.WebControls
 				table.Controls.Add (CreateRow (QuestionLabel, Question, QuestionRequired, _createUserWizard.LabelStyle, null));
 
 				// Row #8
-				TextBox Answer = new TextBox ();
+				var Answer = new TextBox ();
 				Answer.ID = "Answer";
 				_createUserWizard.RegisterApplyStyle (Answer, _createUserWizard.TextBoxStyle);
 
-				Label AnswerLabel = new Label ();
+				var AnswerLabel = new Label ();
 				AnswerLabel.AssociatedControlID = "Answer";
 
-				RequiredFieldValidator AnswerRequired = new RequiredFieldValidator ();
+				var AnswerRequired = new RequiredFieldValidator ();
 				AnswerRequired.ID = "AnswerRequired";
 				AnswerRequired.EnableViewState = false;
 				AnswerRequired.ControlToValidate = "Answer";
@@ -2037,7 +2037,7 @@ namespace System.Web.UI.WebControls
 				table.Controls.Add (CreateRow (AnswerLabel, Answer, AnswerRequired, _createUserWizard.LabelStyle, null));
 
 				// Row #9
-				CompareValidator PasswordCompare = new CompareValidator ();
+				var PasswordCompare = new CompareValidator ();
 				PasswordCompare.ID = "PasswordCompare";
 				PasswordCompare.EnableViewState = false;
 				PasswordCompare.ControlToCompare = "Password";
@@ -2050,7 +2050,7 @@ namespace System.Web.UI.WebControls
 				table.Controls.Add (CreateRow (PasswordCompare, null, null, null, null));
 
 				// Row #10
-				RegularExpressionValidator PasswordRegEx = new RegularExpressionValidator ();
+				var PasswordRegEx = new RegularExpressionValidator ();
 				PasswordRegEx.ID = "PasswordRegEx";
 				PasswordRegEx.EnableViewState = false;
 				PasswordRegEx.ControlToValidate = "Password";
@@ -2062,7 +2062,7 @@ namespace System.Web.UI.WebControls
 				table.Controls.Add (CreateRow (PasswordRegEx, null, null, null, null));
 
 				// Row #11
-				RegularExpressionValidator EmailRegEx = new RegularExpressionValidator ();
+				var EmailRegEx = new RegularExpressionValidator ();
 				EmailRegEx.ID = "EmailRegEx";
 				EmailRegEx.EnableViewState = false;
 				EmailRegEx.ControlToValidate = "Email";
@@ -2074,7 +2074,7 @@ namespace System.Web.UI.WebControls
 				table.Controls.Add (CreateRow (EmailRegEx, null, null, null, null));
 
 				// Row #12
-				Label ErrorMessage = new Label ();
+				var ErrorMessage = new Label ();
 				ErrorMessage.ID = "ErrorMessage";
 				ErrorMessage.EnableViewState = false;
 				_createUserWizard.RegisterApplyStyle (ErrorMessage, _createUserWizard.ValidatorTextStyle);
@@ -2082,9 +2082,9 @@ namespace System.Web.UI.WebControls
 				table.Controls.Add (CreateRow (ErrorMessage, null, null, null, null));
 
 				// Row #13
-				TableRow row13 = CreateRow (new Image (), null, null, null, null);
+				var row13 = CreateRow (new Image (), null, null, null, null);
 
-				HyperLink HelpLink = new HyperLink ();
+				var HelpLink = new HyperLink ();
 				HelpLink.ID = "HelpLink";
 				_createUserWizard.RegisterApplyStyle (HelpLink, _createUserWizard.HyperLinkStyle);
 				row13.Cells [0].Controls.Add (HelpLink);
@@ -2127,7 +2127,7 @@ namespace System.Web.UI.WebControls
 				UpdateNavButtonState ("ContinueButton" + _createUserWizard.ContinueButtonType, _createUserWizard.ContinueButtonText, _createUserWizard.ContinueButtonImageUrl, _createUserWizard.ContinueButtonStyle);
 
 				// EditProfileIconUrl
-				Image img = (Image) ((Table) InnerCell.Controls [0]).Rows [3].Cells [0].Controls [0];
+				var img = (Image) ((Table) InnerCell.Controls [0]).Rows [3].Cells [0].Controls [0];
 				if (String.IsNullOrEmpty (_createUserWizard.EditProfileIconUrl))
 					img.Visible = false;
 				else {
@@ -2136,7 +2136,7 @@ namespace System.Web.UI.WebControls
 				}
 
 				// EditProfileText
-				HyperLink link = (HyperLink) ((Table) InnerCell.Controls [0]).Rows [3].Cells [0].Controls [1];
+				var link = (HyperLink) ((Table) InnerCell.Controls [0]).Rows [3].Cells [0].Controls [1];
 				if (String.IsNullOrEmpty (_createUserWizard.EditProfileText))
 					link.Visible = false;
 				else {
@@ -2147,9 +2147,9 @@ namespace System.Web.UI.WebControls
 				((Table) InnerCell.Controls [0]).Rows [3].Visible = img.Visible || link.Visible;
 			}
 				
-			void UpdateNavButtonState (string id, string text, string image, Style style)
+			void UpdateNavButtonState (string id, string text, string image, Style? style)
 			{
-				WebControl b = (WebControl) FindControl (id);
+				var b = (WebControl) FindControl (id);
 				foreach (Control c in b.Parent.Controls)
 					c.Visible = b == c;
 
@@ -2175,11 +2175,11 @@ namespace System.Web.UI.WebControls
 
 			public void InstantiateIn (Control container)
 			{
-				Table table = new Table ();
+				var table = new Table ();
 
 				// Row #0
-				TableRow row0 = new TableRow ();
-				TableCell cell00 = new TableCell ();
+				var row0 = new TableRow ();
+				var cell00 = new TableCell ();
 
 				cell00.HorizontalAlign = HorizontalAlign.Center;
 				cell00.ColumnSpan = 2;
@@ -2187,31 +2187,31 @@ namespace System.Web.UI.WebControls
 				row0.Cells.Add (cell00);
 
 				// Row #1
-				TableRow row1 = new TableRow ();
-				TableCell cell10 = new TableCell ();
+				var row1 = new TableRow ();
+				var cell10 = new TableCell ();
 
 				cell10.HorizontalAlign = HorizontalAlign.Center;
 				_createUserWizard.RegisterApplyStyle (cell10, _createUserWizard.CompleteSuccessTextStyle);
 				row1.Cells.Add (cell10);
 
 				// Row #2
-				TableRow row2 = new TableRow ();
-				TableCell cell20 = new TableCell ();
+				var row2 = new TableRow ();
+				var cell20 = new TableCell ();
 
 				cell20.HorizontalAlign = HorizontalAlign.Right;
 				cell20.ColumnSpan = 2;
 				row2.Cells.Add (cell20);
 
-				Control [] b = _createUserWizard.CreateButtonSet ("ContinueButton", CreateUserWizard.ContinueButtonCommandName, false, _createUserWizard.ID);
-				for (int i = 0; i < b.Length; i++)
+				var b = _createUserWizard.CreateButtonSet ("ContinueButton", CreateUserWizard.ContinueButtonCommandName, false, _createUserWizard.ID);
+				for (var i = 0; i < b.Length; i++)
 					cell20.Controls.Add (b [i]);
 
 				// Row #3
-				TableRow row3 = new TableRow ();
-				TableCell cell30 = new TableCell ();
+				var row3 = new TableRow ();
+				var cell30 = new TableCell ();
 
 				cell30.Controls.Add (new Image ());
-				HyperLink link = new HyperLink ();
+				var link = new HyperLink ();
 				link.ID = "EditProfileLink";
 				_createUserWizard.RegisterApplyStyle (link, _createUserWizard.HyperLinkStyle);
 				cell30.Controls.Add (link);

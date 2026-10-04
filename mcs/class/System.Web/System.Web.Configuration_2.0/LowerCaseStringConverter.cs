@@ -51,7 +51,7 @@ namespace System.Web.Configuration {
 			return ((string)data).ToLowerInvariant ();
 		}
 
-		public override object ConvertTo (ITypeDescriptorContext ctx, CultureInfo ci, object value, Type type)
+		public override object ConvertTo (ITypeDescriptorContext ctx, CultureInfo ci, object? value, Type type)
 		{
 			if (value == null)
 				return "";

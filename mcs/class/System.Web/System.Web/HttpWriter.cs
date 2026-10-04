@@ -60,7 +60,7 @@ namespace System.Web
 			ThreadPool.GetMinThreads (out workerThreads, out completionPortThreads);
 			workerThreads *= 3;
 
-			uint bufferSize = (uint)(MAX_TOTAL_BUFFERS_SIZE / workerThreads);
+			var bufferSize = (uint)(MAX_TOTAL_BUFFERS_SIZE / workerThreads);
 			byteBufferSize = Math.Min (SINGLE_BUFFER_SIZE, bufferSize);
 			if (byteBufferSize < MIN_SINGLE_BUFFER_SIZE)
 				byteBufferSize = MIN_SINGLE_BUFFER_SIZE;
@@ -125,7 +125,7 @@ namespace System.Web
 			Write (chars, 0, 1);
 		}
 
-		public override void Write (object obj)
+		public override void Write (object? obj)
 		{
 			if (obj == null)
 				return;
@@ -133,19 +133,19 @@ namespace System.Web
 			Write (obj.ToString ());
 		}
 		
-		public override void Write (string s)
+		public override void Write (string? s)
 		{
 			if (s != null)
 				WriteString (s, 0, s.Length);
 		}
 		
-		public override void Write (char [] buffer, int index, int count)
+		public override void Write (char []? buffer, int index, int count)
 		{
 			if (buffer == null || index < 0 || count < 0 || (buffer.Length - index) < count)
 				throw new ArgumentOutOfRangeException ();
-			int length = encoding.GetMaxByteCount (count);
-			byte [] bytebuffer = GetByteBuffer (length);
-			int realLength = encoding.GetBytes (buffer, index, count, bytebuffer, 0);
+			var length = encoding.GetMaxByteCount (count);
+			var bytebuffer = GetByteBuffer (length);
+			var realLength = encoding.GetBytes (buffer, index, count, bytebuffer, 0);
 			output_stream.Write (bytebuffer, 0, realLength);
 			if (response.buffer)
 				return;
@@ -160,16 +160,16 @@ namespace System.Web
 			Write (newline, 0, 2);
 		}
 
-		public void WriteString (string s, int index, int count)
+		public void WriteString (string? s, int index, int count)
 		{
 			if (s == null)
 				return;
 
 			if (index < 0 || count < 0 || ((index + count > s.Length)))
 				throw new ArgumentOutOfRangeException ();
-			int length = encoding.GetMaxByteCount (count);
-			byte [] bytebuffer = GetByteBuffer (length);
-			int realLength = encoding.GetBytes (s, index, count, bytebuffer, 0);
+			var length = encoding.GetMaxByteCount (count);
+			var bytebuffer = GetByteBuffer (length);
+			var realLength = encoding.GetBytes (s, index, count, bytebuffer, 0);
 			output_stream.Write (bytebuffer, 0, realLength);
 			if (response.buffer)
 				return;

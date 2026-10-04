@@ -58,7 +58,7 @@ namespace System.Web {
 
 		public IntPtrStream (Stream stream)
 		{
-			IntPtrStream st = (IntPtrStream) stream;
+			var st = (IntPtrStream) stream;
 			this.size = st.size;
 			unsafe {
 				this.base_address = st.base_address;
@@ -225,7 +225,7 @@ namespace System.Web {
 		{
 			if (owns) {
 				unsafe {
-					IntPtr ptr = (IntPtr) base_address;
+					var ptr = (IntPtr) base_address;
 					if (ptr != IntPtr.Zero)
 						Marshal.FreeHGlobal (ptr);
 					base_address = null;
@@ -237,7 +237,7 @@ namespace System.Web {
 		{
 			if (owns) {
 				unsafe {
-					IntPtr ptr = (IntPtr) base_address;
+					var ptr = (IntPtr) base_address;
 					if (ptr != IntPtr.Zero)
 						Marshal.FreeHGlobal (ptr);
 					base_address = null;

@@ -60,7 +60,7 @@ namespace System.Web.UI.WebControls
 		[WebCategoryAttribute ("Behavior")]
 		public virtual bool ConvertEmptyStringToNull {
 			get {
-				object ob = ViewState ["ConvertEmptyStringToNull"];
+				var ob = ViewState ["ConvertEmptyStringToNull"];
 				if (ob != null) return (bool) ob;
 				return true;
 			}
@@ -166,7 +166,7 @@ namespace System.Web.UI.WebControls
 				bt = itemTemplate as IBindableTemplate;
 			
 			if (bt != null) {
-				IOrderedDictionary values = bt.ExtractValues (cell);
+				var values = bt.ExtractValues (cell);
 				if (values == null)
 					return;
 				foreach (DictionaryEntry e in values)
@@ -187,7 +187,7 @@ namespace System.Web.UI.WebControls
 		protected override void CopyProperties (DataControlField newField)
 		{
 			base.CopyProperties (newField);
-			TemplateField field = (TemplateField) newField;
+			var field = (TemplateField) newField;
 			field.AlternatingItemTemplate = AlternatingItemTemplate;
 			field.ConvertEmptyStringToNull = ConvertEmptyStringToNull;
 			field.EditItemTemplate = EditItemTemplate;

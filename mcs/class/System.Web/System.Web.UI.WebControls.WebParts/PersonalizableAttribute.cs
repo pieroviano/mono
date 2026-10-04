@@ -113,12 +113,12 @@ namespace System.Web.UI.WebControls.WebParts
 			if (type == null)
 				throw new ArgumentNullException ("type");
 			
-			PropertyInfo[] properties = type.GetProperties ();
+			var properties = type.GetProperties ();
 			if (properties == null || properties.Length == 0)
 				return new PropertyInfo [0];
 			List <PropertyInfo> ret = null;
 			
-			foreach (PropertyInfo pi in properties)
+			foreach (var pi in properties)
 				if (PropertyQualifies (pi)) {
 					if (ret == null)
 						ret = new List <PropertyInfo> ();
@@ -129,13 +129,13 @@ namespace System.Web.UI.WebControls.WebParts
 
 		static bool PropertyQualifies (PropertyInfo pi)
 		{
-			object[] attributes = pi.GetCustomAttributes (false);
+			var attributes = pi.GetCustomAttributes (false);
 			if (attributes == null || attributes.Length == 0)
 				return false;
 
 			PersonalizableAttribute attr;
 			MethodInfo mi;
-			foreach (object a in attributes) {
+			foreach (var a in attributes) {
 				attr = a as PersonalizableAttribute;
 				if (attr == null || !attr.IsPersonalizable)
 					continue;
@@ -153,7 +153,7 @@ namespace System.Web.UI.WebControls.WebParts
 			return PersonalizableAttribute.Equals (this, Default);
 		}
 
-		public override bool Match (object obj)
+		public override bool Match (object? obj)
 		{
 			PersonalizableAttribute attr = obj as PersonalizableAttribute;
 			if (obj == null)

@@ -119,7 +119,7 @@
             if (routeUrl == null) {
                 throw new ArgumentNullException("routeUrl");
             }
-            Route route = new Route(routeUrl, defaults, constraints, dataTokens, new PageRouteHandler(physicalFile, checkPhysicalUrlAccess));
+            var route = new Route(routeUrl, defaults, constraints, dataTokens, new PageRouteHandler(physicalFile, checkPhysicalUrlAccess));
             Add(routeName, route);
             return route;
         }
@@ -136,11 +136,11 @@
             return new ReadLockDisposable(_rwLock);
         }
 
-        private RequestContext GetRequestContext(RequestContext requestContext) {
+        private RequestContext GetRequestContext(RequestContext? requestContext) {
             if (requestContext != null) {
                 return requestContext;
             }
-            HttpContext httpContext = HttpContext.Current;
+            var httpContext = HttpContext.Current;
             if (httpContext == null) {
                 throw new InvalidOperationException(SR.GetString(SR.RouteCollection_RequiresContext));
             }
@@ -149,7 +149,7 @@
 
         // Returns true if this is a request to an existing file
         private bool IsRouteToExistingFile(HttpContextBase httpContext) {
-            string requestPath = httpContext.Request.AppRelativeCurrentExecutionFilePath;
+            var requestPath = httpContext.Request.AppRelativeCurrentExecutionFilePath;
             return ((requestPath != "~/") &&
                 (VPP != null) &&
                 (VPP.FileExists(requestPath) ||
@@ -175,8 +175,8 @@
                 return null;
             }
 
-            bool isRouteToExistingFile = false;
-            bool doneRouteCheck = false; // We only want to do the route check once
+            var isRouteToExistingFile = false;
+            var doneRouteCheck = false; // We only want to do the route check once
             if (!RouteExistingFiles) {
                 isRouteToExistingFile = IsRouteToExistingFile(httpContext);
                 doneRouteCheck = true;
@@ -188,8 +188,8 @@
 
             // Go through all the configured routes and find the first one that returns a match
             using (GetReadLock()) {
-                foreach (RouteBase route in this) {
-                    RouteData routeData = route.GetRouteData(httpContext);
+                foreach (var route in this) {
+                    var routeData = route.GetRouteData(httpContext);
                     if (routeData != null) {
                         // If we're not routing existing files on this route and the file exists, we also stop processing routes
                         if (!route.RouteExistingFiles) {
@@ -212,10 +212,10 @@
 
         [SuppressMessage("Microsoft.Globalization", "CA1307:SpecifyStringComparison", MessageId = "System.String.EndsWith(System.String)", Justification = @"okay")]
         private string NormalizeVirtualPath(RequestContext requestContext, string virtualPath) {
-            string url = System.Web.UI.Util.GetUrlWithApplicationPath(requestContext.HttpContext, virtualPath);
+            var url = System.Web.UI.Util.GetUrlWithApplicationPath(requestContext.HttpContext, virtualPath);
 
             if (LowercaseUrls || AppendTrailingSlash) {
-                int iqs = url.IndexOfAny(new char[] { '?', '#' });
+                var iqs = url.IndexOfAny(new char[] { '?', '#' });
                 string urlWithoutQs;
                 string qs;
                 if (iqs >= 0) {
@@ -247,8 +247,8 @@
 
             // Go through all the configured routes and find the first one that returns a match
             using (GetReadLock()) {
-                foreach (RouteBase route in this) {
-                    VirtualPathData vpd = route.GetVirtualPath(requestContext, values);
+                foreach (var route in this) {
+                    var vpd = route.GetVirtualPath(requestContext, values);
                     if (vpd != null) {
                         vpd.VirtualPath = NormalizeVirtualPath(requestContext, vpd.VirtualPath);
                         return vpd;
@@ -269,7 +269,7 @@
                     routeFound = _namedMap.TryGetValue(name, out namedRoute);
                 }
                 if (routeFound) {
-                    VirtualPathData vpd = namedRoute.GetVirtualPath(requestContext, values);
+                    var vpd = namedRoute.GetVirtualPath(requestContext, values);
                     if (vpd != null) {
                         vpd.VirtualPath = NormalizeVirtualPath(requestContext, vpd.VirtualPath);
                         return vpd;
@@ -304,12 +304,12 @@
 
         [SuppressMessage("Microsoft.Design", "CA1054:UriParametersShouldNotBeStrings", 
             Justification = "This is not a regular URL as it may contain special routing characters.")]
-        public void Ignore(string url, object constraints) {
+        public void Ignore(string url, object? constraints) {
             if (url == null) {
                 throw new ArgumentNullException("url");
             }
 
-            IgnoreRouteInternal route = new IgnoreRouteInternal(url) {
+            var route = new IgnoreRouteInternal(url) {
                 Constraints = new RouteValueDictionary(constraints)
             };
 
@@ -340,8 +340,8 @@
 
         private void RemoveRouteName(int index) {
             // Search for the specified route and clear out its name if we have one
-            RouteBase route = this[index];
-            foreach (KeyValuePair<string, RouteBase> namedRoute in _namedMap) {
+            var route = this[index];
+            foreach (var namedRoute in _namedMap) {
                 if (namedRoute.Value == route) {
                     _namedMap.Remove(namedRoute.Key);
                     break;

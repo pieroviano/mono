@@ -86,7 +86,7 @@ namespace System.Web.UI.WebControls {
 
 		protected override void AddAttributesToRender (HtmlTextWriter writer)
 		{
-			Page page = Page;
+			var page = Page;
 			if (page != null)
 				page.VerifyRenderingInServerForm (this);
 			
@@ -136,7 +136,7 @@ namespace System.Web.UI.WebControls {
 				writer.AddAttribute ("onkeypress", "if (WebForm_TextBoxKeyHandler(event) == false) return false;", false);
 
 				if (page != null) {
-					string onchange = page.ClientScript.GetPostBackEventReference (GetPostBackOptions (), true);
+					var onchange = page.ClientScript.GetPostBackEventReference (GetPostBackOptions (), true);
 					onchange = String.Concat ("setTimeout('", onchange.Replace ("\\", "\\\\").Replace ("'", "\\'"), "', 0)");
 					writer.AddAttribute (HtmlTextWriterAttribute.Onchange, BuildScriptAttribute ("onchange", onchange));
 				}
@@ -168,7 +168,7 @@ namespace System.Web.UI.WebControls {
 				RegisterKeyHandlerClientScript ();
 			}
 
-			Page page = Page;
+			var page = Page;
 			if (page != null && IsEnabled)
 				page.RegisterEnabledControl (this);
 		}
@@ -224,14 +224,14 @@ namespace System.Web.UI.WebControls {
 		}
 	
 		PostBackOptions GetPostBackOptions () {
-			PostBackOptions options = new PostBackOptions (this);
+			var options = new PostBackOptions (this);
 			options.ActionUrl = null;
 			options.ValidationGroup = null;
 			options.Argument = String.Empty;
 			options.RequiresJavaScriptProtocol = false;
 			options.ClientSubmit = true;
 			
-			Page page = Page;
+			var page = Page;
 			options.PerformValidation = CausesValidation && page != null && page.AreValidatorsUplevel (ValidationGroup);
 			if (options.PerformValidation)
 				options.ValidationGroup = ValidationGroup;
@@ -242,7 +242,7 @@ namespace System.Web.UI.WebControls {
 		void RegisterKeyHandlerClientScript () {
 
 			if (!Page.ClientScript.IsClientScriptBlockRegistered (typeof (TextBox), "KeyHandler")) {
-				StringBuilder script=new StringBuilder();
+				var script=new StringBuilder();
 				script.AppendLine ("function WebForm_TextBoxKeyHandler(event) {");
 				script.AppendLine ("\tvar target = event.target;");
 				script.AppendLine ("\tif ((target == null) || (typeof(target) == \"undefined\")) target = event.srcElement;");
@@ -267,7 +267,7 @@ namespace System.Web.UI.WebControls {
 		public virtual AutoCompleteType AutoCompleteType 
 		{
 			get {
-				object o = ViewState ["AutoCompleteType"];
+				var o = ViewState ["AutoCompleteType"];
 				return o != null ? (AutoCompleteType) o : AutoCompleteType.None;
 			}
 			set {

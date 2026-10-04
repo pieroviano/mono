@@ -50,12 +50,12 @@ namespace System.Web.Security
 		
 		static SymmetricAlgorithm GetAlgorithm ()
 		{
-			MachineKeySection section = MachineKeySection.Config;
+			var section = MachineKeySection.Config;
 
 			if (section.DecryptionKey.StartsWith ("AutoGenerate"))
 				throw new ProviderException ("You must explicitly specify a decryption key in the <machineKey> section when using encrypted passwords.");
 
-			SymmetricAlgorithm sa = section.GetDecryptionAlgorithm ();
+			var sa = section.GetDecryptionAlgorithm ();
 			if (sa == null)
 				throw new ProviderException (String.Format ("Unsupported decryption attribute '{0}' in <machineKey> configuration section", section.Decryption));
 
@@ -65,14 +65,14 @@ namespace System.Web.Security
 		
 		public byte [] DecryptPassword (byte [] encodedPassword)
 		{
-			using (SymmetricAlgorithm sa = GetAlgorithm ()) {
+			using (var sa = GetAlgorithm ()) {
 				return MachineKeySectionUtils.Decrypt (sa, encodedPassword, 0, encodedPassword.Length);
 			}
 		}
 
 		public byte[] EncryptPassword (byte[] password)
 		{
-			using (SymmetricAlgorithm sa = GetAlgorithm ()) {
+			using (var sa = GetAlgorithm ()) {
 				return MachineKeySectionUtils.Encrypt (sa, password);
 			}
 		}

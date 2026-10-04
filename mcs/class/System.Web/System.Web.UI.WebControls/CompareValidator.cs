@@ -88,7 +88,7 @@ namespace System.Web.UI.WebControls
 
 			string compare;
 			/* ControlToCompare takes precendence, if it's set. */
-			string controlToCompare = ControlToCompare;
+			var controlToCompare = ControlToCompare;
 			compare = (!String.IsNullOrEmpty (controlToCompare) ? GetControlValidationValue (controlToCompare) : ValueToCompare);
 
 			return BaseCompareValidator.Compare (GetControlValidationValue (ControlToValidate), false, 

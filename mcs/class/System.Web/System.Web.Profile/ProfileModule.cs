@@ -78,7 +78,7 @@ namespace System.Web.Profile
 			app.PostMapRequestHandler += OnEnter;
 			app.EndRequest += OnLeave;
 			
-			AnonymousIdentificationSection anonymousConfig =
+			var anonymousConfig =
 				(AnonymousIdentificationSection) WebConfigurationManager.GetSection ("system.web/anonymousIdentification");
 			
 			if (anonymousConfig == null)
@@ -93,16 +93,16 @@ namespace System.Web.Profile
 				return;
 			
 			if (HttpContext.Current.Request.IsAuthenticated) {
-				HttpCookie cookie = app.Request.Cookies [anonymousCookieName];
+				var cookie = app.Request.Cookies [anonymousCookieName];
 				if (cookie != null && (cookie.Expires != DateTime.MinValue && cookie.Expires > DateTime.Now)) {
 					ProfileMigrateEventHandler eh = events [migrateAnonymousEvent] as ProfileMigrateEventHandler;
 					if (eh != null) {
-						ProfileMigrateEventArgs e = new ProfileMigrateEventArgs (HttpContext.Current,
+						var e = new ProfileMigrateEventArgs (HttpContext.Current,
 							Encoding.Unicode.GetString (Convert.FromBase64String (cookie.Value)));
 						eh (this, e);
 					}
 					
-					HttpCookie newCookie = new HttpCookie (anonymousCookieName);
+					var newCookie = new HttpCookie (anonymousCookieName);
 					newCookie.Path = app.Request.ApplicationPath;
 					newCookie.Expires = new DateTime (1970, 1, 1);
 					newCookie.Value = "";
@@ -127,7 +127,7 @@ namespace System.Web.Profile
 
 				ProfileAutoSaveEventHandler eh = events [profileAutoSavingEvent] as ProfileAutoSaveEventHandler;
 				if (eh != null) {
-					ProfileAutoSaveEventArgs args = new ProfileAutoSaveEventArgs (app.Context);
+					var args = new ProfileAutoSaveEventArgs (app.Context);
 					eh (this, args);
 					if (!args.ContinueWithProfileAutoSave)
 						return;

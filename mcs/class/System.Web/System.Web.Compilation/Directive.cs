@@ -79,65 +79,65 @@ namespace System.Web.Compilation
 		
 		static void InitHash ()
 		{
-			StringComparer comparer = StringComparer.OrdinalIgnoreCase;
+			var comparer = StringComparer.OrdinalIgnoreCase;
 			directivesHash = new Hashtable (comparer);
 
 			// Use Hashtable 'cause is O(1) in Contains (ArrayList is O(n))
-			Hashtable valid_attributes = new Hashtable (comparer);
-			foreach (string att in page_atts) valid_attributes.Add (att, null);
+			var valid_attributes = new Hashtable (comparer);
+			foreach (var att in page_atts) valid_attributes.Add (att, null);
 			directivesHash.Add ("PAGE", valid_attributes);
 
 			valid_attributes = new Hashtable (comparer);
-			foreach (string att in control_atts) valid_attributes.Add (att, null);
+			foreach (var att in control_atts) valid_attributes.Add (att, null);
 			directivesHash.Add ("CONTROL", valid_attributes);
 
 			valid_attributes = new Hashtable (comparer);
-			foreach (string att in import_atts) valid_attributes.Add (att, null);
+			foreach (var att in import_atts) valid_attributes.Add (att, null);
 			directivesHash.Add ("IMPORT", valid_attributes);
 
 			valid_attributes = new Hashtable (comparer);
-			foreach (string att in implements_atts) valid_attributes.Add (att, null);
+			foreach (var att in implements_atts) valid_attributes.Add (att, null);
 			directivesHash.Add ("IMPLEMENTS", valid_attributes);
 
 			valid_attributes = new Hashtable (comparer);
-			foreach (string att in register_atts) valid_attributes.Add (att, null);
+			foreach (var att in register_atts) valid_attributes.Add (att, null);
 			directivesHash.Add ("REGISTER", valid_attributes);
 
 			valid_attributes = new Hashtable (comparer);
-			foreach (string att in assembly_atts) valid_attributes.Add (att, null);
+			foreach (var att in assembly_atts) valid_attributes.Add (att, null);
 			directivesHash.Add ("ASSEMBLY", valid_attributes);
 
 			valid_attributes = new Hashtable (comparer);
-			foreach (string att in outputcache_atts) valid_attributes.Add (att, null);
+			foreach (var att in outputcache_atts) valid_attributes.Add (att, null);
 			directivesHash.Add ("OUTPUTCACHE", valid_attributes);
 
 			valid_attributes = new Hashtable (comparer);
-			foreach (string att in reference_atts) valid_attributes.Add (att, null);
+			foreach (var att in reference_atts) valid_attributes.Add (att, null);
 			directivesHash.Add ("REFERENCE", valid_attributes);
 
 			valid_attributes = new Hashtable (comparer);
-			foreach (string att in webservice_atts) valid_attributes.Add (att, null);
+			foreach (var att in webservice_atts) valid_attributes.Add (att, null);
 			directivesHash.Add ("WEBSERVICE", valid_attributes);
 
 			valid_attributes = new Hashtable (comparer);
 			// same attributes as webservice
-			foreach (string att in webservice_atts) valid_attributes.Add (att, null);
+			foreach (var att in webservice_atts) valid_attributes.Add (att, null);
 			directivesHash.Add ("WEBHANDLER", valid_attributes);
 
 			valid_attributes = new Hashtable (comparer);
-			foreach (string att in application_atts) valid_attributes.Add (att, null);
+			foreach (var att in application_atts) valid_attributes.Add (att, null);
 			directivesHash.Add ("APPLICATION", valid_attributes);
 
 			valid_attributes = new Hashtable (comparer);
-			foreach (string att in mastertype_atts) valid_attributes.Add (att, null);
+			foreach (var att in mastertype_atts) valid_attributes.Add (att, null);
 			directivesHash.Add ("MASTERTYPE", valid_attributes);
 			
 			valid_attributes = new Hashtable (comparer);
-			foreach (string att in control_atts) valid_attributes.Add (att, null);
+			foreach (var att in control_atts) valid_attributes.Add (att, null);
 			directivesHash.Add ("MASTER", valid_attributes);
 
 			valid_attributes = new Hashtable (comparer);
-			foreach (string att in previouspagetype_atts) valid_attributes.Add (att, null);
+			foreach (var att in previouspagetype_atts) valid_attributes.Add (att, null);
 			directivesHash.Add ("PREVIOUSPAGETYPE", valid_attributes);
 		}
 		

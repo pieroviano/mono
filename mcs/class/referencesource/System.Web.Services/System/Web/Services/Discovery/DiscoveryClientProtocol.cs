@@ -105,7 +105,7 @@ namespace System.Web.Services.Discovery {
             if (doc != null)
                 return doc;
 
-            DiscoveryDocumentReference docRef = new DiscoveryDocumentReference(url);
+            var docRef = new DiscoveryDocumentReference(url);
             docRef.ClientProtocol = this;
             References[url] = docRef;
 
@@ -120,23 +120,23 @@ namespace System.Web.Services.Discovery {
         /// </devdoc>
         [PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
         public DiscoveryDocument DiscoverAny(string url) {
-            Type[] refTypes = WebServicesSection.Current.DiscoveryReferenceTypes;
+            var refTypes = WebServicesSection.Current.DiscoveryReferenceTypes;
             DiscoveryReference discoRef = null;
             string contentType = null;
-            Stream stream = Download(ref url, ref contentType);
+            var stream = Download(ref url, ref contentType);
 
             Errors.Clear();
-            bool allErrorsAreHtmlContentType = true;
+            var allErrorsAreHtmlContentType = true;
             Exception errorInValidDocument = null;
-            ArrayList specialErrorMessages = new ArrayList();
-            foreach (Type type in refTypes) {
+            var specialErrorMessages = new ArrayList();
+            foreach (var type in refTypes) {
                 if (!typeof(DiscoveryReference).IsAssignableFrom(type))
                     continue;
                 discoRef = (DiscoveryReference) Activator.CreateInstance(type);
                 discoRef.Url = url;
                 discoRef.ClientProtocol = this;
                 stream.Position = 0;
-                Exception e = discoRef.AttemptResolve(contentType, stream);
+                var e = discoRef.AttemptResolve(contentType, stream);
                 if (e == null)
                     break;
 
@@ -159,7 +159,7 @@ namespace System.Web.Services.Discovery {
 
             if (discoRef == null) {
                 if (errorInValidDocument != null) {
-                    StringBuilder errorMessage = new StringBuilder(Res.GetString(Res.TheDocumentWasUnderstoodButContainsErrors));
+                    var errorMessage = new StringBuilder(Res.GetString(Res.TheDocumentWasUnderstoodButContainsErrors));
                     while (errorInValidDocument != null) {
                         errorMessage.Append("\n  - ").Append(errorInValidDocument.Message);
                         errorInValidDocument = errorInValidDocument.InnerException;
@@ -170,8 +170,8 @@ namespace System.Web.Services.Discovery {
                     throw new InvalidOperationException(Res.GetString(Res.TheHTMLDocumentDoesNotContainDiscoveryInformation));
                 }
                 else {
-                    bool same = specialErrorMessages.Count == Errors.Count && Errors.Count > 0;
-                    for (int i = 1; same && i < specialErrorMessages.Count; i++) {
+                    var same = specialErrorMessages.Count == Errors.Count && Errors.Count > 0;
+                    for (var i = 1; same && i < specialErrorMessages.Count; i++) {
                         if ((string) specialErrorMessages[i - 1] != (string) specialErrorMessages[i])
                             same = false;
                     }
@@ -179,10 +179,10 @@ namespace System.Web.Services.Discovery {
                         throw new InvalidOperationException(Res.GetString(Res.TheDocumentWasNotRecognizedAsAKnownDocumentType, specialErrorMessages[0]));
                     else {
                         Exception e;
-                        StringBuilder errorMessage = new StringBuilder(Res.GetString(Res.WebMissingResource, url));
+                        var errorMessage = new StringBuilder(Res.GetString(Res.WebMissingResource, url));
                         foreach (DictionaryEntry entry in Errors) {
                             e = (Exception)(entry.Value);
-                            string refType = (string)(entry.Key);
+                            var refType = (string)(entry.Key);
                             if (0 == string.Compare(refType, typeof(ContractReference).FullName, StringComparison.Ordinal)) {
                                 refType = Res.GetString(Res.WebContractReferenceName);
                             }
@@ -209,7 +209,7 @@ namespace System.Web.Services.Discovery {
                 return ((DiscoveryDocumentReference) discoRef).Document;
 
             References[discoRef.Url] = discoRef;
-            DiscoveryDocument doc = new DiscoveryDocument();
+            var doc = new DiscoveryDocument();
             doc.References.Add(discoRef);
             return doc;
         }
@@ -230,7 +230,7 @@ namespace System.Web.Services.Discovery {
         /// </devdoc>
         [PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
         public Stream Download(ref string url, ref string contentType) {
-            WebRequest request = GetWebRequest(new Uri(url));
+            var request = GetWebRequest(new Uri(url));
             request.Method = "GET";
 #if DEBUG // 
             HttpWebRequest httpRequest = request as HttpWebRequest;
@@ -251,11 +251,11 @@ namespace System.Web.Services.Discovery {
             HttpWebResponse httpResponse = response as HttpWebResponse;
             if (httpResponse != null) {
                 if (httpResponse.StatusCode != HttpStatusCode.OK) {
-                    string errorMessage = RequestResponseUtils.CreateResponseExceptionString(httpResponse);
+                    var errorMessage = RequestResponseUtils.CreateResponseExceptionString(httpResponse);
                     throw new WebException(Res.GetString(Res.ThereWasAnErrorDownloading0, url), new WebException(errorMessage, null, WebExceptionStatus.ProtocolError, response));
                 }
             }
-            Stream responseStream = response.GetResponseStream();
+            var responseStream = response.GetResponseStream();
             try {
                 // Uri.ToString() returns the unescaped version
                 url = response.ResponseUri.ToString();
@@ -263,7 +263,7 @@ namespace System.Web.Services.Discovery {
 
                 if (response.ResponseUri.Scheme == Uri.UriSchemeFtp ||
                     response.ResponseUri.Scheme == Uri.UriSchemeFile) {
-                    int dotIndex = response.ResponseUri.AbsolutePath.LastIndexOf('.');
+                    var dotIndex = response.ResponseUri.AbsolutePath.LastIndexOf('.');
                     if (dotIndex != -1) {
                         switch (response.ResponseUri.AbsolutePath.Substring(dotIndex + 1).ToLower(CultureInfo.InvariantCulture)) {
                             case "xml":
@@ -314,9 +314,9 @@ namespace System.Web.Services.Discovery {
 
         private static string GetUniqueFilename(Hashtable filenames, string path) {
             if (IsFilenameInUse(filenames, path)) {
-                string extension = Path.GetExtension(path);
-                string allElse = path.Substring(0, path.Length - extension.Length);
-                int append = 0;
+                var extension = Path.GetExtension(path);
+                var allElse = path.Substring(0, path.Length - extension.Length);
+                var append = 0;
                 do {
                     path = allElse + append.ToString(CultureInfo.InvariantCulture) + extension;
                     append++;
@@ -333,26 +333,26 @@ namespace System.Web.Services.Discovery {
         /// </devdoc>
         [PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
         public DiscoveryClientResultCollection ReadAll(string topLevelFilename) {
-            XmlSerializer ser = new XmlSerializer(typeof(DiscoveryClientResultsFile));
+            var ser = new XmlSerializer(typeof(DiscoveryClientResultsFile));
             Stream file = File.OpenRead(topLevelFilename);
             string topLevelPath = Path.GetDirectoryName(topLevelFilename);
             DiscoveryClientResultsFile results = null;
             try {
                 results = (DiscoveryClientResultsFile) ser.Deserialize(file);
-                for (int i = 0; i < results.Results.Count; i++) {
+                for (var i = 0; i < results.Results.Count; i++) {
                     if (results.Results[i] == null)
                         throw new InvalidOperationException(Res.GetString(Res.WebNullRef));
-                    string typeName = results.Results[i].ReferenceTypeName;
+                    var typeName = results.Results[i].ReferenceTypeName;
                     if (typeName == null || typeName.Length == 0)
                         throw new InvalidOperationException(Res.GetString(Res.WebRefInvalidAttribute, "referenceType"));
                     DiscoveryReference reference = (DiscoveryReference) Activator.CreateInstance(Type.GetType(typeName));
                     reference.ClientProtocol = this;
 
-                    string url = results.Results[i].Url;
+                    var url = results.Results[i].Url;
                     if (url == null || url.Length == 0)
                         throw new InvalidOperationException(Res.GetString(Res.WebRefInvalidAttribute2, reference.GetType().FullName, "url"));
                     reference.Url = url;
-                    string fileName = results.Results[i].Filename;
+                    var fileName = results.Results[i].Filename;
                     if (fileName == null || fileName.Length == 0)
                         throw new InvalidOperationException(Res.GetString(Res.WebRefInvalidAttribute2, reference.GetType().FullName, "filename"));
 
@@ -382,13 +382,13 @@ namespace System.Web.Services.Discovery {
         public void ResolveAll() {
             // Resolve until we reach a 'steady state' (no more references added)
             Errors.Clear();
-            int resolvedCount = InlinedSchemas.Keys.Count;
+            var resolvedCount = InlinedSchemas.Keys.Count;
             while (resolvedCount != References.Count) {
                 resolvedCount = References.Count;
-                DiscoveryReference[] refs = new DiscoveryReference[References.Count];
+                var refs = new DiscoveryReference[References.Count];
                 References.Values.CopyTo(refs, 0);
-                for (int i = 0; i < refs.Length; i++) {
-                    DiscoveryReference discoRef = refs[i];
+                for (var i = 0; i < refs.Length; i++) {
+                    var discoRef = refs[i];
                     if (discoRef is DiscoveryDocumentReference) {
                         try {
                             // Resolve discovery document references deeply
@@ -429,9 +429,9 @@ namespace System.Web.Services.Discovery {
         public void ResolveOneLevel() {
             // download everything we have a reference to, but don't recurse.
             Errors.Clear();
-            DiscoveryReference[] refs = new DiscoveryReference[References.Count];
+            var refs = new DiscoveryReference[References.Count];
             References.Values.CopyTo(refs, 0);
-            for (int i = 0; i < refs.Length; i++) {
+            for (var i = 0; i < refs.Length; i++) {
                 try {
                     refs[i].Resolve();
                 }
@@ -449,7 +449,7 @@ namespace System.Web.Services.Discovery {
         private static string GetRelativePath(string fullPath, string relativeTo) {
             string currentDir = Path.GetDirectoryName(Path.GetFullPath(relativeTo));
 
-            string answer = "";
+            var answer = "";
             while (currentDir.Length > 0) {
                 if (currentDir.Length <= fullPath.Length && string.Compare(currentDir, fullPath.Substring(0, currentDir.Length), StringComparison.OrdinalIgnoreCase) == 0) {
                     answer += fullPath.Substring(currentDir.Length);
@@ -461,7 +461,7 @@ namespace System.Web.Services.Discovery {
                 if (currentDir.Length < 2)
                     break;
                 else {
-                    int lastSlash = currentDir.LastIndexOf(Path.DirectorySeparatorChar, currentDir.Length - 2);
+                    var lastSlash = currentDir.LastIndexOf(Path.DirectorySeparatorChar, currentDir.Length - 2);
                     currentDir = currentDir.Substring(0, lastSlash + 1);
                 }
             }
@@ -474,26 +474,26 @@ namespace System.Web.Services.Discovery {
         /// </devdoc>
         [PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
         public DiscoveryClientResultCollection WriteAll(string directory, string topLevelFilename) {
-            DiscoveryClientResultsFile results = new DiscoveryClientResultsFile();
-            Hashtable filenames = new Hashtable();
-            string topLevelFullPath = Path.Combine(directory, topLevelFilename);
+            var results = new DiscoveryClientResultsFile();
+            var filenames = new Hashtable();
+            var topLevelFullPath = Path.Combine(directory, topLevelFilename);
 
             // write out each of the documents
-            DictionaryEntry[] entries = new DictionaryEntry[Documents.Count + InlinedSchemas.Keys.Count];
-            int i = 0;
+            var entries = new DictionaryEntry[Documents.Count + InlinedSchemas.Keys.Count];
+            var i = 0;
             foreach (DictionaryEntry entry in Documents) {
                 entries[i++] = entry;
             }
             foreach (DictionaryEntry entry in InlinedSchemas) {
                 entries[i++] = entry;
             }
-            foreach (DictionaryEntry entry in entries) {
-                string url = (string) entry.Key;
+            foreach (var entry in entries) {
+                var url = (string) entry.Key;
                 object document = entry.Value;
                 if (document == null)
                     continue;
-                DiscoveryReference reference = References[url];
-                string filename = reference == null ? DiscoveryReference.FilenameFromUrl(Url) : reference.DefaultFilename;
+                var reference = References[url];
+                var filename = reference == null ? DiscoveryReference.FilenameFromUrl(Url) : reference.DefaultFilename;
                 filename = GetUniqueFilename(filenames, Path.GetFullPath(Path.Combine(directory, filename)));
                 results.Results.Add(new DiscoveryClientResult(reference == null ? null : reference.GetType(), url, GetRelativePath(filename, topLevelFullPath)));
                 Stream file = File.Create(filename);
@@ -506,7 +506,7 @@ namespace System.Web.Services.Discovery {
             }
 
             // write out the file that points to all those documents.
-            XmlSerializer ser = new XmlSerializer(typeof(DiscoveryClientResultsFile));
+            var ser = new XmlSerializer(typeof(DiscoveryClientResultsFile));
             Stream topLevelFile = File.Create(topLevelFullPath);
             try {
                 ser.Serialize(new StreamWriter(topLevelFile, new UTF8Encoding(false)), results);
@@ -604,7 +604,7 @@ namespace System.Web.Services.Discovery {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        public DiscoveryClientResult(Type referenceType, string url, string filename) {
+        public DiscoveryClientResult(Type? referenceType, string url, string filename) {
             this.referenceTypeName = referenceType == null ? string.Empty : referenceType.FullName;
             this.url = url;
             this.filename = filename;

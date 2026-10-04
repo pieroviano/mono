@@ -43,7 +43,7 @@ namespace System.Web.UI.WebControls.WebParts
 		
 		public EditorPartCollection (ICollection editorParts)
 		{
-			foreach (object o in editorParts) {
+			foreach (var o in editorParts) {
 				/* XXX check the type? */
 				InnerList.Add (o);
 			}
@@ -52,9 +52,9 @@ namespace System.Web.UI.WebControls.WebParts
 		public EditorPartCollection (EditorPartCollection existingEditorParts,
 					     ICollection editorParts)
 		{
-			foreach (object o in existingEditorParts)
+			foreach (var o in existingEditorParts)
 				InnerList.Add (o);
-			foreach (object o in editorParts)
+			foreach (var o in editorParts)
 				InnerList.Add (o);
 		}
 

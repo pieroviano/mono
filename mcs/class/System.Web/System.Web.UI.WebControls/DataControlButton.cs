@@ -157,7 +157,7 @@ namespace System.Web.UI.WebControls
 			if (ForeColor != Color.Empty)
 				return;
 
-			for (Control parent = Parent; parent != null; parent = parent.Parent) {
+			for (var parent = Parent; parent != null; parent = parent.Parent) {
 				WebControl wc = parent as WebControl;
 				if (wc != null && wc.ForeColor != Color.Empty) {
 					ForeColor = wc.ForeColor;

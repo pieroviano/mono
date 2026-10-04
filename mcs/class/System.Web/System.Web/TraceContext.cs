@@ -104,37 +104,37 @@ namespace System.Web
 			}
 		}
 
-		public void Warn(string message)
+		public void Warn(string? message)
 		{
 			Write (String.Empty, message, null, true);
 		}
 
-		public void Warn(string category, string message)
+		public void Warn(string category, string? message)
 		{
 			Write (category, message, null, true);
 		}
 
-		public void Warn (string category, string message, Exception errorInfo)
+		public void Warn (string category, string? message, Exception? errorInfo)
 		{
 			Write (category, message, errorInfo, true);
 		}
 
-		public void Write (string message)
+		public void Write (string? message)
 		{
 			Write (String.Empty, message, null, false);
 		}
 
-		public void Write (string category, string message)
+		public void Write (string category, string? message)
 		{
 			Write (category, message, null, false);
 		}
 
-		public void Write (string category, string message, Exception errorInfo)
+		public void Write (string category, string? message, Exception? errorInfo)
 		{
 			Write (category, message, errorInfo, false);
 		}
 
-		void Write (string category, string msg, Exception error, bool Warning)
+		void Write (string category, string? msg, Exception? error, bool Warning)
 		{
 			if (!IsEnabled)
 				return;

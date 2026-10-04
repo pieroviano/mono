@@ -45,7 +45,7 @@ namespace System.Web.UI.HtmlControls
 		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public virtual string Href {
 			get {
-				string s = Attributes["href"];
+				var s = Attributes["href"];
 				if (s == null)
 					return "";
 				return s;

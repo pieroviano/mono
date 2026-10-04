@@ -105,9 +105,9 @@ namespace System.Web.Services {
 
     internal class WebServiceBindingReflector {
         private WebServiceBindingReflector() { }
-        internal static WebServiceBindingAttribute GetAttribute(Type type) {
+        internal static WebServiceBindingAttribute GetAttribute(Type? type) {
             for (; type != null; type = type.BaseType) {
-                object[] attrs = type.GetCustomAttributes(typeof(WebServiceBindingAttribute), false);
+                var attrs = type.GetCustomAttributes(typeof(WebServiceBindingAttribute), false);
                 if (attrs.Length == 0) continue;
                 if (attrs.Length > 1) throw new ArgumentException(Res.GetString(Res.OnlyOneWebServiceBindingAttributeMayBeSpecified1, type.FullName), "type");
                 return (WebServiceBindingAttribute)attrs[0];
@@ -115,14 +115,14 @@ namespace System.Web.Services {
             return null;
         }
 
-        internal static WebServiceBindingAttribute GetAttribute(LogicalMethodInfo methodInfo, string binding) {
+        internal static WebServiceBindingAttribute GetAttribute(LogicalMethodInfo methodInfo, string? binding) {
             if (methodInfo.Binding != null) {
                 if (binding.Length > 0 && methodInfo.Binding.Name != binding)
                     throw new InvalidOperationException(Res.GetString(Res.WebInvalidBindingName, binding, methodInfo.Binding.Name));
                 return methodInfo.Binding;
             }
-            Type type = methodInfo.DeclaringType;
-            object[] attrs = type.GetCustomAttributes(typeof(WebServiceBindingAttribute), false);
+            var type = methodInfo.DeclaringType;
+            var attrs = type.GetCustomAttributes(typeof(WebServiceBindingAttribute), false);
             WebServiceBindingAttribute webAttr = null;
             foreach (WebServiceBindingAttribute attr in attrs) {
                 if (attr.Name == binding) {

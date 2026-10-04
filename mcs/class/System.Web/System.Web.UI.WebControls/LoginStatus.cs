@@ -60,7 +60,7 @@ namespace System.Web.UI.WebControls {
 		[UrlProperty]
 		public virtual string LoginImageUrl {
 			get {
-				object o = ViewState ["LoginImageUrl"];
+				var o = ViewState ["LoginImageUrl"];
 				return (o == null) ? String.Empty : (string) o;
 			}
 			set {
@@ -74,7 +74,7 @@ namespace System.Web.UI.WebControls {
 		[Localizable (true)]
 		public virtual string LoginText {
 			get {
-				object o = ViewState ["LoginText"];
+				var o = ViewState ["LoginText"];
 				return (o == null) ? Locale.GetText ("Login") : (string) o;
 			}
 			set {
@@ -89,7 +89,7 @@ namespace System.Web.UI.WebControls {
 		[Themeable (false)]
 		public virtual LogoutAction LogoutAction {
 			get {
-				object o = ViewState ["LogoutAction"];
+				var o = ViewState ["LogoutAction"];
 				return (o == null) ? LogoutAction.Refresh : (LogoutAction) o;
 			}
 			set {
@@ -104,7 +104,7 @@ namespace System.Web.UI.WebControls {
 		[UrlProperty]
 		public virtual string LogoutImageUrl {
 			get {
-				object o = ViewState ["LogoutImageUrl"];
+				var o = ViewState ["LogoutImageUrl"];
 				return (o == null) ? String.Empty : (string) o;
 			}
 			set {
@@ -122,7 +122,7 @@ namespace System.Web.UI.WebControls {
 		[UrlProperty]
 		public virtual string LogoutPageUrl {
 			get {
-				object o = ViewState ["LogoutPageUrl"];
+				var o = ViewState ["LogoutPageUrl"];
 				return (o == null) ? String.Empty : (string) o;
 			}
 			set {
@@ -136,7 +136,7 @@ namespace System.Web.UI.WebControls {
 		[Localizable (true)]
 		public virtual string LogoutText {
 			get {
-				object o = ViewState ["LogoutText"];
+				var o = ViewState ["LogoutText"];
 				return (o == null) ? Locale.GetText ("Logout") : (string) o;
 			}
 			set {
@@ -201,7 +201,7 @@ namespace System.Web.UI.WebControls {
 			// if OnPreRender is never called
 		}
 
-		protected internal override void Render (HtmlTextWriter writer)
+		protected internal override void Render (HtmlTextWriter? writer)
 		{
 			if (writer == null)
 				return;
@@ -209,24 +209,24 @@ namespace System.Web.UI.WebControls {
 			RenderContents (writer);
 		}
 
-		protected internal override void RenderContents (HtmlTextWriter writer)
+		protected internal override void RenderContents (HtmlTextWriter? writer)
 		{
 			if (writer == null)
 				return;
 
 			EnsureChildControls ();
 
-			bool authenticated = false;
+			var authenticated = false;
 			if (Page != null) {
 				Page.VerifyRenderingInServerForm (this);
 				authenticated = Page.Request.IsAuthenticated;
 			}
 
-			bool logoutImage = (LogoutImageUrl.Length > 0);
+			var logoutImage = (LogoutImageUrl.Length > 0);
 			logoutLinkButton.Visible = authenticated && !logoutImage;
 			logoutImageButton.Visible = authenticated && logoutImage;
 
-			bool loginImage = (LoginImageUrl.Length > 0);
+			var loginImage = (LoginImageUrl.Length > 0);
 			loginLinkButton.Visible = !authenticated && !loginImage;
 			loginImageButton.Visible = !authenticated && loginImage;
 
@@ -273,7 +273,7 @@ namespace System.Web.UI.WebControls {
 		// private stuff
 		void LogoutClick (object sender, CommandEventArgs e)
 		{
-			LoginCancelEventArgs lcea = new LoginCancelEventArgs (false);
+			var lcea = new LoginCancelEventArgs (false);
 			OnLoggingOut (lcea);
 			if (lcea.Cancel)
 				return;
@@ -289,7 +289,7 @@ namespace System.Web.UI.WebControls {
 				FormsAuthentication.RedirectToLoginPage ();
 				break;
 			case LogoutAction.Redirect:
-				string url = LogoutPageUrl;
+				var url = LogoutPageUrl;
 				if (url.Length == 0)
 					url = Page.Request.Url.AbsoluteUri;
 				HttpContext.Current.Response.Redirect (url);

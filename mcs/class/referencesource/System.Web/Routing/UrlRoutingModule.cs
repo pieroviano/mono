@@ -43,7 +43,7 @@
         }
 
         private void OnApplicationPostResolveRequestCache(object sender, EventArgs e) {
-            HttpApplication app = (HttpApplication)sender;
+            var app = (HttpApplication)sender;
             HttpContextBase context = new HttpContextWrapper(app.Context);
             PostResolveRequestCache(context);
         }
@@ -55,7 +55,7 @@
 
         public virtual void PostResolveRequestCache(HttpContextBase context) {
             // Match the incoming URL against the route table
-            RouteData routeData = RouteCollection.GetRouteData(context);
+            var routeData = RouteCollection.GetRouteData(context);
 
             // Do nothing if no route found
             if (routeData == null) {
@@ -63,7 +63,7 @@
             }
 
             // If a route was found, get an IHttpHandler from the route's RouteHandler
-            IRouteHandler routeHandler = routeData.RouteHandler;
+            var routeHandler = routeData.RouteHandler;
             if (routeHandler == null) {
                 throw new InvalidOperationException(
                     String.Format(
@@ -77,12 +77,12 @@
                 return;
             }
 
-            RequestContext requestContext = new RequestContext(context, routeData);
+            var requestContext = new RequestContext(context, routeData);
 
             // Dev10 766875	Adding RouteData to HttpContext
             context.Request.RequestContext = requestContext;
 
-            IHttpHandler httpHandler = routeHandler.GetHttpHandler(requestContext);
+            var httpHandler = routeHandler.GetHttpHandler(requestContext);
             if (httpHandler == null) {
                 throw new InvalidOperationException(
                     String.Format(

@@ -65,7 +65,7 @@ namespace System.Web.UI.WebControls {
 		[TypeConverter (typeof (StringArrayConverter))]
 		public virtual string[] AssociatedHeaderCellID {
 			get {
-				object o = ViewState ["AssociatedHeaderCellID"];
+				var o = ViewState ["AssociatedHeaderCellID"];
 				return (o == null) ? new string[0] : (string[]) o;
 			}
 			set {
@@ -81,7 +81,7 @@ namespace System.Web.UI.WebControls {
 		[WebCategory ("Appearance")]
 		public virtual int ColumnSpan {
 			get {
-				object o = ViewState ["ColumnSpan"];
+				var o = ViewState ["ColumnSpan"];
 				return (o == null) ? 0 : (int) o;
 			}
 			set {
@@ -109,7 +109,7 @@ namespace System.Web.UI.WebControls {
 		[WebCategory ("Layout")]
 		public virtual int RowSpan {
 			get {
-				object o = ViewState ["RowSpan"];
+				var o = ViewState ["RowSpan"];
 				return (o == null) ? 0 : (int) o;
 			}
 			set {
@@ -127,7 +127,7 @@ namespace System.Web.UI.WebControls {
 		[WebCategory ("Appearance")]
 		public virtual string Text {
 			get {
-				object o = ViewState ["Text"];
+				var o = ViewState ["Text"];
 				return (o == null) ? String.Empty : (string) o;
 			}
 			set {
@@ -171,22 +171,22 @@ namespace System.Web.UI.WebControls {
 			get { return (ControlStyle as TableItemStyle); }
 		}
 
-		protected override void AddAttributesToRender (HtmlTextWriter writer)
+		protected override void AddAttributesToRender (HtmlTextWriter? writer)
 		{
 			base.AddAttributesToRender (writer);
 			if (writer == null)
 				return;
 
-			int i = ColumnSpan;
+			var i = ColumnSpan;
 			if (i > 0)
 				writer.AddAttribute (HtmlTextWriterAttribute.Colspan, i.ToString (Helpers.InvariantCulture), false);
 
 			i = RowSpan;
 			if (i > 0)
 				writer.AddAttribute (HtmlTextWriterAttribute.Rowspan, i.ToString (Helpers.InvariantCulture), false);
-			string[] ahci = AssociatedHeaderCellID;
+			var ahci = AssociatedHeaderCellID;
 			if (ahci.Length > 1) {
-				StringBuilder sb = new StringBuilder ();
+				var sb = new StringBuilder ();
 				for (i = 0; i < ahci.Length - 1; i++) {
 					sb.Append (ahci [i]);
 					sb.Append (",");
@@ -208,7 +208,7 @@ namespace System.Web.UI.WebControls {
 			
 			LiteralControl lc = (obj as LiteralControl);
 			if (lc == null) {
-				string s = Text;
+				var s = Text;
 				if (s.Length > 0) {
 					Controls.Add (new LiteralControl (s));
 					// remove from viewstate

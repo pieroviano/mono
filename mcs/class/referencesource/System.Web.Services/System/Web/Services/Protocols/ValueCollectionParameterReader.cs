@@ -45,15 +45,15 @@ namespace System.Web.Services.Protocols {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         protected object[] Read(NameValueCollection collection) {
-            object[] parameters = new object[paramInfos.Length];
-            for (int i = 0; i < paramInfos.Length; i++) {
-                ParameterInfo paramInfo = paramInfos[i];
+            var parameters = new object[paramInfos.Length];
+            for (var i = 0; i < paramInfos.Length; i++) {
+                var paramInfo = paramInfos[i];
                 if (paramInfo.ParameterType.IsArray) {
                     string[] arrayValues = collection.GetValues(paramInfo.Name);
                     Type arrayType = paramInfo.ParameterType.GetElementType();
-                    Array array = Array.CreateInstance(arrayType, arrayValues.Length);
-                    for (int j = 0; j < arrayValues.Length; j++) {
-                        string value = arrayValues[j];
+                    var array = Array.CreateInstance(arrayType, arrayValues.Length);
+                    for (var j = 0; j < arrayValues.Length; j++) {
+                        var value = arrayValues[j];
                         array.SetValue(ScalarFormatter.FromString(value, arrayType), j);
                     }
                     parameters[i] = array;
@@ -74,8 +74,8 @@ namespace System.Web.Services.Protocols {
         static public bool IsSupported(LogicalMethodInfo methodInfo) {
             if (methodInfo.OutParameters.Length > 0)
                 return false;
-            ParameterInfo[] paramInfos = methodInfo.InParameters;
-            for (int i = 0; i < paramInfos.Length; i++)
+            var paramInfos = methodInfo.InParameters;
+            for (var i = 0; i < paramInfos.Length; i++)
                 if (!IsSupported(paramInfos[i]))
                     return false;
             return true;
@@ -86,7 +86,7 @@ namespace System.Web.Services.Protocols {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         static public bool IsSupported(ParameterInfo paramInfo) {
-            Type type = paramInfo.ParameterType;
+            var type = paramInfo.ParameterType;
             if (type.IsArray)
                 type = type.GetElementType();
             return ScalarFormatter.IsTypeSupported(type);

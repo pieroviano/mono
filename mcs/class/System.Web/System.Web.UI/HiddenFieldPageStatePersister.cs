@@ -44,8 +44,8 @@ namespace System.Web.UI
 		
 		public override void Load ()
 		{
-			string rawViewState = Page.RawViewState;
-			IStateFormatter formatter = StateFormatter;
+			var rawViewState = Page.RawViewState;
+			var formatter = StateFormatter;
 			if (!String.IsNullOrEmpty (rawViewState)) {
 				Pair pair = formatter.Deserialize (rawViewState) as Pair;
 				if (pair != null) {
@@ -57,7 +57,7 @@ namespace System.Web.UI
 
 		public override void Save ()
 		{
-			IStateFormatter formatter = StateFormatter;
+			var formatter = StateFormatter;
 			Page.RawViewState = formatter.Serialize (new Pair (ViewState, ControlState));
 		}
 	}

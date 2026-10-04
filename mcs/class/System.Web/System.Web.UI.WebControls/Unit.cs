@@ -72,7 +72,7 @@ namespace System.Web.UI.WebControls {
 		{
 		}
 
-		internal Unit (string input, char sep)
+		internal Unit (string? input, char sep)
 		{
 			if (input == null || input == String.Empty){
 				type = (UnitType) 0;
@@ -83,11 +83,11 @@ namespace System.Web.UI.WebControls {
 
 			value = 0.0;
 			double dv = 0, factor = .1;
-			int i = 0;
-			int count = input.Length;
+			var i = 0;
+			var count = input.Length;
 			int sign = 1, unitStart = -1, unitLen = 0, wsCount = 0;
 			char c;
-			ParsingStage ps = ParsingStage.Trim;
+			var ps = ParsingStage.Trim;
 			bool done = false, haveSep = false, haveDigits = false, isWhiteSpace;
 
 			while (!done && i < count) {
@@ -224,9 +224,9 @@ namespace System.Web.UI.WebControls {
 
 			value += dv * sign;
 			if (unitStart >= 0) {
-				int unitTail = unitStart + unitLen;
+				var unitTail = unitStart + unitLen;
 				if (unitTail < count) {
-					for (int j = unitTail; j < count; j++) {
+					for (var j = unitTail; j < count; j++) {
 						if (!Char.IsWhiteSpace (input [j]))
 							throw new ArgumentOutOfRangeException ("input");
 					}
@@ -319,7 +319,7 @@ namespace System.Web.UI.WebControls {
 		public override bool Equals (object obj)
 		{
 			if (obj is Unit){
-				Unit other = (Unit) obj;
+				var other = (Unit) obj;
 				return (other.type == type && other.value == value && valueSet == other.valueSet);
 			}
 			return false;
@@ -366,7 +366,7 @@ namespace System.Web.UI.WebControls {
 			if (type == 0)
 				return String.Empty;
 			
-			string ex = GetExtension (type);
+			var ex = GetExtension (type);
 			
 			return value.ToString (culture) + ex;
 		}
@@ -381,7 +381,7 @@ namespace System.Web.UI.WebControls {
 			if (type == 0)
 				return String.Empty;
 
-			string ex = GetExtension (type);
+			var ex = GetExtension (type);
 
 			return value.ToString (formatProvider) + ex;
 		}

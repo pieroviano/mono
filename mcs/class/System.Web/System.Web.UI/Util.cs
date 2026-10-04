@@ -40,7 +40,7 @@ namespace System.Web.UI {
 internal static class Util {
 
     internal static string GetUrlWithApplicationPath(HttpContextBase context, string url) {
-        string appPath = context.Request.ApplicationPath ?? String.Empty;
+        var appPath = context.Request.ApplicationPath ?? String.Empty;
         if (!appPath.EndsWith("/", StringComparison.OrdinalIgnoreCase)) {
             appPath += "/";
         }

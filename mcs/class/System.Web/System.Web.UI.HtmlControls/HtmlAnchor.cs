@@ -53,7 +53,7 @@ namespace System.Web.UI.HtmlControls {
 		[UrlProperty]
 		public string HRef {
 			get {
-				string s = Attributes ["href"];
+				var s = Attributes ["href"];
 				return (s == null) ? String.Empty : s;
 			}
 			set {
@@ -71,7 +71,7 @@ namespace System.Web.UI.HtmlControls {
 		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public string Name {
 			get {
-				string s = Attributes ["name"];
+				var s = Attributes ["name"];
 				return (s == null) ? String.Empty : s;
 			}
 			set {
@@ -88,7 +88,7 @@ namespace System.Web.UI.HtmlControls {
 		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public string Target {
 			get {
-				string s = Attributes ["target"];
+				var s = Attributes ["target"];
 				return (s == null) ? String.Empty : s;
 			}
 			set {
@@ -106,7 +106,7 @@ namespace System.Web.UI.HtmlControls {
 		[Localizable (true)]
 		public string Title {
 			get {
-				string s = Attributes ["title"];
+				var s = Attributes ["title"];
 				return (s == null) ? String.Empty : s;
 			}
 			set {
@@ -157,12 +157,12 @@ namespace System.Web.UI.HtmlControls {
 				ClientScriptManager csm;
 
 				// a script
-				PostBackOptions options = GetPostBackOptions ();
+				var options = GetPostBackOptions ();
 				csm = Page.ClientScript;
 				csm.RegisterForEventValidation (options);
 				Attributes ["href"] = csm.GetPostBackEventReference (options, true);
 			} else {
-				string hr = HRef;
+				var hr = HRef;
 				if (hr != string.Empty)
 					HRef = ResolveClientUrl (hr);
 			}
@@ -185,8 +185,8 @@ namespace System.Web.UI.HtmlControls {
 	
 		PostBackOptions GetPostBackOptions ()
 		{
-			Page page = Page;
-			PostBackOptions options = new PostBackOptions (this);
+			var page = Page;
+			var options = new PostBackOptions (this);
 			options.ValidationGroup = null;
 			options.ActionUrl = null;
 			options.Argument = String.Empty;

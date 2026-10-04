@@ -53,9 +53,9 @@ namespace System.Web.Mail {
      
 	public override string ToString() {
 	    
-	    StringBuilder builder = new StringBuilder();
-	    for( int i = 0; i <data.Count ; i++ ) {
-		MailAddress addr = this.Get( i );
+	    var builder = new StringBuilder();
+	    for( var i = 0; i <data.Count ; i++ ) {
+		var addr = this.Get( i );
 		
 		builder.Append( addr );
 		
@@ -69,12 +69,12 @@ namespace System.Web.Mail {
 	    
 	    if( str == null ) throw new ArgumentNullException("Null is not allowed as an address string");
 	    
-	    MailAddressCollection list = new MailAddressCollection();
+	    var list = new MailAddressCollection();
 	    
-	    string[] parts = str.Split( new char[] { ',' , ';' } );
+	    var parts = str.Split( new char[] { ',' , ';' } );
 	    
-	    foreach( string part in parts ) {
-	    	MailAddress add = MailAddress.Parse (part);
+	    foreach( var part in parts ) {
+	    	var add = MailAddress.Parse (part);
 		if (add == null)
 			continue;
 

@@ -112,8 +112,8 @@ namespace System.Web.UI.WebControls
 		
 		protected override void InitializeDataCell (DataControlFieldCell cell, DataControlRowState rowState)
 		{
-			bool editable = IsEditable (rowState);
-			CheckBox box = new CheckBox ();
+			var editable = IsEditable (rowState);
+			var box = new CheckBox ();
 			box.Enabled = editable;
 			if (editable)
 				box.ToolTip = HeaderText;
@@ -124,9 +124,9 @@ namespace System.Web.UI.WebControls
 		public override void ExtractValuesFromCell (IOrderedDictionary dictionary,
 			DataControlFieldCell cell, DataControlRowState rowState, bool includeReadOnly)
 		{
-			bool editable = IsEditable (rowState);
+			var editable = IsEditable (rowState);
 			if (editable || includeReadOnly) {
-				CheckBox box = (CheckBox) cell.Controls [0];
+				var box = (CheckBox) cell.Controls [0];
 				dictionary [DataField] = box.Checked;
 			}
 		}
@@ -134,14 +134,14 @@ namespace System.Web.UI.WebControls
 		protected override void OnDataBindField (object sender, EventArgs e)
 		{
 			try {
-				Control container = (Control) sender;
-				object val = GetValue (container.NamingContainer);
+				var container = (Control) sender;
+				var val = GetValue (container.NamingContainer);
 				CheckBox box = sender as CheckBox;
 				if (box == null) {
 					DataControlFieldCell cell = sender as DataControlFieldCell;
 					if (cell != null) {
-						ControlCollection controls = cell.Controls;
-						int ccount = controls != null ? controls.Count : 0;
+						var controls = cell.Controls;
+						var ccount = controls != null ? controls.Count : 0;
 						if (ccount == 1)
 							box = controls [0] as CheckBox;
 						if (box == null)
@@ -182,7 +182,7 @@ namespace System.Web.UI.WebControls
 		
 		protected override void CopyProperties (DataControlField newField)
 		{
-			CheckBoxField field = (CheckBoxField) newField;
+			var field = (CheckBoxField) newField;
 			field.DataField = DataField;
 			field.ReadOnly = ReadOnly;
 			field.Text = Text;

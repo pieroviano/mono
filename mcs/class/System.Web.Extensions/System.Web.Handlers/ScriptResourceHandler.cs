@@ -103,13 +103,13 @@ namespace System.Web.Handlers
 				return;
 			}
 
-			VirtualPathProvider vpp = HostingEnvironment.VirtualPathProvider;
+			var vpp = HostingEnvironment.VirtualPathProvider;
 			if (!vpp.FileExists (entry.NameOrPath))
 				return;
-			VirtualFile file = vpp.GetFile (entry.NameOrPath);
+			var file = vpp.GetFile (entry.NameOrPath);
 			if (file == null)
 				return;
-			using (Stream s = file.Open ()) {
+			using (var s = file.Open ()) {
 				using (var r = new StreamReader (s)) {
 					string line = r.ReadLine ();
 					while (line != null) {
@@ -134,12 +134,12 @@ namespace System.Web.Handlers
 				throw new HttpException (404, "Resource not found");
 
 			DateTime modifiedSince;
-			bool hasIfModifiedSince = HasIfModifiedSince (context.Request, out modifiedSince);
+			var hasIfModifiedSince = HasIfModifiedSince (context.Request, out modifiedSince);
 			
 			if (hasIfModifiedSince) {
-				bool notModified = true;
+				var notModified = true;
 			
-				foreach (CompositeEntry entry in entries) {
+				foreach (var entry in entries) {
 					if (entry == null)
 						continue;
 					if (notModified) {
@@ -154,9 +154,9 @@ namespace System.Web.Handlers
 				}
 			}
 			
-			StringBuilder contents = new StringBuilder ();
+			var contents = new StringBuilder ();
 			using (var sw = new StringWriter (contents)) {
-				foreach (CompositeEntry entry in entries) {
+				foreach (var entry in entries) {
 					if (entry == null)
 						continue;
 					AppendScriptContents (sw, entry);
@@ -165,8 +165,8 @@ namespace System.Web.Handlers
 			if (contents.Length == 0)
 				throw new HttpException (404, "Resource not found");
 
-			HttpResponse response = context.Response;
-			DateTime utcnow = DateTime.UtcNow;
+			var response = context.Response;
+			var utcnow = DateTime.UtcNow;
 
 			response.ContentType = "text/javascript";
 			response.Headers.Add ("Last-Modified", utcnow.ToString ("r"));
@@ -185,9 +185,9 @@ namespace System.Web.Handlers
 		
 		protected virtual void ProcessRequest (HttpContext context)
 		{
-			HttpRequest request = context.Request;
-			bool notifyScriptLoaded = request.QueryString ["n"] == "t";
-			List <CompositeEntry> compositeEntries = CompositeScriptReference.GetCompositeScriptEntries (request.RawUrl);
+			var request = context.Request;
+			var notifyScriptLoaded = request.QueryString ["n"] == "t";
+			var compositeEntries = CompositeScriptReference.GetCompositeScriptEntries (request.RawUrl);
 			if (compositeEntries != null) {
 				SendCompositeScript (context, request, notifyScriptLoaded, compositeEntries);
 				return;
@@ -196,11 +196,11 @@ namespace System.Web.Handlers
 			Assembly assembly;			
 			SendEmbeddedResource (context, out res, out assembly);
 
-			HttpResponse response = context.Response;
-			TextWriter writer = response.Output;
+			var response = context.Response;
+			var writer = response.Output;
 			foreach (ScriptResourceAttribute sra in assembly.GetCustomAttributes (typeof (ScriptResourceAttribute), false)) {
 				if (String.Compare (sra.ScriptName, res.Name, StringComparison.Ordinal) == 0) {
-					string scriptResourceName = sra.ScriptResourceName;
+					var scriptResourceName = sra.ScriptResourceName;
 					ResourceSet rset = null;
 					try {
 						rset = new ResourceManager (scriptResourceName, assembly).GetResourceSet (Threading.Thread.CurrentThread.CurrentUICulture, true, true);
@@ -216,12 +216,12 @@ namespace System.Web.Handlers
 					if (rset == null)
 						break;
 					writer.WriteLine ();
-					string ns = sra.TypeName;
-					int indx = ns.LastIndexOf ('.');
+					var ns = sra.TypeName;
+					var indx = ns.LastIndexOf ('.');
 					if (indx > 0)
 						writer.WriteLine ("Type.registerNamespace('" + ns.Substring (0, indx) + "')");
 					writer.Write ("{0}={{", sra.TypeName);
-					bool first = true;
+					var first = true;
 					foreach (DictionaryEntry de in rset) {
 						string value = de.Value as string;
 						if (value != null) {
@@ -244,7 +244,7 @@ namespace System.Web.Handlers
 		}
 		static void CheckIfResourceIsCompositeScript (string resourceName, ref bool includeTimeStamp)
 		{
-			bool isCompositeScript = resourceName.StartsWith (CompositeScriptReference.COMPOSITE_SCRIPT_REFERENCE_PREFIX, StringComparison.Ordinal);
+			var isCompositeScript = resourceName.StartsWith (CompositeScriptReference.COMPOSITE_SCRIPT_REFERENCE_PREFIX, StringComparison.Ordinal);
 			if (!isCompositeScript)
 				return;
 			
@@ -262,8 +262,8 @@ namespace System.Web.Handlers
 				return "\"" + value + "\"";
 			
 			var sb = new StringBuilder ("\"");
-			for (int i = 0; i < value.Length; i++) {
-				char ch = value [i];
+			for (var i = 0; i < value.Length; i++) {
+				var ch = value [i];
 				switch (ch) {
 					case '\'':
 						sb.Append ("\\u0027");

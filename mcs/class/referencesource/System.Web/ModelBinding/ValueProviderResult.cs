@@ -42,7 +42,7 @@
             protected set;
         }
 
-        private static object ConvertSimpleType(CultureInfo culture, object value, Type destinationType) {
+        private static object ConvertSimpleType(CultureInfo culture, object? value, Type destinationType) {
             if (value == null || destinationType.IsInstanceOfType(value)) {
                 return value;
             }
@@ -53,8 +53,8 @@
                 return null;
             }
 
-            TypeConverter converter = TypeDescriptor.GetConverter(destinationType);
-            bool canConvertFrom = converter.CanConvertFrom(value.GetType());
+            var converter = TypeDescriptor.GetConverter(destinationType);
+            var canConvertFrom = converter.CanConvertFrom(value.GetType());
             if (!canConvertFrom) {
                 converter = TypeDescriptor.GetConverter(value.GetType());
             }
@@ -70,7 +70,7 @@
                     return ConvertSimpleType(culture, value, underlyingType);
                 }
 
-                string message = String.Format(CultureInfo.CurrentCulture, SR.GetString(SR.ValueProviderResult_NoConverterExists),
+                var message = String.Format(CultureInfo.CurrentCulture, SR.GetString(SR.ValueProviderResult_NoConverterExists),
                     value.GetType().FullName, destinationType.FullName);
                 throw new InvalidOperationException(message);
             }
@@ -82,7 +82,7 @@
                 return convertedValue;
             }
             catch (Exception ex) {
-                string message = String.Format(CultureInfo.CurrentCulture, SR.GetString(SR.ValueProviderResult_ConversionThrew),
+                var message = String.Format(CultureInfo.CurrentCulture, SR.GetString(SR.ValueProviderResult_ConversionThrew),
                     value.GetType().FullName, destinationType.FullName);
                 throw new InvalidOperationException(message, ex);
             }
@@ -92,16 +92,16 @@
             return ConvertTo(type, null /* culture */);
         }
 
-        public virtual object ConvertTo(Type type, CultureInfo culture) {
+        public virtual object ConvertTo(Type type, CultureInfo? culture) {
             if (type == null) {
                 throw new ArgumentNullException("type");
             }
 
-            CultureInfo cultureToUse = culture ?? Culture;
+            var cultureToUse = culture ?? Culture;
             return UnwrapPossibleArrayType(cultureToUse, RawValue, type);
         }
 
-        private static object UnwrapPossibleArrayType(CultureInfo culture, object value, Type destinationType) {
+        private static object UnwrapPossibleArrayType(CultureInfo culture, object? value, Type destinationType) {
             if (value == null || destinationType.IsInstanceOfType(value)) {
                 return value;
             }
@@ -113,14 +113,14 @@
                 if (valueAsArray != null) {
                     // case 1: both destination + source type are arrays, so convert each element
                     IList converted = Array.CreateInstance(destinationElementType, valueAsArray.Length);
-                    for (int i = 0; i < valueAsArray.Length; i++) {
+                    for (var i = 0; i < valueAsArray.Length; i++) {
                         converted[i] = ConvertSimpleType(culture, valueAsArray.GetValue(i), destinationElementType);
                     }
                     return converted;
                 }
                 else {
                     // case 2: destination type is array but source is single element, so wrap element in array + convert
-                    object element = ConvertSimpleType(culture, value, destinationElementType);
+                    var element = ConvertSimpleType(culture, value, destinationElementType);
                     IList converted = Array.CreateInstance(destinationElementType, 1);
                     converted[0] = element;
                     return converted;

@@ -324,7 +324,7 @@ namespace System.Web.Script.Serialization
 					throw new InvalidOperationException ("JSON syntax error.");
 			}
 
-			object topObject = PeekObject ();
+			var topObject = PeekObject ();
 			if (buffer.Length > 0) {
 				object result;
 
@@ -339,23 +339,23 @@ namespace System.Web.Script.Serialization
 			if (returnValue.Count > 1)
 				throw new InvalidOperationException ("JSON syntax error.");
 
-			object ret = PopObject ();
+			var ret = PopObject ();
 			return ret;
 		}
 
 #if DEBUG
-		void DumpObject (string indent, object obj)
+		void DumpObject (string indent, object? obj)
 		{
 			if (obj is Dictionary <string, object>) {
 				Console.WriteLine (indent + "{");
-				foreach (KeyValuePair <string, object> kvp in (Dictionary <string, object>)obj) {
+				foreach (var kvp in (Dictionary <string, object>)obj) {
 					Console.WriteLine (indent + "\t\"{0}\": ", kvp.Key);
 					DumpObject (indent + "\t\t", kvp.Value);
 				}
 				Console.WriteLine (indent + "}");
 			} else if (obj is object[]) {
 				Console.WriteLine (indent + "[");
-				foreach (object o in (object[])obj)
+				foreach (var o in (object[])obj)
 					DumpObject (indent + "\t", o);
 				Console.WriteLine (indent + "]");
 			} else if (obj != null)
@@ -367,11 +367,11 @@ namespace System.Web.Script.Serialization
 		
 		void DecodeUnicodeChar ()
 		{
-			int len = buffer.Length;
+			var len = buffer.Length;
 			if (len < 6)
 				throw new ArgumentException ("Invalid escaped unicode character specification (" + currentPosition + ")");
 
-			int code = Int32.Parse (buffer.ToString ().Substring (len - 4), NumberStyles.HexNumber);
+			var code = Int32.Parse (buffer.ToString ().Substring (len - 4), NumberStyles.HexNumber);
 			buffer.Length = len - 6;
 			buffer.Append ((char)code);
 		}
@@ -395,7 +395,7 @@ namespace System.Web.Script.Serialization
 		
 		void PopMode (JsonMode expectedMode)
 		{
-			JsonMode mode = PeekMode ();
+			var mode = PeekMode ();
 			if (mode != expectedMode)
 				throw new ArgumentException (GetModeMessage (mode));
 
@@ -422,7 +422,7 @@ namespace System.Web.Script.Serialization
 
 		object PopObject (bool notIfLast)
 		{
-			int count = returnValue.Count;
+			var count = returnValue.Count;
 			if (count == 0)
 				return null;
 
@@ -447,7 +447,7 @@ namespace System.Web.Script.Serialization
 		
 		void RemoveLastCharFromBuffer ()
 		{
-			int len = buffer.Length;
+			var len = buffer.Length;
 			if (len == 0)
 				return;
 			buffer.Length = len - 1;
@@ -462,8 +462,8 @@ namespace System.Web.Script.Serialization
 				return false;
 			}
 
-			string s = buffer.ToString ();
-			bool converted = true;
+			var s = buffer.ToString ();
+			var converted = true;
 			int intValue;
 			long longValue;
 			decimal decimalValue;
@@ -515,7 +515,7 @@ namespace System.Web.Script.Serialization
 
 				case JsonType.STRING:
 					if (s.StartsWith ("/Date(", StringComparison.Ordinal) && s.EndsWith (")/", StringComparison.Ordinal)) {
-						long javaScriptTicks = Convert.ToInt64 (s.Substring (6, s.Length - 8));
+						var javaScriptTicks = Convert.ToInt64 (s.Substring (6, s.Length - 8));
 						result = new DateTime ((javaScriptTicks * 10000) + JsonSerializer.InitialJavaScriptDateTicks, DateTimeKind.Utc);
 					} else
 						result = s;
@@ -762,7 +762,7 @@ namespace System.Web.Script.Serialization
 					// With MS.AJAX, a comma resets the recursion depth
 					recursionDepth = 0;
 
-					bool doStore = ParseBuffer (out result);
+					var doStore = ParseBuffer (out result);
 					switch (PeekMode ()) {
 						case JsonMode.OBJECT:
 							if (doStore)

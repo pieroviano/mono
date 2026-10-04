@@ -80,7 +80,7 @@ namespace System.Web.DynamicData
 				
 				initDone = true;
 
-				DynamicDataRouteHandler rh = RouteHandler;
+				var rh = RouteHandler;
 				if (rh != null)
 					rh.Model = Model;
 				
@@ -88,13 +88,13 @@ namespace System.Web.DynamicData
 				if (action == null && table == null)
 					return;
 
-				RouteValueDictionary defaults = Defaults;
+				var defaults = Defaults;
 				if (defaults == null)
 					Defaults = defaults = new RouteValueDictionary ();
 
 				if (table != null) {
 					// Force check for table existence
-					MetaModel model = Model ?? MetaModel.Default;
+					var model = Model ?? MetaModel.Default;
 					if (model != null)
 						Model.GetTable (table);
 					
@@ -123,12 +123,12 @@ namespace System.Web.DynamicData
 		public override RouteData GetRouteData (HttpContextBase httpContext)
 		{
 			EnsureInitialized ();
-			RouteData rd = base.GetRouteData (httpContext);
+			var rd = base.GetRouteData (httpContext);
 
 			if (rd == null)
 				return null;
 
-			MetaModel model = Model ?? MetaModel.Default;
+			var model = Model ?? MetaModel.Default;
 			MetaTable table;
 			if (model == null || !model.TryGetTable (rd.GetRequiredString ("Table"), out table))
 				return null;
@@ -147,7 +147,7 @@ namespace System.Web.DynamicData
 			return Model.GetTable (t);
 		}
 
-		public override VirtualPathData GetVirtualPath (RequestContext requestContext, RouteValueDictionary values)
+		public override VirtualPathData GetVirtualPath (RequestContext requestContext, RouteValueDictionary? values)
 		{
 			EnsureInitialized ();
 			return base.GetVirtualPath (requestContext, values);

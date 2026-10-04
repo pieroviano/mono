@@ -63,7 +63,7 @@ namespace System.Web.UI.WebControls
 
 		protected internal DataPagerField CloneField ()
 		{
-			DataPagerField ret = CreateField ();
+			var ret = CreateField ();
 			CopyProperties (ret);
 
 			return ret;
@@ -83,13 +83,13 @@ namespace System.Web.UI.WebControls
 		protected string GetQueryStringNavigateUrl (int pageNumber)
 		{
 			if (_queryStringNavigateUrl == null && _dataPager != null) {
-				HttpContext ctx = HttpContext.Current;
+				var ctx = HttpContext.Current;
 				HttpRequest req = ctx != null ? ctx.Request : null;
-				string queryFieldName = _dataPager.QueryStringField;
+				var queryFieldName = _dataPager.QueryStringField;
 				
 				if (req != null) {
-					StringBuilder sb = new StringBuilder (req.Path + "?");
-					NameValueCollection coll = req.QueryString;
+					var sb = new StringBuilder (req.Path + "?");
+					var coll = req.QueryString;
 					
 					foreach (string k in coll.AllKeys) {
 						if (String.Compare (k, queryFieldName, StringComparison.OrdinalIgnoreCase) == 0)
@@ -108,7 +108,7 @@ namespace System.Web.UI.WebControls
 
 		public abstract void HandleEvent (CommandEventArgs e);
 
-		protected virtual void LoadViewState (Object savedState)
+		protected virtual void LoadViewState (Object? savedState)
 		{
 			if (savedState == null)
 				return;
@@ -146,7 +146,7 @@ namespace System.Web.UI.WebControls
 				if (_dataPager == null)
 					return String.Empty;
 				
-				HttpContext ctx = HttpContext.Current;
+				var ctx = HttpContext.Current;
 				HttpRequest req = ctx != null ? ctx.Request : null;
 
 				if (req == null)
@@ -162,7 +162,7 @@ namespace System.Web.UI.WebControls
 
 		public bool Visible {
 			get {
-				object o = ViewState ["Visible"];
+				var o = ViewState ["Visible"];
 				if (o == null)
 					return true;
 
@@ -195,7 +195,7 @@ namespace System.Web.UI.WebControls
 			return SaveViewState ();
 		}
 
-		void IStateManager.LoadViewState (object state)
+		void IStateManager.LoadViewState (object? state)
 		{
 			LoadViewState (state);
 		}
@@ -207,7 +207,7 @@ namespace System.Web.UI.WebControls
 
 		internal bool GetQueryModeStartRowIndex (int totalRowCount, int maximumRows, ref int startRowIndex, ref bool setPagePropertiesNeeded)
 		{
-			bool queryMode = !String.IsNullOrEmpty (DataPager.QueryStringField);
+			var queryMode = !String.IsNullOrEmpty (DataPager.QueryStringField);
 			if (!queryMode || QueryStringHandled)
 				return queryMode;
 
@@ -229,7 +229,7 @@ namespace System.Web.UI.WebControls
 				// the offset/index
 				if (pageNumber >= 0) {
 					// zero-based calculation again
-					int pageCount = (totalRowCount - 1) / maximumRows; 
+					var pageCount = (totalRowCount - 1) / maximumRows; 
 					if (pageNumber <= pageCount) {
 						startRowIndex = pageNumber * maximumRows;
 						setPagePropertiesNeeded = true;

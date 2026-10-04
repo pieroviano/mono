@@ -16,7 +16,7 @@ namespace System.Web.Services.Protocols {
                 // MethodNotAllowed = 405,
                 return new UnsupportedRequestProtocol(405);
 
-            bool isLocal = request.Url.IsLoopback || request.IsLocal;
+            var isLocal = request.Url.IsLoopback || request.IsLocal;
             if (!isLocal)
                 return null;
 

@@ -36,7 +36,7 @@ namespace System.Web.Services.Protocols {
 
 #if DEBUG
         void DumpRequest(HttpContext context) {
-            HttpRequest request = context.Request;
+            var request = context.Request;
             Debug.WriteLine("Process Request called.");
             Debug.WriteLine("Path = " + request.Path);
             Debug.WriteLine("PhysicalPath = " + request.PhysicalPath);
@@ -45,7 +45,7 @@ namespace System.Web.Services.Protocols {
             Debug.WriteLine("ContentType = " + request.ContentType);
             Debug.WriteLine("PathInfo = " + request.PathInfo);
             Debug.WriteLine("----Http request headers: ----");
-            System.Collections.Specialized.NameValueCollection headers = request.Headers;
+            var headers = request.Headers;
             foreach (string name in headers) {
                 string value = headers[name];
                 if (value != null && value.Length > 0)
@@ -70,8 +70,8 @@ namespace System.Web.Services.Protocols {
             if (CompModSwitches.Remote.TraceVerbose) DumpRequest(context);
 #endif
 
-            Type type = GetCompiledType(url, context);
-            IHttpHandler handler = CoreGetHandler(type, context, context.Request, context.Response);
+            var type = GetCompiledType(url, context);
+            var handler = CoreGetHandler(type, context, context.Request, context.Response);
 
             if (Tracing.On) Tracing.Exit("IHttpHandlerFactory.GetHandler", method);
 
@@ -89,10 +89,10 @@ namespace System.Web.Services.Protocols {
 
         internal IHttpHandler CoreGetHandler(Type type, HttpContext context, HttpRequest request, HttpResponse response) {
             TraceMethod caller = Tracing.On ? new TraceMethod(this, "CoreGetHandler") : null;
-            ServerProtocolFactory[] protocolFactories = GetServerProtocolFactories();
+            var protocolFactories = GetServerProtocolFactories();
             ServerProtocol protocol = null;
-            bool abort = false;
-            for (int i = 0; i < protocolFactories.Length; i++) {
+            var abort = false;
+            for (var i = 0; i < protocolFactories.Length; i++) {
                 try {
                     protocol = protocolFactories[i].Create(type, context, request, response, out abort);
                     if ((protocol != null && protocol.GetType() != typeof(UnsupportedRequestProtocol)) || abort)
@@ -122,8 +122,8 @@ namespace System.Web.Services.Protocols {
                 throw Tracing.ExceptionThrow(caller, new HttpException(((UnsupportedRequestProtocol)protocol).HttpCode, Res.GetString(Res.WebUnrecognizedRequestFormat)));
             }
 
-            bool isAsync = protocol.MethodInfo.IsAsync;
-            bool requiresSession = protocol.MethodAttribute.EnableSession;
+            var isAsync = protocol.MethodInfo.IsAsync;
+            var requiresSession = protocol.MethodAttribute.EnableSession;
 
             if (isAsync) {
                 if (requiresSession) {

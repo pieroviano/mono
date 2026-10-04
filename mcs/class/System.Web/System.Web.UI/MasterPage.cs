@@ -98,7 +98,7 @@ namespace System.Web.UI
 				return parentMasterPage;
 			}
 		}		
-		public void InstantiateInContentPlaceHolder (Control contentPlaceHolder, ITemplate template)
+		public void InstantiateInContentPlaceHolder (Control? contentPlaceHolder, ITemplate? template)
 		{
 			// .NET compatibility...
 			if (contentPlaceHolder == null || template == null)
@@ -108,7 +108,7 @@ namespace System.Web.UI
 				template.InstantiateIn (contentPlaceHolder);
 		}
 		internal static MasterPage CreateMasterPage (TemplateControl owner, HttpContext context,
-							     string masterPageFile, IDictionary contentTemplateCollection)
+							     string masterPageFile, IDictionary? contentTemplateCollection)
 		{
 			var req = context.Request;
 			if (req != null)
@@ -127,7 +127,7 @@ namespace System.Web.UI
 			masterPage.Page = owner.Page;
 			masterPage.InitializeAsUserControlInternal ();
 
-			List <string> placeholders = masterPage.placeholders;
+			var placeholders = masterPage.placeholders;
 			if (contentTemplateCollection != null && placeholders != null && placeholders.Count > 0) {
 				foreach (string templateName in contentTemplateCollection.Keys) {
 					if (!placeholders.Contains (templateName.ToLowerInvariant ())) {
@@ -144,13 +144,13 @@ namespace System.Web.UI
 		internal static void ApplyMasterPageRecursive (string currentFilePath, VirtualPathProvider vpp, MasterPage master, Dictionary <string, bool> appliedMasterPageFiles)
 		{
 			/* XXX need to use virtual paths here? */
-			string mpFile = master.MasterPageFile;
+			var mpFile = master.MasterPageFile;
 			if (!String.IsNullOrEmpty (mpFile)) {
 				mpFile = vpp.CombineVirtualPaths (currentFilePath, mpFile);
 				if (appliedMasterPageFiles.ContainsKey (mpFile))
 					throw new HttpException ("circular dependency in master page files detected");
 
-				MasterPage innerMaster = master.Master;
+				var innerMaster = master.Master;
 				if (innerMaster != null) {
 					master.Controls.Clear ();
 					master.Controls.Add (innerMaster);

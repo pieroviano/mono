@@ -62,7 +62,7 @@ namespace System.Configuration {
 
 		public override void Validate (object value)
 		{
-			long l = (long) value;
+			var l = (long) value;
 
 			if (!rangeIsExclusive) {
 				if (l < minValue || l > maxValue)

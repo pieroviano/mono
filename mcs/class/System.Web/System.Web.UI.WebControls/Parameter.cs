@@ -206,7 +206,7 @@ namespace System.Web.UI.WebControls {
 
 		public DbType GetDatabaseType ()
 		{
-			DbType dt = this.DbType;
+			var dt = this.DbType;
 
 			if (dt != DbType.Object)
 				throw new InvalidOperationException ("The DbType property is already set to a value other than DbType.Object.");
@@ -225,7 +225,7 @@ namespace System.Web.UI.WebControls {
 				_owner.CallOnParameterChanged ();
 		}
 		
-		protected virtual void LoadViewState (object savedState)
+		protected virtual void LoadViewState (object? savedState)
 		{
 			ViewState.LoadViewState (savedState);
 		}
@@ -247,7 +247,7 @@ namespace System.Web.UI.WebControls {
 			return this.Clone ();
 		}
 		
-		void IStateManager.LoadViewState (object savedState)
+		void IStateManager.LoadViewState (object? savedState)
 		{
 			this.LoadViewState (savedState);
 		}
@@ -342,7 +342,7 @@ namespace System.Web.UI.WebControls {
 		public DbType DbType
 		{
 			get {
-				object o = ViewState ["DbType"];
+				var o = ViewState ["DbType"];
 				if (o == null)
 					return DbType.Object;
 				return (DbType) o;
@@ -414,9 +414,9 @@ namespace System.Web.UI.WebControls {
 
 		internal void UpdateValue (HttpContext context, Control control)
 		{
-			object oldValue = ViewState ["ParameterValue"];
+			var oldValue = ViewState ["ParameterValue"];
 
-			object newValue = Evaluate (context, control);
+			var newValue = Evaluate (context, control);
 
 			if (!object.Equals (oldValue, newValue)) {
 				ViewState ["ParameterValue"] = newValue;
@@ -428,14 +428,14 @@ namespace System.Web.UI.WebControls {
 		{
 			UpdateValue (context, control);
 
-			object value = ConvertValue (ViewState ["ParameterValue"]);
+			var value = ConvertValue (ViewState ["ParameterValue"]);
 			if (value == null)
 				value = ConvertValue (DefaultValue);
 
 			return value;
 		}
 		
-		internal object ConvertValue (object val)
+		internal object ConvertValue (object? val)
 		{
 			if (val == null) return null;
 			if (ConvertEmptyStringToNull && val.Equals (string.Empty))

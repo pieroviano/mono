@@ -176,7 +176,7 @@ namespace System.Web.Configuration
 		[ConfigurationProperty ("enableSessionState", DefaultValue = "true")]
 		public PagesEnableSessionState EnableSessionState {
 			get {
-				string enableSessionState = (string) base [enableSessionStateProp];
+				var enableSessionState = (string) base [enableSessionStateProp];
 				switch (enableSessionState) {
 				case "true":
 					return PagesEnableSessionState.True;

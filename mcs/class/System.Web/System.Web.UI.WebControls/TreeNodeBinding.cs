@@ -44,7 +44,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValue ("")]
 		public string DataMember {
 			get {
-				object o = ViewState ["DataMember"];
+				var o = ViewState ["DataMember"];
 				if (o != null) return (string) o;
 				return "";
 			}
@@ -56,7 +56,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValue (-1)]
 		public int Depth {
 			get {
-				object o = ViewState ["Depth"];
+				var o = ViewState ["Depth"];
 				if (o != null) return (int) o;
 				return -1;
 			}
@@ -69,7 +69,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValue ("")]
 		public string FormatString {
 			get {
-				object o = ViewState ["FormatString"];
+				var o = ViewState ["FormatString"];
 				if (o != null) return (string) o;
 				return "";
 			}
@@ -82,7 +82,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValue ("")]
 		public string ImageToolTip {
 			get {
-				object o = ViewState ["ImageToolTip"];
+				var o = ViewState ["ImageToolTip"];
 				if (o != null) return (string) o;
 				return "";
 			}
@@ -95,7 +95,7 @@ namespace System.Web.UI.WebControls
 		[TypeConverter ("System.Web.UI.Design.DataSourceViewSchemaConverter, " + Consts.AssemblySystem_Design)]
 		public string ImageToolTipField {
 			get {
-				object o = ViewState ["ImageToolTipField"];
+				var o = ViewState ["ImageToolTipField"];
 				if (o != null) return (string) o;
 				return "";
 			}
@@ -109,7 +109,7 @@ namespace System.Web.UI.WebControls
 		[Editor ("System.Web.UI.Design.ImageUrlEditor, " + Consts.AssemblySystem_Design, typeof (System.Drawing.Design.UITypeEditor))]
 		public string ImageUrl {
 			get {
-				object o = ViewState ["ImageUrl"];
+				var o = ViewState ["ImageUrl"];
 				if (o != null) return (string) o;
 				return "";
 			}
@@ -122,7 +122,7 @@ namespace System.Web.UI.WebControls
 		[TypeConverter ("System.Web.UI.Design.DataSourceViewSchemaConverter, " + Consts.AssemblySystem_Design)]
 		public string ImageUrlField {
 			get {
-				object o = ViewState ["ImageUrlField"];
+				var o = ViewState ["ImageUrlField"];
 				if (o != null) return (string) o;
 				return "";
 			}
@@ -136,7 +136,7 @@ namespace System.Web.UI.WebControls
 		[Editor ("System.Web.UI.Design.UrlEditor, " + Consts.AssemblySystem_Design, typeof (System.Drawing.Design.UITypeEditor))]
 		public string NavigateUrl {
 			get {
-				object o = ViewState ["NavigateUrl"];
+				var o = ViewState ["NavigateUrl"];
 				if (o != null) return (string) o;
 				return "";
 			}
@@ -149,7 +149,7 @@ namespace System.Web.UI.WebControls
 		[TypeConverter ("System.Web.UI.Design.DataSourceViewSchemaConverter, " + Consts.AssemblySystem_Design)]
 		public string NavigateUrlField {
 			get {
-				object o = ViewState ["NavigateUrlField"];
+				var o = ViewState ["NavigateUrlField"];
 				if (o != null) return (string) o;
 				return "";
 			}
@@ -161,7 +161,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValue (false)]
 		public bool PopulateOnDemand {
 			get {
-				object o = ViewState ["PopulateOnDemand"];
+				var o = ViewState ["PopulateOnDemand"];
 				if (o != null) return (bool) o;
 				return false;
 			}
@@ -173,7 +173,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValue (TreeNodeSelectAction.Select)]
 		public TreeNodeSelectAction SelectAction {
 			get {
-				object o = ViewState ["SelectAction"];
+				var o = ViewState ["SelectAction"];
 				if (o != null) return (TreeNodeSelectAction)o;
 				return TreeNodeSelectAction.Select;
 			}
@@ -195,7 +195,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValue ("")]
 		public string Target {
 			get {
-				object o = ViewState ["Target"];
+				var o = ViewState ["Target"];
 				if(o != null) return (string)o;
 				return "";
 			}
@@ -208,7 +208,7 @@ namespace System.Web.UI.WebControls
 		[TypeConverter ("System.Web.UI.Design.DataSourceViewSchemaConverter, " + Consts.AssemblySystem_Design)]
 		public string TargetField {
 			get {
-				object o = ViewState ["TargetField"];
+				var o = ViewState ["TargetField"];
 				if (o != null) return (string) o;
 				return "";
 			}
@@ -222,7 +222,7 @@ namespace System.Web.UI.WebControls
 		[WebSysDescription ("The display text of the tree node.")]
 		public string Text {
 			get {
-				object o = ViewState ["Text"];
+				var o = ViewState ["Text"];
 				if(o != null) return (string)o;
 				return "";
 			}
@@ -235,7 +235,7 @@ namespace System.Web.UI.WebControls
 		[TypeConverter ("System.Web.UI.Design.DataSourceViewSchemaConverter, " + Consts.AssemblySystem_Design)]
 		public string TextField {
 			get {
-				object o = ViewState ["TextField"];
+				var o = ViewState ["TextField"];
 				if(o != null) return (string)o;
 				return "";
 			}
@@ -248,7 +248,7 @@ namespace System.Web.UI.WebControls
 		[Localizable (true)]
 		public string ToolTip {
 			get {
-				object o = ViewState ["ToolTip"];
+				var o = ViewState ["ToolTip"];
 				if(o != null) return (string)o;
 				return "";
 			}
@@ -261,7 +261,7 @@ namespace System.Web.UI.WebControls
 		[TypeConverter ("System.Web.UI.Design.DataSourceViewSchemaConverter, " + Consts.AssemblySystem_Design)]
 		public string ToolTipField {
 			get {
-				object o = ViewState ["ToolTipField"];
+				var o = ViewState ["ToolTipField"];
 				if(o != null) return (string)o;
 				return "";
 			}
@@ -274,7 +274,7 @@ namespace System.Web.UI.WebControls
 		[Localizable (true)]
 		public string Value {
 			get {
-				object o = ViewState ["Value"];
+				var o = ViewState ["Value"];
 				if(o != null) return (string)o;
 				return "";
 			}
@@ -292,7 +292,7 @@ namespace System.Web.UI.WebControls
 		[TypeConverter ("System.Web.UI.Design.DataSourceViewSchemaConverter, " + Consts.AssemblySystem_Design)]
 		public string ValueField {
 			get {
-				object o = ViewState ["ValueField"];
+				var o = ViewState ["ValueField"];
 				if(o != null) return (string)o;
 				return "";
 			}
@@ -301,7 +301,7 @@ namespace System.Web.UI.WebControls
 			}
 		}
 
-		void IStateManager.LoadViewState (object savedState)
+		void IStateManager.LoadViewState (object? savedState)
 		{
 			ViewState.LoadViewState (savedState);
 		}
@@ -328,7 +328,7 @@ namespace System.Web.UI.WebControls
 		
 		object ICloneable.Clone ()
 		{
-			TreeNodeBinding bin = new TreeNodeBinding ();
+			var bin = new TreeNodeBinding ();
 			foreach (DictionaryEntry e in ViewState)
 				bin.ViewState [(string)e.Key] = e.Value;
 			return bin;

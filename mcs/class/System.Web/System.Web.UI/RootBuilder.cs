@@ -79,7 +79,7 @@ namespace System.Web.UI
 			htmlInputControls.Add ("PASSWORD", typeof (HtmlInputPassword));
 		}
 
-		public RootBuilder (TemplateParser parser)
+		public RootBuilder (TemplateParser? parser)
 		{
 			foundry = new AspComponentFoundry ();
 			Line = 1;
@@ -93,15 +93,15 @@ namespace System.Web.UI
 			if (tagName == null)
 				throw new ArgumentNullException ("tagName");
 
-			AspComponent component = foundry.GetComponent (tagName);
+			var component = foundry.GetComponent (tagName);
 			
 			if (component != null) {
 				if (!String.IsNullOrEmpty (component.Source)) {
-					TemplateParser parser = Parser;
+					var parser = Parser;
 
 					if (component.FromConfig) {
-						string parserDir = parser.BaseVirtualDir;
-						VirtualPath vp = new VirtualPath (component.Source);
+						var parserDir = parser.BaseVirtualDir;
+						var vp = new VirtualPath (component.Source);
 
 						if (parserDir == vp.Directory)
 							throw new ParseException (parser.Location,

@@ -44,7 +44,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValueAttribute ("")]
 		public virtual string AccessKey {
 			get {
-				object o = viewState ["AccessKey"];
+				var o = viewState ["AccessKey"];
 				return o != null ? (string) o : String.Empty;
 			}
 			set {
@@ -62,7 +62,7 @@ namespace System.Web.UI.WebControls
 		[BindableAttribute (true)]
 		public virtual string AlternateText {
 			get {
-				object o = viewState ["AlternateText"];
+				var o = viewState ["AlternateText"];
 				return o != null ? (string) o : String.Empty;
 			}
 			set { viewState ["AlternateText"] = value; }
@@ -73,7 +73,7 @@ namespace System.Web.UI.WebControls
 		[NotifyParentPropertyAttribute (true)]
 		public virtual HotSpotMode HotSpotMode {
 			get {
-				object o = viewState ["HotSpotMode"];
+				var o = viewState ["HotSpotMode"];
 				return o != null ? (HotSpotMode) o : HotSpotMode.NotSet;
 			}
 			set {
@@ -90,7 +90,7 @@ namespace System.Web.UI.WebControls
 		[UrlPropertyAttribute]
 		public string NavigateUrl {
 			get {
-				object o = viewState ["NavigateUrl"];
+				var o = viewState ["NavigateUrl"];
 				return o != null ? (string) o : String.Empty;
 			}
 			set { viewState ["NavigateUrl"] = value; }
@@ -102,7 +102,7 @@ namespace System.Web.UI.WebControls
 		[NotifyParentPropertyAttribute (true)]
 		public string PostBackValue {
 			get {
-				object o = viewState ["PostBackValue"];
+				var o = viewState ["PostBackValue"];
 				return o != null ? (string) o : String.Empty;
 			}
 			set { viewState ["PostBackValue"] = value; }
@@ -112,7 +112,7 @@ namespace System.Web.UI.WebControls
 		[WebCategoryAttribute ("Accessibility")]
 		public virtual short TabIndex {
 			get {
-				object o = viewState ["TabIndex"];
+				var o = viewState ["TabIndex"];
 				return o != null ? (short) o : (short) 0;
 			}
 			set { viewState ["TabIndex"] = value; }
@@ -124,7 +124,7 @@ namespace System.Web.UI.WebControls
 		[TypeConverterAttribute (typeof(TargetConverter))]
 		public virtual string Target {
 			get {
-				object o = viewState ["Target"];
+				var o = viewState ["Target"];
 				return o != null ? (string) o : String.Empty;
 			}
 			set { viewState ["Target"] = value; }
@@ -136,7 +136,7 @@ namespace System.Web.UI.WebControls
 			get { return viewState; }
 		} 
 		
-		protected virtual void LoadViewState (object savedState)
+		protected virtual void LoadViewState (object? savedState)
 		{
 			viewState.LoadViewState (savedState);
 		}
@@ -156,7 +156,7 @@ namespace System.Web.UI.WebControls
 			get { return viewState.IsTrackingViewState; }
 		}
 	
-		void IStateManager.LoadViewState (object savedState)
+		void IStateManager.LoadViewState (object? savedState)
 		{
 			LoadViewState (savedState);
 		}

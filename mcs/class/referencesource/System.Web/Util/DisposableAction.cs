@@ -23,7 +23,7 @@ namespace System.Web.Util {
 
         public void Dispose() {
             // Interlocked allows the continuation to be executed only once
-            Action continuation = Interlocked.Exchange(ref _disposeAction, null);
+            var continuation = Interlocked.Exchange(ref _disposeAction, null);
             if (continuation != null) {
                 continuation();
             }

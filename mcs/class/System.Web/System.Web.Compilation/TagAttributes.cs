@@ -55,7 +55,7 @@ namespace System.Web.Compilation
 		void MakeHash ()
 		{
 			atts_hash = new Hashtable (StringComparer.InvariantCultureIgnoreCase);
-			for (int i = 0; i < keys.Count; i++) {
+			for (var i = 0; i < keys.Count; i++) {
 				CheckServerKey (keys [i]);
 				atts_hash.Add (keys [i], values [i]);
 			}
@@ -69,7 +69,7 @@ namespace System.Web.Compilation
 			return got_hashed;
 		}
 
-		public void Add (object key, object value)
+		public void Add (object? key, object? value)
 		{
 			if (key != null && value != null &&
 			    0 == String.Compare ((string) key,  "runat", true, Helpers.InvariantCulture)) {
@@ -110,7 +110,7 @@ namespace System.Web.Compilation
 		int CaseInsensitiveSearch (string key)
 		{
 			// Hope not to have many attributes when the tag is not a server tag...
-			for (int i = 0; i < keys.Count; i++){
+			for (var i = 0; i < keys.Count; i++){
 				if (0 == String.Compare ((string) keys [i], key, true, Helpers.InvariantCulture))
 					return i;
 			}
@@ -123,7 +123,7 @@ namespace System.Web.Compilation
 				if (got_hashed)
 					return atts_hash [key];
 
-				int idx = CaseInsensitiveSearch ((string) key);
+				var idx = CaseInsensitiveSearch ((string) key);
 				if (idx == -1)
 					return null;
 						
@@ -135,7 +135,7 @@ namespace System.Web.Compilation
 					CheckServerKey (key);
 					atts_hash [key] = value;
 				} else {
-					int idx = CaseInsensitiveSearch ((string) key);
+					var idx = CaseInsensitiveSearch ((string) key);
 					keys [idx] = value;
 				}
 			}
@@ -146,7 +146,7 @@ namespace System.Web.Compilation
 			get { return (got_hashed ? atts_hash.Count : keys.Count);}
 		}
 
-		public bool IsDataBound (string att)
+		public bool IsDataBound (string? att)
 		{
 			if (att == null || !got_hashed)
 				return false;
@@ -154,7 +154,7 @@ namespace System.Web.Compilation
 			return (StrUtils.StartsWith (att, "<%#") && StrUtils.EndsWith (att, "%>"));
 		}
 		
-		public IDictionary GetDictionary (string key)
+		public IDictionary GetDictionary (string? key)
 		{
 			if (got_hashed)
 				return atts_hash;
@@ -163,7 +163,7 @@ namespace System.Web.Compilation
 				tmp_hash = new Hashtable (StringComparer.InvariantCultureIgnoreCase);
 			
 			tmp_hash.Clear ();
-			for (int i = keys.Count - 1; i >= 0; i--)
+			for (var i = keys.Count - 1; i >= 0; i--)
 				if (key == null || String.Compare (key, (string) keys [i], true, Helpers.InvariantCulture) == 0)
 					tmp_hash [keys [i]] = values [i];
 
@@ -172,7 +172,7 @@ namespace System.Web.Compilation
 		
 		public override string ToString ()
 		{
-			StringBuilder result = new StringBuilder ("TagAttributes {");
+			var result = new StringBuilder ("TagAttributes {");
 			string value;
 			foreach (string key in Keys){
 				result.Append ('[');
@@ -194,7 +194,7 @@ namespace System.Web.Compilation
 			return result.ToString ();
 		}
 		
-		void CheckServerKey (object key)
+		void CheckServerKey (object? key)
 		{
 			if (key == null || ((string)key).Length == 0)
 				throw new HttpException ("The server tag is not well formed.");

@@ -2,7 +2,7 @@ namespace System.Web.Services.Discovery {
 internal class DiscoveryDocumentSerializationWriter : System.Xml.Serialization.XmlSerializationWriter {
         
 
-        public void Write10_discovery(object o) {
+        public void Write10_discovery(object? o) {
             WriteStartDocument();
             if (o == null) {
                 WriteNullTagLiteral(@"discovery", @"http://schemas.xmlsoap.org/disco/");
@@ -18,7 +18,7 @@ internal class DiscoveryDocumentSerializationWriter : System.Xml.Serialization.X
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Discovery.DiscoveryDocument)) {
                 }
                 else {
@@ -28,9 +28,9 @@ internal class DiscoveryDocumentSerializationWriter : System.Xml.Serialization.X
             WriteStartElement(n, ns, o, false, null);
             if (needType) WriteXsiType(@"DiscoveryDocument", @"http://schemas.xmlsoap.org/disco/");
             {
-                global::System.Collections.IList a = (global::System.Collections.IList)o.@References;
+                var a = (global::System.Collections.IList)o.@References;
                 if (a != null) {
-                    for (int ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
+                    for (var ia = 0; ia < ((System.Collections.ICollection)a).Count; ia++) {
                         global::System.Object ai = (global::System.Object)a[ia];
                         {
                             if (ai is global::System.Web.Services.Discovery.SchemaReference) {
@@ -63,7 +63,7 @@ internal class DiscoveryDocumentSerializationWriter : System.Xml.Serialization.X
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Discovery.SoapBinding)) {
                 }
                 else {
@@ -83,7 +83,7 @@ internal class DiscoveryDocumentSerializationWriter : System.Xml.Serialization.X
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Discovery.DiscoveryDocumentReference)) {
                 }
                 else {
@@ -102,7 +102,7 @@ internal class DiscoveryDocumentSerializationWriter : System.Xml.Serialization.X
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Discovery.ContractReference)) {
                 }
                 else {
@@ -122,7 +122,7 @@ internal class DiscoveryDocumentSerializationWriter : System.Xml.Serialization.X
                 return;
             }
             if (!needType) {
-                System.Type t = o.GetType();
+                var t = o.GetType();
                 if (t == typeof(global::System.Web.Services.Discovery.SchemaReference)) {
                 }
                 else {
@@ -161,7 +161,7 @@ internal class DiscoveryDocumentSerializationWriter : System.Xml.Serialization.X
 
         global::System.Web.Services.Discovery.DiscoveryDocument Read9_DiscoveryDocument(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id3_DiscoveryDocument && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item)) {
@@ -172,8 +172,8 @@ internal class DiscoveryDocumentSerializationWriter : System.Xml.Serialization.X
             if (isNull) return null;
             global::System.Web.Services.Discovery.DiscoveryDocument o;
             o = new global::System.Web.Services.Discovery.DiscoveryDocument();
-            global::System.Collections.IList a_0 = (global::System.Collections.IList)o.@References;
-            bool[] paramsRead = new bool[1];
+            var a_0 = (global::System.Collections.IList)o.@References;
+            var paramsRead = new bool[1];
             while (Reader.MoveToNextAttribute()) {
                 if (!IsXmlnsAttribute(Reader.Name)) {
                     UnknownNode((object)o);
@@ -186,8 +186,8 @@ internal class DiscoveryDocumentSerializationWriter : System.Xml.Serialization.X
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations0 = 0;
-            int readerCount0 = ReaderCount;
+            var whileIterations0 = 0;
+            var readerCount0 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     if (((object) Reader.LocalName == (object)id4_discoveryRef && (object) Reader.NamespaceURI == (object)id2_Item)) {
@@ -218,7 +218,7 @@ internal class DiscoveryDocumentSerializationWriter : System.Xml.Serialization.X
 
         global::System.Web.Services.Discovery.SoapBinding Read8_SoapBinding(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id11_SoapBinding && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id10_Item)) {
@@ -229,7 +229,7 @@ internal class DiscoveryDocumentSerializationWriter : System.Xml.Serialization.X
             if (isNull) return null;
             global::System.Web.Services.Discovery.SoapBinding o;
             o = new global::System.Web.Services.Discovery.SoapBinding();
-            bool[] paramsRead = new bool[2];
+            var paramsRead = new bool[2];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[0] && ((object) Reader.LocalName == (object)id12_address && (object) Reader.NamespaceURI == (object)id13_Item)) {
                     o.@Address = Reader.Value;
@@ -250,8 +250,8 @@ internal class DiscoveryDocumentSerializationWriter : System.Xml.Serialization.X
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations1 = 0;
-            int readerCount1 = ReaderCount;
+            var whileIterations1 = 0;
+            var readerCount1 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     UnknownNode((object)o, @"");
@@ -268,7 +268,7 @@ internal class DiscoveryDocumentSerializationWriter : System.Xml.Serialization.X
 
         global::System.Web.Services.Discovery.SchemaReference Read7_SchemaReference(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id15_SchemaReference && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id8_Item)) {
@@ -279,7 +279,7 @@ internal class DiscoveryDocumentSerializationWriter : System.Xml.Serialization.X
             if (isNull) return null;
             global::System.Web.Services.Discovery.SchemaReference o;
             o = new global::System.Web.Services.Discovery.SchemaReference();
-            bool[] paramsRead = new bool[2];
+            var paramsRead = new bool[2];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[0] && ((object) Reader.LocalName == (object)id16_ref && (object) Reader.NamespaceURI == (object)id13_Item)) {
                     o.@Ref = Reader.Value;
@@ -300,8 +300,8 @@ internal class DiscoveryDocumentSerializationWriter : System.Xml.Serialization.X
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations2 = 0;
-            int readerCount2 = ReaderCount;
+            var whileIterations2 = 0;
+            var readerCount2 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     UnknownNode((object)o, @"");
@@ -318,7 +318,7 @@ internal class DiscoveryDocumentSerializationWriter : System.Xml.Serialization.X
 
         global::System.Web.Services.Discovery.ContractReference Read5_ContractReference(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id18_ContractReference && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id6_Item)) {
@@ -329,7 +329,7 @@ internal class DiscoveryDocumentSerializationWriter : System.Xml.Serialization.X
             if (isNull) return null;
             global::System.Web.Services.Discovery.ContractReference o;
             o = new global::System.Web.Services.Discovery.ContractReference();
-            bool[] paramsRead = new bool[2];
+            var paramsRead = new bool[2];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[0] && ((object) Reader.LocalName == (object)id16_ref && (object) Reader.NamespaceURI == (object)id13_Item)) {
                     o.@Ref = Reader.Value;
@@ -350,8 +350,8 @@ internal class DiscoveryDocumentSerializationWriter : System.Xml.Serialization.X
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations3 = 0;
-            int readerCount3 = ReaderCount;
+            var whileIterations3 = 0;
+            var readerCount3 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     UnknownNode((object)o, @"");
@@ -368,7 +368,7 @@ internal class DiscoveryDocumentSerializationWriter : System.Xml.Serialization.X
 
         global::System.Web.Services.Discovery.DiscoveryDocumentReference Read3_DiscoveryDocumentReference(bool isNullable, bool checkType) {
             System.Xml.XmlQualifiedName xsiType = checkType ? GetXsiType() : null;
-            bool isNull = false;
+            var isNull = false;
             if (isNullable) isNull = ReadNull();
             if (checkType) {
             if (xsiType == null || ((object) ((System.Xml.XmlQualifiedName)xsiType).Name == (object)id20_DiscoveryDocumentReference && (object) ((System.Xml.XmlQualifiedName)xsiType).Namespace == (object)id2_Item)) {
@@ -379,7 +379,7 @@ internal class DiscoveryDocumentSerializationWriter : System.Xml.Serialization.X
             if (isNull) return null;
             global::System.Web.Services.Discovery.DiscoveryDocumentReference o;
             o = new global::System.Web.Services.Discovery.DiscoveryDocumentReference();
-            bool[] paramsRead = new bool[1];
+            var paramsRead = new bool[1];
             while (Reader.MoveToNextAttribute()) {
                 if (!paramsRead[0] && ((object) Reader.LocalName == (object)id16_ref && (object) Reader.NamespaceURI == (object)id13_Item)) {
                     o.@Ref = Reader.Value;
@@ -396,8 +396,8 @@ internal class DiscoveryDocumentSerializationWriter : System.Xml.Serialization.X
             }
             Reader.ReadStartElement();
             Reader.MoveToContent();
-            int whileIterations4 = 0;
-            int readerCount4 = ReaderCount;
+            var whileIterations4 = 0;
+            var readerCount4 = ReaderCount;
             while (Reader.NodeType != System.Xml.XmlNodeType.EndElement && Reader.NodeType != System.Xml.XmlNodeType.None) {
                 if (Reader.NodeType == System.Xml.XmlNodeType.Element) {
                     UnknownNode((object)o, @"");

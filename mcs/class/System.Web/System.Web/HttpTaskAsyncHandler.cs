@@ -45,9 +45,9 @@ namespace System.Web
 
 		public abstract Task ProcessRequestAsync (HttpContext context);
 
-		IAsyncResult IHttpAsyncHandler.BeginProcessRequest (HttpContext context, AsyncCallback cb, object extraData)
+		IAsyncResult IHttpAsyncHandler.BeginProcessRequest (HttpContext context, AsyncCallback? cb, object extraData)
 		{
-			Task task = ProcessRequestAsync (context);
+			var task = ProcessRequestAsync (context);
 			return TaskAsyncResult.GetAsyncResult (task, cb, extraData);
 		}
 

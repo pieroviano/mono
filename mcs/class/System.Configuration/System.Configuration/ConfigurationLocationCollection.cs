@@ -59,15 +59,15 @@ namespace System.Configuration {
 				return null;
 			
 			ConfigurationLocation bestMatch = null;
-			int locationlen = location.Length;
-			int bestmatchlen = 0;
+			var locationlen = location.Length;
+			var bestmatchlen = 0;
 			
 			foreach (ConfigurationLocation loc in InnerList) {
-				string lpath = loc.Path;
+				var lpath = loc.Path;
 				if (String.IsNullOrEmpty (lpath))
 					continue;
 				
-				int lpathlen = lpath.Length;
+				var lpathlen = lpath.Length;
 				if (location.StartsWith (lpath, StringComparison.OrdinalIgnoreCase)) {
 					// Exact match always takes precedence
 					if (locationlen == lpathlen)

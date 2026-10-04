@@ -57,13 +57,13 @@ namespace System.Configuration
 									"value");
 
 			if (file != null && file.Value != String.Empty) {
-				string fileName = ((IConfigXmlNode) section).Filename;
+				var fileName = ((IConfigXmlNode) section).Filename;
 				fileName = Path.GetFullPath (fileName);
-				string fullPath = Path.Combine (Path.GetDirectoryName (fileName), file.Value);
+				var fullPath = Path.Combine (Path.GetDirectoryName (fileName), file.Value);
 				if (!File.Exists (fullPath))
 					return pairs;
 
-				ConfigXmlDocument doc = new ConfigXmlDocument ();
+				var doc = new ConfigXmlDocument ();
 				doc.Load (fullPath);
 				if (doc.DocumentElement.Name != section.Name)
 					throw new ConfigurationException ("Invalid root element", doc.DocumentElement);

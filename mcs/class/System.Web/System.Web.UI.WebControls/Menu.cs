@@ -188,7 +188,7 @@ namespace System.Web.UI.WebControls
 		[ThemeableAttribute (false)]
 		public int DisappearAfter {
 			get {
-				object o = ViewState ["DisappearAfter"];
+				var o = ViewState ["DisappearAfter"];
 				if (o != null) return (int)o;
 				return 500;
 			}
@@ -203,7 +203,7 @@ namespace System.Web.UI.WebControls
 		[Editor ("System.Web.UI.Design.ImageUrlEditor, " + Consts.AssemblySystem_Design, "System.Drawing.Design.UITypeEditor, " + Consts.AssemblySystem_Drawing)]
 		public string DynamicBottomSeparatorImageUrl {
 			get {
-				object o = ViewState ["dbsiu"];
+				var o = ViewState ["dbsiu"];
 				if (o != null)
 					return (string)o;
 				return String.Empty;
@@ -216,7 +216,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValueAttribute ("")]
 		public string DynamicItemFormatString {
 			get {
-				object o = ViewState ["DynamicItemFormatString"];
+				var o = ViewState ["DynamicItemFormatString"];
 				if (o != null) return (string)o;
 				return "";
 			}
@@ -231,7 +231,7 @@ namespace System.Web.UI.WebControls
 		[Editor ("System.Web.UI.Design.ImageUrlEditor, " + Consts.AssemblySystem_Design, "System.Drawing.Design.UITypeEditor, " + Consts.AssemblySystem_Drawing)]
 		public string DynamicTopSeparatorImageUrl {
 			get {
-				object o = ViewState ["dtsiu"];
+				var o = ViewState ["dtsiu"];
 				if (o != null) return (string)o;
 				return "";
 			}
@@ -246,7 +246,7 @@ namespace System.Web.UI.WebControls
 		[Editor ("System.Web.UI.Design.ImageUrlEditor, " + Consts.AssemblySystem_Design, "System.Drawing.Design.UITypeEditor, " + Consts.AssemblySystem_Drawing)]
 		public string StaticBottomSeparatorImageUrl {
 			get {
-				object o = ViewState ["sbsiu"];
+				var o = ViewState ["sbsiu"];
 				if (o != null) return (string)o;
 				return "";
 			}
@@ -261,7 +261,7 @@ namespace System.Web.UI.WebControls
 		[Editor ("System.Web.UI.Design.ImageUrlEditor, " + Consts.AssemblySystem_Design, "System.Drawing.Design.UITypeEditor, " + Consts.AssemblySystem_Drawing)]
 		public string StaticTopSeparatorImageUrl {
 			get {
-				object o = ViewState ["stsiu"];
+				var o = ViewState ["stsiu"];
 				if (o != null) return (string)o;
 				return "";
 			}
@@ -273,7 +273,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValue (Orientation.Vertical)]
 		public Orientation Orientation {
 			get {
-				object o = ViewState ["Orientation"];
+				var o = ViewState ["Orientation"];
 				if (o != null) return (Orientation) o;
 				return Orientation.Vertical;
 			}
@@ -286,7 +286,7 @@ namespace System.Web.UI.WebControls
 		[ThemeableAttribute (true)]
 		public int StaticDisplayLevels {
 			get {
-				object o = ViewState ["StaticDisplayLevels"];
+				var o = ViewState ["StaticDisplayLevels"];
 				if (o != null) return (int)o;
 				return 1;
 			}
@@ -299,7 +299,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValueAttribute ("")]
 		public string StaticItemFormatString {
 			get {
-				object o = ViewState ["StaticItemFormatString"];
+				var o = ViewState ["StaticItemFormatString"];
 				if (o != null) return (string)o;
 				return "";
 			}
@@ -312,7 +312,7 @@ namespace System.Web.UI.WebControls
 		[ThemeableAttribute (true)]
 		public Unit StaticSubMenuIndent {
 			get {
-				object o = ViewState ["StaticSubMenuIndent"];
+				var o = ViewState ["StaticSubMenuIndent"];
 				if (o != null)
 					return (Unit)o;
 				// LAMESPEC: on 4.0 it returns Unit.Empty and on 3.5 16px
@@ -327,7 +327,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValue (3)]
 		public int MaximumDynamicDisplayLevels {
 			get {
-				object o = ViewState ["MaximumDynamicDisplayLevels"];
+				var o = ViewState ["MaximumDynamicDisplayLevels"];
 				if (o != null) return (int)o;
 				return 3;
 			}
@@ -340,7 +340,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValue (0)]
 		public int DynamicVerticalOffset {
 			get {
-				object o = ViewState ["DynamicVerticalOffset"];
+				var o = ViewState ["DynamicVerticalOffset"];
 				if (o != null) return (int)o;
 				return 0;
 			}
@@ -352,7 +352,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValue (0)]
 		public int DynamicHorizontalOffset {
 			get {
-				object o = ViewState ["DynamicHorizontalOffset"];
+				var o = ViewState ["DynamicHorizontalOffset"];
 				if (o != null) return (int)o;
 				return 0;
 			}
@@ -364,7 +364,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValue (true)]
 		public bool DynamicEnableDefaultPopOutImage {
 			get {
-				object o = ViewState ["dedpoi"];
+				var o = ViewState ["dedpoi"];
 				if (o != null) return (bool)o;
 				return true;
 			}
@@ -376,7 +376,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValue (true)]
 		public bool StaticEnableDefaultPopOutImage {
 			get {
-				object o = ViewState ["sedpoi"];
+				var o = ViewState ["sedpoi"];
 				if (o != null) return (bool)o;
 				return true;
 			}
@@ -403,7 +403,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValue ('/')]
 		public char PathSeparator {
 			get {
-				object o = ViewState ["PathSeparator"];
+				var o = ViewState ["PathSeparator"];
 				if(o != null) return (char)o;
 				return '/';
 			}
@@ -415,7 +415,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValue (false)]
 		public bool ItemWrap {
 			get {
-				object o = ViewState ["ItemWrap"];
+				var o = ViewState ["ItemWrap"];
 				if(o != null) return (bool)o;
 				return false;
 			}
@@ -717,7 +717,7 @@ namespace System.Web.UI.WebControls
 		[Editor ("System.Web.UI.Design.ImageUrlEditor, " + Consts.AssemblySystem_Design, "System.Drawing.Design.UITypeEditor, " + Consts.AssemblySystem_Drawing)]
 		public string ScrollDownImageUrl {
 			get {
-				object o = ViewState ["sdiu"];
+				var o = ViewState ["sdiu"];
 				if (o != null) return (string)o;
 				return "";
 			}
@@ -731,7 +731,7 @@ namespace System.Web.UI.WebControls
 		[Editor ("System.Web.UI.Design.ImageUrlEditor, " + Consts.AssemblySystem_Design, "System.Drawing.Design.UITypeEditor, " + Consts.AssemblySystem_Drawing)]
 		public string ScrollUpImageUrl {
 			get {
-				object o = ViewState ["suiu"];
+				var o = ViewState ["suiu"];
 				if (o != null) return (string)o;
 				return "";
 			}
@@ -743,7 +743,7 @@ namespace System.Web.UI.WebControls
 		[Localizable (true)]
 		public string ScrollDownText {
 			get {
-				object o = ViewState ["ScrollDownText"];
+				var o = ViewState ["ScrollDownText"];
 				if (o != null) return (string) o;
 				return Locale.GetText ("Scroll down");
 			}
@@ -755,7 +755,7 @@ namespace System.Web.UI.WebControls
 		[Localizable (true)]
 		public string ScrollUpText {
 			get {
-				object o = ViewState ["ScrollUpText"];
+				var o = ViewState ["ScrollUpText"];
 				if (o != null) return (string) o;
 				return Locale.GetText ("Scroll up");
 			}
@@ -768,7 +768,7 @@ namespace System.Web.UI.WebControls
 		{
 			get
 			{
-				object o = ViewState ["dpoitf"];
+				var o = ViewState ["dpoitf"];
 				if (o != null) return (string) o;
 				return Locale.GetText ("Expand {0}");
 			}
@@ -784,7 +784,7 @@ namespace System.Web.UI.WebControls
 		[Editor ("System.Web.UI.Design.ImageUrlEditor, " + Consts.AssemblySystem_Design, "System.Drawing.Design.UITypeEditor, " + Consts.AssemblySystem_Drawing)]
 		public string DynamicPopOutImageUrl {
 			get {
-				object o = ViewState ["dpoiu"];
+				var o = ViewState ["dpoiu"];
 				if (o != null) return (string)o;
 				return "";
 			}
@@ -797,7 +797,7 @@ namespace System.Web.UI.WebControls
 		{
 			get
 			{
-				object o = ViewState ["spoitf"];
+				var o = ViewState ["spoitf"];
 				if (o != null) return (string) o;
 				return Locale.GetText ("Expand {0}");
 			}
@@ -813,7 +813,7 @@ namespace System.Web.UI.WebControls
 		[Editor ("System.Web.UI.Design.ImageUrlEditor, " + Consts.AssemblySystem_Design, "System.Drawing.Design.UITypeEditor, " + Consts.AssemblySystem_Drawing)]
 		public string StaticPopOutImageUrl {
 			get {
-				object o = ViewState ["spoiu"];
+				var o = ViewState ["spoiu"];
 				if (o != null) return (string)o;
 				return "";
 			}
@@ -825,7 +825,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValue ("")]
 		public string Target {
 			get {
-				object o = ViewState ["Target"];
+				var o = ViewState ["Target"];
 				if (o != null) return (string) o;
 				return "";
 			}
@@ -875,7 +875,7 @@ namespace System.Web.UI.WebControls
 		public string SkipLinkText 
 		{
 			get {
-				object o = ViewState ["SkipLinkText"];
+				var o = ViewState ["SkipLinkText"];
 				if (o != null)
 					return (string) o;
 				return "Skip Navigation Links";
@@ -885,7 +885,7 @@ namespace System.Web.UI.WebControls
 			}
 		}
 		
-		IMenuRenderer CreateRenderer (IMenuRenderer current)
+		IMenuRenderer CreateRenderer (IMenuRenderer? current)
 		{
 			Type newType = null;
 			
@@ -924,10 +924,10 @@ namespace System.Web.UI.WebControls
 		public MenuItem FindItem (string valuePath)
 		{
 			if (valuePath == null) throw new ArgumentNullException ("valuePath");
-			string[] path = valuePath.Split (PathSeparator);
-			int n = 0;
-			MenuItemCollection col = Items;
-			bool foundBranch = true;
+			var path = valuePath.Split (PathSeparator);
+			var n = 0;
+			var col = Items;
+			var foundBranch = true;
 			while (col.Count > 0 && foundBranch) {
 				foundBranch = false;
 				foreach (MenuItem item in col) {
@@ -977,13 +977,13 @@ namespace System.Web.UI.WebControls
 
 			InitializeDataBindings ();
 
-			HierarchicalDataSourceView data = GetData ("");
+			var data = GetData ("");
 
 			if (data == null) {
 				throw new InvalidOperationException ("No view returned by data source control.");
 			}
 			Items.Clear ();
-			IHierarchicalEnumerable e = data.Select ();
+			var e = data.Select ();
 			FillBoundChildrenRecursive (e, Items);
 
 			CreateChildControlsForItems ();
@@ -992,13 +992,13 @@ namespace System.Web.UI.WebControls
 			EnsureChildControlsDataBound ();
 		}
 
-		void FillBoundChildrenRecursive (IHierarchicalEnumerable hEnumerable, MenuItemCollection itemCollection)
+		void FillBoundChildrenRecursive (IHierarchicalEnumerable? hEnumerable, MenuItemCollection itemCollection)
 		{
 			if (hEnumerable == null)
 				return;
-			foreach (object obj in hEnumerable) {
-				IHierarchyData hdata = hEnumerable.GetHierarchyData (obj);
-				MenuItem item = new MenuItem ();
+			foreach (var obj in hEnumerable) {
+				var hdata = hEnumerable.GetHierarchyData (obj);
+				var item = new MenuItem ();
 				itemCollection.Add (item);
 				item.Bind (hdata);
 
@@ -1015,7 +1015,7 @@ namespace System.Web.UI.WebControls
 				if (hdata == null || !hdata.HasChildren)
 					continue;
 
-				IHierarchicalEnumerable e = hdata.GetChildren ();
+				var e = hdata.GetChildren ();
 				FillBoundChildrenRecursive (e, item.ChildItems);
 			}
 		}
@@ -1042,7 +1042,7 @@ namespace System.Web.UI.WebControls
 				return;
 
 			EnsureChildControls();
-			MenuItem item = FindItemByPos (eventArgument);
+			var item = FindItemByPos (eventArgument);
 			if (item == null) return;
 			item.Selected = true;
 			OnMenuItemClick (new MenuEventArgs (item));
@@ -1055,11 +1055,11 @@ namespace System.Web.UI.WebControls
 		
 		MenuItem FindItemByPos (string path)
 		{
-			string[] indexes = path.Split ('_');
+			var indexes = path.Split ('_');
 			MenuItem item = null;
 			
-			foreach (string index in indexes) {
-				int i = int.Parse (index);
+			foreach (var index in indexes) {
+				var i = int.Parse (index);
 				if (item == null) {
 					if (i >= Items.Count) return null;
 					item = Items [i];
@@ -1112,7 +1112,7 @@ namespace System.Web.UI.WebControls
 
 		protected override object SaveViewState()
 		{
-			object[] states = new object [14];
+			var states = new object [14];
 			states[0] = base.SaveViewState ();
 			states[1] = dataBindings == null ? null : ((IStateManager)dataBindings).SaveViewState();
 			states[2] = items == null ? null : ((IStateManager)items).SaveViewState();
@@ -1128,7 +1128,7 @@ namespace System.Web.UI.WebControls
 			states[12] = dynamicHoverStyle == null ? null : dynamicHoverStyle.SaveViewState();
 			states[13] = levelSubMenuStyles == null ? null : ((IStateManager)levelSubMenuStyles).SaveViewState();
 
-			for (int i = states.Length - 1; i >= 0; i--) {
+			for (var i = states.Length - 1; i >= 0; i--) {
 				if (states [i] != null)
 					return states;
 			}
@@ -1136,12 +1136,12 @@ namespace System.Web.UI.WebControls
 			return null;
 		}
 
-		protected override void LoadViewState (object state)
+		protected override void LoadViewState (object? state)
 		{
 			if (state == null)
 				return;
 
-			object [] states = (object []) state;
+			var states = (object []) state;
 			base.LoadViewState (states[0]);
 			
 			if (states[1] != null)
@@ -1178,17 +1178,17 @@ namespace System.Web.UI.WebControls
 			base.OnInit (e);
 		}
 		
-		protected internal override void LoadControlState (object savedState)
+		protected internal override void LoadControlState (object? savedState)
 		{
 			if (savedState == null) return;
-			object[] state = (object[]) savedState;
+			var state = (object[]) savedState;
 			base.LoadControlState (state[0]);
 			selectedItemPath = state[1] as string;
 		}
 		
 		protected internal override object SaveControlState ()
 		{
-			object bstate = base.SaveControlState ();
+			var bstate = base.SaveControlState ();
 			object mstate = selectedItemPath;
 			
 			if (bstate != null || mstate != null)
@@ -1219,17 +1219,17 @@ namespace System.Web.UI.WebControls
 
 		void CreateChildControlsForItems (MenuItemCollection items )
 		{
-			IMenuRenderer renderer = Renderer;
+			var renderer = Renderer;
 			foreach (MenuItem item in items) {
-				bool isDynamicItem = renderer.IsDynamicItem (this, item);
+				var isDynamicItem = renderer.IsDynamicItem (this, item);
 				if (isDynamicItem && dynamicItemTemplate != null) {
-					MenuItemTemplateContainer cter = new MenuItemTemplateContainer (item.Index, item);
+					var cter = new MenuItemTemplateContainer (item.Index, item);
 					dynamicItemTemplate.InstantiateIn (cter);
 					_menuItemControls [item] = cter;
 					Controls.Add (cter);
 				}
 				else if (!isDynamicItem && staticItemTemplate != null) {
-					MenuItemTemplateContainer cter = new MenuItemTemplateContainer (item.Index, item);
+					var cter = new MenuItemTemplateContainer (item.Index, item);
 					staticItemTemplate.InstantiateIn (cter);
 					_menuItemControls [item] = cter;
 					Controls.Add (cter);
@@ -1295,9 +1295,9 @@ namespace System.Web.UI.WebControls
 		{
 			base.OnPreRender (e);
 
-			string cmenu = ClientID + "_data";
-			StringBuilder script = new StringBuilder ();
-			Page page = Page;
+			var cmenu = ClientID + "_data";
+			var script = new StringBuilder ();
+			var page = Page;
 			HtmlHead header;
 			ClientScriptManager csm;
 
@@ -1321,7 +1321,7 @@ namespace System.Web.UI.WebControls
 			if (dataBindings != null && dataBindings.Count > 0) {
 				bindings = new Hashtable ();
 				foreach (MenuItemBinding bin in dataBindings) {
-					string key = GetBindingKey (bin.DataMember, bin.Depth);
+					var key = GetBindingKey (bin.DataMember, bin.Depth);
 					bindings [key] = bin;
 				}
 			}
@@ -1343,7 +1343,7 @@ namespace System.Web.UI.WebControls
 		
 		public override void RenderBeginTag (HtmlTextWriter writer)
 		{
-			string skipLinkText = SkipLinkText;
+			var skipLinkText = SkipLinkText;
 			if (!String.IsNullOrEmpty (skipLinkText))
 				Renderer.RenderBeginTag (writer, skipLinkText);
 			base.RenderBeginTag (writer);
@@ -1355,7 +1355,7 @@ namespace System.Web.UI.WebControls
 
 			Renderer.RenderEndTag (writer);
 			
-			string skipLinkText = SkipLinkText;
+			var skipLinkText = SkipLinkText;
 			if (!String.IsNullOrEmpty (skipLinkText)) {
 				writer.AddAttribute (HtmlTextWriterAttribute.Id, ClientID + "_SkipLink");
 				writer.RenderBeginTag (HtmlTextWriterTag.A);
@@ -1370,7 +1370,7 @@ namespace System.Web.UI.WebControls
 
 		internal void RenderDynamicMenu (HtmlTextWriter writer, MenuItemCollection items)
 		{
-			for (int n = 0; n < items.Count; n++) {
+			for (var n = 0; n < items.Count; n++) {
 				if (DisplayChildren (items [n])) {
 					RenderDynamicMenu (writer, items [n]);
 					RenderDynamicMenu (writer, items [n].ChildItems);
@@ -1385,7 +1385,7 @@ namespace System.Web.UI.WebControls
 				return _dynamicTemplate;
 
 			_dynamicTemplate = new MenuRenderHtmlTemplate ();
-			HtmlTextWriter writer = _dynamicTemplate.GetMenuTemplateWriter ();
+			var writer = _dynamicTemplate.GetMenuTemplateWriter ();
 
 			if (Page.Header != null) {
 				writer.AddAttribute (HtmlTextWriterAttribute.Class, MenuRenderHtmlTemplate.GetMarker (0));
@@ -1453,8 +1453,8 @@ namespace System.Web.UI.WebControls
 		{
 			_dynamicTemplate = GetDynamicMenuTemplate (item);
 
-			string idPrefix = ClientID + "_" + item.Path;
-			string [] param = new string [9];
+			var idPrefix = ClientID + "_" + item.Path;
+			var param = new string [9];
 			param [0] = GetCssMenuStyle (true, item.Depth + 1);
 			param [1] = idPrefix + "s";
 			param [2] = idPrefix + "cu";
@@ -1469,7 +1469,7 @@ namespace System.Web.UI.WebControls
 
 			RenderMenu (writer, item.ChildItems, true, true, item.Depth + 1, false);
 
-			string [] param2 = new string [5];
+			var param2 = new string [5];
 			param2 [0] = idPrefix + "cd";
 			param2 [1] = item.Path;
 			param2 [2] = item.Path;
@@ -1484,7 +1484,7 @@ namespace System.Web.UI.WebControls
 		{
 			if (Page.Header != null) {
 				// styles are registered
-				StringBuilder sb = new StringBuilder ();
+				var sb = new StringBuilder ();
 
 				if (!dynamic && staticMenuStyle != null) {
 					sb.Append (staticMenuStyle.CssClass);
@@ -1507,7 +1507,7 @@ namespace System.Web.UI.WebControls
 			}
 			else {
 				// styles are not registered
-				SubMenuStyle style = new SubMenuStyle ();
+				var style = new SubMenuStyle ();
 
 				if (!dynamic && staticMenuStyle != null) {
 					style.CopyFrom (staticMenuStyle);
@@ -1525,7 +1525,7 @@ namespace System.Web.UI.WebControls
 
 		internal void RenderMenu (HtmlTextWriter writer, MenuItemCollection items, bool vertical, bool dynamic, int menuLevel, bool notLast)
 		{
-			IMenuRenderer renderer = Renderer;
+			var renderer = Renderer;
 			
 			renderer.RenderMenuBeginTag (writer, dynamic, menuLevel);
 			renderer.RenderMenuBody (writer, items, vertical, dynamic, notLast);
@@ -1541,9 +1541,9 @@ namespace System.Web.UI.WebControls
 		{
 			// notLast should be true if item or any of its ancestors is not a
 			// last child.
-			bool notLast = false;
+			var notLast = false;
 			MenuItem parent;
-			MenuItem child = item;			
+			var child = item;			
 			while (null != (parent = child.Parent)) {
 				if (child.Index != parent.ChildItems.Count - 1) {
 					notLast = true;
@@ -1564,7 +1564,7 @@ namespace System.Web.UI.WebControls
 			
 		internal Unit GetItemSpacing (MenuItem item, bool dynamic)
 		{
-			Unit itemSpacing = Unit.Empty;
+			var itemSpacing = Unit.Empty;
 			
 			if (item.Selected) {
 				if (levelSelectedStyles != null && item.Depth < levelSelectedStyles.Count) {
@@ -1616,7 +1616,7 @@ namespace System.Web.UI.WebControls
 				_buffer [_ptr++] = value;
 			}
 
-			public override void Write (string value)
+			public override void Write (string? value)
 			{
 				if (value == null)
 					return;
@@ -1624,13 +1624,13 @@ namespace System.Web.UI.WebControls
 				if (_ptr + value.Length >= _buffer.Length)
 					EnsureCapacity ();
 
-				for (int i = 0; i < value.Length; i++)
+				for (var i = 0; i < value.Length; i++)
 					_buffer [_ptr++] = value [i];
 			}
 
 			void EnsureCapacity ()
 			{
-				char [] tmpBuffer = new char [_buffer.Length * 2];
+				var tmpBuffer = new char [_buffer.Length * 2];
 				Array.Copy (_buffer, tmpBuffer, _buffer.Length);
 
 				_buffer = tmpBuffer;
@@ -1653,7 +1653,7 @@ namespace System.Web.UI.WebControls
 
 			public static string GetMarker (int num)
 			{
-				char charNum = (char) ((int) '\u0971' + num);
+				var charNum = (char) ((int) '\u0971' + num);
 				return string.Concat (Marker, charNum);
 			}
 
@@ -1664,8 +1664,8 @@ namespace System.Web.UI.WebControls
 
 			public void Parse ()
 			{
-				int mpos = 0;
-				for (int i = 0; i < _templateHtml.Length; i++) {
+				var mpos = 0;
+				for (var i = 0; i < _templateHtml.Length; i++) {
 					if (_templateHtml [i] == '\0') {
 						idxs.Add (i);
 						break;
@@ -1689,12 +1689,12 @@ namespace System.Web.UI.WebControls
 				if (idxs.Count == 0)
 					return;
 
-				int partStart = 0;
-				int partEnd = (start == 0) ? -Marker.Length - 1 : (int) idxs [start - 1];
-				int di = 0;
+				var partStart = 0;
+				var partEnd = (start == 0) ? -Marker.Length - 1 : (int) idxs [start - 1];
+				var di = 0;
 
-				int i = start;
-				int total = start + count;
+				var i = start;
+				var total = start + count;
 				for (; i < total; i++) {
 
 					partStart = partEnd + Marker.Length + 1;

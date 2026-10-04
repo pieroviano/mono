@@ -52,7 +52,7 @@ namespace System.Web.Caching
 		
 		public DictionaryEntry Entry {
 			get {
-				CacheItem item = Item;
+				var item = Item;
 				if (item == null)
 					return new DictionaryEntry (null, null);
 				

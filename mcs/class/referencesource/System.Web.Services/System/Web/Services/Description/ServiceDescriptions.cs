@@ -95,7 +95,7 @@ namespace System.Web.Services.Description {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         protected override string GetKey(object value) {
-            string ns = ((ServiceDescription)value).TargetNamespace;
+            var ns = ((ServiceDescription)value).TargetNamespace;
             if (ns == null) 
                 return string.Empty;
             return ns;
@@ -110,7 +110,7 @@ namespace System.Web.Services.Description {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public Message GetMessage(XmlQualifiedName name) {
-            ServiceDescription sd = GetServiceDescription(name);
+            var sd = GetServiceDescription(name);
             Message message = null;
             while (message == null && sd != null) {
                 message = sd.Messages[name.Name];
@@ -125,7 +125,7 @@ namespace System.Web.Services.Description {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public PortType GetPortType(XmlQualifiedName name) {
-            ServiceDescription sd = GetServiceDescription(name);
+            var sd = GetServiceDescription(name);
             PortType portType = null;
             while (portType == null && sd != null) {
                 portType = sd.PortTypes[name.Name];
@@ -140,7 +140,7 @@ namespace System.Web.Services.Description {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public Service GetService(XmlQualifiedName name) {
-            ServiceDescription sd = GetServiceDescription(name);
+            var sd = GetServiceDescription(name);
             Service service = null;
             while (service == null && sd != null) {
                 service = sd.Services[name.Name];
@@ -155,7 +155,7 @@ namespace System.Web.Services.Description {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public Binding GetBinding(XmlQualifiedName name) {
-            ServiceDescription sd = GetServiceDescription(name);
+            var sd = GetServiceDescription(name);
             Binding binding = null;
             while (binding == null && sd != null) {
                 binding = sd.Bindings[name.Name];
@@ -166,7 +166,7 @@ namespace System.Web.Services.Description {
         }
 
         ServiceDescription GetServiceDescription(XmlQualifiedName name) {
-            ServiceDescription serviceDescription = this[name.Namespace];
+            var serviceDescription = this[name.Namespace];
             if (serviceDescription == null) {
                 throw new ArgumentException(Res.GetString(Res.WebDescriptionMissing, name.ToString(), name.Namespace), "name");
             }
@@ -186,7 +186,7 @@ namespace System.Web.Services.Description {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         protected override void OnInsertComplete(int index, object value) {
-            string key = GetKey(value);
+            var key = GetKey(value);
             if (key != null) {
                 ServiceDescription item = (ServiceDescription)Table[key];
                 ((ServiceDescription)value).Next = (ServiceDescription)Table[key];

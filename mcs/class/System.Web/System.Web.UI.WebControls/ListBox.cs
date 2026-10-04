@@ -125,7 +125,7 @@ namespace System.Web.UI.WebControls {
 				writer.AddAttribute (HtmlTextWriterAttribute.Name, UniqueID);
 
 			if (AutoPostBack) {
-				string onchange = Page.ClientScript.GetPostBackEventReference (GetPostBackOptions (), true);
+				var onchange = Page.ClientScript.GetPostBackEventReference (GetPostBackOptions (), true);
 				onchange = String.Concat ("setTimeout('", onchange.Replace ("\\", "\\\\").Replace ("'", "\\'"), "', 0)");
 				writer.AddAttribute (HtmlTextWriterAttribute.Onchange, BuildScriptAttribute ("onchange", onchange));
 			}
@@ -140,7 +140,7 @@ namespace System.Web.UI.WebControls {
 		}
 
 		PostBackOptions GetPostBackOptions () {
-			PostBackOptions options = new PostBackOptions (this);
+			var options = new PostBackOptions (this);
 			options.ActionUrl = null;
 			options.ValidationGroup = null;
 			options.Argument = String.Empty;
@@ -158,7 +158,7 @@ namespace System.Web.UI.WebControls {
 		override void OnPreRender (EventArgs e)
 		{
 			base.OnPreRender (e);
-			Page page = Page;
+			var page = Page;
 			if (page != null && IsEnabled)
 				page.RegisterRequiresPostBack (this);
 		}
@@ -169,7 +169,7 @@ namespace System.Web.UI.WebControls {
 			EnsureDataBound ();
 			string [] values = postCollection.GetValues (postDataKey);
 			if (values == null || values.Length == 0) {
-				int prev_index = SelectedIndex;
+				var prev_index = SelectedIndex;
 				SelectedIndex = -1;
 				return (prev_index != -1);
 			}
@@ -182,9 +182,9 @@ namespace System.Web.UI.WebControls {
 
 		bool SelectSingle (string [] values)
 		{
-			string val = values [0];
-			int idx = Items.IndexOf (val);
-			int prev_index = SelectedIndex;
+			var val = values [0];
+			var idx = Items.IndexOf (val);
+			var prev_index = SelectedIndex;
 			if (idx != prev_index) {
 				// This will set both the index value and the item.Selected property
 				SelectedIndex = idx;
@@ -195,16 +195,16 @@ namespace System.Web.UI.WebControls {
 
 		bool SelectMultiple (string [] values)
 		{
-			ArrayList prev_selected = GetSelectedIndicesInternal ();
+			var prev_selected = GetSelectedIndicesInternal ();
 			ClearSelection ();
-			foreach (string val in values) {
-				ListItem item = Items.FindByValue (val);
+			foreach (var val in values) {
+				var item = Items.FindByValue (val);
 				if (item != null)
 					item.Selected = true;
 			}
 
-			ArrayList new_selection = GetSelectedIndicesInternal ();
-			int i = prev_selected.Count;
+			var new_selection = GetSelectedIndicesInternal ();
+			var i = prev_selected.Count;
 			if (new_selection.Count != i)
 				return true;
 

@@ -141,10 +141,10 @@ namespace System.Web.UI.WebControls
 		public override void ExtractValuesFromCell (IOrderedDictionary dictionary,
 			DataControlFieldCell cell, DataControlRowState rowState, bool includeReadOnly)
 		{
-			bool editable = IsEditable (rowState);
+			var editable = IsEditable (rowState);
 			if (editable) {
 				if (cell.Controls.Count > 0) {
-					TextBox box = (TextBox) cell.Controls [0];
+					var box = (TextBox) cell.Controls [0];
 					dictionary [DataField] = box.Text;
 				}
 			} else if (includeReadOnly)
@@ -169,9 +169,9 @@ namespace System.Web.UI.WebControls
 		
 		protected virtual void InitializeDataCell (DataControlFieldCell cell, DataControlRowState rowState)
 		{
-			bool editable = IsEditable (rowState);
+			var editable = IsEditable (rowState);
 			if (editable) {
-				TextBox box = new TextBox ();
+				var box = new TextBox ();
 				cell.Controls.Add (box);
 				box.ToolTip = HeaderText;
 			}
@@ -186,10 +186,10 @@ namespace System.Web.UI.WebControls
 			get { return true; }
 		}
 		
-		protected virtual string FormatDataValue (object dataValue, bool encode)
+		protected virtual string FormatDataValue (object? dataValue, bool encode)
 		{
 			string res;
-			bool htmlEncodeFormatString = HtmlEncodeFormatString;
+			var htmlEncodeFormatString = HtmlEncodeFormatString;
 			string stringValue = (dataValue != null) ? dataValue.ToString () : String.Empty;
 			if (dataValue == null || (stringValue.Length == 0 && ConvertEmptyStringToNull)) {
 				if (NullDisplayText.Length == 0) {
@@ -198,7 +198,7 @@ namespace System.Web.UI.WebControls
 				} else
 					res = NullDisplayText;
 			} else {
-				string format = DataFormatString;
+				var format = DataFormatString;
 				if (!String.IsNullOrEmpty (format)) {
 					if (!encode || htmlEncodeFormatString)
 						res = String.Format (format, dataValue);
@@ -214,7 +214,7 @@ namespace System.Web.UI.WebControls
 				return res;
 		}
 		
-		protected virtual object GetValue (Control controlContainer)
+		protected virtual object GetValue (Control? controlContainer)
 		{
 			if (DesignMode)
 				return GetDesignTimeValue ();
@@ -227,9 +227,9 @@ namespace System.Web.UI.WebControls
 			return "Databound";
 		}
 
-		object GetBoundValue (Control controlContainer)
+		object GetBoundValue (Control? controlContainer)
 		{
-			object dataItem = DataBinder.GetDataItem (controlContainer);
+			var dataItem = DataBinder.GetDataItem (controlContainer);
 			if (dataItem == null)
 				throw new HttpException ("A data item was not found in the container. The container must either implement IDataItemContainer, or have a property named DataItem.");
 
@@ -241,7 +241,7 @@ namespace System.Web.UI.WebControls
 			return DataBinder.GetPropertyValue (dataItem, DataField);
 		}
 		
-		protected override void LoadViewState (object state)
+		protected override void LoadViewState (object? state)
 		{
 			// Why override?
 			base.LoadViewState (state);
@@ -249,18 +249,18 @@ namespace System.Web.UI.WebControls
 		
 		protected virtual void OnDataBindField (object sender, EventArgs e)
 		{
-			Control container = (Control) sender;
-			Control controlContainer = container.BindingContainer;
+			var container = (Control) sender;
+			var controlContainer = container.BindingContainer;
 			if (!(controlContainer is INamingContainer))
 				throw new HttpException ("A DataControlField must be within an INamingContainer.");
-			object val = GetValue (controlContainer);
+			var val = GetValue (controlContainer);
 			TextBox box = sender as TextBox;
 
 			if (box == null) {
 				var cell = sender as DataControlFieldCell;
 				if (cell != null) {
-					ControlCollection controls = cell.Controls;
-					int ccount = controls != null ? controls.Count : 0;
+					var controls = cell.Controls;
+					var ccount = controls != null ? controls.Count : 0;
 					if (ccount == 1)
 						box = controls [0] as TextBox;
 					if (box == null) {
@@ -286,7 +286,7 @@ namespace System.Web.UI.WebControls
 		protected override void CopyProperties (DataControlField newField)
 		{
 			base.CopyProperties (newField);
-			BoundField field = (BoundField) newField;
+			var field = (BoundField) newField;
 			field.ConvertEmptyStringToNull = ConvertEmptyStringToNull;
 			field.DataField = DataField;
 			field.DataFormatString = DataFormatString;

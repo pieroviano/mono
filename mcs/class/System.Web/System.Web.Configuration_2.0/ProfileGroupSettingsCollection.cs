@@ -51,8 +51,8 @@ namespace System.Web.Configuration
 
 		public string[] AllKeys {
 			get {
-				string[] ret = new string [Count];
-				for (int i = 0; i < Count; i++)
+				var ret = new string [Count];
+				for (var i = 0; i < Count; i++)
 					ret [i] = this [i].Name;
 
 				return ret;
@@ -118,13 +118,13 @@ namespace System.Web.Configuration
 
 		public void Set (ProfileGroupSettings group)
 		{
-			ProfileGroupSettings existing = Get (group.Name);
+			var existing = Get (group.Name);
 
 			if (existing == null) {
 				Add (group);
 			}
 			else {
-				int index = BaseIndexOf (existing);
+				var index = BaseIndexOf (existing);
 				RemoveAt (index);
 				BaseAdd (index, group);
 			}

@@ -41,7 +41,7 @@ namespace System.Configuration.Provider
 		{
 		}
 		
-		public virtual void Initialize (string name, NameValueCollection config)
+		public virtual void Initialize (string name, NameValueCollection? config)
 		{
 			if (name == null)
 				throw new ArgumentNullException ("name");

@@ -26,7 +26,7 @@ namespace System.Web.Profile
     [Serializable]
     public class ProfileInfo
     {
-        public ProfileInfo(string username, bool isAnonymous, DateTime lastActivityDate, DateTime lastUpdatedDate, int size)
+        public ProfileInfo(string? username, bool isAnonymous, DateTime lastActivityDate, DateTime lastUpdatedDate, int size)
         {
             if( username != null )
             {
@@ -76,7 +76,7 @@ namespace System.Web.Profile
             _Hashtable = new Hashtable(10, StringComparer.CurrentCultureIgnoreCase);
             _ArrayList = new ArrayList();
         }
-        public void Add(ProfileInfo profileInfo)
+        public void Add(ProfileInfo? profileInfo)
         {
             if (_ReadOnly)
                 throw new NotSupportedException();
@@ -143,9 +143,9 @@ namespace System.Web.Profile
         private void DoCompact() {
             if (_NumBlanks < 1)
                 return;
-            ArrayList al = new ArrayList(_CurPos - _NumBlanks);
-            int firstBlankPos = -1;
-            for (int iter = 0; iter < _CurPos; iter++) {
+            var al = new ArrayList(_CurPos - _NumBlanks);
+            var firstBlankPos = -1;
+            for (var iter = 0; iter < _CurPos; iter++) {
                 if (_ArrayList[iter] != null)
                     al.Add(_ArrayList[iter]);
                 else if (firstBlankPos == -1)
@@ -154,7 +154,7 @@ namespace System.Web.Profile
             _NumBlanks = 0;
             _ArrayList = al;
             _CurPos = _ArrayList.Count;
-            for (int iter = firstBlankPos; iter < _CurPos; iter++) {
+            for (var iter = firstBlankPos; iter < _CurPos; iter++) {
                 ProfileInfo profileInfo = _ArrayList[iter] as ProfileInfo;
                 _Hashtable[profileInfo.UserName] = iter;
             }

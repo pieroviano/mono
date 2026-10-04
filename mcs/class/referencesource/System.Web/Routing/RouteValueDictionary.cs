@@ -12,7 +12,7 @@
             _dictionary = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
         }
 
-        public RouteValueDictionary(object values) {
+        public RouteValueDictionary(object? values) {
             _dictionary = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
 
             AddValues(values);
@@ -58,9 +58,9 @@
             _dictionary.Add(key, value);
         }
 
-        private void AddValues(object values) {
+        private void AddValues(object? values) {
             if (values != null) {
-                PropertyDescriptorCollection props = TypeDescriptor.GetProperties(values);
+                var props = TypeDescriptor.GetProperties(values);
                 foreach (PropertyDescriptor prop in props) {
                     object val = prop.GetValue(values);
                     Add(prop.Name, val);

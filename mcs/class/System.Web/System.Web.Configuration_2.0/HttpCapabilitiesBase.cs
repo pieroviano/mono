@@ -60,17 +60,17 @@ namespace System.Web.Configuration
 			return ua;
 		}
 
-		static HttpBrowserCapabilities GetHttpBrowserCapabilitiesFromBrowscapini(string ua)
+		static HttpBrowserCapabilities GetHttpBrowserCapabilitiesFromBrowscapini(string? ua)
 		{
-			HttpBrowserCapabilities bcap = new HttpBrowserCapabilities();
+			var bcap = new HttpBrowserCapabilities();
 			bcap.capabilities = CapabilitiesLoader.GetCapabilities (ua);
 			return bcap;
 		}
 		
 		public static HttpCapabilitiesBase GetConfigCapabilities (string configKey, HttpRequest request)
 		{
-			string ua = GetUserAgentForDetection (request);
-			HttpBrowserCapabilities bcap = GetHttpBrowserCapabilitiesFromBrowscapini(ua);
+			var ua = GetUserAgentForDetection (request);
+			var bcap = GetHttpBrowserCapabilitiesFromBrowscapini(ua);
 			GetConfigCapabilities_called = true;
 			if (HttpApplicationFactory.AppBrowsersFiles.Length > 0)
 				bcap = HttpApplicationFactory.CapabilitiesProcessor.Process(request, bcap.Capabilities);
@@ -253,7 +253,7 @@ namespace System.Web.Configuration
 			set {
 				//value comes with duplicated keys, so we filter them out
 				capabilities = new Hashtable (value.Keys.Count, StringComparer.OrdinalIgnoreCase);
-				foreach (object key in value.Keys) {
+				foreach (var key in value.Keys) {
 					if (!capabilities.Contains (key))
 						capabilities.Add (key, value [key]);
 				}

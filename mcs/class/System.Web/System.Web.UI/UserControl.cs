@@ -63,7 +63,7 @@ namespace System.Web.UI
 		public HttpApplicationState Application
 		{
 			get {
-				Page p = Page;
+				var p = Page;
 				if (p == null)
 					return null;
 				return p.Application;
@@ -95,7 +95,7 @@ namespace System.Web.UI
 		public Cache Cache
 		{
 			get {
-				Page p = Page;
+				var p = Page;
 				if (p == null)
 					return null;
 				return p.Cache;
@@ -123,7 +123,7 @@ namespace System.Web.UI
 		public bool IsPostBack
 		{
 			get {
-				Page p = Page;
+				var p = Page;
 				if (p == null)
 					return false;
 				return p.IsPostBack;
@@ -135,7 +135,7 @@ namespace System.Web.UI
 		public HttpRequest Request
 		{
 			get {
-				Page p = Page;
+				var p = Page;
 				if (p == null)
 					return null;
 				return p.Request;
@@ -147,7 +147,7 @@ namespace System.Web.UI
 		public HttpResponse Response
 		{
 			get {
-				Page p = Page;
+				var p = Page;
 				if (p == null)
 					return null;
 				return p.Response;
@@ -159,7 +159,7 @@ namespace System.Web.UI
 		public HttpServerUtility Server
 		{
 			get {
-				Page p = Page;
+				var p = Page;
 				if (p == null)
 					return null;
 				return p.Server;
@@ -171,7 +171,7 @@ namespace System.Web.UI
 		public HttpSessionState Session
 		{
 			get {
-				Page p = Page;
+				var p = Page;
 				if (p == null)
 					return null;
 				return p.Session;
@@ -183,7 +183,7 @@ namespace System.Web.UI
 		public TraceContext Trace
 		{
 			get {
-				Page p = Page;
+				var p = Page;
 				if (p == null)
 					return null;
 				return p.Trace;
@@ -214,15 +214,15 @@ namespace System.Web.UI
 			FrameworkInitialize ();
 		}
 
-		public string MapPath (string virtualPath)
+		public string MapPath (string? virtualPath)
 		{
 			return Request.MapPath (virtualPath, TemplateSourceDirectory, true);
 		}
 
-		protected override void LoadViewState (object savedState)
+		protected override void LoadViewState (object? savedState)
 		{
 			if (savedState != null) {
-				Pair p = (Pair) savedState;
+				var p = (Pair) savedState;
 				base.LoadViewState (p.First);
 				if (p.Second != null) {
 					EnsureAttributes ();
@@ -241,7 +241,7 @@ namespace System.Web.UI
 
 		protected override object SaveViewState ()
 		{
-			object baseState = base.SaveViewState();
+			var baseState = base.SaveViewState();
 			object attrState = null;
 			if (attributes != null)
 				attrState = attrBag.SaveViewState ();
@@ -266,7 +266,7 @@ namespace System.Web.UI
 		string IUserControlDesignerAccessor.InnerText
 		{
 			get {
-				string innerText = ((string) ViewState["!DesignTimeInnerText"]);
+				var innerText = ((string) ViewState["!DesignTimeInnerText"]);
 				if (innerText == null)
 					return string.Empty; 
 				return innerText;
@@ -277,7 +277,7 @@ namespace System.Web.UI
 		string IUserControlDesignerAccessor.TagName
 		{
 			get {
-				string innerTag = ((string) ViewState["!DesignTimeTagName"]);
+				var innerTag = ((string) ViewState["!DesignTimeTagName"]);
 				if (innerTag == null)
 					return string.Empty; 
 				return innerTag;

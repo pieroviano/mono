@@ -76,7 +76,7 @@ namespace System.Web.UI {
             		if (!(obj is ExpressionBinding))
                 		return false;
 
-            		ExpressionBinding o = (ExpressionBinding)obj;
+            		var o = (ExpressionBinding)obj;
             		return (o.Expression == expression &&
                 		o.ExpressionPrefix == prefix &&
 				o.PropertyName == propertyName &&

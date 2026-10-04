@@ -71,7 +71,7 @@ namespace System.Web.UI.WebControls {
 				throw new ArgumentNullException ("user");
 
 			if (roles != null) {
-				foreach (string role in roles) {
+				foreach (var role in roles) {
 					if (user.IsInRole (role))
 						return true;
 				}

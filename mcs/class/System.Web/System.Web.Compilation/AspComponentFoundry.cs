@@ -55,13 +55,13 @@ namespace System.Web.Compilation
 		public AspComponentFoundry ()
 		{
 			foundries = new Hashtable (StringComparer.InvariantCultureIgnoreCase);
-			Assembly sw = typeof (AspComponentFoundry).Assembly;
+			var sw = typeof (AspComponentFoundry).Assembly;
 			RegisterFoundry ("asp", sw, "System.Web.UI.WebControls");
 			RegisterFoundry ("", "object", typeof (System.Web.UI.ObjectTag));
 			RegisterConfigControls ();
 		}
 
-		public AspComponent GetComponent (string tagName)
+		public AspComponent GetComponent (string? tagName)
 		{
 			if (tagName == null || tagName.Length == 0)
 				return null;
@@ -73,7 +73,7 @@ namespace System.Web.Compilation
 			}
 
 			string foundryName, tag;
-			int colon = tagName.IndexOf (':');
+			var colon = tagName.IndexOf (':');
 			if (colon > -1) {
 				if (colon == 0)
 					throw new Exception ("Empty TagPrefix is not valid.");
@@ -125,23 +125,23 @@ namespace System.Web.Compilation
 			if (type == null)
 				return null;
 			
-			AspComponent ret = new AspComponent (type, ns, prefix, source, foundry.FromConfig);
-			Dictionary <string, AspComponent> components = Components;
+			var ret = new AspComponent (type, ns, prefix, source, foundry.FromConfig);
+			var components = Components;
 			components.Add (tagName, ret);
 			return ret;
 		}
 		
-		public void RegisterFoundry (string foundryName, Assembly assembly, string nameSpace)
+		public void RegisterFoundry (string foundryName, Assembly? assembly, string nameSpace)
 		{
 			RegisterFoundry (foundryName, assembly, nameSpace, false);
 		}
 		
 		public void RegisterFoundry (string foundryName,
-					     Assembly assembly,
+					     Assembly? assembly,
 					     string nameSpace,
 					     bool fromConfig)
 		{
-			AssemblyFoundry foundry = new AssemblyFoundry (assembly, nameSpace);
+			var foundry = new AssemblyFoundry (assembly, nameSpace);
 			foundry.FromConfig = fromConfig;
 			InternalRegister (foundryName, foundry, fromConfig);
 		}
@@ -156,7 +156,7 @@ namespace System.Web.Compilation
 					     Type type,
 					     bool fromConfig)
 		{
-			TagNameFoundry foundry = new TagNameFoundry (tagName, type);
+			var foundry = new TagNameFoundry (tagName, type);
 			foundry.FromConfig = fromConfig;
 			InternalRegister (foundryName, foundry, fromConfig);
 		}
@@ -171,7 +171,7 @@ namespace System.Web.Compilation
 					     string source,
 					     bool fromConfig)
 		{
-			TagNameFoundry foundry = new TagNameFoundry (tagName, source);
+			var foundry = new TagNameFoundry (tagName, source);
 			foundry.FromConfig = fromConfig;
 			InternalRegister (foundryName, foundry, fromConfig);
 		}
@@ -181,7 +181,7 @@ namespace System.Web.Compilation
 						     string nameSpace,
 						     bool fromConfig)
 		{
-			AssemblyFoundry foundry = new AssemblyFoundry (assemblyName, nameSpace);
+			var foundry = new AssemblyFoundry (assemblyName, nameSpace);
 			foundry.FromConfig = fromConfig;
 			InternalRegister (foundryName, foundry, fromConfig);
 		}		
@@ -192,19 +192,19 @@ namespace System.Web.Compilation
 			if (pages == null)
 				return;
 
-			TagPrefixCollection controls = pages.Controls;
+			var controls = pages.Controls;
 			if (controls == null || controls.Count == 0)
 				return;
 			
-			IList appCode = BuildManager.CodeAssemblies;
-			bool haveCodeAssemblies = appCode != null && appCode.Count > 0;
+			var appCode = BuildManager.CodeAssemblies;
+			var haveCodeAssemblies = appCode != null && appCode.Count > 0;
 			Assembly asm;
 			foreach (TagPrefixInfo tpi in controls) {
 				if (!String.IsNullOrEmpty (tpi.TagName))
 					RegisterFoundry (tpi.TagPrefix, tpi.TagName, tpi.Source, true);
 				else if (String.IsNullOrEmpty (tpi.Assembly)) {
 					if (haveCodeAssemblies) {
-						foreach (object o in appCode) {
+						foreach (var o in appCode) {
 							asm = o as Assembly;
 							if (asm == null)
 								continue;
@@ -230,7 +230,7 @@ namespace System.Web.Compilation
 			} else if (f == null || f is ArrayList || (f is AssemblyFoundry && foundry is AssemblyFoundry)) {
 				newFoundry = foundry;
 			} else if (f != null) {
-				CompoundFoundry compound = new CompoundFoundry (foundryName);
+				var compound = new CompoundFoundry (foundryName);
 				compound.Add ((Foundry) f);
 				compound.Add (foundry);
 				newFoundry = foundry;
@@ -254,7 +254,7 @@ namespace System.Web.Compilation
 
 			if (newFoundry is AssemblyFoundry) {
 				object o;
-				for (int i = 0; i < af.Count; i++) {
+				for (var i = 0; i < af.Count; i++) {
 					o = af [i];
 					if (o is AssemblyFoundry) {
 						af.Insert (i, newFoundry);
@@ -322,7 +322,7 @@ namespace System.Web.Compilation
 				if (type != null)
 					return type;
 
-				HttpContext context = HttpContext.Current;
+				var context = HttpContext.Current;
 				string vpath;
 				string realpath;
 				
@@ -357,7 +357,7 @@ namespace System.Web.Compilation
 			string assemblyName;
 			Dictionary <string, Assembly> assemblyCache;
 			
-			public AssemblyFoundry (Assembly assembly, string nameSpace)
+			public AssemblyFoundry (Assembly? assembly, string nameSpace)
 			{
 				this.assembly = assembly;
 				this.nameSpace = nameSpace;
@@ -383,11 +383,11 @@ namespace System.Web.Compilation
 				if (assembly == null && assemblyName != null)
 					assembly = GetAssemblyByName (assemblyName, true);
 
-				string typeName = String.Concat (nameSpace, ".", componentName);
+				var typeName = String.Concat (nameSpace, ".", componentName);
 				if (assembly != null)
 					return assembly.GetType (typeName, false, true);
 
-				IList tla = BuildManager.TopLevelAssemblies;
+				var tla = BuildManager.TopLevelAssemblies;
 				if (tla != null && tla.Count > 0) {
 					Type ret = null;
 					foreach (Assembly asm in tla) {
@@ -454,13 +454,13 @@ namespace System.Web.Compilation
 					return;
 				}
 				
-				TagNameFoundry tn = (TagNameFoundry) foundry;
-				string tagName = tn.TagName;
+				var tn = (TagNameFoundry) foundry;
+				var tagName = tn.TagName;
 				if (tagnames.Contains (tagName)) {
 					if (tn.FromWebConfig)
 						return;
 
-					string msg = String.Format ("{0}:{1} already registered.", tagPrefix, tagName);
+					var msg = String.Format ("{0}:{1} already registered.", tagPrefix, tagName);
 					throw new ApplicationException (msg);
 				}
 				tagnames.Add (tagName, foundry);
@@ -482,7 +482,7 @@ namespace System.Web.Compilation
 					} catch { }
 				}
 
-				string msg = String.Format ("Type {0} not registered for prefix {1}", componentName, tagPrefix);
+				var msg = String.Format ("Type {0} not registered for prefix {1}", componentName, tagPrefix);
 				throw new ApplicationException (msg);
 			}
 		}

@@ -113,7 +113,7 @@ namespace System.Web.UI
 			AddEntry (ref _events, String.Format ("\"{0}\"", name), handler);
 		}
 
-		public void AddProperty (string name, object value) {
+		public void AddProperty (string name, object? value) {
 			if (name == null)
 				throw new ArgumentException ("Value cannot be null or empty.", "name");
 
@@ -135,7 +135,7 @@ namespace System.Web.UI
 			AddEntry (ref _properties, String.Format ("\"{0}\"", name), script);
 		}
 		
-		void AddEntry (ref IDictionary<string, string> dictionary, string key, string value) {
+		void AddEntry (ref IDictionary<string, string>? dictionary, string key, string value) {
 			if (dictionary == null)
 				dictionary = new SortedDictionary<string, string> ();
 			if (!dictionary.ContainsKey (key))
@@ -146,12 +146,12 @@ namespace System.Web.UI
 
 		protected internal override string GetScript ()
 		{
-			string id = ID;
+			var id = ID;
 			if (id != String.Empty)
 				AddProperty ("id", id);
 			
-			bool haveFormID = String.IsNullOrEmpty (FormID) == false;
-			bool haveElementID = String.IsNullOrEmpty (ElementIDInternal) == false;
+			var haveFormID = String.IsNullOrEmpty (FormID) == false;
+			var haveElementID = String.IsNullOrEmpty (ElementIDInternal) == false;
 			var sb = new StringBuilder ("$create(");
 
 			if (haveFormID)
@@ -172,12 +172,12 @@ namespace System.Web.UI
 			return sb.ToString ();
 		}
 
-		internal static string SerializeDictionary (IDictionary<string, string> dictionary)
+		internal static string SerializeDictionary (IDictionary<string, string>? dictionary)
 		{
 			if (dictionary == null || dictionary.Count == 0)
 				return "null";
-			StringBuilder sb = new StringBuilder ("{");
-			foreach (string key in dictionary.Keys)
+			var sb = new StringBuilder ("{");
+			foreach (var key in dictionary.Keys)
 				sb.AppendFormat ("{0}:{1},", key, dictionary [key]);
 			sb.Length--;
 			sb.Append ("}");

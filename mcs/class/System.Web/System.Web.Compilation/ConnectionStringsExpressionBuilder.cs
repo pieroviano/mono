@@ -60,7 +60,7 @@ namespace System.Web.Compilation {
 
 		public static string GetConnectionString (string connectionStringName)
 		{
-			ConnectionStringSettings conn = WebConfigurationManager.ConnectionStrings [connectionStringName];
+			var conn = WebConfigurationManager.ConnectionStrings [connectionStringName];
 			if (conn == null)
 				return String.Empty;
 			else
@@ -69,7 +69,7 @@ namespace System.Web.Compilation {
 
 		public static string GetConnectionStringProviderName (string connectionStringName)
 		{
-			ConnectionStringSettings conn = WebConfigurationManager.ConnectionStrings [connectionStringName];
+			var conn = WebConfigurationManager.ConnectionStrings [connectionStringName];
 			if (conn == null)
 				return String.Empty;
 			else
@@ -78,11 +78,11 @@ namespace System.Web.Compilation {
 
 		public override	object ParseExpression (string expression, Type propertyType, ExpressionBuilderContext context)
 		{
-			bool wantsProviderName = false;
-			string connStringName = String.Empty;
+			var wantsProviderName = false;
+			var connStringName = String.Empty;
 
 			if (!String.IsNullOrEmpty (expression)) {
-				int subidx = expression.Length;
+				var subidx = expression.Length;
 				
 				if (expression.EndsWith (".providername", StringComparison.InvariantCultureIgnoreCase)) {
 					wantsProviderName = true;

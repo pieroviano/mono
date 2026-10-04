@@ -52,7 +52,7 @@ namespace System.Web.Compilation
 			return HttpContext.GetGlobalResourceObject (fields.ClassKey, fields.ResourceKey);
 		}
 
-		public override CodeExpression GetCodeExpression (BoundPropertyEntry entry, object parsedData, ExpressionBuilderContext context)
+		public override CodeExpression GetCodeExpression (BoundPropertyEntry? entry, object parsedData, ExpressionBuilderContext context)
 		{
 			ResourceExpressionFields fields = parsedData as ResourceExpressionFields;
 			CodeExpression[] expr;
@@ -69,7 +69,7 @@ namespace System.Web.Compilation
 					new CodePrimitiveExpression (fields.ClassKey),
 					new CodePrimitiveExpression (fields.ResourceKey)
 				};
-				CodeMethodInvokeExpression getgro = new CodeMethodInvokeExpression (new CodeThisReferenceExpression (), "GetGlobalResourceObject", expr);
+				var getgro = new CodeMethodInvokeExpression (new CodeThisReferenceExpression (), "GetGlobalResourceObject", expr);
 				return new CodeCastExpression (entry.PropertyInfo.PropertyType, getgro);
 			} else
 				return CreateGetLocalResourceObject (entry, fields.ResourceKey);
@@ -77,7 +77,7 @@ namespace System.Web.Compilation
 
 		public static ResourceExpressionFields ParseExpression (string expression)
 		{
-			int comma = expression.IndexOf (',');
+			var comma = expression.IndexOf (',');
 			if (comma == -1)
 				return new ResourceExpressionFields (expression.Trim ());
 			else
@@ -95,7 +95,7 @@ namespace System.Web.Compilation
 			get { return true; }
 		}
 
-		internal static CodeExpression CreateGetLocalResourceObject (BoundPropertyEntry bpe, string resname)
+		internal static CodeExpression CreateGetLocalResourceObject (BoundPropertyEntry? bpe, string resname)
 		{
 			if (bpe == null || String.IsNullOrEmpty (resname))
 				return null;
@@ -133,14 +133,14 @@ namespace System.Web.Compilation
 
 			if (member_type != typeof (System.Drawing.Color) &&
 			    (converter == null || converter.CanConvertFrom (typeof (String)))) {
-				CodeMethodInvokeExpression getlro = new CodeMethodInvokeExpression (
+				var getlro = new CodeMethodInvokeExpression (
 					new CodeThisReferenceExpression (),
 					"GetLocalResourceObject",
 					new CodeExpression [] { new CodePrimitiveExpression (resname) });
 				
 				return TemplateControlCompiler.CreateConvertToCall (Type.GetTypeCode (member_type), getlro);
 			} else if (!String.IsNullOrEmpty (memberName)) {
-				CodeMethodInvokeExpression getlro = new CodeMethodInvokeExpression (
+				var getlro = new CodeMethodInvokeExpression (
 					new CodeThisReferenceExpression (),
 					"GetLocalResourceObject",
 					new CodeExpression [] {

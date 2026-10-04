@@ -125,7 +125,7 @@ namespace System.Web
 					return null;
 
 				if (errors is Exception){
-					Exception [] all = new Exception [1];
+					var all = new Exception [1];
 					all [0] = (Exception) errors;
 					return all;
 				} 
@@ -207,7 +207,7 @@ namespace System.Web
 
 		internal bool IsCustomErrorEnabledUnsafe {
 			get {
-				CustomErrorsSection cfg = (CustomErrorsSection) WebConfigurationManager.GetSection ("system.web/customErrors");
+				var cfg = (CustomErrorsSection) WebConfigurationManager.GetSection ("system.web/customErrors");
 				if (cfg.Mode == CustomErrorMode.On)
 					return true;
 
@@ -302,7 +302,7 @@ namespace System.Web
 			get { throw new PlatformNotSupportedException ("This property is not supported on Mono."); }
 		}
 		
-		internal void PushHandler (IHttpHandler handler)
+		internal void PushHandler (IHttpHandler? handler)
 		{
 			if (handler == null)
 				return;
@@ -403,7 +403,7 @@ namespace System.Web
 		[Obsolete ("The recommended alternative is System.Web.Configuration.WebConfigurationManager.GetWebApplicationSection in System.Web.dll. http://go.microsoft.com/fwlink/?linkid=14202")]
 		public static object GetAppConfig (string name)
 		{
-			object o = ConfigurationSettings.GetConfig (name);
+			var o = ConfigurationSettings.GetConfig (name);
 
 			return o;
 		}
@@ -432,14 +432,14 @@ namespace System.Web
 			if (gs == null)
 				return false;
 
-			String rsfTypeName = gs.ResourceProviderFactoryType;
-			bool usingDefault = false;
+			var rsfTypeName = gs.ResourceProviderFactoryType;
+			var usingDefault = false;
 			if (String.IsNullOrEmpty (rsfTypeName)) {
 				usingDefault = true;
 				rsfTypeName = typeof (DefaultResourceProviderFactory).AssemblyQualifiedName;
 			}
 			
-			Type rsfType = HttpApplication.LoadType (rsfTypeName, true);
+			var rsfType = HttpApplication.LoadType (rsfTypeName, true);
 			ResourceProviderFactory rpf = Activator.CreateInstance (rsfType) as ResourceProviderFactory;
 			
 			if (rpf == null && usingDefault)
@@ -485,7 +485,7 @@ namespace System.Web
 		static object GetGlobalObjectFromFactory (string classKey, string resourceKey, CultureInfo culture)
 		{
 			// FIXME: Retention of data
-			IResourceProvider rp = GetResourceProvider (classKey, false);
+			var rp = GetResourceProvider (classKey, false);
 			if (rp == null)
 				return null;
 			
@@ -504,7 +504,7 @@ namespace System.Web
 
 		static object GetLocalObjectFromFactory (string virtualPath, string resourceKey, CultureInfo culture)
 		{
-			IResourceProvider rp = GetResourceProvider (virtualPath, true);
+			var rp = GetResourceProvider (virtualPath, true);
 			if (rp == null)
 				return null;
 			
@@ -581,21 +581,21 @@ namespace System.Web
 			RewritePath (path, true);
 		}
 
-		public void RewritePath (string filePath, string pathInfo, string queryString)
+		public void RewritePath (string filePath, string? pathInfo, string? queryString)
 		{
 			RewritePath (filePath, pathInfo, queryString, false);
 		}
 
 		public void RewritePath (string path, bool rebaseClientPath)
 		{
-			int qmark = path.IndexOf ('?');
+			var qmark = path.IndexOf ('?');
 			if (qmark != -1)
 				RewritePath (path.Substring (0, qmark), String.Empty, path.Substring (qmark + 1), rebaseClientPath);
 			else
 				RewritePath (path, null, null, rebaseClientPath);
 		}
 
-		public void RewritePath (string filePath, string pathInfo, string queryString, bool setClientFilePath)
+		public void RewritePath (string filePath, string? pathInfo, string? queryString, bool setClientFilePath)
 		{
 			if (filePath == null)
 				throw new ArgumentNullException ("filePath");
@@ -603,9 +603,9 @@ namespace System.Web
 				throw new HttpException ("'" + HttpUtility.HtmlEncode (filePath) + "' is not a valid virtual path.");
 
 			filePath = VirtualPathUtility.Canonize (filePath);
-			bool pathRelative = VirtualPathUtility.IsAppRelative (filePath);
-			bool pathAbsolute = pathRelative ? false : VirtualPathUtility.IsAbsolute (filePath);
-			HttpRequest req = Request;
+			var pathRelative = VirtualPathUtility.IsAppRelative (filePath);
+			var pathAbsolute = pathRelative ? false : VirtualPathUtility.IsAbsolute (filePath);
+			var req = Request;
 			if (req == null)
 				return;
 			
@@ -665,8 +665,8 @@ namespace System.Web
 			set {
 				config_timeout = value;
 				if (timer != null) {
-					TimeSpan remaining = value - (DateTime.UtcNow - time_stamp);
-					long remaining_ms = Math.Max ((long)remaining.TotalMilliseconds, 0);
+					var remaining = value - (DateTime.UtcNow - time_stamp);
+					var remaining_ms = Math.Max ((long)remaining.TotalMilliseconds, 0);
 
 					// See http://msdn2.microsoft.com/en-us/library/7hs7492w.aspx
 					if (remaining_ms > 4294967294)

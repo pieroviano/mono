@@ -74,8 +74,8 @@ namespace System.Web.DynamicData
 		public string TemplateFolderVirtualPath {
 			get {
 				if (templateFolderVirtualPath == null) {
-					MetaModel m = Model;
-					string virtualPath = userTemplateVirtualPath == null ? DEFAULT_TEMPLATE_FOLDER_VIRTUAL_PATH : userTemplateVirtualPath;
+					var m = Model;
+					var virtualPath = userTemplateVirtualPath == null ? DEFAULT_TEMPLATE_FOLDER_VIRTUAL_PATH : userTemplateVirtualPath;
 
 					if (m != null)
 						templateFolderVirtualPath = VirtualPathUtility.Combine (m.DynamicDataFolderVirtualPath, virtualPath);
@@ -101,7 +101,7 @@ namespace System.Web.DynamicData
 			if (String.IsNullOrEmpty (templateName))
 				throw new ArgumentNullException ("templateName");
 
-			string basePath = TemplateFolderVirtualPath;
+			var basePath = TemplateFolderVirtualPath;
 			string suffix;
 
 			switch (mode) {
@@ -126,7 +126,7 @@ namespace System.Web.DynamicData
 		{
 			// NO checks are made on parameters in .NET, but well "handle" the NREX
 			// throws in the other methods
-			string virtualPath = GetFieldTemplateVirtualPath (column, mode, uiHint);
+			var virtualPath = GetFieldTemplateVirtualPath (column, mode, uiHint);
 			if (String.IsNullOrEmpty (virtualPath))
 				return null;
 			
@@ -137,7 +137,7 @@ namespace System.Web.DynamicData
 		{
 			// NO checks are made on parameters in .NET, but well "handle" the NREX
 			// throws in the other methods
-			DataBoundControlMode newMode = PreprocessMode (column, mode);
+			var newMode = PreprocessMode (column, mode);
 
 			// The algorithm is as follows:
 			//
@@ -162,11 +162,11 @@ namespace System.Web.DynamicData
 			//     From: http://msdn.microsoft.com/en-us/library/cc488523.aspx (augmented)
 			//
 
-			DataTypeAttribute attr = column.DataTypeAttribute;
-			bool uiHintPresent = !String.IsNullOrEmpty (uiHint);
+			var attr = column.DataTypeAttribute;
+			var uiHintPresent = !String.IsNullOrEmpty (uiHint);
 			string templatePath = null;
-			int step = uiHintPresent ? 0 : 1;
-			Type columnType = column.ColumnType;
+			var step = uiHintPresent ? 0 : 1;
+			var columnType = column.ColumnType;
 
 			if (!uiHintPresent && attr == null) {
 				if (column is MetaChildrenColumn)
@@ -235,12 +235,12 @@ namespace System.Web.DynamicData
 		
 		string GetExistingTemplateVirtualPath (string baseName, MetaColumn column, DataBoundControlMode mode)
 		{
-			string templatePath = BuildVirtualPath (baseName, column, mode);
+			var templatePath = BuildVirtualPath (baseName, column, mode);
 			if (String.IsNullOrEmpty (templatePath))
 				return null;
 
 			// TODO: cache positive hits (and watch for removal events on those)
-			string physicalPath = HostingEnvironment.MapPath (templatePath);
+			var physicalPath = HostingEnvironment.MapPath (templatePath);
 			if (File.Exists (physicalPath))
 				return templatePath;
 

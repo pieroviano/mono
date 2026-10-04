@@ -200,17 +200,17 @@ namespace System.Web
 			w.AddCacheItemDependency (cacheKey);
 		}
 
-		public override void AddFileDependencies (ArrayList filenames)
+		public override void AddFileDependencies (ArrayList? filenames)
 		{
 			w.AddFileDependencies (filenames);
 		}
 
-		public override void AddFileDependencies (string [] filenames)
+		public override void AddFileDependencies (string []? filenames)
 		{
 			w.AddFileDependencies (filenames);
 		}
 
-		public override void AddFileDependency (string filename)
+		public override void AddFileDependency (string? filename)
 		{
 			w.AddFileDependency (filename);
 		}
@@ -235,7 +235,7 @@ namespace System.Web
 			w.AppendToLog (param);
 		}
 
-		public override string ApplyAppPathModifier (string virtualPath)
+		public override string ApplyAppPathModifier (string? virtualPath)
 		{
 			return w.ApplyAppPathModifier (virtualPath);
 		}
@@ -304,7 +304,7 @@ namespace System.Web
 			w.RedirectPermanent (url, endResponse);
 		}
 
-		public override void RemoveOutputCacheItem (string path, string providerName)
+		public override void RemoveOutputCacheItem (string path, string? providerName)
 		{
 			HttpResponse.RemoveOutputCacheItem (path, providerName);
 		}
@@ -333,12 +333,12 @@ namespace System.Web
 			w.Write (ch);
 		}
 
-		public override void Write (object obj)
+		public override void Write (object? obj)
 		{
 			w.Write (obj);
 		}
 
-		public override void Write (string s)
+		public override void Write (string? s)
 		{
 			w.Write (s);
 		}

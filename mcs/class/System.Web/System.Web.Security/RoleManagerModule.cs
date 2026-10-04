@@ -55,7 +55,7 @@ namespace System.Web.Security {
 
 		void ClearCookie (HttpApplication app, string cookieName)
 		{
-			HttpCookie clearCookie = new HttpCookie (_config.CookieName, "");
+			var clearCookie = new HttpCookie (_config.CookieName, "");
 
 			clearCookie.Path = _config.CookiePath;
 			clearCookie.Expires = DateTime.MinValue;
@@ -66,7 +66,7 @@ namespace System.Web.Security {
 
 		void OnPostAuthenticateRequest (object sender, EventArgs args)
 		{
-			HttpApplication app = (HttpApplication)sender;
+			var app = (HttpApplication)sender;
 
 			/* if we're disabled, bail out early */
 			if (_config == null || !_config.Enabled)
@@ -75,7 +75,7 @@ namespace System.Web.Security {
 			/* allow the user to populate the Role */
 			RoleManagerEventHandler eh = events [getRolesEvent] as RoleManagerEventHandler;
 			if (eh != null) {
-				RoleManagerEventArgs role_args = new RoleManagerEventArgs (app.Context);
+				var role_args = new RoleManagerEventArgs (app.Context);
 
 				eh (this, role_args);
 
@@ -85,7 +85,7 @@ namespace System.Web.Security {
 
 			RolePrincipal principal;
 
-			HttpCookie cookie = app.Request.Cookies [_config.CookieName];
+			var cookie = app.Request.Cookies [_config.CookieName];
 
 			IIdentity currentIdentity = app.Context.User.Identity;
 			if (app.Request.IsAuthenticated) {
@@ -120,7 +120,7 @@ namespace System.Web.Security {
 
 		void OnEndRequest (object sender, EventArgs args)
 		{
-			HttpApplication app = (HttpApplication)sender;
+			var app = (HttpApplication)sender;
 
 			/* if we're not enabled or configured to cache
 			 * cookies, bail out */
@@ -145,13 +145,13 @@ namespace System.Web.Security {
 			if (!principal.CachedListChanged)
 				return;
 
-			string ticket = principal.ToEncryptedTicket ();
+			var ticket = principal.ToEncryptedTicket ();
 			if (ticket == null || ticket.Length > 4096) {
 				ClearCookie (app, _config.CookieName);
 				return;
 			}
 
-			HttpCookie cookie = new HttpCookie (_config.CookieName, ticket);
+			var cookie = new HttpCookie (_config.CookieName, ticket);
 
 			cookie.HttpOnly = true;
 			if (!string.IsNullOrEmpty (_config.Domain))

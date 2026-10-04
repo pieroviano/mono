@@ -63,7 +63,7 @@ namespace System.Web.Services.Protocols {
         public LogicalMethodInfo(MethodInfo methodInfo) : this (methodInfo, null) {
         }
 
-        internal LogicalMethodInfo(MethodInfo methodInfo, WebMethod webMethod) {
+        internal LogicalMethodInfo(MethodInfo methodInfo, WebMethod? webMethod) {
             if (methodInfo.IsStatic) throw new InvalidOperationException(Res.GetString(Res.WebMethodStatic, methodInfo.Name));
             this.methodInfo = methodInfo;
             if (webMethod != null) {
@@ -72,7 +72,7 @@ namespace System.Web.Services.Protocols {
                 this.declaration = webMethod.declaration;
             }
 
-            MethodInfo methodDefinition = declaration != null ? declaration : methodInfo;
+            var methodDefinition = declaration != null ? declaration : methodInfo;
             parameters = methodDefinition.GetParameters();
             inParams = GetInParameters(methodDefinition, parameters, 0, parameters.Length, false);
             outParams = GetOutParameters(methodDefinition, parameters, 0, parameters.Length, false);
@@ -82,7 +82,7 @@ namespace System.Web.Services.Protocols {
             attributes = new Hashtable();
         }
 
-        LogicalMethodInfo(MethodInfo beginMethodInfo, MethodInfo endMethodInfo, WebMethod webMethod) {
+        LogicalMethodInfo(MethodInfo beginMethodInfo, MethodInfo endMethodInfo, WebMethod? webMethod) {
             this.methodInfo = beginMethodInfo;
             this.endMethodInfo = endMethodInfo;
             methodName = beginMethodInfo.Name.Substring(5);
@@ -91,7 +91,7 @@ namespace System.Web.Services.Protocols {
                 this.attribute = webMethod.attribute;
                 this.declaration = webMethod.declaration;
             }
-            ParameterInfo[] beginParamInfos = beginMethodInfo.GetParameters();
+            var beginParamInfos = beginMethodInfo.GetParameters();
             if (beginParamInfos.Length < 2 ||
                 beginParamInfos[beginParamInfos.Length - 1].ParameterType != typeof(object) ||
                 beginParamInfos[beginParamInfos.Length - 2].ParameterType != typeof(AsyncCallback)) {
@@ -104,7 +104,7 @@ namespace System.Web.Services.Protocols {
 
             inParams = GetInParameters(beginMethodInfo, beginParamInfos, 0, beginParamInfos.Length - 2, true);
 
-            ParameterInfo[] endParamInfos = endMethodInfo.GetParameters();
+            var endParamInfos = endMethodInfo.GetParameters();
             resultParam = endParamInfos[0];
             outParams = GetOutParameters(endMethodInfo, endParamInfos, 1, endParamInfos.Length - 1, true);
 
@@ -133,20 +133,20 @@ namespace System.Web.Services.Protocols {
         [PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
         public object[] Invoke(object target, object[] values) {
             if (outParams.Length > 0) {
-                object[] newValues = new object[parameters.Length];
-                for (int i = 0; i < inParams.Length; i++) {
+                var newValues = new object[parameters.Length];
+                for (var i = 0; i < inParams.Length; i++) {
                     newValues[inParams[i].Position] = values[i];
                 }
                 values = newValues;
             }
             object returnValue = methodInfo.Invoke(target, values);
             if (outParams.Length > 0) {
-                int count = outParams.Length;
+                var count = outParams.Length;
                 if (!isVoid) count++;
-                object[] results = new object[count];
+                var results = new object[count];
                 count = 0;
                 if (!isVoid) results[count++] = returnValue;
-                for (int i = 0; i < outParams.Length; i++) {
+                for (var i = 0; i < outParams.Length; i++) {
                     results[count++] = values[outParams[i].Position];
                 }
                 return results;
@@ -165,7 +165,7 @@ namespace System.Web.Services.Protocols {
         /// </devdoc>
         [PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
         public IAsyncResult BeginInvoke(object target, object[] values, AsyncCallback callback, object asyncState) {
-            object[] asyncValues = new object[values.Length + 2];
+            var asyncValues = new object[values.Length + 2];
             values.CopyTo(asyncValues, 0);
             asyncValues[values.Length] = callback;
             asyncValues[values.Length + 1] = asyncState;
@@ -178,7 +178,7 @@ namespace System.Web.Services.Protocols {
         /// </devdoc>
         [PermissionSet(SecurityAction.LinkDemand, Name = "FullTrust")]
         public object[] EndInvoke(object target, IAsyncResult asyncResult) {
-            object[] values = new object[outParams.Length + 1];
+            var values = new object[outParams.Length + 1];
             values[0] = asyncResult;
             object returnValue = endMethodInfo.Invoke(target, values);
             if (!isVoid) {
@@ -186,7 +186,7 @@ namespace System.Web.Services.Protocols {
                 return values;
             }
             else if (outParams.Length > 0) {
-                object[] newValues = new object[outParams.Length];
+                var newValues = new object[outParams.Length];
                 Array.Copy(values, 1, newValues, 0, newValues.Length);
                 return newValues;
             }
@@ -304,15 +304,15 @@ namespace System.Web.Services.Protocols {
                 attrForType = (object[])attributes[type];
                 if (attrForType == null) {
                     if (declaration != null) {
-                        object[] declAttributes = declaration.GetCustomAttributes(type, false);
-                        object[] implAttributes = methodInfo.GetCustomAttributes(type, false);
+                        var declAttributes = declaration.GetCustomAttributes(type, false);
+                        var implAttributes = methodInfo.GetCustomAttributes(type, false);
                         if (implAttributes.Length > 0) {
                             if (CanMerge(type)) {
-                                ArrayList all = new ArrayList();
-                                for (int i = 0; i < declAttributes.Length; i++) {
+                                var all = new ArrayList();
+                                for (var i = 0; i < declAttributes.Length; i++) {
                                     all.Add(declAttributes[i]);
                                 }
-                                for (int i = 0; i < implAttributes.Length; i++) {
+                                for (var i = 0; i < implAttributes.Length; i++) {
                                     all.Add(implAttributes[i]);
                                 }
                                 attrForType = (object[])all.ToArray(type);
@@ -340,7 +340,7 @@ namespace System.Web.Services.Protocols {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public object GetCustomAttribute(Type type) {
-            object[] attrs = GetCustomAttributes(type);
+            var attrs = GetCustomAttributes(type);
             if (attrs.Length == 0) return null;
             return attrs[0];
         }
@@ -406,9 +406,9 @@ namespace System.Web.Services.Protocols {
         }
 
         static ParameterInfo[] GetInParameters(MethodInfo methodInfo, ParameterInfo[] paramInfos, int start, int length, bool mustBeIn) {
-            int count = 0;
-            for (int i = 0; i < length; i++) {
-                ParameterInfo paramInfo = paramInfos[i + start];
+            var count = 0;
+            for (var i = 0; i < length; i++) {
+                var paramInfo = paramInfos[i + start];
                 if (IsInParameter(paramInfo)) {
                     count++;
                 }
@@ -417,10 +417,10 @@ namespace System.Web.Services.Protocols {
                 }
             }
 
-            ParameterInfo[] ins = new ParameterInfo[count];
+            var ins = new ParameterInfo[count];
             count = 0;
-            for (int i = 0; i < length; i++) {
-                ParameterInfo paramInfo = paramInfos[i + start];
+            for (var i = 0; i < length; i++) {
+                var paramInfo = paramInfos[i + start];
                 if (IsInParameter(paramInfo)) {
                     ins[count++] = paramInfo;
                 }
@@ -429,9 +429,9 @@ namespace System.Web.Services.Protocols {
         }
 
         static ParameterInfo[] GetOutParameters(MethodInfo methodInfo, ParameterInfo[] paramInfos, int start, int length, bool mustBeOut) {
-            int count = 0;
-            for (int i = 0; i < length; i++) {
-                ParameterInfo paramInfo = paramInfos[i + start];
+            var count = 0;
+            for (var i = 0; i < length; i++) {
+                var paramInfo = paramInfos[i + start];
                 if (IsOutParameter(paramInfo)) {
                     count++;
                 }
@@ -440,10 +440,10 @@ namespace System.Web.Services.Protocols {
                 }
             }
 
-            ParameterInfo[] outs = new ParameterInfo[count];
+            var outs = new ParameterInfo[count];
             count = 0;
-            for (int i = 0; i < length; i++) {
-                ParameterInfo paramInfo = paramInfos[i + start];
+            for (var i = 0; i < length; i++) {
+                var paramInfo = paramInfos[i + start];
                 if (IsOutParameter(paramInfo)) {
                     outs[count++] = paramInfo;
                 }
@@ -473,7 +473,7 @@ namespace System.Web.Services.Protocols {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         public static bool IsEndMethod(MethodInfo methodInfo) {
-            ParameterInfo[] paramInfos = methodInfo.GetParameters();
+            var paramInfos = methodInfo.GetParameters();
             return paramInfos.Length > 0 && 
                 typeof(IAsyncResult).IsAssignableFrom(paramInfos[0].ParameterType) &&
                 methodInfo.Name.StartsWith("End", StringComparison.Ordinal);
@@ -496,13 +496,13 @@ namespace System.Web.Services.Protocols {
             return Create(methodInfos, types, null);
         }
 
-        internal static LogicalMethodInfo[] Create(MethodInfo[] methodInfos, LogicalMethodTypes types, Hashtable declarations) {
+        internal static LogicalMethodInfo[] Create(MethodInfo[] methodInfos, LogicalMethodTypes types, Hashtable? declarations) {
             ArrayList begins = (types & LogicalMethodTypes.Async) != 0 ? new ArrayList() : null;
             Hashtable ends = (types & LogicalMethodTypes.Async) != 0 ? new Hashtable() : null;
             ArrayList syncs = (types & LogicalMethodTypes.Sync) != 0 ? new ArrayList() : null;
 
-            for (int i = 0; i < methodInfos.Length; i++) {
-                MethodInfo methodInfo = methodInfos[i];
+            for (var i = 0; i < methodInfos.Length; i++) {
+                var methodInfo = methodInfos[i];
                 if (IsBeginMethod(methodInfo)) {
                     if (begins != null) begins.Add(methodInfo);
                 }
@@ -514,21 +514,21 @@ namespace System.Web.Services.Protocols {
                 }
             }
 
-            int beginsCount = begins == null ? 0 : begins.Count;
-            int syncsCount = syncs == null ? 0 : syncs.Count;
-            int count = syncsCount + beginsCount;
-            LogicalMethodInfo[] methods = new LogicalMethodInfo[count];
+            var beginsCount = begins == null ? 0 : begins.Count;
+            var syncsCount = syncs == null ? 0 : syncs.Count;
+            var count = syncsCount + beginsCount;
+            var methods = new LogicalMethodInfo[count];
             count = 0;
-            for (int i = 0; i < syncsCount; i++) {
+            for (var i = 0; i < syncsCount; i++) {
                 MethodInfo syncMethod = (MethodInfo)syncs[i];
                 WebMethod webMethod = declarations == null ? null : (WebMethod)declarations[syncMethod];
                 methods[count] = new LogicalMethodInfo(syncMethod, webMethod);
                 methods[count].CheckContractOverride();
                 count++;
             }
-            for (int i = 0; i < beginsCount; i++) {
+            for (var i = 0; i < beginsCount; i++) {
                 MethodInfo beginMethodInfo = (MethodInfo)begins[i];
-                string endName = "End" + beginMethodInfo.Name.Substring(5);
+                var endName = "End" + beginMethodInfo.Name.Substring(5);
                 MethodInfo endMethodInfo = (MethodInfo)ends[endName];
                 if (endMethodInfo == null) {
                     throw new InvalidOperationException(Res.GetString(Res.WebAsyncMissingEnd, beginMethodInfo.DeclaringType.FullName, beginMethodInfo.Name, endName));
@@ -552,10 +552,10 @@ namespace System.Web.Services.Protocols {
         internal string GetKey() {
             if (methodInfo == null)
                 return string.Empty;
-            string key = methodInfo.DeclaringType.FullName + ":" + methodInfo.ToString();
+            var key = methodInfo.DeclaringType.FullName + ":" + methodInfo.ToString();
             // for very long method signatures use a hash string instead of actual method signature.
             if (key.Length > 1024) {
-                byte[] bytes = HashAlgorithm.ComputeHash(Encoding.UTF8.GetBytes(key));
+                var bytes = HashAlgorithm.ComputeHash(Encoding.UTF8.GetBytes(key));
                 key = Convert.ToBase64String(bytes);
             }
             return key;
@@ -565,10 +565,10 @@ namespace System.Web.Services.Protocols {
             if (declaration == null)
                 return;
             methodInfo.GetParameters();
-            ParameterInfo[] parameters = methodInfo.GetParameters();
-            foreach (ParameterInfo p in parameters) {
-                object[] attrs = p.GetCustomAttributes(false);
-                foreach (object o in attrs) {
+            var parameters = methodInfo.GetParameters();
+            foreach (var p in parameters) {
+                var attrs = p.GetCustomAttributes(false);
+                foreach (var o in attrs) {
                     if (o.GetType().Namespace == "System.Xml.Serialization") {
                         throw new InvalidOperationException(Res.GetString(Res.ContractOverride, methodInfo.Name, methodInfo.DeclaringType.FullName, declaration.DeclaringType.FullName, declaration.ToString(), o.ToString()));
                     }

@@ -217,7 +217,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValue ("")]
 		public string Text {
 			get {
-				object o = ViewState ["Text"];
+				var o = ViewState ["Text"];
 				if (o == null)
 					o = ViewState ["Value"];
 				if (o != null)
@@ -244,7 +244,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValue ("")]
 		public string Value {
 			get {
-				object o = ViewState ["Value"];
+				var o = ViewState ["Value"];
 				if (o == null)
 					o = ViewState ["Text"];
 				if (o != null)
@@ -325,8 +325,8 @@ namespace System.Web.UI.WebControls
 			get {
 				if (menu == null) return Value;
 				
-				StringBuilder sb = new StringBuilder (Value);
-				MenuItem item = parent;
+				var sb = new StringBuilder (Value);
+				var item = parent;
 				while (item != null) {
 					sb.Insert (0, menu.PathSeparator);
 					sb.Insert (0, item.Value);
@@ -349,8 +349,8 @@ namespace System.Web.UI.WebControls
 		internal string Path {
 			get {
 				if (path != null) return path;
-				StringBuilder sb = new StringBuilder (index.ToString());
-				MenuItem item = parent;
+				var sb = new StringBuilder (index.ToString());
+				var item = parent;
 				while (item != null) {
 					sb.Insert (0, '_');
 					sb.Insert (0, item.Index.ToString ());
@@ -365,12 +365,12 @@ namespace System.Web.UI.WebControls
 			get { return items != null; }
 		}
 		
-		void IStateManager.LoadViewState (object savedState)
+		void IStateManager.LoadViewState (object? savedState)
 		{
 			if (savedState == null)
 				return;
 
-			object[] states = (object[]) savedState;
+			var states = (object[]) savedState;
 			ViewState.LoadViewState (states [0]);
 			
 			if (states [1] != null)
@@ -379,11 +379,11 @@ namespace System.Web.UI.WebControls
 		
 		object IStateManager.SaveViewState ()
 		{
-			object[] states = new object[2];
+			var states = new object[2];
 			states[0] = ViewState.SaveViewState();
 			states[1] = (items == null ? null : ((IStateManager)items).SaveViewState());
 			
-			for (int i = 0; i < states.Length; i++) {
+			for (var i = 0; i < states.Length; i++) {
 				if (states [i] != null)
 					return states;
 			}
@@ -414,7 +414,7 @@ namespace System.Web.UI.WebControls
 		
 		object ICloneable.Clone ()
 		{
-			MenuItem nod = new MenuItem ();
+			var nod = new MenuItem ();
 			foreach (DictionaryEntry e in ViewState)
 				nod.ViewState [(string)e.Key] = e.Value;
 				
@@ -431,7 +431,7 @@ namespace System.Web.UI.WebControls
 			DataPath = hierarchyData.Path;
 			dataItem = hierarchyData.Item;
 
-			MenuItemBinding bin = GetBinding ();
+			var bin = GetBinding ();
 			if (bin != null) {
 
 				// Bind Enabled property

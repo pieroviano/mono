@@ -48,7 +48,7 @@ namespace System.Web.UI
 			get { return value; }
 		}
 
-		public MainDirectiveAttribute (string value)
+		public MainDirectiveAttribute (string? value)
 		{
 			this.unparsedValue = value;
 			if (value != null)

@@ -86,7 +86,7 @@ namespace System.Web.Configuration
 
 		protected internal override bool SerializeElement (XmlWriter writer, bool serializeCollectionKey)
 		{
-			bool ret = base.SerializeElement (writer, serializeCollectionKey);
+			var ret = base.SerializeElement (writer, serializeCollectionKey);
 
 			/* XXX more here? .. */
 

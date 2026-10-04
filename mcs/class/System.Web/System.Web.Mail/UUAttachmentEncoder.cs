@@ -40,7 +40,7 @@ namespace System.Web.Mail {
 	protected byte[] endl;
 	
 	public UUAttachmentEncoder( int mode , string fileName ) {
-	    string endlstr = "\r\n";
+	    var endlstr = "\r\n";
 	    
 	    beginTag = 
 		Encoding.ASCII.GetBytes( "begin " + mode + " " + fileName + endlstr); 
@@ -58,14 +58,14 @@ namespace System.Web.Mail {
 	    outs.Write( beginTag , 0 , beginTag.Length );	   
 	    
 	    // create the uu transfom and the buffers
-	    ToUUEncodingTransform tr = new ToUUEncodingTransform();
-	    byte[] input = new byte[ tr.InputBlockSize ];
-	    byte[] output = new byte[ tr.OutputBlockSize ];
+	    var tr = new ToUUEncodingTransform();
+	    var input = new byte[ tr.InputBlockSize ];
+	    var output = new byte[ tr.OutputBlockSize ];
 	    
 	    while( true ) {
 			
 		// read from the stream until no more data is available
-		int check = ins.Read( input , 0 , input.Length );
+		var check = ins.Read( input , 0 , input.Length );
 		if( check < 1 ) break;
 		
 		// if the read length is not InputBlockSize
@@ -75,7 +75,7 @@ namespace System.Web.Mail {
 		    outs.Write( output , 0 , output.Length );
 		    outs.Write( endl , 0 , endl.Length );
 		} else {
-		    byte[] finalBlock = tr.TransformFinalBlock( input , 0 , check );
+		    var finalBlock = tr.TransformFinalBlock( input , 0 , check );
 		    outs.Write( finalBlock , 0 , finalBlock.Length );
 		    outs.Write( endl , 0 , endl.Length );
 		    break;

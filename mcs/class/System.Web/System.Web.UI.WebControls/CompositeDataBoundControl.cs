@@ -50,9 +50,9 @@ namespace System.Web.UI.WebControls
 		{
 			Controls.Clear ();
 
-			object itemCount = ViewState ["_!ItemCount"];
+			var itemCount = ViewState ["_!ItemCount"];
 			if (itemCount != null) {
-				object [] data = new object [(int) itemCount];
+				var data = new object [(int) itemCount];
 				CreateChildControls (data, false);
 			} else if (RequiresDataBinding)
 				EnsureDataBound ();

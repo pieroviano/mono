@@ -45,8 +45,8 @@ namespace System.Web.Script.Services
 		#region IHttpHandlerFactory Members
 
 		public IHttpHandler GetHandler (HttpContext context, string requestType, string url, string pathTranslated) {
-			HttpRequest request = context.Request;
-			string contentType = request.ContentType;
+			var request = context.Request;
+			var contentType = request.ContentType;
 			if (!String.IsNullOrEmpty (contentType) && contentType.StartsWith ("application/json", StringComparison.OrdinalIgnoreCase)) {
 				Type handlerType = null;
 				if (url.EndsWith (ProfileService.DefaultWebServicePath, StringComparison.Ordinal))

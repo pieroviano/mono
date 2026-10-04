@@ -78,7 +78,7 @@ namespace System.Web.UI.WebControls
 			return new ControlParameter (this);
 		}
 		protected internal
-		override object Evaluate (HttpContext context, Control control)
+		override object Evaluate (HttpContext context, Control? control)
 		{
 			if (control == null)
 				return null;
@@ -99,12 +99,12 @@ namespace System.Web.UI.WebControls
 			if (c == null)
 				throw new InvalidOperationException ("Control '" + ControlID + "' not found.");
 
-			string propName = PropertyName;
+			var propName = PropertyName;
 			if (String.IsNullOrEmpty (propName)) {
-				object [] attrs = c.GetType ().GetCustomAttributes (typeof (ControlValuePropertyAttribute), true);
+				var attrs = c.GetType ().GetCustomAttributes (typeof (ControlValuePropertyAttribute), true);
 				if(attrs.Length==0)
 					throw new ArgumentException ("The PropertyName property is not set and the Control identified by the ControlID property is not decorated with a ControlValuePropertyAttribute attribute.");
-				ControlValuePropertyAttribute attr = (ControlValuePropertyAttribute) attrs [0];
+				var attr = (ControlValuePropertyAttribute) attrs [0];
 				propName = attr.Name;
  			}
 			

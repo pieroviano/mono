@@ -59,7 +59,7 @@ namespace System.Web.Routing {
         }
 
         private bool CheckUrlAccess(string virtualPath, RequestContext requestContext) {
-            IPrincipal user = requestContext.HttpContext.User;
+            var user = requestContext.HttpContext.User;
             // If there's no authenticated user, use the default identity
             if (user == null) {
                 user = new GenericPrincipal(new GenericIdentity(String.Empty, String.Empty), new string[0]);
@@ -68,7 +68,7 @@ namespace System.Web.Routing {
         }
 
         [SecurityPermission(SecurityAction.Assert, Unrestricted = true)]
-        private bool CheckUrlAccessWithAssert(string virtualPath, RequestContext requestContext, IPrincipal user) {
+        private bool CheckUrlAccessWithAssert(string virtualPath, RequestContext requestContext, IPrincipal? user) {
             return UrlAuthorizationModule.CheckUrlAccessForPrincipal(virtualPath, user, requestContext.HttpContext.Request.HttpMethod);
         }
 
@@ -77,9 +77,9 @@ namespace System.Web.Routing {
                 throw new ArgumentNullException("requestContext");
             }
 
-            string virtualPath = GetSubstitutedVirtualPath(requestContext);
+            var virtualPath = GetSubstitutedVirtualPath(requestContext);
             // Virtual Path ----s up with query strings, so we need to strip them off
-            int qmark = virtualPath.IndexOf('?');
+            var qmark = virtualPath.IndexOf('?');
             if (qmark != -1) {
                 virtualPath = virtualPath.Substring(0, qmark);
             }

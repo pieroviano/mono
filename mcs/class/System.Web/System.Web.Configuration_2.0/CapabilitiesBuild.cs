@@ -55,7 +55,7 @@ namespace System.Web.Configuration
 		/// <param name="request"></param>
 		/// <param name="initialCapabilities"></param>
 		/// <returns></returns>
-		public System.Web.Configuration.CapabilitiesResult Process(System.Web.HttpRequest request, System.Collections.IDictionary initialCapabilities)
+		public System.Web.Configuration.CapabilitiesResult Process(System.Web.HttpRequest? request, System.Collections.IDictionary initialCapabilities)
 		{
 			if (request != null)
 			{

@@ -48,8 +48,8 @@ namespace System.Web.Hosting {
 		void Init ()
 		{
 			if (phys_dir == null) {
-				string vpath = VirtualPath;
-				string path = HostingEnvironment.MapPath (vpath);
+				var vpath = VirtualPath;
+				var path = HostingEnvironment.MapPath (vpath);
 				if (File.Exists (path)) {
 					virtual_dir = VirtualPathUtility.GetDirectory (vpath);
 					phys_dir = HostingEnvironment.MapPath (virtual_dir);
@@ -65,7 +65,7 @@ namespace System.Web.Hosting {
 			if (String.IsNullOrEmpty (dir) || !Directory.Exists (dir))
 				return list;
 			
-			foreach (string name in Directory.GetDirectories (phys_dir))
+			foreach (var name in Directory.GetDirectories (phys_dir))
 				list.Add (new DefaultVirtualDirectory (VirtualPathUtility.Combine (virtual_dir, Path.GetFileName (name))));
 
 			return list;
@@ -76,7 +76,7 @@ namespace System.Web.Hosting {
 			if (String.IsNullOrEmpty (dir) || !Directory.Exists (dir))
 				return list;
 			
-			foreach (string name in Directory.GetFiles (phys_dir))
+			foreach (var name in Directory.GetFiles (phys_dir))
 				list.Add (new DefaultVirtualFile (VirtualPathUtility.Combine (virtual_dir, Path.GetFileName (name))));
 
 			return list;

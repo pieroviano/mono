@@ -66,7 +66,7 @@ namespace System.Web.UI.WebControls
 		[EditorAttribute ("System.Web.UI.Design.ImageUrlEditor, " + Consts.AssemblySystem_Design, "System.Drawing.Design.UITypeEditor, " + Consts.AssemblySystem_Drawing)]
 		public string FirstPageImageUrl {
 			get {
-				object ob = ViewState ["FirstPageImageUrl"];
+				var ob = ViewState ["FirstPageImageUrl"];
 				if (ob != null) return (string) ob;
 				return string.Empty;
 			}
@@ -81,7 +81,7 @@ namespace System.Web.UI.WebControls
 		[NotifyParentPropertyAttribute (true)]
 		public string FirstPageText {
 			get {
-				object ob = ViewState ["FirstPageText"];
+				var ob = ViewState ["FirstPageText"];
 				if (ob != null) return (string) ob;
 				return "&lt;&lt;";
 			}
@@ -98,7 +98,7 @@ namespace System.Web.UI.WebControls
 		[EditorAttribute ("System.Web.UI.Design.ImageUrlEditor, " + Consts.AssemblySystem_Design, "System.Drawing.Design.UITypeEditor, " + Consts.AssemblySystem_Drawing)]
 		public string LastPageImageUrl {
 			get {
-				object ob = ViewState ["LastPageImageUrl"];
+				var ob = ViewState ["LastPageImageUrl"];
 				if (ob != null) return (string) ob;
 				return string.Empty;
 			}
@@ -113,7 +113,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValueAttribute ("&gt;&gt;")]
 		public string LastPageText {
 			get {
-				object ob = ViewState ["LastPageText"];
+				var ob = ViewState ["LastPageText"];
 				if (ob != null) return (string) ob;
 				return "&gt;&gt;";
 			}
@@ -128,7 +128,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValueAttribute (PagerButtons.Numeric)]
 		public PagerButtons Mode {
 			get {
-				object ob = ViewState ["Mode"];
+				var ob = ViewState ["Mode"];
 				if (ob != null) return (PagerButtons) ob;
 				return PagerButtons.Numeric;
 			}
@@ -145,7 +145,7 @@ namespace System.Web.UI.WebControls
 		[EditorAttribute ("System.Web.UI.Design.ImageUrlEditor, " + Consts.AssemblySystem_Design, "System.Drawing.Design.UITypeEditor, " + Consts.AssemblySystem_Drawing)]
 		public string NextPageImageUrl {
 			get {
-				object ob = ViewState ["NextPageImageUrl"];
+				var ob = ViewState ["NextPageImageUrl"];
 				if (ob != null) return (string) ob;
 				return string.Empty;
 			}
@@ -160,7 +160,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValueAttribute ("&gt;")]
 		public string NextPageText {
 			get {
-				object ob = ViewState ["NextPageText"];
+				var ob = ViewState ["NextPageText"];
 				if (ob != null) return (string) ob;
 				return "&gt;";
 			}
@@ -175,7 +175,7 @@ namespace System.Web.UI.WebControls
 		[DefaultValueAttribute (10)]
 		public int PageButtonCount {
 			get {
-				object ob = ViewState ["PageButtonCount"];
+				var ob = ViewState ["PageButtonCount"];
 				if (ob != null) return (int) ob;
 				return 10;
 			}
@@ -190,7 +190,7 @@ namespace System.Web.UI.WebControls
 		[NotifyParentPropertyAttribute (true)]
 		public PagerPosition Position {
 			get {
-				object ob = ViewState ["Position"];
+				var ob = ViewState ["Position"];
 				if (ob != null) return (PagerPosition) ob;
 				return PagerPosition.Bottom;
 			}
@@ -206,7 +206,7 @@ namespace System.Web.UI.WebControls
 		[EditorAttribute ("System.Web.UI.Design.ImageUrlEditor, " + Consts.AssemblySystem_Design, "System.Drawing.Design.UITypeEditor, " + Consts.AssemblySystem_Drawing)]
 		public string PreviousPageImageUrl {
 			get {
-				object ob = ViewState ["PreviousPageImageUrl"];
+				var ob = ViewState ["PreviousPageImageUrl"];
 				if (ob != null) return (string) ob;
 				return string.Empty;
 			}
@@ -221,7 +221,7 @@ namespace System.Web.UI.WebControls
 		[NotifyParentPropertyAttribute (true)]
 		public string PreviousPageText {
 			get {
-				object ob = ViewState ["PreviousPageText"];
+				var ob = ViewState ["PreviousPageText"];
 				if (ob != null) return (string) ob;
 				return "&lt;";
 			}
@@ -236,7 +236,7 @@ namespace System.Web.UI.WebControls
 		[NotifyParentPropertyAttribute (true)]
 		public bool Visible {
 			get {
-				object ob = ViewState ["Visible"];
+				var ob = ViewState ["Visible"];
 				if (ob != null) return (bool) ob;
 				return true;
 			}
@@ -257,7 +257,7 @@ namespace System.Web.UI.WebControls
 			return string.Empty;
 		}
 
-		void IStateManager.LoadViewState (object savedState)
+		void IStateManager.LoadViewState (object? savedState)
 		{
 			ViewState.LoadViewState (savedState);
 		}
@@ -279,13 +279,13 @@ namespace System.Web.UI.WebControls
 		
 		internal Table CreatePagerControl (int currentPage, int pageCount)
 		{
-			Table table = new Table ();
-			TableRow row = new TableRow ();
+			var table = new Table ();
+			var row = new TableRow ();
 			table.Rows.Add (row);
 
-			int buttonCount = (Mode == PagerButtons.Numeric || Mode == PagerButtons.NumericFirstLast) ? PageButtonCount : 1;
-			int first = buttonCount * (currentPage / buttonCount);
-			int last = first + buttonCount;
+			var buttonCount = (Mode == PagerButtons.Numeric || Mode == PagerButtons.NumericFirstLast) ? PageButtonCount : 1;
+			var first = buttonCount * (currentPage / buttonCount);
+			var last = first + buttonCount;
 			if (last > pageCount) {
 				last = pageCount;
 				if (last - first < buttonCount)
@@ -310,7 +310,7 @@ namespace System.Web.UI.WebControls
 			if (Mode == PagerButtons.Numeric || Mode == PagerButtons.NumericFirstLast) {
 				if (first > 0)
 					row.Cells.Add (CreateCell ("...", string.Empty, "Page", first.ToString ()));
-				for (int n = first; n < last; n++)
+				for (var n = first; n < last; n++)
 					row.Cells.Add (CreateCell ((n + 1).ToString (), string.Empty, (n != currentPage) ? "Page" : "", (n != currentPage) ? (n + 1).ToString () : ""));
 				if (last < pageCount)
 					row.Cells.Add (CreateCell ("...", string.Empty, "Page", (last + 1).ToString ()));
@@ -332,11 +332,11 @@ namespace System.Web.UI.WebControls
 		}
 
 		TableCell CreateCell (string text, string image, string command, string argument) {
-			TableCell cell = new TableCell ();
+			var cell = new TableCell ();
 
 			Control button;
 			if (String.IsNullOrEmpty (command)) {
-				Label l = new Label ();
+				var l = new Label ();
 				l.Text = text;
 				button = l;
 			}

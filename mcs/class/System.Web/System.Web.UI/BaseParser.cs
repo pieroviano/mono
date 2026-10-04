@@ -48,12 +48,12 @@ namespace System.Web.UI
 		string baseVDir;
 		ILocation location;
 
-		internal string MapPath (string path)
+		internal string MapPath (string? path)
 		{
 			return MapPath (path, true);
 		}
 
-		internal string MapPath (string path, bool allowCrossAppMapping)
+		internal string MapPath (string? path, bool allowCrossAppMapping)
 		{
 			if (context == null)
 				throw new HttpException ("context is null!!");
@@ -77,7 +77,7 @@ namespace System.Web.UI
 
 			hash.Remove (key);
 
-			bool result = false;
+			var result = false;
 			if (String.Compare (val, "true", true, Helpers.InvariantCulture) == 0)
 				result = true;
 			else if (String.Compare (val, "false", true, Helpers.InvariantCulture) != 0)
@@ -96,7 +96,7 @@ namespace System.Web.UI
 			return val;
 		}
 
-		internal static bool IsDirective (string value, char directiveChar)
+		internal static bool IsDirective (string? value, char directiveChar)
 		{
 			if (value == null || value == String.Empty)
 				return false;
@@ -105,7 +105,7 @@ namespace System.Web.UI
 			if (!StrUtils.StartsWith (value, "<%") || !StrUtils.EndsWith (value, "%>"))
 				return false;
 
-			int dcIndex = value.IndexOf (directiveChar, 2);
+			var dcIndex = value.IndexOf (directiveChar, 2);
 			if (dcIndex == -1)
 				return false;
 
@@ -122,12 +122,12 @@ namespace System.Web.UI
 			return true;
 		}
 		
-		internal static bool IsDataBound (string value)
+		internal static bool IsDataBound (string? value)
 		{
 			return IsDirective (value, '#');
 		}
 
-		internal static bool IsExpression (string value)
+		internal static bool IsExpression (string? value)
 		{
 			return IsDirective (value, '$');
 		}
@@ -139,7 +139,7 @@ namespace System.Web.UI
 			throw new ParseException (location, String.Format (message, parms));
 		}
 		
-		internal void ThrowParseException (string message, Exception inner, params object[] parms)
+		internal void ThrowParseException (string message, Exception inner, params object[]? parms)
 		{
 			if (parms == null || parms.Length == 0)
 				throw new ParseException (location, message, inner);
@@ -189,7 +189,7 @@ namespace System.Web.UI
 
 		internal TSection GetConfigSection <TSection> (string section) where TSection: global::System.Configuration.ConfigurationSection
 		{
-			VirtualPath vpath = VirtualPath;
+			var vpath = VirtualPath;
 			string vp = vpath != null ? vpath.Absolute : null;
 			if (vp == null)
 				return WebConfigurationManager.GetSection (section) as TSection;

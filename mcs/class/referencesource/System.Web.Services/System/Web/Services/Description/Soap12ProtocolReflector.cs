@@ -59,9 +59,9 @@ namespace System.Web.Services.Description {
                 // we want to share soap 1.1's portType and messages so we delete ours and reference theirs
                 foreach (Operation op in PortType.Operations) {
                     foreach (OperationMessage msg in op.Messages) {
-                        ServiceDescription sd = GetServiceDescription(msg.Message.Namespace);
+                        var sd = GetServiceDescription(msg.Message.Namespace);
                         if (sd != null) {
-                            Message m = sd.Messages[msg.Message.Name];
+                            var m = sd.Messages[msg.Message.Name];
                             if (m != null)
                                 sd.Messages.Remove(m);
                         }
@@ -74,14 +74,14 @@ namespace System.Web.Services.Description {
         }
 
         protected override SoapBinding CreateSoapBinding(SoapBindingStyle style) {
-            Soap12Binding soapBinding = new Soap12Binding();
+            var soapBinding = new Soap12Binding();
             soapBinding.Transport = Soap12Binding.HttpTransport;
             soapBinding.Style = style;
             return soapBinding;
         }
 
         protected override SoapAddressBinding CreateSoapAddressBinding(string serviceUrl) {
-            Soap12AddressBinding soapAddress = new Soap12AddressBinding();
+            var soapAddress = new Soap12AddressBinding();
             soapAddress.Location = serviceUrl;
             if (this.UriFixups != null)
             {
@@ -94,7 +94,7 @@ namespace System.Web.Services.Description {
         }
 
         protected override SoapOperationBinding CreateSoapOperationBinding(SoapBindingStyle style, string action) {
-            Soap12OperationBinding soapOperation = new Soap12OperationBinding();
+            var soapOperation = new Soap12OperationBinding();
             soapOperation.SoapAction = action;
             soapOperation.Style = style;
             soapOperation.Method = SoapMethod;
@@ -105,7 +105,7 @@ namespace System.Web.Services.Description {
         }
 
         protected override SoapBodyBinding CreateSoapBodyBinding(SoapBindingUse use, string ns) {
-            Soap12BodyBinding soapBodyBinding = new Soap12BodyBinding();
+            var soapBodyBinding = new Soap12BodyBinding();
             soapBodyBinding.Use = use;
             if (use == SoapBindingUse.Encoded)
                 soapBodyBinding.Encoding = Soap12.Encoding;
@@ -118,7 +118,7 @@ namespace System.Web.Services.Description {
         }
 
         protected override SoapHeaderBinding CreateSoapHeaderBinding(XmlQualifiedName message, string partName, string ns, SoapBindingUse use) {
-            Soap12HeaderBinding soapHeaderBinding = new Soap12HeaderBinding();
+            var soapHeaderBinding = new Soap12HeaderBinding();
             soapHeaderBinding.Message = message;
             soapHeaderBinding.Part = partName;
             soapHeaderBinding.Namespace = ns;

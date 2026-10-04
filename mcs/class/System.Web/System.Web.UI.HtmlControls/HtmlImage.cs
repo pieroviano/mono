@@ -50,7 +50,7 @@ namespace System.Web.UI.HtmlControls
 		[WebCategory("Layout")]
 		public string Align {
 			get {
-				string align = Attributes["align"];
+				var align = Attributes["align"];
 
 				if (align == null) {
 					return (String.Empty);
@@ -74,7 +74,7 @@ namespace System.Web.UI.HtmlControls
 		[Localizable (true)]
 		public string Alt {
 			get {
-				string alt = Attributes["alt"];
+				var alt = Attributes["alt"];
 
 				if (alt == null) {
 					return (String.Empty);
@@ -97,7 +97,7 @@ namespace System.Web.UI.HtmlControls
 		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public int Border {
 			get {
-				string border = Attributes["border"];
+				var border = Attributes["border"];
 				
 				if (border == null) {
 					return (-1);
@@ -120,7 +120,7 @@ namespace System.Web.UI.HtmlControls
 		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public int Height {
 			get {
-				string height = Attributes["height"];
+				var height = Attributes["height"];
 				
 				if (height == null) {
 					return (-1);
@@ -144,7 +144,7 @@ namespace System.Web.UI.HtmlControls
 		[UrlProperty]
 		public string Src {
 			get {
-				string src = Attributes["src"];
+				var src = Attributes["src"];
 
 				if (src == null) {
 					return (String.Empty);
@@ -167,7 +167,7 @@ namespace System.Web.UI.HtmlControls
 		[DesignerSerializationVisibility (DesignerSerializationVisibility.Hidden)]
 		public int Width {
 			get {
-				string width = Attributes["width"];
+				var width = Attributes["width"];
 
 				if (width == null) {
 					return (-1);
@@ -193,7 +193,7 @@ namespace System.Web.UI.HtmlControls
 			 * is empty. Firefox, at least, will fetch the current
 			 * page as the src="" if other img attributes exist.
 			 */
-			string src = Attributes["src"];
+			var src = Attributes["src"];
 			if (src == null || src.Length == 0)
 				Attributes.Remove ("src");
 

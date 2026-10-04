@@ -163,7 +163,7 @@ namespace System.Web.Mail {
 	    
 	    if( LastResponse.StatusCode != statusCode ) {
 		
-		string msg = "" + 
+		var msg = "" + 
 		    "Server reponse: '" + lastResponse.RawResponse + "';" +
 		    "Status code: '" +  lastResponse.StatusCode + "';" + 
 		    "Expected status code: '" + statusCode + "';" + 
@@ -187,7 +187,7 @@ namespace System.Web.Mail {
 	
 	// writes a line to the server
 	public void WriteLine( string line ) {
-	    byte[] buffer = encoding.GetBytes( line + "\r\n" );
+	    var buffer = encoding.GetBytes( line + "\r\n" );
 	    
 	    stream.Write( buffer , 0 , buffer.Length );
 
@@ -197,16 +197,16 @@ namespace System.Web.Mail {
 	// read a line from the server
 	public void ReadResponse( ) {
 		
-		byte[] buffer = new byte [512];
-		int position = 0;
-		bool lastLine = false;
+		var buffer = new byte [512];
+		var position = 0;
+		var lastLine = false;
 
 		do {
-			int readLength = stream.Read (buffer , position , buffer.Length - position);
+			var readLength = stream.Read (buffer , position , buffer.Length - position);
 			if (readLength > 0) { 
-				int available = position + readLength - 1;
+				var available = position + readLength - 1;
 				if (available > 4 && (buffer [available] == '\n' || buffer [available] == '\r'))
-					for (int index = available - 3; ; index--) {
+					for (var index = available - 3; ; index--) {
 						if (index < 0 || buffer [index] == '\n' || buffer [index] == '\r') {
 							lastLine = buffer [index + 4] == ' ';
 							break;
@@ -218,14 +218,14 @@ namespace System.Web.Mail {
 
 				// check if buffer is full
 				if (position == buffer.Length) {
-					byte [] newBuffer = new byte [buffer.Length * 2];
+					var newBuffer = new byte [buffer.Length * 2];
 					Array.Copy (buffer, 0, newBuffer, 0, buffer.Length);
 					buffer = newBuffer;
 				}
 			}
 		} while(!lastLine);
 
-		string line = encoding.GetString (buffer , 0 , position - 1);
+		var line = encoding.GetString (buffer , 0 , position - 1);
 			
 	    // parse the line to the lastResponse object
 	    lastResponse = SmtpResponse.Parse (line);

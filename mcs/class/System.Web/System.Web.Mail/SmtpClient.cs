@@ -63,7 +63,7 @@ namespace System.Web.Mail {
 		{
 			tcpConnection = new TcpClient (server, port);
 	    
-			NetworkStream stream = tcpConnection.GetStream ();
+			var stream = tcpConnection.GetStream ();
 			smtp = new SmtpStream (stream);
 		}
 	    	    
@@ -104,7 +104,7 @@ namespace System.Web.Mail {
 				smtp.WriteEhlo (Dns.GetHostName ());
 
 				if (usessl) {
-					bool isSSL = smtp.WriteStartTLS ();
+					var isSSL = smtp.WriteStartTLS ();
 					if (isSSL)
 						ChangeToSSLSocket ();
 				}
@@ -183,10 +183,10 @@ namespace System.Web.Mail {
 		void SendMultipartMail (MailMessageWrapper msg)
 		{    
 			// generate the boundary between attachments
-			string boundary = MailUtil.GenerateBoundary ();
+			var boundary = MailUtil.GenerateBoundary ();
 		
 			// set the Content-Type header to multipart/mixed
-			string bodyContentType = msg.Header.ContentType;
+			var bodyContentType = msg.Header.ContentType;
 
 			msg.Header.ContentType = String.Concat ("multipart/mixed;\r\n   boundary=", boundary);
 		
@@ -197,7 +197,7 @@ namespace System.Web.Mail {
 			// before the attachments
 			smtp.WriteBoundary (boundary);
 		
-			MailHeader partHeader = new MailHeader ();
+			var partHeader = new MailHeader ();
 			partHeader.ContentType = bodyContentType;		
 
 			// Add all the custom headers to body part as specified in 
@@ -227,10 +227,10 @@ namespace System.Web.Mail {
 
 			// now start to write the attachments
 	    
-			for (int i=0; i< msg.Attachments.Count ; i++) {
+			for (var i=0; i< msg.Attachments.Count ; i++) {
 				MailAttachment a = (MailAttachment)msg.Attachments[ i ];
-				FileInfo fileInfo = new FileInfo (a.Filename);
-				MailHeader aHeader = new MailHeader ();
+				var fileInfo = new FileInfo (a.Filename);
+				var aHeader = new MailHeader ();
 		
 				aHeader.ContentType = 
 					String.Concat (MimeTypes.GetMimeType (fileInfo.Name), "; name=\"", fileInfo.Name, "\"");
@@ -241,7 +241,7 @@ namespace System.Web.Mail {
 		   
 				// perform the actual writing of the file.
 				// read from the file stream and write to the tcp stream
-				FileStream ins = fileInfo.OpenRead ();
+				var ins = fileInfo.OpenRead ();
 		
 				// create an apropriate encoder
 				IAttachmentEncoder encoder;

@@ -31,8 +31,8 @@ namespace System.Web.Services.Protocols {
         internal void Add(Type key, object value) {
             lock (this) {
                 if (cache[key] == value) return;
-                Hashtable clone = new Hashtable();
-                foreach (object k in cache.Keys) {
+                var clone = new Hashtable();
+                foreach (var k in cache.Keys) {
                     clone.Add(k, cache[k]);
                 }
                 cache = clone;
@@ -74,7 +74,7 @@ namespace System.Web.Services.Protocols {
         internal static Object InternalSyncObject {
             get {
                 if (s_InternalSyncObject == null) {
-                    Object o = new Object();
+                    var o = new Object();
                     Interlocked.CompareExchange(ref s_InternalSyncObject, o, null);
                 }
                 return s_InternalSyncObject;
@@ -216,7 +216,7 @@ namespace System.Web.Services.Protocols {
 
         /// <include file='doc\ClientProtocol.uex' path='docs/doc[@for="WebClientProtocol.Abort"]/*' />
         public virtual void Abort() {
-            WebRequest request = PendingSyncRequest;
+            var request = PendingSyncRequest;
             if (request != null)
                 request.Abort();
         }
@@ -241,7 +241,7 @@ namespace System.Web.Services.Protocols {
                 }
             }
             Debug.Assert(asyncResult.Request == null, "calling GetWebRequest twice for the same WebClientAsyncResult");
-            WebRequest request = GetWebRequest(requestUri);
+            var request = GetWebRequest(requestUri);
             asyncResult.Request = request;
             InitializeAsyncRequest(request, asyncResult.InternalAsyncState);
             if (callWriteAsyncRequest)
@@ -274,9 +274,9 @@ namespace System.Web.Services.Protocols {
         static private void GetRequestStreamAsyncCallback(IAsyncResult asyncResult) {
             WebClientAsyncResult client = (WebClientAsyncResult)asyncResult.AsyncState;
             client.CombineCompletedSynchronously(asyncResult.CompletedSynchronously);
-            bool processingRequest = true;
+            var processingRequest = true;
             try {
-                Stream requestStream = client.Request.EndGetRequestStream(asyncResult);
+                var requestStream = client.Request.EndGetRequestStream(asyncResult);
                 processingRequest = false;
                 try {
                     client.ClientProtocol.AsyncBufferedSerialize(client.Request, requestStream, client.InternalAsyncState);
@@ -344,8 +344,8 @@ namespace System.Web.Services.Protocols {
         static private void ReadAsyncResponseStream(WebClientAsyncResult client) {
             IAsyncResult asyncResult;
             do {
-                byte[] buffer = client.Buffer;
-                long contentLength = client.Response.ContentLength;
+                var buffer = client.Buffer;
+                var contentLength = client.Response.ContentLength;
                 if (buffer == null)
                     buffer = client.Buffer = new byte[(contentLength == -1) ? 1024 : contentLength];
                 else if (contentLength != -1 && contentLength > buffer.Length)
@@ -359,8 +359,8 @@ namespace System.Web.Services.Protocols {
 
         static private bool ProcessAsyncResponseStreamResult(WebClientAsyncResult client, IAsyncResult asyncResult) {
             bool complete;
-            int bytesRead = client.ResponseStream.EndRead(asyncResult);
-            long contentLength = client.Response.ContentLength;
+            var bytesRead = client.ResponseStream.EndRead(asyncResult);
+            var contentLength = client.Response.ContentLength;
             if (contentLength > 0 && bytesRead == contentLength) {
                 // the non-chunked response finished in a single read
                 client.ResponseBufferedStream = new MemoryStream(client.Buffer);
@@ -368,7 +368,7 @@ namespace System.Web.Services.Protocols {
             }
             else if (bytesRead > 0) {
                 if (client.ResponseBufferedStream == null) {
-                    int capacity = (int)((contentLength == -1) ? client.Buffer.Length : contentLength);
+                    var capacity = (int)((contentLength == -1) ? client.Buffer.Length : contentLength);
                     client.ResponseBufferedStream = new MemoryStream(capacity);
                 }
                 client.ResponseBufferedStream.Write(client.Buffer, 0, bytesRead);
@@ -388,7 +388,7 @@ namespace System.Web.Services.Protocols {
             if (asyncResult.CompletedSynchronously)
                 return;
             try {
-                bool complete = ProcessAsyncResponseStreamResult(client, asyncResult);
+                var complete = ProcessAsyncResponseStreamResult(client, asyncResult);
                 if (!complete)
                     ReadAsyncResponseStream(client);
             }
@@ -424,7 +424,7 @@ namespace System.Web.Services.Protocols {
         protected virtual WebRequest GetWebRequest(Uri uri) {
             if (uri == null)
                 throw new InvalidOperationException(Res.GetString(Res.WebMissingPath));
-            WebRequest request = (WebRequest)WebRequest.Create(uri);
+            var request = (WebRequest)WebRequest.Create(uri);
             PendingSyncRequest = request;
             request.Timeout = this.timeout;
             request.ConnectionGroupName = connectionGroupName;
@@ -477,7 +477,7 @@ namespace System.Web.Services.Protocols {
         ///    </para>
         /// </devdoc>
         protected virtual WebResponse GetWebResponse(WebRequest request, IAsyncResult result) {
-            WebResponse response = request.EndGetResponse(result);
+            var response = request.EndGetResponse(result);
 #if !MONO
             if (response != null && debugger != null)
                 debugger.NotifyClientCallReturn(response);
@@ -506,11 +506,11 @@ namespace System.Web.Services.Protocols {
         internal WebResponse EndSend(IAsyncResult asyncResult, ref object internalAsyncState, ref Stream responseStream) {
             if (asyncResult == null) throw new ArgumentNullException(Res.GetString(Res.WebNullAsyncResultInEnd));
 
-            WebClientAsyncResult client = (WebClientAsyncResult)asyncResult;
+            var client = (WebClientAsyncResult)asyncResult;
             if (client.EndSendCalled)
                 throw new InvalidOperationException(Res.GetString(Res.CanTCallTheEndMethodOfAnAsyncCallMoreThan));
             client.EndSendCalled = true;
-            WebResponse response = client.WaitForResponse();
+            var response = client.WaitForResponse();
             internalAsyncState = client.InternalAsyncState;
             responseStream = client.ResponseBufferedStream;
             return response;
@@ -577,7 +577,7 @@ namespace System.Web.Services.Protocols {
         /// <include file='doc\ClientProtocol.uex' path='docs/doc[@for="WebClientAsyncResult.AsyncWaitHandle"]/*' />
         public WaitHandle AsyncWaitHandle {
             get {
-                bool savedIsCompleted = isCompleted;
+                var savedIsCompleted = isCompleted;
                 if (manualResetEvent == null) {
                     lock (this) {
                         if (manualResetEvent == null)
@@ -600,7 +600,7 @@ namespace System.Web.Services.Protocols {
 
         /// <include file='doc\ClientProtocol.uex' path='docs/doc[@for="WebClientAsyncResult.Abort"]/*' />
         public void Abort() {
-            WebRequest req = Request;
+            var req = Request;
             if (req != null)
                 req.Abort();
         }
@@ -840,7 +840,7 @@ namespace System.Web.Services.Protocols {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         protected override WebRequest GetWebRequest(Uri uri) {
-            WebRequest request = base.GetWebRequest(uri);
+            var request = base.GetWebRequest(uri);
             HttpWebRequest httpRequest = request as HttpWebRequest;
             if (httpRequest != null) {
                 httpRequest.UserAgent = UserAgent;
@@ -869,7 +869,7 @@ namespace System.Web.Services.Protocols {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         protected override WebResponse GetWebResponse(WebRequest request) {
-            WebResponse response = base.GetWebResponse(request);
+            var response = base.GetWebResponse(request);
             return response;
         }
 
@@ -878,7 +878,7 @@ namespace System.Web.Services.Protocols {
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
         protected override WebResponse GetWebResponse(WebRequest request, IAsyncResult result) {
-            WebResponse response = base.GetWebResponse(request, result);
+            var response = base.GetWebResponse(request, result);
             return response;
         }
 
@@ -893,10 +893,10 @@ namespace System.Web.Services.Protocols {
         /// <devdoc>
         ///    <para>[To be supplied.]</para>
         /// </devdoc>
-        protected void CancelAsync(object userState) {
+        protected void CancelAsync(object? userState) {
             if (userState == null)
                 userState = NullToken;
-            WebClientAsyncResult result = OperationCompleted(userState, new object[] { null }, null, true);
+            var result = OperationCompleted(userState, new object[] { null }, null, true);
             if (result != null) {
                 result.Abort();
             }
@@ -906,9 +906,9 @@ namespace System.Web.Services.Protocols {
             Debug.Assert(userState != null, "We should not call OperationCompleted with null user token.");
             WebClientAsyncResult result = (WebClientAsyncResult)AsyncInvokes[userState];
             if (result != null) {
-                AsyncOperation asyncOp = (AsyncOperation)result.AsyncState;
+                var asyncOp = (AsyncOperation)result.AsyncState;
                 UserToken token = (UserToken)asyncOp.UserSuppliedState;
-                InvokeCompletedEventArgs eventArgs = new InvokeCompletedEventArgs(parameters, e, canceled, userState);
+                var eventArgs = new InvokeCompletedEventArgs(parameters, e, canceled, userState);
                 AsyncInvokes.Remove(userState);
                 asyncOp.PostOperationCompleted(token.Callback, eventArgs);
             }
@@ -921,14 +921,14 @@ namespace System.Web.Services.Protocols {
         /// </devdoc>
         public static bool GenerateXmlMappings(Type type, ArrayList mappings) {
             if (typeof(SoapHttpClientProtocol).IsAssignableFrom(type)) {
-                WebServiceBindingAttribute binding = WebServiceBindingReflector.GetAttribute(type);
+                var binding = WebServiceBindingReflector.GetAttribute(type);
                 if (binding == null)
                     throw new InvalidOperationException(Res.GetString(Res.WebClientBindingAttributeRequired));
                 // Note: Service namespace is taken from WebserviceBindingAttribute and not WebserviceAttribute because
                 // the generated proxy does not have a WebServiceAttribute; however all have a WebServiceBindingAttribute. 
-                string serviceNamespace = binding.Namespace;
-                bool serviceDefaultIsEncoded = SoapReflector.ServiceDefaultIsEncoded(type);
-                ArrayList soapMethodList = new ArrayList();
+                var serviceNamespace = binding.Namespace;
+                var serviceDefaultIsEncoded = SoapReflector.ServiceDefaultIsEncoded(type);
+                var soapMethodList = new ArrayList();
                 SoapClientType.GenerateXmlMappings(type, soapMethodList, serviceNamespace, serviceDefaultIsEncoded, mappings);
                 return true;
             }
@@ -943,9 +943,9 @@ namespace System.Web.Services.Protocols {
             if (types == null)
                 throw new ArgumentNullException("types");
 
-            Hashtable mappedTypes = new Hashtable();
-            foreach (Type type in types) {
-                ArrayList typeMappings = new ArrayList();
+            var mappedTypes = new Hashtable();
+            foreach (var type in types) {
+                var typeMappings = new ArrayList();
                 if (GenerateXmlMappings(type, mappings)) {
                     mappedTypes.Add(type, typeMappings);
                     mappings.Add(typeMappings);

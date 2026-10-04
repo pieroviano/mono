@@ -93,7 +93,7 @@ namespace System.Configuration
 			}
 		}
 #if (XML_DEP)
-		internal static IDictionary GetDictionary (IDictionary prev,
+		internal static IDictionary GetDictionary (IDictionary? prev,
 							   XmlNode region,
 							   string nameAtt,
 							   string valueAtt)
@@ -103,11 +103,11 @@ namespace System.Configuration
 				hash = new Hashtable (CaseInsensitiveHashCodeProvider.Default,
 						      CaseInsensitiveComparer.Default);
 			else {
-				Hashtable aux = (Hashtable) prev;
+				var aux = (Hashtable) prev;
 				hash = (Hashtable) aux.Clone ();
 			}
 
-			CollectionWrapper result = new CollectionWrapper (hash);
+			var result = new CollectionWrapper (hash);
 			result = GoGetThem (result, region, nameAtt, valueAtt);
 			if (result == null)
 				return null;
@@ -115,19 +115,19 @@ namespace System.Configuration
 			return result.UnWrap () as IDictionary;
 		}
 
-		internal static ConfigNameValueCollection GetNameValueCollection (NameValueCollection prev,
+		internal static ConfigNameValueCollection GetNameValueCollection (NameValueCollection? prev,
 									    XmlNode region,
 									    string nameAtt,
 									    string valueAtt)
 		{
-			ConfigNameValueCollection coll =
+			var coll =
 					new ConfigNameValueCollection (CaseInsensitiveHashCodeProvider.Default,
 								 CaseInsensitiveComparer.Default);
 
 			if (prev != null)
 				coll.Add (prev);
 
-			CollectionWrapper result = new CollectionWrapper (coll);
+			var result = new CollectionWrapper (coll);
 			result = GoGetThem (result, region, nameAtt, valueAtt);
 			if (result == null)
 				return null;
@@ -148,16 +148,16 @@ namespace System.Configuration
 
 			XmlNode keyNode;
 			XmlNode valueNode;
-			XmlNodeList childs = region.ChildNodes;
+			var childs = region.ChildNodes;
 			foreach (XmlNode node in childs) {
-				XmlNodeType ntype = node.NodeType;
+				var ntype = node.NodeType;
 				if (ntype == XmlNodeType.Whitespace || ntype == XmlNodeType.Comment)
 					continue;
 
 				if (ntype != XmlNodeType.Element)
 					throw new ConfigurationException ("Only XmlElement allowed", node);
 					
-				string nodeName = node.Name;
+				var nodeName = node.Name;
 				if (nodeName == "clear") {
 					if (node.Attributes != null && node.Attributes.Count != 0)
 						throw new ConfigurationException ("Unknown attribute", node);

@@ -93,34 +93,34 @@ namespace System.Web.Compilation
 			Build (null);
 		}
 		
-		public void Build (CodeCompileUnit unit)
+		public void Build (CodeCompileUnit? unit)
 		{
-			Dictionary <string, List <string>> cultures = appResourcesCompiler.CultureFiles;
-			List <string> defaultCultureFiles = appResourcesCompiler.DefaultCultureFiles;
+			var cultures = appResourcesCompiler.CultureFiles;
+			var defaultCultureFiles = appResourcesCompiler.DefaultCultureFiles;
 			
 			if (defaultCultureFiles != null)
 				BuildDefaultAssembly (defaultCultureFiles, unit);
 			
-			foreach (KeyValuePair <string, List <string>> kvp in cultures)
+			foreach (var kvp in cultures)
 				BuildSatelliteAssembly (kvp.Key, kvp.Value);
 		}
 
-		void BuildDefaultAssembly (List <string> files, CodeCompileUnit unit)
+		void BuildDefaultAssembly (List <string> files, CodeCompileUnit? unit)
 		{
-			AssemblyBuilder abuilder = new AssemblyBuilder (Provider);
+			var abuilder = new AssemblyBuilder (Provider);
 			if (unit != null)
 				abuilder.AddCodeCompileUnit (unit);
 			
-			CompilerParameters cp = ci.CreateDefaultCompilerParameters ();
+			var cp = ci.CreateDefaultCompilerParameters ();
 			cp.OutputAssembly = baseAssemblyPath;
 			cp.GenerateExecutable = false;
 			cp.TreatWarningsAsErrors = true;
 			cp.IncludeDebugInformation = config.Debug;
 
-			foreach (string f in files)
+			foreach (var f in files)
 				cp.EmbeddedResources.Add (f);
 			
-			CompilerResults results = abuilder.BuildAssembly (cp);
+			var results = abuilder.BuildAssembly (cp);
 			if (results == null)
 				return;
 			
@@ -139,11 +139,11 @@ namespace System.Web.Compilation
 
 		void BuildSatelliteAssembly (string cultureName, List <string> files)
 		{
-			string assemblyPath = BuildAssemblyPath (cultureName);
+			var assemblyPath = BuildAssemblyPath (cultureName);
 			var info = new ProcessStartInfo ();
 			var al = new Process ();
 
-			string arguments = SetAlPath (info);
+			var arguments = SetAlPath (info);
 			var sb = new StringBuilder (arguments);
 
 			sb.Append ("/c:\"" + cultureName + "\" ");
@@ -152,10 +152,10 @@ namespace System.Web.Compilation
 			if (mainAssembly != null)
 				sb.Append ("/template:\"" + mainAssembly.Location + "\" ");
 			
-			string responseFilePath = assemblyPath + ".response";
-			using (FileStream fs = File.OpenWrite (responseFilePath)) {
-				using (StreamWriter sw = new StreamWriter (fs)) {
-					foreach (string f in files) 
+			var responseFilePath = assemblyPath + ".response";
+			using (var fs = File.OpenWrite (responseFilePath)) {
+				using (var sw = new StreamWriter (fs)) {
+					foreach (var f in files) 
 						sw.WriteLine ("/embed:\"" + f + "\" ");
 				}
 			}
@@ -190,7 +190,7 @@ namespace System.Web.Compilation
 			}
 
 			Exception alException = null;
-			int exitCode = 0;
+			var exitCode = 0;
 			try {
 				al.BeginOutputReadLine ();
 				al.BeginErrorReadLine ();
@@ -216,9 +216,9 @@ namespace System.Web.Compilation
 						if (errors == null)
 							errors = new CompilerErrorCollection ();
 
-						int colon = line.IndexOf (':', 13);
-						string errorNumber = colon != -1 ? line.Substring (13, colon - 13) : "Unknown";
-						string errorText = colon != -1 ? line.Substring (colon + 1) : line.Substring (13);
+						var colon = line.IndexOf (':', 13);
+						var errorNumber = colon != -1 ? line.Substring (13, colon - 13) : "Unknown";
+						var errorText = colon != -1 ? line.Substring (colon + 1) : line.Substring (13);
 						
 						errors.Add (new CompilerError (Path.GetFileName (assemblyPath), 0, 0, errorNumber, errorText));
 					}
@@ -241,12 +241,12 @@ namespace System.Web.Compilation
 
 		string BuildAssemblyPath (string cultureName)
 		{
-			string baseDir = Path.Combine (baseAssemblyDirectory, cultureName);
+			var baseDir = Path.Combine (baseAssemblyDirectory, cultureName);
 			if (!Directory.Exists (baseDir))
 				Directory.CreateDirectory (baseDir);
 			
-			string baseFileName = Path.GetFileNameWithoutExtension (baseAssemblyPath);
-			string fileName = String.Concat (baseFileName, ".resources.dll");
+			var baseFileName = Path.GetFileNameWithoutExtension (baseAssemblyPath);
+			var fileName = String.Concat (baseFileName, ".resources.dll");
 			fileName = Path.Combine (baseDir, fileName);
 
 			return fileName;
@@ -254,10 +254,10 @@ namespace System.Web.Compilation
 
 		CodeCompileUnit GenerateAssemblyInfo (string cultureName)
 		{
-			CodeAttributeArgument[] args = new CodeAttributeArgument [1];
+			var args = new CodeAttributeArgument [1];
 			args [0] = new CodeAttributeArgument (new CodePrimitiveExpression (cultureName));
 
-			CodeCompileUnit unit = new CodeCompileUnit ();
+			var unit = new CodeCompileUnit ();
 			unit.AssemblyCustomAttributes.Add (
 				new CodeAttributeDeclaration (
 					new CodeTypeReference ("System.Reflection.AssemblyCultureAttribute"),

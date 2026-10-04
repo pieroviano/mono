@@ -87,7 +87,7 @@ namespace System.Web.Configuration
 
 		protected override object GetElementKey (ConfigurationElement element)
 		{
-			ExpressionBuilder eb = (ExpressionBuilder) element;
+			var eb = (ExpressionBuilder) element;
 			return eb.ExpressionPrefix;
 		}
 	}

@@ -41,17 +41,17 @@ namespace System.Web.Util
 
 		static Random rnd = new Random ();
 		
-		internal static object CreateTemporaryFile (string tempdir, CreateTempFile createFile)
+		internal static object CreateTemporaryFile (string? tempdir, CreateTempFile? createFile)
 		{
 			return CreateTemporaryFile (tempdir, null, null, createFile);
 		}
 
-		internal static object CreateTemporaryFile (string tempdir, string extension, CreateTempFile createFile)
+		internal static object CreateTemporaryFile (string? tempdir, string? extension, CreateTempFile? createFile)
 		{
 			return CreateTemporaryFile (tempdir, null, extension, createFile);
 		}
 
-		internal static object CreateTemporaryFile (string tempdir, string prefix, string extension, CreateTempFile createFile)
+		internal static object CreateTemporaryFile (string? tempdir, string? prefix, string? extension, CreateTempFile? createFile)
 		{
 			if (tempdir == null || tempdir.Length == 0)
 				return null;
@@ -81,15 +81,15 @@ namespace System.Web.Util
 		}
 
 		[Conditional ("DEVEL")]
-		public static void WriteLineLog (string logFilePath, string format, params object[] parms)
+		public static void WriteLineLog (string? logFilePath, string format, params object[]? parms)
 		{
 			WriteLog (logFilePath, format + Environment.NewLine, parms);
 		}
 		
 		[Conditional ("DEVEL")]
-		public static void WriteLog (string logFilePath, string format, params object[] parms)
+		public static void WriteLog (string? logFilePath, string format, params object[]? parms)
 		{
-			string path = logFilePath != null && logFilePath.Length > 0 ? logFilePath :
+			var path = logFilePath != null && logFilePath.Length > 0 ? logFilePath :
 				Path.Combine (Path.GetTempPath (), "System.Web.log");
 			using (TextWriter tw = new StreamWriter (path, true)) {
 				if (parms != null && parms.Length > 0)

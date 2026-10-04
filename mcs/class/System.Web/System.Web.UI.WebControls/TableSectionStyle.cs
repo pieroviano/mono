@@ -47,7 +47,7 @@ namespace System.Web.UI.WebControls {
 // commented to match MS behaviour (beta2)
 //				if ((styles & Styles.Visible) == 0)
 //					return true;
-				object o = ViewState ["Visible"];
+				var o = ViewState ["Visible"];
 				return (o == null) ? true : (bool) o;
 			}
 			set {

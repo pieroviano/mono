@@ -145,7 +145,7 @@ namespace System.Web.UI {
 
 			arguments.RaiseUnsupportedCapabilitiesError (this);
 			
-			IEnumerable selectList = ExecuteSelect (arguments);
+			var selectList = ExecuteSelect (arguments);
 			callback (selectList);
 		}
 

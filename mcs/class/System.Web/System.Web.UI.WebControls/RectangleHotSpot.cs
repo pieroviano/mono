@@ -47,7 +47,7 @@ namespace System.Web.UI.WebControls
 	    [DefaultValueAttribute (0)]
 		public int Left {
 			get {
-				object o = ViewState ["Left"];
+				var o = ViewState ["Left"];
 				return o != null ? (int) o : 0;
 			}
 			set {
@@ -58,7 +58,7 @@ namespace System.Web.UI.WebControls
 	    [DefaultValueAttribute (0)]
 		public int Top {
 			get {
-				object o = ViewState ["Top"];
+				var o = ViewState ["Top"];
 				return o != null ? (int) o : 0;
 			}
 			set {
@@ -69,7 +69,7 @@ namespace System.Web.UI.WebControls
 	    [DefaultValueAttribute (0)]
 		public int Right {
 			get {
-				object o = ViewState ["Right"];
+				var o = ViewState ["Right"];
 				return o != null ? (int) o : 0;
 			}
 			set {
@@ -80,7 +80,7 @@ namespace System.Web.UI.WebControls
 	    [DefaultValueAttribute (0)]
 		public int Bottom {
 			get {
-				object o = ViewState ["Bottom"];
+				var o = ViewState ["Bottom"];
 				return o != null ? (int) o : 0;
 			}
 			set {

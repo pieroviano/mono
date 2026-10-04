@@ -54,11 +54,11 @@ namespace System.Web.UI {
 
 		public string Text {
 			get {
-				StringBuilder text = new StringBuilder ();
-				int stLength = staticLiterals == null ? 0 : staticLiterals.Length;
-				int dbLength = dataBoundLiterals.Length;
-				int max = (stLength > dbLength) ? stLength : dbLength;
-				for (int i = 0; i < max; i++){
+				var text = new StringBuilder ();
+				var stLength = staticLiterals == null ? 0 : staticLiterals.Length;
+				var dbLength = dataBoundLiterals.Length;
+				var max = (stLength > dbLength) ? stLength : dbLength;
+				for (var i = 0; i < max; i++){
 					if (i < stLength)
 						text.Append (staticLiterals [i]);
 					if (i < dbLength)
@@ -74,10 +74,10 @@ namespace System.Web.UI {
 			return new EmptyControlCollection (this);
 		}
 
-		protected override void LoadViewState (object savedState)
+		protected override void LoadViewState (object? savedState)
 		{
 			if (savedState != null) {
-				Array source = (Array) savedState;
+				var source = (Array) savedState;
 				if (source.Length == dataBoundLiterals.Length)
 					source.CopyTo (dataBoundLiterals, 0);
 			}
@@ -85,11 +85,11 @@ namespace System.Web.UI {
 
 		protected internal override void Render (HtmlTextWriter output)
 		{
-			int stLength = staticLiterals == null ? 0 : staticLiterals.Length;
-			int dbLength = dataBoundLiterals.Length;
-			int max = (stLength > dbLength) ? stLength : dbLength;
+			var stLength = staticLiterals == null ? 0 : staticLiterals.Length;
+			var dbLength = dataBoundLiterals.Length;
+			var max = (stLength > dbLength) ? stLength : dbLength;
 
-			for (int i = 0; i < max; i++){
+			for (var i = 0; i < max; i++){
 				if (i < stLength)
 					output.Write (staticLiterals [i]);
 				if (i < dbLength)

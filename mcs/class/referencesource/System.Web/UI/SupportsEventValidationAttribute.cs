@@ -38,8 +38,8 @@ namespace System.Web.UI {
             // Check the attributes on the type to see if it supports SupportsEventValidationAttribute
             // Note that this attribute does not inherit from the base class, since derived classes may 
             // not be able to validate properly.
-            object[] attribs = type.GetCustomAttributes(typeof(SupportsEventValidationAttribute), false /* inherits */);
-            bool supportsEventValidation = ((attribs != null) && (attribs.Length > 0));
+            var attribs = type.GetCustomAttributes(typeof(SupportsEventValidationAttribute), false /* inherits */);
+            var supportsEventValidation = ((attribs != null) && (attribs.Length > 0));
             _typesSupportsEventValidation[type] = supportsEventValidation;
 
             return supportsEventValidation;

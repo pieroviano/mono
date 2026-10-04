@@ -74,11 +74,11 @@ namespace System.Web.Configuration
 				{
 					return item;
 				}
-				for (int i = 0;i <= regxmatch.Count - 1;i++)
+				for (var i = 0;i <= regxmatch.Count - 1;i++)
 				{
 					if (regxmatch[i].Success == true)
 					{
-						string c = regxmatch[i].Result("${Capability}");
+						var c = regxmatch[i].Result("${Capability}");
 						item = item.Replace("${" + c + "}", this[c]);
 					}
 				}
@@ -93,11 +93,11 @@ namespace System.Web.Configuration
 				{
 					return item;
 				}
-				for (int i = 0;i <= regxmatch.Count - 1;i++)
+				for (var i = 0;i <= regxmatch.Count - 1;i++)
 				{
 					if (regxmatch[i].Success == true)
 					{
-						string c = regxmatch[i].Result("${Capability}");
+						var c = regxmatch[i].Result("${Capability}");
 						item = item.Replace("%{" + c + "}", this[c]);
 					}
 				}
@@ -111,7 +111,7 @@ namespace System.Web.Configuration
 		{
 			get
 			{
-				string[] a = new string[this.Capabilities.Keys.Count];
+				var a = new string[this.Capabilities.Keys.Count];
 				this.Capabilities.Keys.CopyTo(a, 0);
 				System.Array.Sort(a);
 				System.Collections.Specialized.StringCollection l;

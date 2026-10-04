@@ -92,15 +92,15 @@ namespace System.Web.WebSockets {
         }
 
         // Returns a list of preferred subprotocols by parsing an incoming header value, or null if the incoming header was improperly formatted.
-        public static List<string> ParseHeader(string headerValue) {
+        public static List<string> ParseHeader(string? headerValue) {
             if (headerValue == null) {
                 // No incoming values
                 return null;
             }
 
-            List<string> subprotocols = new List<string>();
-            foreach (string subprotocolCandidate in headerValue.Split(_splitChars)) {
-                string subprotocolCandidateTrimmed = subprotocolCandidate.Trim(_lwsTrimChars); // remove LWS according to '#' rule
+            var subprotocols = new List<string>();
+            foreach (var subprotocolCandidate in headerValue.Split(_splitChars)) {
+                var subprotocolCandidateTrimmed = subprotocolCandidate.Trim(_lwsTrimChars); // remove LWS according to '#' rule
 
                 // skip LWS between commas according to '#' rule
                 if (subprotocolCandidateTrimmed.Length == 0) {

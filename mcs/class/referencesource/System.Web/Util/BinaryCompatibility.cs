@@ -25,9 +25,9 @@ namespace System.Web.Util {
             TelemetryLogger.LogTargetFramework(Current.TargetFramework);
         }
 
-        public BinaryCompatibility(FrameworkName frameworkName) {
+        public BinaryCompatibility(FrameworkName? frameworkName) {
             // parse version from FrameworkName, otherwise use a default value
-            Version version = VersionUtil.FrameworkDefault;
+            var version = VersionUtil.FrameworkDefault;
             if (frameworkName != null && frameworkName.Identifier == ".NETFramework") {
                 version = frameworkName.Version;
             }

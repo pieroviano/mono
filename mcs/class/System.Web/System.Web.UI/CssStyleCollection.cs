@@ -51,7 +51,7 @@ namespace System.Web.UI {
 			style = new ListDictionary (StringComparer.OrdinalIgnoreCase);
 		}
 
-		internal CssStyleCollection (StateBag bag) : this ()
+		internal CssStyleCollection (StateBag? bag) : this ()
 		{
 			this.bag = bag;
 			if (bag != null && bag [AttributeCollection.StyleAttribute] != null)
@@ -63,7 +63,7 @@ namespace System.Web.UI {
 		{
 			style.Clear ();
 			if (_value.Length > 0) {
-				int startIndex = 0;
+				var startIndex = 0;
 				while (startIndex >= 0)
 					startIndex = ParseStyle (startIndex);
 			}
@@ -71,8 +71,8 @@ namespace System.Web.UI {
 
 		int ParseStyle (int startIndex)
 		{
-			int colon = -1;
-			for (int i = startIndex; i < _value.Length; i++) {
+			var colon = -1;
+			for (var i = startIndex; i < _value.Length; i++) {
 				if (_value [i] == ':') {
 					colon = i;
 					break;
@@ -81,10 +81,10 @@ namespace System.Web.UI {
 			if (colon == -1 || colon + 1 == _value.Length)
 				return -1;
 
-			string key = _value.ToString (startIndex, colon - startIndex).Trim ();
+			var key = _value.ToString (startIndex, colon - startIndex).Trim ();
 
-			int semicolon = -1;
-			for (int i = colon + 1; i < _value.Length; i++) {
+			var semicolon = -1;
+			for (var i = colon + 1; i < _value.Length; i++) {
 				if (_value [i] == ';') {
 					semicolon = i;
 					break;
@@ -132,7 +132,7 @@ namespace System.Web.UI {
 			get { return style.Keys; }
 		}
 
-		public void Add (string key, string value)
+		public void Add (string key, string? value)
 		{
 			if (key == null)
 				throw new ArgumentNullException ("key");
@@ -159,7 +159,7 @@ namespace System.Web.UI {
 				bag [AttributeCollection.StyleAttribute] = _value.ToString ();
 		}
 
-		public void Add (HtmlTextWriterStyle key, string value)
+		public void Add (HtmlTextWriterStyle key, string? value)
 		{
 			Add (HtmlTextWriter.StaticGetStyleName (key), value);
 		}
@@ -199,7 +199,7 @@ namespace System.Web.UI {
 			}
 		}
 
-		void SetValueInternal (string value)
+		void SetValueInternal (string? value)
 		{
 			_value.Length = 0;
 			if (value != null)

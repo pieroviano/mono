@@ -52,7 +52,7 @@ namespace System.Web.Configuration
 		[TypeConverter(typeof(StringArrayConverter))]
 		public string [] ReadAccessProperties {
 			get {
-				string [] data = ReadAccessPropertiesNoCopy;
+				var data = ReadAccessPropertiesNoCopy;
 				return (string []) data.Clone ();
 			}
 			set {
@@ -75,7 +75,7 @@ namespace System.Web.Configuration
 		[TypeConverter (typeof (StringArrayConverter))]
 		public string [] WriteAccessProperties {
 			get {
-				string [] data = WriteAccessPropertiesNoCopy;
+				var data = WriteAccessPropertiesNoCopy;
 				return (string []) data.Clone ();
 			}
 			set {

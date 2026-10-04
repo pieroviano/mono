@@ -167,7 +167,7 @@ namespace System.Web.Compilation
 				if (beginPosition >= endPosition || fileText == null)
 					return null;
 
-				string text = FileText;
+				var text = FileText;
 				int start, len;
 				
 				if (_internal && outer != null) {
@@ -203,7 +203,7 @@ namespace System.Web.Compilation
 
 		bool Eat (int expected_token)
 		{
-			int token = tokenizer.get_token ();
+			var token = tokenizer.get_token ();
 			if (token != expected_token) {
 				tokenizer.put_back ();
 				return false;
@@ -238,16 +238,16 @@ namespace System.Web.Compilation
 			int token;
 			string id;
 			TagAttributes attributes;
-			TagType tagtype = TagType.Text;
-			StringBuilder text =  new StringBuilder ();
+			var tagtype = TagType.Text;
+			var text =  new StringBuilder ();
 
 			try {
 				while ((token = tokenizer.get_token ()) != Token.EOF) {
 					BeginElement ();
 
 					if (tokenizer.Verbatim){
-						string end_verbatim = "</" + verbatimID + ">";
-						string verbatim_text = GetVerbatim (token, end_verbatim);
+						var end_verbatim = "</" + verbatimID + ">";
+						var verbatim_text = GetVerbatim (token, end_verbatim);
 
 						if (verbatim_text == null)
 							OnError ("Unexpected EOF processing " + verbatimID);
@@ -308,8 +308,8 @@ namespace System.Web.Compilation
 			pathType = null;
 			filename = null;
 			str = str.Substring (2).Trim ();
-			int len = str.Length;
-			int lastQuote = str.LastIndexOf ('"');
+			var len = str.Length;
+			var lastQuote = str.LastIndexOf ('"');
 			if (len < 10 || lastQuote != len - 1)
 				return false;
 
@@ -317,7 +317,7 @@ namespace System.Web.Compilation
 				return false;
 
 			str = str.Substring (9).Trim ();
-			bool isfile = (StrUtils.StartsWith (str ,"file", true));
+			var isfile = (StrUtils.StartsWith (str ,"file", true));
 			if (!isfile && !StrUtils.StartsWith (str, "virtual", true))
 				return false;
 
@@ -329,7 +329,7 @@ namespace System.Web.Compilation
 			if (str.Length < 3 || str [0] != '=')
 				return false;
 
-			int index = 1;
+			var index = 1;
 			for (; index < str.Length; index++) {
 				if (Char.IsWhiteSpace (str [index]))
 					continue;
@@ -355,7 +355,7 @@ namespace System.Web.Compilation
 
 		void GetTag (out TagType tagtype, out string id, out TagAttributes attributes)
 		{
-			int token = tokenizer.get_token ();
+			var token = tokenizer.get_token ();
 
 			tagtype = TagType.ServerComment;
 			id = null;
@@ -375,13 +375,13 @@ namespace System.Web.Compilation
 				tagtype = TagType.Close;
 				break;
 			case '!':
-				bool double_dash = Eat (Token.DOUBLEDASH);
+				var double_dash = Eat (Token.DOUBLEDASH);
 				if (double_dash)
 					tokenizer.put_back ();
 
 				tokenizer.Verbatim = true;
-				string end = double_dash ? "-->" : ">";
-				string comment = GetVerbatim (tokenizer.get_token (), end);
+				var end = double_dash ? "-->" : ">";
+				var comment = GetVerbatim (tokenizer.get_token (), end);
 				tokenizer.Verbatim = false;
 				if (comment == null)
 					OnError ("Unfinished HTML comment/DTD");
@@ -433,7 +433,7 @@ namespace System.Web.Compilation
 				//  <asp:ListItem runat="server"> < </asp:ListItem>
 				//
 				if ((char)token == '<') {
-					string odds = tokenizer.Odds;
+					var odds = tokenizer.Odds;
 					if (odds != null && odds.Length > 0 && Char.IsWhiteSpace (odds [0])) {
 						tokenizer.put_back ();
 						idvalue = odds;
@@ -454,7 +454,7 @@ namespace System.Web.Compilation
 			int token;
 			TagAttributes attributes;
 			string id;
-			bool wellFormedForServer = true;
+			var wellFormedForServer = true;
 
 			attributes = new TagAttributes ();
 			while ((token = tokenizer.get_token ()) != Token.EOF){
@@ -502,9 +502,9 @@ namespace System.Web.Compilation
 
 		string GetVerbatim (int token, string end)
 		{
-			StringBuilder vb_text = new StringBuilder ();
-			StringBuilder tmp = new StringBuilder ();
-			int i = 0;
+			var vb_text = new StringBuilder ();
+			var tmp = new StringBuilder ();
+			var i = 0;
 
 			if (tokenizer.Value.Length > 1){
 				// May be we have a put_back token that is not a single character
@@ -513,8 +513,8 @@ namespace System.Web.Compilation
 			}
 
 			end = end.ToLower (Helpers.InvariantCulture);
-			int repeated = 0;
-			for (int k = 0; k < end.Length; k++)
+			var repeated = 0;
+			for (var k = 0; k < end.Length; k++)
 				if (end [0] == end [k])
 					repeated++;
 			
@@ -549,7 +549,7 @@ namespace System.Web.Compilation
 		string RemoveComments (string text)
 		{
 			int end;
-			int start = text.IndexOf ("<%--");
+			var start = text.IndexOf ("<%--");
 
 			while (start != -1) {
 				end = text.IndexOf ("--%>");
@@ -566,7 +566,7 @@ namespace System.Web.Compilation
 		void GetServerTag (out TagType tagtype, out string id, out TagAttributes attributes)
 		{
 			string inside_tags;
-			bool old = tokenizer.ExpectAttrValue;
+			var old = tokenizer.ExpectAttrValue;
 
 			tokenizer.ExpectAttrValue = false;
 			if (Eat ('@')){
@@ -601,7 +601,7 @@ namespace System.Web.Compilation
 			varname = Eat ('=');
 			databinding = !varname && Eat ('#');
 			codeRenderEncode = !databinding && !varname && Eat (':');
-			string odds = tokenizer.Odds;
+			var odds = tokenizer.Odds;
 			
 			tokenizer.Verbatim = true;
 			inside_tags = GetVerbatim (tokenizer.get_token (), "%>");
@@ -628,7 +628,7 @@ namespace System.Web.Compilation
 
 		public override string ToString ()
 		{
-			StringBuilder sb = new StringBuilder ("AspParser {");
+			var sb = new StringBuilder ("AspParser {");
 			if (filename != null && filename.Length > 0)
 				sb.AppendFormat ("{0}:{1}.{2}", filename, beginLine, beginColumn);
 			sb.Append ('}');
